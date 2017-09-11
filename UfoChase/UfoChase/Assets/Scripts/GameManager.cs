@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour {
     }
 
     [SerializeField]
-    private Vector3 spawnPosition = Vector3.zero;
+    private GameObject spawnObject;
+    [SerializeField]
+    private GameObject endObject;
 
     public PlayerScript Player { get; private set; }
     public UfoScript UFO { get; private set; }
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour {
         InGame = false;
 
         Player = FindObjectOfType<PlayerScript>();
-        Player.Initialize(spawnPosition);
+        Player.Initialize(spawnObject.transform.position);
 
         UFO = FindObjectOfType<UfoScript>();
         UFO.Initialize();

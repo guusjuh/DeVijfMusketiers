@@ -21,6 +21,11 @@ public class UfoScript : MonoBehaviour {
 
     public void Loop()
     {
+        if (GameManager.Instance.Player.InSpot || GameManager.Instance.Player.Finished)
+        {
+            return;
+        }
+
         // obtain current distance to node
         distToNext = (new Vector2(transform.position.x - targetPath[currentTarget].transform.position.x, 
             transform.position.z - targetPath[currentTarget].transform.position.z)).magnitude;

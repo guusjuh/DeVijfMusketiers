@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Spotlight
   - Hiding
+  - End
   layers:
   - Default
   - TransparentFX

@@ -18,25 +18,28 @@ public class PlayerScript : MonoBehaviour {
 
     // if mouse clicked once and hold: move and rotation 
     // if mouse clicked twice and hold: rotation
-    private bool lookingAround = false;
+    private bool moving = false;
     private bool clicked = false;
     private static float TOTAL_CLICK_COOLDOWN = 0.5f;
     private float clickCooldown = 0;
 
     private bool inSpot;
+    public bool InSpot { get { return inSpot; } }
     private bool inHiding;
+    private bool finished;
+    public bool Finished { get { return finished; } }
 
     // properties
     public bool CanMove {
         get
         {
-            return (!inSpot && !lookingAround);
+            return (!inSpot && moving && !finished);
         }
     } 
 
     public void Initialize(Vector3 spawnPos)
     {
-        transform.position = spawnPos;
+        transform.position = new Vector3(spawnPos.x, transform.position.y, spawnPos.z);
 
         currMousePos = Input.mousePosition.x;
         prevMousePos = currMousePos;
@@ -44,17 +47,12 @@ public class PlayerScript : MonoBehaviour {
         clickCooldown = TOTAL_CLICK_COOLDOWN;
 
         inSpot = false;
+        finished = false;
+        inHiding = false;
     }
-
+     
     public void Loop()
     {
-        // player is catched by the UFO! 
-        if (inSpot)
-        {
-            Debug.Log("You dead!");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("gameover");
-        }
-
         // catch current mouse position
         currMousePos = Input.mousePosition.x;
 
@@ -90,18 +88,18 @@ public class PlayerScript : MonoBehaviour {
         {
             if (clicked)
             {
-                lookingAround = true;
+                moving = true;
             }
             else
             {
-                lookingAround = false;
+                moving = false;
                 clicked = true;
                 clickCooldown = TOTAL_CLICK_COOLDOWN;
             }
         }
 
         // no double click = looking around and moving
-        if (!lookingAround)
+        if (moving)
         {
             if (CanMove)
             {
@@ -145,6 +143,15 @@ public class PlayerScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.tag == "End")
+        {
+            finished = true;
+            moveInput = 0;
+            turnInput = 0;
+
+            StartCoroutine(WaitForFinish());
+        }
+
         if (other.tag == "Hiding")
         {
             inHiding = true;
@@ -155,6 +162,8 @@ public class PlayerScript : MonoBehaviour {
             inSpot = true;
             moveInput = 0;
             turnInput = 0;
+
+            StartCoroutine(WaitForDead());
         }
     }
 
@@ -164,5 +173,19 @@ public class PlayerScript : MonoBehaviour {
         {
             inHiding = false;
         }
+    }
+
+    private IEnumerator WaitForDead()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("gameover");
+    }
+
+    private IEnumerator WaitForFinish()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("win");
     }
 }
