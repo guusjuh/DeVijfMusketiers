@@ -22,6 +22,8 @@ ExportedObj/
 *.booproj
 *.svd
 *.pdb
+*.bin
+*.info
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -32,3 +34,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Nightmare/Library/metadata/
+Nightmare/Library/PlayerDataCache/
