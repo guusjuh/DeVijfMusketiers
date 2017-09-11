@@ -18,7 +18,7 @@ public class Accelaratable {
     }
 	
 	public void Update () {
-        Acceleration = new Vector2(Input.acceleration.y, Input.acceleration.x);
+        Acceleration = new Vector2(Input.acceleration.x, Input.acceleration.y);
     }
     public void Update2()
     {

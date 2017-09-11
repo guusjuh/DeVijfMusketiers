@@ -8,7 +8,7 @@ public class Finish : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            Debug.Log("Victory!");
+            other.GetComponent<Player>().Win();
         }
     }
 }

@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     bool dead;
-    private float speed;
+    [SerializeField]
+    private float speed = 250.0f;
+    [SerializeField]
+    private float jumpHeight = 250.0f;
     private Vector3 start;
+    private Rigidbody rb;
     Accelaratable ac;
     Vector2 velocity;
+    public GameObject winMsg;
+    public GameObject loseMsg;
+    bool mobile = false;
 
     void Start()
     {
@@ -15,7 +22,11 @@ public class Player : MonoBehaviour {
         dead = false;
         ac = new Accelaratable();
         velocity = Vector3.zero;
-        speed = 0.2f;
+        rb = GetComponent<Rigidbody>();
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            mobile = true;
+        }
     }
     
     // Update is called once per frame
@@ -24,9 +35,25 @@ public class Player : MonoBehaviour {
         {
             if (ac != null)
             {
-                ac.Update();
+                if (mobile)
+                {
+                    ac.Update();
+                }
+                else
+                {
+                    ac.Update2();
+                }
+                
                 velocity = ac.Acceleration * speed;
-                transform.Translate(velocity.x, velocity.y, 0.0f);
+                if (rb != null)
+                {
+                    rb.AddForce(velocity.x, velocity.y, 0.0f);
+                }
+                else
+                {
+                }
+                
+                //transform.Translate(velocity.x, velocity.y, 0.0f, Space.World);
             }
             else
             {
@@ -35,7 +62,7 @@ public class Player : MonoBehaviour {
         }
 	}
 
-    private IEnumerator DeathTimer(float sec)
+    private IEnumerator ResetInSeconds(float sec)
     {
         yield return new WaitForSeconds(sec);
         Reset();
@@ -46,13 +73,15 @@ public class Player : MonoBehaviour {
         float half = sec / 2.0f;
         while(sec > half)
         {
-            transform.Translate(new Vector3(0.0f, 0.0f, -0.2f));
+            rb.AddForce(0.0f, 0.0f, -jumpHeight);
+            //transform.Translate(new Vector3(0.0f, 0.0f, -0.2f));
             sec -= Time.deltaTime;
             yield return null;
         }
         while (sec > 0.0f)
         {
-            transform.Translate(new Vector3(0.0f, 0.0f, 0.2f));
+            rb.AddForce(0.0f, 0.0f, jumpHeight);
+            //transform.Translate(new Vector3(0.0f, 0.0f, 0.2f));
             sec -= Time.deltaTime;
             yield return null;
         }
@@ -62,6 +91,8 @@ public class Player : MonoBehaviour {
     private void Reset()
     {
         dead = false;
+        loseMsg.SetActive(false);
+        winMsg.SetActive(false);
         transform.position = start;
         GetComponent<MeshRenderer>().enabled = true;
 
@@ -70,14 +101,21 @@ public class Player : MonoBehaviour {
     public void Die()
     {
         dead = true;
-        Debug.Log("U suck D:");
+        loseMsg.SetActive(true);
         GetComponent<MeshRenderer>().enabled = false;
-        StartCoroutine(DeathTimer(1.0f));
+        StartCoroutine(ResetInSeconds(1.0f));
+    }
+
+    public void Win()
+    {
+        winMsg.SetActive(true);
+        GetComponent<MeshRenderer>().enabled = false;
+        StartCoroutine(ResetInSeconds(1.0f));
     }
 
     public void Jump()
     {
         Debug.Log("Boing");
-        StartCoroutine(JumpTimer(0.25f));
+        StartCoroutine(JumpTimer(0.5f));
     }
 }
