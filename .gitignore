@@ -32,3 +32,12 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+Nightmare/Library/metadata/
+Nightmare/Library/PlayerDataCache/
+
+UfoChase/UfoChase/Library/metadata/
+UfoChase/UfoChase/Library/PlayerDataCache/
+
+*.bin
+*.info
