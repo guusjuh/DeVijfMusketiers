@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Shake : MonoBehaviour {
     public bool active;
+    bool up;
+    int count;
     float timeLeft;
     Quaternion rot;
 
@@ -25,9 +27,29 @@ public class Shake : MonoBehaviour {
                 manager.introduceMonster();
 
                 active = false;
-                gameObject.transform.rotation = rot;
+                //gameObject.transform.rotation = rot;
             }
-            gameObject.transform.Rotate(0, 1, 0);
+            if (up)
+            {
+                transform.Translate(0.01f, 0, 0.01f);
+                count--;
+                if(count <= 0)
+                {
+                    up = false;
+                    count = 5;
+                }
+            }
+            else
+            {
+                transform.Translate(-0.01f, 0, -0.01f);
+                count--;
+                if (count <= 0)
+                {
+                    up = true;
+                    count = 5;
+                }
+            }
+            //gameObject.transform.Rotate(0, 1, 0);
         }
 	}
 
