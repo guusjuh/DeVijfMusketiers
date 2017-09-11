@@ -6,13 +6,16 @@ public class Manager : MonoBehaviour {
     public Shake[] shakeObjects;
     public Bed[] beds;
     public float timeLeft;
-    Monster monster;
+    Monster[] monsters;
 
     // Use this for initialization
     void Start ()
     {
         loadObjectsFromScene();
-        monster.gameObject.SetActive(false);
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].gameObject.SetActive(false);
+        }
         timeLeft = 3.0f;
     }
 	
@@ -23,16 +26,19 @@ public class Manager : MonoBehaviour {
         {
             Application.LoadLevel("GameOver");
         }
-        if (monster.gameObject.active)
+        for (int i = 0; i < monsters.Length; i++)
         {
-            return;
+            if (monsters[i].gameObject.active)
+            {
+                return;
+            }
         }
         timeLeft -= Time.deltaTime;
         if(timeLeft <= 0)
         {
             int selectShake = Random.Range(0, shakeObjects.Length);
             shakeObjects[selectShake].startShake();
-            timeLeft = 5;
+            timeLeft = Random.Range(0, 4);
         }
 	}
 
@@ -40,13 +46,14 @@ public class Manager : MonoBehaviour {
     {
         shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
         beds = FindObjectsOfType(typeof(Bed)) as Bed[];
-        monster = FindObjectOfType(typeof(Monster)) as Monster;
+        monsters = FindObjectsOfType(typeof(Monster)) as Monster[];
     }
 
     public void introduceMonster()
     {
-        monster.gameObject.SetActive(true);
-        monster.startMonster();
+        int selectMonster = Random.Range(0, monsters.Length);
+        monsters[selectMonster].gameObject.SetActive(true);
+        monsters[selectMonster].startMonster();
     }
 
     public void destroyBed()

@@ -17,9 +17,15 @@ public class Shake : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (active)
         {
+            Monster[] monsters = FindObjectsOfType(typeof(Monster)) as Monster[];
+            if (monsters.Length > 0)
+            {
+                return;
+            }
             timeLeft -= Time.deltaTime;
             if(timeLeft <= 0)
             {
@@ -31,7 +37,7 @@ public class Shake : MonoBehaviour {
             }
             if (up)
             {
-                transform.Translate(0.01f, 0, 0.01f);
+                transform.Translate(0.02f, 0, 0.02f);
                 count--;
                 if(count <= 0)
                 {
@@ -41,7 +47,7 @@ public class Shake : MonoBehaviour {
             }
             else
             {
-                transform.Translate(-0.01f, 0, -0.01f);
+                transform.Translate(-0.02f, 0, -0.02f);
                 count--;
                 if (count <= 0)
                 {
