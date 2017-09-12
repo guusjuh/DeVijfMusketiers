@@ -54,7 +54,21 @@ public class PlayerScript : MonoBehaviour {
     public void Loop()
     {
         // catch current mouse position
-        currMousePos = Input.mousePosition.x;
+        /*if(Input.touchCount > 0)
+        {
+            Touch zeroTouch = Input.GetTouch(0);
+            currMousePos = zeroTouch.position.x; //Input.mousePosition.x;
+        }*/
+
+        // catch current touch position
+        if(Input.touchCount > 0)
+        {
+            currMousePos = Input.GetTouch(0).position.x;
+
+            GetInput();
+
+            prevMousePos = currMousePos;
+        }
 
         // reduce time to check for double click
         if (clicked)
@@ -68,9 +82,9 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // obtain input for turning and moving
-        GetInput();
+        //GetInput();
 
-        prevMousePos = currMousePos;
+        //prevMousePos = currMousePos;
 
         // process input
         // move the player
@@ -82,17 +96,21 @@ public class PlayerScript : MonoBehaviour {
     private void GetInput()
     {
         // if pressed, check for double click 
-        if(Input.GetMouseButtonDown(0))
+        if(Input.touchCount > 0)
         {
-            if (clicked)
+            Touch zeroTouch = Input.GetTouch(0);
+            if(zeroTouch.phase == TouchPhase.Began)
             {
-                moving = true;
-            }
-            else
-            {
-                moving = false;
-                clicked = true;
-                clickCooldown = TOTAL_CLICK_COOLDOWN;
+                if (clicked)
+                {
+                    moving = true;
+                }
+                else
+                {
+                    moving = false;
+                    clicked = true;
+                    clickCooldown = TOTAL_CLICK_COOLDOWN;
+                }
             }
         }
 
@@ -102,7 +120,7 @@ public class PlayerScript : MonoBehaviour {
             if (CanMove)
             {
                 // is the mouse pressed?
-                if (Input.GetMouseButton(0))
+                if (Input.touchCount > 0)//if (Input.GetMouseButton(0))
                 {
                     // set movement input
                     // TODO: gradually increase value over time
@@ -123,7 +141,7 @@ public class PlayerScript : MonoBehaviour {
         else
         {
             // is the mouse pressed?
-            if (Input.GetMouseButton(0))
+            if (Input.touchCount > 0) //if (Input.GetMouseButton(0))
             {
                 // set turn input
                 float deltaMousePos = currMousePos - prevMousePos;
@@ -136,18 +154,63 @@ public class PlayerScript : MonoBehaviour {
                 turnInput = 0;
             }
         }
-    }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Box")
+        //-------------------------------------------------
+        // if pressed, check for double click 
+        /*if(Input.touchCount > 0)//if(Input.GetMouseButtonDown(0))
         {
-            inSpot = true;
-            moveInput = 0;
-            turnInput = 0;
-
-            StartCoroutine(WaitForDead());
+            if (clicked)
+            {
+                moving = true;
+            }
+            else
+            {
+                moving = false;
+                clicked = true;
+                clickCooldown = TOTAL_CLICK_COOLDOWN;
+            }
         }
+
+        // no double click = looking around and moving
+        if (moving)
+        {
+            if (CanMove)
+            {
+                // is the mouse pressed?
+                if(Input.touchCount > 0)//if (Input.GetMouseButton(0))
+                {
+                    // set movement input
+                    // TODO: gradually increase value over time
+                    moveInput = 1;
+
+                    // set turn input
+                    float deltaMousePos = currMousePos - prevMousePos;
+                    turnInput = deltaMousePos;
+                }
+                else
+                {
+                    moveInput = 0;
+                    turnInput = 0;
+                }
+            }
+        }
+        // double click = only looking around
+        else
+        {
+            // is the mouse pressed?
+            if (Input.touchCount > 0) //if (Input.GetMouseButton(0))
+            {
+                // set turn input
+                float deltaMousePos = currMousePos - prevMousePos;
+                turnInput = deltaMousePos;
+                moveInput = 0;
+            }
+            else
+            {
+                moveInput = 0;
+                turnInput = 0;
+            }
+        }*/
     }
 
     private void OnTriggerEnter(Collider other)
@@ -166,7 +229,7 @@ public class PlayerScript : MonoBehaviour {
             inHiding = true;
         }
 
-        if (other.tag == "Spotlight" && !inHiding)
+        if (other.tag == "Spotlight" && !inHiding || other.tag == "Box")
         {
             inSpot = true;
             moveInput = 0;
