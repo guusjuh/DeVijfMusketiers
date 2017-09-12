@@ -8,6 +8,7 @@ public class Monster : MonoBehaviour
     float timeLeft;
     public GameObject dead;
     public GameObject alive;
+    Bed selectedBed;
 
 
     // Use this for initialization
@@ -37,16 +38,17 @@ public class Monster : MonoBehaviour
         if (timeLeft <= 0)
         {
             Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
-            manager.destroyBed();
+            manager.destroyBed(selectedBed);
             dead.SetActive(true);
             dead.GetComponent<Timer>().resetTimer();
             this.gameObject.SetActive(false);
         }
     }
 
-    public void startMonster()
+    public void startMonster(Bed selected)
     {
-        timeLeft = 4;
+        selectedBed = selected;
+        timeLeft = 3;
         draw = FindObjectsOfType(typeof(Draw)) as Draw[];
         for (int x = 0; x < draw.Length; x++)
         {

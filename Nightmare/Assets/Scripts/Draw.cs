@@ -17,7 +17,7 @@ public class Draw : MonoBehaviour {
 
     public void init()
     {
-        gameObject.GetComponent<Renderer>().material.color = new Color(0, 0, 0, 255);
+        gameObject.GetComponent<Renderer>().material.color = new Color(255, 255, 255, 255);
         selected = false;
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Shake : MonoBehaviour {
     public bool active;
+    public Transform shadowPrefab;
     bool up;
     int count;
     float timeLeft;
@@ -29,9 +30,13 @@ public class Shake : MonoBehaviour {
             timeLeft -= Time.deltaTime;
             if(timeLeft <= 0)
             {
+                Vector3 pos = transform.position;
+                pos.y = 0;
+                //init shadow prefab
+                var shadow = Instantiate(shadowPrefab, pos, Quaternion.identity);
                 Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
-                manager.introduceMonster();
-
+                var selectedBed = manager.selectBed();
+                shadow.GetComponent<Shadow>().Init(selectedBed);
                 active = false;
                 //gameObject.transform.rotation = rot;
             }

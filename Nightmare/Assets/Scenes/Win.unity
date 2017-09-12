@@ -175,9 +175,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'The Monsters kiled them all,
+  m_Text: 'You have survived the night!
 
-    all the children are dead now and it is your fault!'
+    tap to start the next night.'
 --- !u!222 &199181880
 CanvasRenderer:
   m_ObjectHideFlags: 0
