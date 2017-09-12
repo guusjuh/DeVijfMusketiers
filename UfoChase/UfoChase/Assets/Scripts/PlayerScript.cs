@@ -63,7 +63,30 @@ public class PlayerScript : MonoBehaviour {
         // catch current touch position
         if(Input.touchCount > 0)
         {
-            currMousePos = Input.GetTouch(0).position.x;
+            Touch startTouch = Input.GetTouch(0);
+
+            switch (startTouch.phase)
+            {
+                case TouchPhase.Began:
+                    currMousePos = startTouch.position.x;
+                    prevMousePos = currMousePos;
+                    if (clicked) {
+                        moving = true;
+                    }
+                    break;
+
+                case TouchPhase.Moved:
+                    currMousePos = startTouch.position.x;
+                    break;
+
+                case TouchPhase.Ended:
+                    if (!clicked) {
+                        moving = false;
+                        clicked = true;
+                        clickCooldown = TOTAL_CLICK_COOLDOWN;
+                    }
+                    break;
+            }
 
             GetInput();
 
@@ -95,25 +118,6 @@ public class PlayerScript : MonoBehaviour {
 
     private void GetInput()
     {
-        // if pressed, check for double click 
-        if(Input.touchCount > 0)
-        {
-            Touch zeroTouch = Input.GetTouch(0);
-            if(zeroTouch.phase == TouchPhase.Began)
-            {
-                if (clicked)
-                {
-                    moving = true;
-                }
-                else
-                {
-                    moving = false;
-                    clicked = true;
-                    clickCooldown = TOTAL_CLICK_COOLDOWN;
-                }
-            }
-        }
-
         // no double click = looking around and moving
         if (moving)
         {
