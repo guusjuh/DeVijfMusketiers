@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
         if (Application.platform == RuntimePlatform.Android)
         {
             mobile = true;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
     }
     
@@ -72,6 +73,7 @@ public class Player : MonoBehaviour {
         while(sec > half)
         {
             rb.AddForce(0.0f, 0.0f, -jumpHeight);
+            Debug.Log(1);
             //transform.Translate(new Vector3(0.0f, 0.0f, -0.2f));
             sec -= Time.deltaTime;
             yield return null;
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour {
         while (sec > 0.0f)
         {
             rb.AddForce(0.0f, 0.0f, jumpHeight);
+            Debug.Log(2);
             //transform.Translate(new Vector3(0.0f, 0.0f, 0.2f));
             sec -= Time.deltaTime;
             yield return null;
