@@ -59,9 +59,19 @@ public class PlayerScript : MonoBehaviour {
             Touch zeroTouch = Input.GetTouch(0);
             currMousePos = zeroTouch.position.x; //Input.mousePosition.x;
         }*/
+        // reduce time to check for double click
+        if (clicked)
+        {
+            clickCooldown -= Time.deltaTime;
+            if (clickCooldown <= 0)
+            {
+                clickCooldown = 0;
+                clicked = false;
+            }
+        }
 
         // catch current touch position
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
             Touch startTouch = Input.GetTouch(0);
 
@@ -93,16 +103,6 @@ public class PlayerScript : MonoBehaviour {
             prevMousePos = currMousePos;
         }
 
-        // reduce time to check for double click
-        if (clicked)
-        {
-            clickCooldown -= Time.deltaTime;
-            if(clickCooldown <= 0)
-            {
-                clickCooldown = 0;
-                clicked = false;
-            }
-        }
 
         // obtain input for turning and moving
         //GetInput();
@@ -139,6 +139,11 @@ public class PlayerScript : MonoBehaviour {
                     moveInput = 0;
                     turnInput = 0;
                 }
+            }
+            else
+            {
+                moveInput = 0;
+                turnInput = 0;
             }
         }
         // double click = only looking around
