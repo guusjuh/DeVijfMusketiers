@@ -74,8 +74,6 @@ public class PlayerScript : MonoBehaviour {
 
         // process input
         // move the player
-        Debug.Log("moving is " + (moveInput == 0 ? "false" : "true"));
-
         transform.position += transform.forward * (moveInput * moveSpeed);
 
         transform.Rotate(new Vector3(0, 1, 0), turnSpeed * turnInput);
@@ -124,7 +122,6 @@ public class PlayerScript : MonoBehaviour {
         // double click = only looking around
         else
         {
-            Debug.Log("looking around");
             // is the mouse pressed?
             if (Input.GetMouseButton(0))
             {
@@ -138,6 +135,18 @@ public class PlayerScript : MonoBehaviour {
                 moveInput = 0;
                 turnInput = 0;
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Box")
+        {
+            inSpot = true;
+            moveInput = 0;
+            turnInput = 0;
+
+            StartCoroutine(WaitForDead());
         }
     }
 

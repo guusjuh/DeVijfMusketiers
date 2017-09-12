@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4072501679781370}
-  - component: {fileID: 135856926188518390}
+  - component: {fileID: 136002579938041106}
   m_Layer: 0
   m_Name: SpotlightTrigger
   m_TagString: Spotlight
@@ -151,7 +151,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1564992018603060}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 33, z: -81.4}
+  m_LocalPosition: {x: 0, y: 33, z: -97.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4186423122649712}
@@ -208,10 +208,10 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 0
-  m_Color: {r: 1, g: 0.9534483, b: 0.8014706, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.61813366, g: 0.8161765, b: 0.80798155, a: 1}
+  m_Intensity: 2.54
   m_Range: 200
-  m_SpotAngle: 38
+  m_SpotAngle: 29.3
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -246,15 +246,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d313906d693294a48a05654b93cf32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 9
-  turnSpeed: 0.5
-  targetPath:
+  moveSpeed: 15
+  turnSpeed: 50
+  paths:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
---- !u!135 &135856926188518390
-SphereCollider:
+--- !u!136 &136002579938041106
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -262,6 +261,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 7.2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 4.78
+  m_Height: 50
+  m_Direction: 1
+  m_Center: {x: 0, y: 11.66, z: 0}

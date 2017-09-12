@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
 
     public PlayerScript Player { get; private set; }
     public UfoScript UFO { get; private set; }
+    public List<LiftableObject> Crates { get; private set; }
 
     public bool InGame { get; private set; }
 
@@ -36,6 +37,18 @@ public class GameManager : MonoBehaviour {
         UFO = FindObjectOfType<UfoScript>();
         UFO.Initialize();
 
+        Crates = new List<LiftableObject>();
+        LiftableObject[] temp = FindObjectsOfType<LiftableObject>();
+        foreach(LiftableObject o in temp)
+        {
+            Crates.Add(o);
+        }
+
+        for (int i = 0; i < Crates.Count; ++i)
+        {
+            Crates[i].Initialize();
+        }
+
         return;
     }
 
@@ -44,6 +57,10 @@ public class GameManager : MonoBehaviour {
         Player.Loop();
         UFO.Loop();
 
+        for (int i = 0; i < Crates.Count; ++i)
+        {
+            Crates[i].Loop();
+        }
         return;
     }
 }

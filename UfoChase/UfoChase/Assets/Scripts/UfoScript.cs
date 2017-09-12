@@ -10,48 +10,85 @@ public class UfoScript : MonoBehaviour {
     private float turnSpeed;
 
     [SerializeField]
-    private List<GameObject> targetPath;
+    private List<GameObject> paths;
+    private List<PathNode> pathNodes;
     private int currentTarget = 0;
+    private int currentPath = 0;
     private float distToNext = 0;
+
+    private bool waiting = false;
+
+    public void NextPath()
+    {
+        currentPath++;
+
+        PathNode[] temp = paths[currentPath].GetComponentsInChildren<PathNode>();
+
+        pathNodes.Clear();
+
+        foreach (PathNode p in temp)
+        {
+            pathNodes.Add(p);
+        }
+
+        currentTarget = 0;
+    }
 
     public void Initialize()
     {
         currentTarget = 0;
+        currentPath = 0;
+
+        PathNode[] temp = paths[currentPath].GetComponentsInChildren<PathNode>();
+
+        pathNodes = new List<PathNode>();
+
+        foreach (PathNode p in temp)
+        {
+            pathNodes.Add(p);
+        }
     }
 
     public void Loop()
     {
-        if (GameManager.Instance.Player.InSpot || GameManager.Instance.Player.Finished)
+        if (GameManager.Instance.Player.InSpot || GameManager.Instance.Player.Finished || waiting)
         {
             return;
         }
 
         // obtain current distance to node
-        distToNext = (new Vector2(transform.position.x - targetPath[currentTarget].transform.position.x, 
-            transform.position.z - targetPath[currentTarget].transform.position.z)).magnitude;
+        distToNext = (new Vector2(transform.position.x - pathNodes[currentTarget].transform.position.x, 
+            transform.position.z - pathNodes[currentTarget].transform.position.z)).magnitude;
 
         // while not reached last node
-        if (currentTarget < targetPath.Count)
+        if (currentTarget < pathNodes.Count)
         {
             // while next not reached
             if (distToNext > moveSpeed / 2.0f)
             {
-                Rotate(targetPath[currentTarget].transform.position);
+                Rotate(pathNodes[currentTarget].transform.position);
                 Move();
             }
             else
             {
+                if (pathNodes[currentTarget].WaitTime > 0.0f)
+                {
+                    transform.position = new Vector3(pathNodes[currentTarget].transform.position.x, transform.position.y, pathNodes[currentTarget].transform.position.z);
+
+                    StartCoroutine(Waiting(pathNodes[currentTarget].WaitTime));
+                }
+
                 // node reached
                 currentTarget++;
             
-                if(currentTarget >= targetPath.Count)
+                if(currentTarget >= pathNodes.Count)
                 {
                     currentTarget = 0;
                 }
 
                 // update dist
-                distToNext = (new Vector2(transform.position.x - targetPath[currentTarget].transform.position.x,
-                    transform.position.z - targetPath[currentTarget].transform.position.z)).magnitude;
+                distToNext = (new Vector2(transform.position.x - pathNodes[currentTarget].transform.position.x,
+                    transform.position.z - pathNodes[currentTarget].transform.position.z)).magnitude;
             }
         }
     }
@@ -73,4 +110,16 @@ public class UfoScript : MonoBehaviour {
         // Move forward. 
         transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
     }
+
+    private IEnumerator Waiting(float waitTime)
+    {
+        waiting = true;
+
+        yield return new WaitForSeconds(waitTime);
+
+        waiting = false;
+    }
+
 }
+
+
