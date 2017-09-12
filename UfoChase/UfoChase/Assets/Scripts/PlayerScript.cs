@@ -90,8 +90,9 @@ public class PlayerScript : MonoBehaviour {
                     break;
 
                 case TouchPhase.Ended:
+                    moving = false;
+
                     if (!clicked) {
-                        moving = false;
                         clicked = true;
                         clickCooldown = TOTAL_CLICK_COOLDOWN;
                     }

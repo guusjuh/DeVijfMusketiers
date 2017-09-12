@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 10}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 342}
   m_MaxSize: {x: 4002, y: 8042}
   vertical: 1
-  controlID: 23
+  controlID: 36
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 471}
   m_MaxSize: {x: 10004, y: 14021}
   vertical: 1
-  controlID: 83
+  controlID: 112
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -138,8 +138,8 @@ MonoBehaviour:
     y: 0
     width: 814
     height: 465
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 19}
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 436, y: 471}
   m_MaxSize: {x: 14006, y: 14021}
   vertical: 0
-  controlID: 82
+  controlID: 35
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -241,7 +241,7 @@ MonoBehaviour:
     y: 0
     width: 1536
     height: 781
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &11
 MonoBehaviour:
@@ -383,7 +383,7 @@ MonoBehaviour:
   m_StartGridSize: 64
   m_LastFolders: []
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\Jasper Meier\Documents\GITHub\Projects\TheFiveMusketeers\UfoChase\UfoChase
+  m_LastProjectPath: D:\Documenten\DeVijfMusketiers\UfoChase\UfoChase
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
@@ -498,7 +498,7 @@ MonoBehaviour:
     y: 92
     width: 486
     height: 710
-  m_ScrollPosition: {x: 0, y: 0}
+  m_ScrollPosition: {x: 0, y: 706.0156}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 311
@@ -532,24 +532,24 @@ MonoBehaviour:
     width: 230
     height: 289
   m_TreeViewState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    scrollPos: {x: 0, y: 26.003906}
+    m_SelectedIDs: 6a070000
     m_LastClickedID: 0
-    m_ExpandedIDs: 207afdff0a7bfdff087cfdff1a7cfdff207cfdff0889fdfff089fdffee8afdff008bfdff068bfdff2294fdff0a95fdff0896fdff1a96fdff2096fdffa6cbfdff92ccfdff90cdfdffa2cdfdffa8cdfdff4406feff3207feff3008feff4208feff4808feff3e1efeff2e1ffeff2c20feff3e20feff4420feff482ffeff3830feff3631feff4831feff4e31feff3238feff1c39feff1e3afeff343afeff3e3afeffc452feffac53feffae54feffc454feffce54feffe6f6ffff00000000be500000dc5000005852000098590000b6590000325b0000
+    m_ExpandedIDs: e6f6ffff00000000c6280000ce280000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: PlayerObject
+      m_OriginalName: PlayerObject
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: -2854
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 13}
     m_SearchString: 
@@ -585,14 +585,14 @@ MonoBehaviour:
     width: 812
     height: 444
   m_SceneLighting: 1
-  lastFramingTime: 2125.8281800842965
+  lastFramingTime: 33.763587117132644
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 31.17057, y: 7.1967583, z: -60.67884}
+    m_Target: {x: -44.9, y: 2.59, z: -121.9}
     speed: 2
-    m_Value: {x: 31.17057, y: 7.1967583, z: -60.67884}
+    m_Value: {x: -44.9, y: 2.59, z: -121.9}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -617,11 +617,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.17474128, y: -0.090533905, z: 0.016138235, w: -0.9803105}
     speed: 2
-    m_Value: {x: -0.17474128, y: -0.090533905, z: 0.016138235, w: -0.9803105}
+    m_Value: {x: -0.1747413, y: -0.090533905, z: 0.016138237, w: -0.98031056}
   m_Size:
-    m_Target: 48.71895
+    m_Target: 10.916222
     speed: 2
-    m_Value: 48.71895
+    m_Value: 10.916222
   m_Ortho:
     m_Target: 0
     speed: 2
