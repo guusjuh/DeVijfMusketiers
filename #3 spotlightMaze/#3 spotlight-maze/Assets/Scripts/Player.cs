@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     bool dead;
+    bool won;
     [SerializeField]
     private float speed = 250.0f;
     [SerializeField]
-    private float jumpHeight = 250.0f;
+    private float jumpHeight = 10.0f;
     private Vector3 start;
     private Rigidbody rb;
     Accelaratable ac;
     Vector2 velocity;
     public GameObject winMsg;
     public GameObject loseMsg;
+    public GameObject spotMsg;
     bool mobile = false;
 
     void Start()
     {
         start = transform.position;
         dead = false;
+        won = false;
         ac = new Accelaratable();
         velocity = Vector3.zero;
         rb = GetComponent<Rigidbody>();
@@ -49,11 +52,6 @@ public class Player : MonoBehaviour {
                 {
                     rb.AddForce(velocity.x, velocity.y, 0.0f);
                 }
-                else
-                {
-                }
-                
-                //transform.Translate(velocity.x, velocity.y, 0.0f, Space.World);
             }
             else
             {
@@ -91,8 +89,10 @@ public class Player : MonoBehaviour {
     private void Reset()
     {
         dead = false;
+        won = false;
         loseMsg.SetActive(false);
         winMsg.SetActive(false);
+        spotMsg.SetActive(false);
         transform.position = start;
         GetComponent<MeshRenderer>().enabled = true;
 
@@ -100,14 +100,31 @@ public class Player : MonoBehaviour {
 
     public void Die()
     {
-        dead = true;
-        loseMsg.SetActive(true);
+        if (!won)
+        {
+            loseMsg.SetActive(true);
+            dead = true;
+        }
+
+        GetComponent<MeshRenderer>().enabled = false;
+        StartCoroutine(ResetInSeconds(1.0f));
+    }
+
+    public void Spotted()
+    {
+        if (!won || !dead)
+        {
+            spotMsg.SetActive(true);
+            dead = true;
+        }
+
         GetComponent<MeshRenderer>().enabled = false;
         StartCoroutine(ResetInSeconds(1.0f));
     }
 
     public void Win()
     {
+        won = true;
         winMsg.SetActive(true);
         GetComponent<MeshRenderer>().enabled = false;
         StartCoroutine(ResetInSeconds(1.0f));
