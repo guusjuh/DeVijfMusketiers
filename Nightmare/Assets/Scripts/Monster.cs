@@ -6,10 +6,8 @@ public class Monster : MonoBehaviour
 {
     public Draw[] draw;
     float timeLeft;
-    public GameObject dead;
-    public GameObject alive;
     Bed selectedBed;
-
+    public int effect;
 
     // Use this for initialization
     void Start ()
@@ -29,25 +27,45 @@ public class Monster : MonoBehaviour
         }
         if (selectedCount == draw.Length)
         {
-            alive.SetActive(true);
-            alive.GetComponent<Timer>().resetTimer();
+            //TO DO
+            //spell effect
+            if(effect == 0)
+            {
+                Shadow target = FindObjectOfType(typeof(Shadow)) as Shadow;
+                target.health -= 10;
+            }
+            else if (effect == 1)
+            {
+                //activate shield;
+                Bed[] target = FindObjectsOfType(typeof(Bed)) as Bed[];
+                int select = Random.Range(0, target.Length);
+                target[select].ShieldTimer = 15;
+            }
+            else
+            {
+                //repair
+                Shake[] target = FindObjectsOfType(typeof(Shake)) as Shake[];
+                for (int i = 0; i < target.Length; i++)
+                {
+                    if (target[i].destroyed)
+                    {
+                        target[i].destroyed = false;
+                        break;
+                    }
+                }
+            }
             this.gameObject.SetActive(false);
         }
 
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
-            Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
-            manager.destroyBed(selectedBed);
-            dead.SetActive(true);
-            dead.GetComponent<Timer>().resetTimer();
             this.gameObject.SetActive(false);
         }
     }
 
-    public void startMonster(Bed selected)
+    public void startSpel()
     {
-        selectedBed = selected;
         timeLeft = 3;
         draw = FindObjectsOfType(typeof(Draw)) as Draw[];
         for (int x = 0; x < draw.Length; x++)
