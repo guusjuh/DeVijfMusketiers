@@ -21,7 +21,8 @@ public class Damagable : MonoBehaviour
             targeted = value;
             if (targeted)
             {
-                target = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Target"), this.transform.position,
+                if(target == null)
+                    target = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Target"), this.transform.position,
                     this.transform.rotation);
             }
             else
@@ -29,6 +30,7 @@ public class Damagable : MonoBehaviour
                 if (target != null)
                 {
                     GameObject.Destroy(target);
+                    target = null;
                 }
             }
         }

@@ -40,7 +40,7 @@ public class Spell : MonoBehaviour
             {
                 case SpellTypes.Attack:
                     Debug.Log("Attack!");
-                    source.GetComponent<Creature>().Hit(50);
+                    source.GetComponent<Creature>().Hit(10);
                     break;
 
                 case SpellTypes.Protection:
@@ -81,6 +81,7 @@ public class Spell : MonoBehaviour
         if (timeLeft <= 0)
         {
             GameManager.Instance.EndPlayerTurn();
+            spellParts.HandleAction(s => s.Reset());
             gameObject.SetActive(false);
         }
     }

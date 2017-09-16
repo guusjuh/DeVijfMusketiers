@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Human : Damagable
 {
-    private Color shieldColor = new Color(0.25f, 0.25f, 1, 1);
+    private Color shieldColor = new Color(0.0f, 0.0f, 1, 1);
     private Color normalColor;
     public bool Shielded { get; private set; }
     private int shieldPoints = 2;
@@ -28,7 +28,7 @@ public class Human : Damagable
     {
         GetComponent<SpriteRenderer>().color = shieldColor;
         Shielded = true;
-        shieldPoints = 2;
+        shieldPoints = 3;
     }
 
     public void EndPlayerTurn()
@@ -36,6 +36,8 @@ public class Human : Damagable
         if (Shielded)
         {
             shieldPoints--;
+
+            GetComponent<SpriteRenderer>().color += new Color(0.25f, 0.25f, 0, 0);
 
             if (shieldPoints <= 0)
             {
@@ -49,7 +51,9 @@ public class Human : Damagable
     {
         if (Shielded)
         {
-            shieldPoints -= 1;
+            shieldPoints--;
+
+            GetComponent<SpriteRenderer>().color += new Color(0.25f, 0.25f, 0, 0);
 
             if (shieldPoints <= 0)
             {

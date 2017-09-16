@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
     public void EndPlayerTurn()
     {
         DeactivateButtons();
+
+        spellButtons.HandleAction(b => b.EndPlayerTurn());
+
         Human[] humans = FindObjectsOfType<Human>() as Human[];
         for (int i = 0; i < humans.Length; i++)
         {
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
 
         // camera set up
         Camera camera = FindObjectOfType<Camera>();
-        camera.transform.position = new Vector3(levelManager.columns / 2.0f, (levelManager.rows / 2.0f) - 0.5f, -10.0f);
+        camera.transform.position = new Vector3((levelManager.columns / 2.0f) - 0.5f, (levelManager.rows / 2.0f) - 0.5f, -10.0f);
 
         // find the creature
         creature = FindObjectOfType<Creature>();
@@ -122,7 +125,7 @@ public class GameManager : MonoBehaviour
             creature.MoveEnemy();
 
             // delay
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.0f);
         }
 
         // switch turns
@@ -136,7 +139,7 @@ public class GameManager : MonoBehaviour
         spellButtons.HandleAction(b => b.Active = true);
     }
 
-    private void DeactivateButtons()
+    public void DeactivateButtons()
     {
         spellButtons.HandleAction(b => b.Active = false);
     }

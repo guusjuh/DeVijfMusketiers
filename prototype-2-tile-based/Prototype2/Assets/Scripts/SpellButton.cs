@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class SpellButton : MonoBehaviour
 {
-    //[SerializeField] private float totalCooldown;
-    //private float currentCooldown;
+    [SerializeField] private int totalCooldown;
+    private int currentCooldown;
 
     private bool active = true;
     private bool canCast = true;
@@ -23,7 +23,7 @@ public class SpellButton : MonoBehaviour
 
     private void UpdateEnable()
     {
-        if (active && canCast)
+        if (active && canCast && currentCooldown <= 0)
         {
             GetComponent<Button>().enabled = true;
             GetComponent<UnityEngine.UI.Image>().color = new Color(1, 1, 1, 1);
@@ -40,7 +40,7 @@ public class SpellButton : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	    //currentCooldown = 0;
+	    currentCooldown = 0;
 	}
 	
 	// Update is called once per frame
@@ -50,19 +50,23 @@ public class SpellButton : MonoBehaviour
 
 	    canCast = CanCast();
 	    UpdateEnable();
-	    /*if (currentCooldown > 0)
-        {
-            GetComponent<UnityEngine.UI.Image>().color = new Color(0.25f, 0.25f, 0.25f, 1);
-            currentCooldown -= Time.deltaTime;
-        }
-        else
-        {
-            GetComponent<UnityEngine.UI.Image>().color = new Color(1, 1, 1, 1);
-        }*/
 	}
+
+    public void EndPlayerTurn()
+    {
+        if (currentCooldown > 0)
+        {
+            currentCooldown--;
+        }
+
+        UpdateEnable();
+    }
 
     private bool CanCast()
     {
+        if (currentCooldown > 0)
+            return false;
+
         bool temp = false;
 
         switch (spellFigure.GetComponent<Spell>().spellType)
@@ -107,6 +111,8 @@ public class SpellButton : MonoBehaviour
 
     public void ButtonClick()
     {
+        GameManager.Instance.DeactivateButtons();
+
         switch (spellFigure.GetComponent<Spell>().spellType)
         {
             case Spell.SpellTypes.Attack:
@@ -129,12 +135,12 @@ public class SpellButton : MonoBehaviour
 
     public void CastSpell(GameObject source)
     {
-        //if (currentCooldown <= 0)
-        //{
-            //currentCooldown = totalCooldown;
+        if (currentCooldown <= 0)
+        {
+            currentCooldown = totalCooldown;
             spellFigure.SetActive(true);
             spellFigure.GetComponent<Spell>().StartSpell(source);
-        //}
+        }
 
         DeHighlight();
     }
@@ -150,11 +156,7 @@ public class SpellButton : MonoBehaviour
         Human[] tempTargets = FindObjectsOfType(typeof(Human)) as Human[];
         possibleTargets.AddMultiple(tempTargets);
 
-        for (int i = 0; i < possibleTargets.Count; i++)
-        {
-            if (!possibleTargets[i].Shielded)
-                possibleTargets[i].SetHighlight(true, this);
-        }
+        possibleTargets.HandleAction(p => p.SetHighlight(true, this));
     }
 
     void HighlightVase()

@@ -49,6 +49,12 @@ public class Creature : MonoBehaviour
 
         // select the first target to destory! mwoehahaha
         target = SelectTarget();
+        while (target.type == DamagableType.Human)
+        {
+            target.Targeted = false;
+            target = SelectTarget();
+        }
+
         currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
         while (currentPath == null)
         {
@@ -58,6 +64,11 @@ public class Creature : MonoBehaviour
 
             target = SelectTarget();
             currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+        }
+
+        if (currentPath.Count <= 4)
+        {
+            target.Targeted = true;
         }
     }
 
@@ -124,6 +135,11 @@ public class Creature : MonoBehaviour
 
         // remove the node we are standing on
         currentPath.RemoveAt(0);
+
+        if (currentPath.Count <= 4)
+        {
+            target.Targeted = true;
+        }
 
         // no steps to take anymore
         if (currentPath.Count > 1)
@@ -199,6 +215,11 @@ public class Creature : MonoBehaviour
                 currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
             }
 
+            if (currentPath.Count <= 4)
+            {
+                target.Targeted = true;
+            }
+
             //Debug.Log("new target selected "+ target.transform.position + " " + target.gameObject.name);
         }
 
@@ -241,7 +262,7 @@ public class Creature : MonoBehaviour
         {
             // select a target
             int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
-            possibleTargets[selection].GetComponent<Damagable>().Targeted = true;
+            //possibleTargets[selection].GetComponent<Damagable>().Targeted = true;
             return possibleTargets[selection].GetComponent<Damagable>();
         }
     }

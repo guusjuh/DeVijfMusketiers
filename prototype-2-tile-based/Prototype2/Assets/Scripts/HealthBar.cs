@@ -15,6 +15,6 @@ public class HealthBar : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
         } 
 
-        rectTransform.sizeDelta = new Vector2(this.GetComponent<RectTransform>().sizeDelta.x, (creatureReference.Health / 100.0f) * 500.0f);
+        rectTransform.sizeDelta = new Vector2((creatureReference.Health / 100.0f) * 1000.0f, GetComponent<RectTransform>().sizeDelta.y);
     }
 }

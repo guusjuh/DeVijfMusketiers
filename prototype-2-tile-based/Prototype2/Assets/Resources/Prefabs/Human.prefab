@@ -79,6 +79,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  x: 0
+  y: 0
   dead: 0
 --- !u!212 &212052377153956940
 SpriteRenderer:

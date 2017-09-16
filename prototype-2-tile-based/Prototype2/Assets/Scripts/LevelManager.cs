@@ -61,7 +61,7 @@ public class LevelManager  {
         hole = (GameObject)GameObject.Instantiate(hole, centerPosition, Quaternion.identity);
 
         // init world objects
-        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 1, 2);
+        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 3, 6);
         LayoutObjectAtRandom(TileMap.Types.Human, human, 5, 7);
 
         humans = new List<Human>();
@@ -86,9 +86,9 @@ public class LevelManager  {
         boardHolder = new GameObject("Board").transform; //parent for tiles
 
         // loop through level
-        for (int x = 0; x < columns; x++)
+        for (int x = -1; x < columns + 1; x++)
         {
-            for (int y = 0; y < rows; y++)
+            for (int y = -2; y < rows + 2; y++)
             {
                 // instantiate tile
                 GameObject instance = GameObject.Instantiate(GameManager.Instance.FloorTile, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
