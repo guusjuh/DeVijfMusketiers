@@ -60,7 +60,7 @@ public class AttackSpell : MonoBehaviour
         }
         else if (cooldown <= 0.5f && cooldown > 0)
         {
-            target.health -= 10;
+            target.health -= 5;
             cooldown = -1;
         }
         else
