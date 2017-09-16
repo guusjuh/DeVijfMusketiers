@@ -8,28 +8,54 @@ public enum DamagableType
     Vase
 }
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
     // singleton
     private static GameManager instance = null;
 
-    public static GameManager Instance {
-        get {
+    public static GameManager Instance
+    {
+        get
+        {
             if (instance == null) instance = FindObjectOfType(typeof(GameManager)) as GameManager;
             return instance;
         }
     }
 
-    public bool playersTurn = false;         // bool to check if it's players turn, hidden in inspector but public
+    public bool playersTurn = false; // bool to check if it's players turn, hidden in inspector but public
     protected bool othersTurn = false;
-    public float turnDelay = 0.1f;          // delay between each players turn
+    public float turnDelay = 0.1f; // delay between each players turn
     private bool doingSetup = true;
 
     public GameObject FloorTile { get; private set; }
 
-    private LevelManager levelManager;
-    public LevelManager LevelManager { get { return levelManager; } }
+    [SerializeField] private LevelManager levelManager = new LevelManager();
+
+    public LevelManager LevelManager
+    {
+        get { return levelManager; }
+    }
+
     private Creature creature;
-    public Creature Creature { get { return creature; } }
+
+    public Creature Creature
+    {
+        get { return creature; }
+    }
+
+    private List<SpellButton> spellButtons;
+
+    public void EndPlayerTurn()
+    {
+        DeactivateButtons();
+        Human[] humans = FindObjectsOfType<Human>() as Human[];
+        for (int i = 0; i < humans.Length; i++)
+        {
+            humans[i].EndPlayerTurn();
+        }
+
+        playersTurn = false;
+    }
 
     public void Awake()
     {
@@ -46,7 +72,6 @@ public class GameManager : MonoBehaviour {
         FloorTile = Resources.Load<GameObject>("Prefabs/FloorTile");
 
         // level generation
-        levelManager = new LevelManager();
         levelManager.SetupScene();
 
         // camera set up
@@ -55,7 +80,13 @@ public class GameManager : MonoBehaviour {
 
         // find the creature
         creature = FindObjectOfType<Creature>();
-        creature.Initialize();
+        creature.Initialize((int) (levelManager.columns / 2.0f), (int) (levelManager.rows / 2.0f));
+
+        // find all buttons
+        spellButtons = new List<SpellButton>();
+        spellButtons.AddMultiple(FindObjectsOfType<SpellButton>() as SpellButton[]);
+        DeactivateButtons();
+
     }
 
     // update is called every frame
@@ -78,13 +109,14 @@ public class GameManager : MonoBehaviour {
     protected IEnumerator HandleOtherTurn()
     {
         //Debug.Log("Handling creature turn");
-
         othersTurn = true;
 
         // wait for turn delay
         yield return new WaitForSeconds(1.0f);
 
-        for (int i = 0; i < creature.totalActionPoints; i++)
+        creature.StartTurn();
+        
+        while(creature.CurrentActionPoints > 0)
         {
             // make creature move
             creature.MoveEnemy();
@@ -95,6 +127,29 @@ public class GameManager : MonoBehaviour {
 
         // switch turns
         playersTurn = true;
+        ActivateButtons();
         othersTurn = false;
+    }
+
+    private void ActivateButtons()
+    {
+        spellButtons.HandleAction(b => b.Active = true);
+    }
+
+    private void DeactivateButtons()
+    {
+        spellButtons.HandleAction(b => b.Active = false);
+    }
+
+    public Vector2 WorldToCanvas(Vector3 worldPosition)
+    {
+        Camera camera = Camera.main;
+        Canvas canvas = FindObjectOfType<Canvas>() as Canvas;
+
+        var viewportPos = camera.WorldToViewportPoint(worldPosition);
+        var canvasRect = canvas.GetComponent<RectTransform>();
+
+        return new Vector2((viewportPos.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f),
+            (viewportPos.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f));
     }
 }

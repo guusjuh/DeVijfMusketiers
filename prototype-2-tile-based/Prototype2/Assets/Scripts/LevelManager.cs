@@ -10,16 +10,21 @@ public class LevelManager  {
     public int rows = 9;
 
     // world objects
-    public GameObject vase;
-    public GameObject human;
-    public GameObject creature;
-    public GameObject hole;
+    private GameObject vase;
+    private GameObject human;
+    private GameObject creature;
+    private GameObject hole;
 
     private List<Human> humans; 
 
     // used for init of level
     private Transform boardHolder;
     private List<Vector2> gridPositions = new List<Vector2>();
+
+    private TileMap.Types[,] generatedLevel;
+    [SerializeField]
+    private TileMap tileMap = new TileMap();
+    public TileMap TileMap { get { return tileMap; } }
 
     // called by GM to set up the scene
     public void SetupScene()
@@ -29,21 +34,41 @@ public class LevelManager  {
         BoardSetup();
         InitialiseList();
 
-        // remove creature position
         Vector2 centerPosition = new Vector2((int)(columns / 2.0f), (int)(rows / 2.0f));
-        gridPositions.RemoveAt((int)((rows * centerPosition.y) + centerPosition.x));
+        Vector2 up    = centerPosition + new Vector2(+1, 0);
+        Vector2 down  = centerPosition + new Vector2(-1, 0);
+        Vector2 left  = centerPosition + new Vector2(0, -1);
+        Vector2 right = centerPosition + new Vector2(0, +1);
 
+        // before removing, set types
+        //generatedLevel[(int)centerPosition.x, (int)centerPosition.y] = TileMap.Types.Saved;
+        //generatedLevel[(int)up.x, (int)up.y] = TileMap.Types.Saved;
+        //generatedLevel[(int)down.x, (int)down.y] = TileMap.Types.Saved;
+        //generatedLevel[(int)left.x, (int)left.y] = TileMap.Types.Saved;
+        //generatedLevel[(int)right.x, (int)right.y] = TileMap.Types.Saved;
+
+        // remove creature position
+        // also remove up, down, left, right, so creature can always walk
+        gridPositions.Remove(centerPosition);
+        gridPositions.Remove(up);
+        gridPositions.Remove(down);
+        gridPositions.Remove(left);
+        gridPositions.Remove(right);
+        
         // instantiate creature
         // init done in GM (yea not so pritty, i know, i know)
         creature = (GameObject)GameObject.Instantiate(creature, centerPosition, Quaternion.identity);
         hole = (GameObject)GameObject.Instantiate(hole, centerPosition, Quaternion.identity);
 
         // init world objects
-        LayoutObjectAtRandom(vase, 3, 6);
-        LayoutObjectAtRandom(human, 2, 4);
+        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 1, 2);
+        LayoutObjectAtRandom(TileMap.Types.Human, human, 5, 7);
 
         humans = new List<Human>();
         humans.AddMultiple(GameObject.FindObjectsOfType(typeof(Human)) as Human[]);
+
+        // set up the tilemap for A*
+        tileMap.Initialize(columns, rows, generatedLevel);
     }
 
     // loads all objects/tiles required to build the level
@@ -87,25 +112,39 @@ public class LevelManager  {
                 gridPositions.Add(new Vector2(x, y));
             }
         }
+
+        generatedLevel = new TileMap.Types[columns,rows];
+
+        // creating a list of possible positions
+        for (int x = 0; x < columns; x++)
+        {
+            for (int y = 0; y < rows; y++)
+            {
+                // instantiate everything at empty
+                generatedLevel[x,y] = TileMap.Types.Empty;
+            }
+        }
     }
 
     // instantiates object at random location
-    void LayoutObjectAtRandom(GameObject tile, int min, int max)
+    void LayoutObjectAtRandom(TileMap.Types replacementType, GameObject tile, int min, int max)
     {
         int objectCount = UnityEngine.Random.Range(min, max + 1);
 
         for (int i = 0; i < objectCount; i++)
         {
-            Vector3 randomPosition = RandomPosition();
-            GameObject.Instantiate(tile, randomPosition, Quaternion.identity);
+            Vector3 randomPosition = RandomPosition(replacementType);
+            GameObject go = GameObject.Instantiate(tile, randomPosition, Quaternion.identity);
+            go.GetComponent<Damagable>().Initialize((int)randomPosition.x, (int)randomPosition.y);
         }
     }
 
     // returns a random free position 
-    Vector2 RandomPosition()
+    Vector2 RandomPosition(TileMap.Types replacementType)
     {
         int randomIndex = UnityEngine.Random.Range(0, gridPositions.Count);
         Vector2 randomPosition = gridPositions[randomIndex];
+        generatedLevel[(int)randomPosition.x, (int)randomPosition.y] = replacementType;
         gridPositions.RemoveAt(randomIndex);
         return randomPosition;
     }
@@ -113,7 +152,10 @@ public class LevelManager  {
     public void RemoveHuman(Human toRemove)
     {
         humans.Remove(toRemove);
+        tileMap.RemoveObject(toRemove.x, toRemove.y);
         GameObject.Destroy(toRemove.gameObject);
+
+        //TODO: update tilemap
 
         if (humans.Count <= 0)
         {

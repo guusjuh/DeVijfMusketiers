@@ -14,6 +14,7 @@ public class Spell : MonoBehaviour
     private List<SpellPart> spellParts = new List<SpellPart>();
     private float timeLeft;
     public SpellTypes spellType;
+    private GameObject source;
 
 	// Update is called once per frame
 	void Update () {
@@ -30,6 +31,8 @@ public class Spell : MonoBehaviour
         // if the spell is completed
         if (completedCount == spellParts.Count)
         {
+            if(source == null) Debug.LogError("Cannot cast spell on nothing?!");
+
             int select;
 
             // apply the spell effect
@@ -37,30 +40,36 @@ public class Spell : MonoBehaviour
             {
                 case SpellTypes.Attack:
                     Debug.Log("Attack!");
-                    GameManager.Instance.Creature.Hit(50);
+                    source.GetComponent<Creature>().Hit(50);
                     break;
 
                 case SpellTypes.Protection:
                     Debug.Log("Protect!");
-                    //TODO: target selection
-                    List<Human> humans = new List<Human>();
-                    humans.AddMultiple(FindObjectsOfType(typeof(Human)) as Human[]);
-                    select = Random.Range(0, humans.FindAll(h => !h.Shielded).Count);
-                    StartCoroutine(humans.FindAll(h => !h.Shielded)[select].Shield());
+
+                    source.GetComponent<Human>().Shield();
+                    //List<Human> humans = new List<Human>();
+                    //humans.AddMultiple(FindObjectsOfType(typeof(Human)) as Human[]);
+                    //select = Random.Range(0, humans.FindAll(h => !h.Shielded).Count);
+                    //humans.FindAll(h => !h.Shielded)[select].Shield();
+
                     break;
                 
                 case SpellTypes.Repair:
                     Debug.Log("Repair!");
-                    //TODO: target selection
-                    List<Vase> vases = new List<Vase>();
-                    vases.AddMultiple(FindObjectsOfType(typeof(Vase)) as Vase[]);
-                    select = Random.Range(0, vases.FindAll(v => v.Destroyed).Count);
-                    vases.FindAll(v => v.Destroyed)[select].Destroyed = false;
+
+                    source.GetComponent<Vase>().Destroyed = false;
+
+                    //List<Vase> vases = new List<Vase>();
+                    //vases.AddMultiple(FindObjectsOfType(typeof(Vase)) as Vase[]);
+                    //select = Random.Range(0, vases.FindAll(v => v.Destroyed).Count);
+                    //vases.FindAll(v => v.Destroyed)[select].Destroyed = false;
                     break;
 
                 default:
                     break;
             }
+
+            GameManager.Instance.EndPlayerTurn();
 
             // set to false, since done with spell
             spellParts.HandleAction(s => s.Reset());
@@ -71,12 +80,15 @@ public class Spell : MonoBehaviour
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
+            GameManager.Instance.EndPlayerTurn();
             gameObject.SetActive(false);
         }
     }
 
-    public void StartSpell()
+    public void StartSpell(GameObject source)
     {
+        this.source = source;
+
         timeLeft = 3.0f;
 
         spellParts.Clear();

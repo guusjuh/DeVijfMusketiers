@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22766c81e7c17884b8c8e45bfd6d9c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalActionPoints: 355
+  totalActionPoints: 3
   moveTime: 0.1
   blockingLayer:
     serializedVersion: 2

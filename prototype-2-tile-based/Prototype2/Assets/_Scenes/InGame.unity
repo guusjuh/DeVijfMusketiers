@@ -1369,7 +1369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 5
   spellFigure: {fileID: 1560844489}
 --- !u!114 &786650705
 MonoBehaviour:
@@ -1393,7 +1392,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.33823532, g: 0.33823532, b: 0.33823532, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1411,7 +1410,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 786650704}
-        m_MethodName: CastSpell
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1880,7 +1879,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 5
   spellFigure: {fileID: 1187445790}
 --- !u!114 &959365250
 MonoBehaviour:
@@ -1904,7 +1902,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1922,7 +1920,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 959365249}
-        m_MethodName: CastSpell
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3406,7 +3404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 5
   spellFigure: {fileID: 350209078}
 --- !u!114 &1704187044
 MonoBehaviour:
@@ -3430,7 +3427,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3448,7 +3445,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1704187043}
-        m_MethodName: CastSpell
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4169,6 +4166,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersTurn: 0
   turnDelay: 0.1
+  levelManager:
+    columns: 5
+    rows: 9
+    tileMap:
+      tileTypes:
+      - type: 0
+        prefab: {fileID: 1329425373992542, guid: 1ac8185f4b9aac74eb8c1571d332154d,
+          type: 2}
+        movementCost: 1
+        canEnter: 1
+      - type: 1
+        prefab: {fileID: 1970595650469404, guid: 05126795eaec5344b9938705e892e1bb,
+          type: 2}
+        movementCost: 1
+        canEnter: 0
+      - type: 2
+        prefab: {fileID: 1627932291554046, guid: 8f3d4bcc421fe2c439ec7660306cbb3b,
+          type: 2}
+        movementCost: 1
+        canEnter: 0
 --- !u!4 &1975964692
 Transform:
   m_ObjectHideFlags: 0

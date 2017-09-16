@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Creature : MonoBehaviour
 {
-    public int totalActionPoints = 100;       // total points
+    private int totalActionPoints = 3;       // total points
     private int currentActionPoints;        // points left this turn
+    public int CurrentActionPoints { get { return currentActionPoints;} }
 
     private int health = 100;
     public int Health { get { return health; } }
@@ -17,11 +18,28 @@ public class Creature : MonoBehaviour
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private float inverseMoveTime;          //Used to make movement more efficient.
 
-    private Transform target;
+    private Damagable target;
+    private int x, y;
+    private List<Node> currentPath = null;
+
+    private HighlightButton highlightBttn;
+
+    public void StartTurn()
+    {
+        currentActionPoints = totalActionPoints;
+    }
 
     // initialize this instance
-    public void Initialize()
+    public void Initialize(int x, int y)
     {
+        this.x = x;
+        this.y = y;
+
+        highlightBttn = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HighlightButton")).GetComponent<HighlightButton>();
+        highlightBttn.transform.SetParent(FindObjectOfType<Canvas>().transform);
+        highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
+        highlightBttn.Deactive();
+
         // obtain components
         boxCollider = GetComponent<BoxCollider2D>();
         rb2D = GetComponent<Rigidbody2D>();
@@ -31,6 +49,16 @@ public class Creature : MonoBehaviour
 
         // select the first target to destory! mwoehahaha
         target = SelectTarget();
+        currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+        while (currentPath == null)
+        {
+            // there is no way the creature can get to that target right now.
+            Debug.Log("Creature did not find a valid path");
+            target.Targeted = false;
+
+            target = SelectTarget();
+            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+        }
     }
 
     // move returns true if it is able to move and false if not
@@ -90,37 +118,57 @@ public class Creature : MonoBehaviour
     }
 
     // checks for collisions e.d.
-    private void AttemptMove(int xDir, int yDir) 
+    private void AttemptMove() 
     {
         RaycastHit2D hit;
-        
-        // set canMove to true if Move was successful, false if failed.
-        bool canMove = Move(xDir, yDir, out hit);
 
-        //Debug.Log("I can move is " + canMove);
+        // remove the node we are standing on
+        currentPath.RemoveAt(0);
 
-        // check if nothing was hit by linecast
-        if (hit.transform == null)
-            // if nothing was hit, return and don't execute further code.
-            return;
-
-        if (!canMove)
+        // no steps to take anymore
+        if (currentPath.Count > 1)
         {
-            if (hit.transform.gameObject.transform == target)
+            // set dir to the next 
+            int xDir = currentPath[0].x - x;
+            int yDir = currentPath[0].y - y;
+
+            // set canMove to true if Move was successful, false if failed.
+            // if it's false, we reached target, ready to attack
+            bool canMove = Move(xDir, yDir, out hit);
+
+            // if we could move, update the x and y pos
+            if (canMove)
             {
-                OnCantMove(hit.transform.gameObject.GetComponent<Damagable>());
+                x += xDir;
+                y += yDir;
             }
+
+            // check if nothing was hit by linecast
+            if (hit.transform == null)
+                // if nothing was hit, return and don't execute further code.
+                return;
+        }
+        else
+        {
+            //if (hit.transform.gameObject.transform == target)
+            //{
+                OnCantMove(target);
+            //}
 
             // set the target to null so the next turn, searching for new target
             target = null;
+            currentPath = null;
         }
     }
 
     private void OnCantMove(Damagable other) {
         //Debug.Log("I attack!");
+        other.Targeted = false;
 
         // hit the other
         other.Hit();
+
+        currentActionPoints = 0;
     }
 
     // called by GM to attempt move / attack
@@ -128,20 +176,8 @@ public class Creature : MonoBehaviour
     {   
         //Debug.Log("New turn");
 
-        // range [-1,1] to declare up, down, left and right
-        int xDir = 0;
-        int yDir = 0;
-
-        // if my x pos is basically the targets x pos
-        if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
-            // moving up or down to get to the target?
-            yDir = target.position.y > transform.position.y ? 1 : -1;
-        else
-            // moving left or right to get to the target?
-            xDir = target.position.x > transform.position.x ? 1 : -1;
-
         // attempt the move
-        AttemptMove(xDir, yDir);
+        AttemptMove();
 
         // if the target is hit, it has been set to null
         if (target == null)
@@ -152,11 +188,24 @@ public class Creature : MonoBehaviour
             // game is lost, will go to game over from levelmanager
             if (target == null) return;
 
+            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+            while (currentPath == null)
+            {
+                // there is no way the creature can get to that target right now.
+                Debug.Log("Creature did not find a valid path");
+                target.Targeted = false;
+
+                target = SelectTarget();
+                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+            }
+
             //Debug.Log("new target selected "+ target.transform.position + " " + target.gameObject.name);
         }
+
+        currentActionPoints--;
     }
 
-    private Transform SelectTarget()
+    private Damagable SelectTarget()
     {
         // declare super ugly unoptimazed list and arrays
         List<GameObject> possibleTargets = new List<GameObject>();
@@ -192,7 +241,8 @@ public class Creature : MonoBehaviour
         {
             // select a target
             int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
-            return possibleTargets[selection].transform;
+            possibleTargets[selection].GetComponent<Damagable>().Targeted = true;
+            return possibleTargets[selection].GetComponent<Damagable>();
         }
     }
 
@@ -203,6 +253,19 @@ public class Creature : MonoBehaviour
         if (health <= 0)
         {
             Application.LoadLevel("Win");
+        }
+    }
+
+    public void SetHighlight(bool value, SpellButton bttn)
+    {
+        if (value)
+        {
+            highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
+            highlightBttn.Activate(bttn, this.gameObject);
+        }
+        else
+        {
+            highlightBttn.Deactive();
         }
     }
 }
