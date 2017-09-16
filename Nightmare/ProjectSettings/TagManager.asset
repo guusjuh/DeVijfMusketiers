@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Human
+  - Vase
+  - Beast
+  - Mouse
+  - Projectile
   layers:
   - Default
   - TransparentFX

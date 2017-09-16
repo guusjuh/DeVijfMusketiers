@@ -14,7 +14,7 @@ public class GameOver : MonoBehaviour {
     {
         if (Input.anyKey)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("GameJam");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Prototype");
         }
     }
 }

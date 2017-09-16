@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GameJam.unity
-    guid: 3db6675c1d7197f4cafe7b97f02948ce
+    path: Assets/Scenes/Prototype.unity
+    guid: 7a4f35f9c9277c14fbf600182fdfe1c4
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: ea964ecd06f66df409fe17fe95806aa4
