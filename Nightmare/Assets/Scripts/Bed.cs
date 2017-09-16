@@ -7,7 +7,8 @@ public class Bed : MonoBehaviour {
     Color defaultColor;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         defaultColor = GetComponent<Renderer>().material.color;
     }
 	

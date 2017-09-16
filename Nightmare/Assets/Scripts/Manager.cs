@@ -5,16 +5,17 @@ using UnityEngine;
 public class Manager : MonoBehaviour {
     public Shake[] shakeObjects;
     public Bed[] beds;
-    Monster[] monsters;
+    public float ShieldCooldown;
+    public float AttackCooldown;
+    public float RepairCooldown;
 
     // Use this for initialization
     void Start ()
     {
         loadObjectsFromScene();
-        for (int i = 0; i < monsters.Length; i++)
-        {
-            monsters[i].gameObject.SetActive(false);
-        }
+        ShieldCooldown = 0;
+        AttackCooldown = 0;
+        RepairCooldown = 0;
     }
 	
 	// Update is called once per frame
@@ -24,13 +25,16 @@ public class Manager : MonoBehaviour {
         {
             Application.LoadLevel("GameOver");
         }
-	}
+        float timePast = Time.deltaTime;
+        ShieldCooldown -= timePast;
+        AttackCooldown -= timePast;
+        RepairCooldown -= timePast;
+    }
 
     void loadObjectsFromScene()
     {
         shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
         beds = FindObjectsOfType(typeof(Bed)) as Bed[];
-        monsters = FindObjectsOfType(typeof(Monster)) as Monster[];
     }
 
     public void destroyBed(Bed selected)

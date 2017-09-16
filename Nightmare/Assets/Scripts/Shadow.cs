@@ -7,8 +7,9 @@ public class Shadow : MonoBehaviour {
     Shake targetDestructable;
     int actionChosen;
     public int health;
+    public GameObject target;
 
-    float speed = 3;
+    float speed = 1.0f;
 
 	// Use this for initialization
 	void Start ()
@@ -79,6 +80,7 @@ public class Shadow : MonoBehaviour {
             {
                 int selectShake = Random.Range(0, shakeObjects.Length);
                 targetDestructable = shakeObjects[selectShake];
+                target.transform.position = new Vector3(targetDestructable.transform.position.x, 0, targetDestructable.transform.position.z);
                 if (targetDestructable.destroyed)
                 {
                     findTarget();
@@ -96,6 +98,7 @@ public class Shadow : MonoBehaviour {
             {
                 int selectBed = Random.Range(0, bedObjects.Length);
                 targetBed = bedObjects[selectBed];
+                target.transform.position = new Vector3(targetBed.transform.position.x, 0, targetBed.transform.position.z);
             }
             else
             {

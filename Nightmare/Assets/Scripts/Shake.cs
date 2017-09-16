@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Shake : MonoBehaviour {
-    public bool active;
-    public Transform shadowPrefab;
     bool up;
     int count;
     float timeLeft;
@@ -12,13 +10,13 @@ public class Shake : MonoBehaviour {
     public bool destroyed;
     public Material broken;
     public Material normal;
+    public GameObject button;
+    public GameObject circle;
 
-	// Use this for initialization
-	void Start () {
-        active = false;
+    // Use this for initialization
+    void Start () {
         destroyed = false;
-        timeLeft = 0.0f;
-        rot = gameObject.transform.rotation;
+
     }
 	
 	// Update is called once per frame
@@ -27,10 +25,14 @@ public class Shake : MonoBehaviour {
         if (destroyed)
         {
             GetComponent<Renderer>().material = broken;
+            button.SetActive(true);
+            circle.SetActive(true);
         }
         else
         {
             GetComponent<Renderer>().material = normal;
+            button.SetActive(false);
+            circle.SetActive(false);
         }
 	}
 }
