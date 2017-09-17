@@ -61,8 +61,8 @@ public class LevelManager  {
         hole = (GameObject)GameObject.Instantiate(hole, centerPosition, Quaternion.identity);
 
         // init world objects
-        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 9, 12);//3, 6);
-        LayoutObjectAtRandom(TileMap.Types.Human, human, 1, 3);//5, 7);
+        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 3, 6);
+        LayoutObjectAtRandom(TileMap.Types.Human, human, 5, 7);
 
         humans = new List<Human>();
         humans.AddMultiple(GameObject.FindObjectsOfType(typeof(Human)) as Human[]);

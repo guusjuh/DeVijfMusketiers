@@ -275,6 +275,21 @@ public class Creature : MonoBehaviour
         {
             Application.LoadLevel("Win");
         }
+        else
+        {
+            StartCoroutine(HitVisual());
+        }
+    }
+
+    private IEnumerator HitVisual()
+    {
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(0.8f,0,0,1);
+
+        yield return new WaitForSeconds(0.35f);
+
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
+
+        yield break;
     }
 
     public void SetHighlight(bool value, SpellButton bttn)
