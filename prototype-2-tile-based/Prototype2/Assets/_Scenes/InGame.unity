@@ -4188,6 +4188,11 @@ MonoBehaviour:
       - type: 2
         prefab: {fileID: 1627932291554046, guid: 8f3d4bcc421fe2c439ec7660306cbb3b,
           type: 2}
+        movementCost: 0
+        canEnter: 0
+      - type: 3
+        prefab: {fileID: 1627932291554046, guid: 8f3d4bcc421fe2c439ec7660306cbb3b,
+          type: 2}
         movementCost: 2
         canEnter: 1
 --- !u!4 &1975964692

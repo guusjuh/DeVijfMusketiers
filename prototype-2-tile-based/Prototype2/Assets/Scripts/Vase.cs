@@ -23,7 +23,7 @@ public class Vase : Damagable {
         {
             destroyed = value;
             GetComponent<SpriteRenderer>().sprite = destroyed ? destoryedSpr : normalSpr;
-
+            GameManager.Instance.LevelManager.TileMap.SwitchVaseStatus(x, y, destroyed);
             if (destroyed) gameObject.layer = 0;
             else gameObject.layer = 8;
         }

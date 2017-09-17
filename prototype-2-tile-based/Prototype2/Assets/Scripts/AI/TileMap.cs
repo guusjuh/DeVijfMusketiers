@@ -12,6 +12,7 @@ public class TileMap
         Empty = 0,
         Human,
         Vase,
+        BrokenVase
     }
 
     [SerializeField]
@@ -127,6 +128,12 @@ public class TileMap
     public void RemoveObject(int x, int y)
     {
         tiles[x, y] = Types.Empty;
+    }
+
+    public void SwitchVaseStatus(int x, int y, bool broken)
+    {
+        tiles[x, y] = broken ? Types.BrokenVase : Types.Vase;
+        Debug.Log(tiles[x,y]);
     }
 
     public List<Node> GeneratePathTo(int fromX, int fromY, int toX, int toY)
