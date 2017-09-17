@@ -82,10 +82,10 @@ public class SpellButton : MonoBehaviour
 
                 for (int i = 0; i < humans.Count; i++)
                 {
-                    if (!humans[i].Shielded)
-                    {
+                    //if (!humans[i].Shielded)
+                    //{
                         temp = true;
-                    }
+                    //}
                 }
 
                 break;
