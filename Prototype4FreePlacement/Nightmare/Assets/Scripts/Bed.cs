@@ -6,7 +6,7 @@ public class Bed : MonoBehaviour {
     public float ShieldTimer;
     Color defaultColor;
     public bool canBeAttacked = false;
-    private float t;
+    private float t = 0;
     public float duration = 15;
 
 	// Use this for initialization
@@ -16,6 +16,10 @@ public class Bed : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(ShieldTimer >= 14)
+        {
+            t = 0;
+        }
         if(ShieldTimer >= 0)
         {
             ShieldTimer -= Time.deltaTime;

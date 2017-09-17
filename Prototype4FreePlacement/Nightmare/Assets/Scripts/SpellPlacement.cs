@@ -74,9 +74,6 @@ public class SpellPlacement : MonoBehaviour {
                 }
                 gameObject.GetComponent<Renderer>().enabled = false;
                 spellAreaChoosing = false;
-                CubeAttack.SetActive(true);
-                CubeProtect.SetActive(true);
-                CubeRepair.SetActive(true);
                 canCollide = 0.1f;
             }
             
@@ -166,9 +163,6 @@ public class SpellPlacement : MonoBehaviour {
 
     public void ChooseSpellPlace(string name, float timer)
     {
-        GameObject.Find("CubeAttack").SetActive(false);
-        GameObject.Find("CubeProtect").SetActive(false);
-        GameObject.Find("CubeRepair").SetActive(false);
         Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
         for(int i = 0; i < bedObjects.Length; i++)
         {

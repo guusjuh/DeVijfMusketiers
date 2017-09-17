@@ -13,6 +13,6 @@ public class HealthBar : MonoBehaviour {
 	void Update ()
     {
         Shadow enemy = FindObjectOfType(typeof(Shadow)) as Shadow;
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(this.GetComponent<RectTransform>().sizeDelta.x, (enemy.health / 30.0f) * 499);
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(this.GetComponent<RectTransform>().sizeDelta.x, (enemy.health / 50.0f) * 699);
 	}
 }

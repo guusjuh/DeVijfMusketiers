@@ -16,6 +16,8 @@ public class Shadow : MonoBehaviour {
     private bool canDoOnce = true;
     public int lastActionChosen;
     public int wholejars;
+    public GameObject lastTargetHuman;
+    public GameObject lastTargetJar;
 
     float speed = 2.5f;
 
@@ -41,6 +43,10 @@ public class Shadow : MonoBehaviour {
         }
         if (ShieldTimer > 0)
         {
+            if (ShieldTimer >= 14)
+            {
+                t = 0;
+            }
             GetComponent<Renderer>().material.color = Color.Lerp(new Color(0.25f, 0.25f, 1, 1f), defaultColor, t);
             if (t < 1)
             {
@@ -111,6 +117,7 @@ public class Shadow : MonoBehaviour {
 
     public void findTarget()
     {
+        Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
         Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
         for (int i = 0; i < shakeObjects.Length; i++)
         {
@@ -120,7 +127,15 @@ public class Shadow : MonoBehaviour {
             }
         }
         Debug.Log("wholejars " + wholejars);
-        if (lastActionChosen == 1 && wholejars != 0)
+        if (bedObjects.Length == 1 && wholejars == 1 && lastActionChosen == 1)
+        {
+            actionChosen = 0;
+        }
+        else if (bedObjects.Length == 1 && wholejars == 1 && lastActionChosen == 0)
+        {
+            actionChosen = 1;
+        }
+        else if (lastActionChosen == 1 && wholejars != 0)
         {
             actionChosen = 0;
         }
@@ -139,6 +154,15 @@ public class Shadow : MonoBehaviour {
             {
                 int selectShake = Random.Range(0, shakeObjects.Length);
                 targetDestructable = shakeObjects[selectShake];
+                if (lastTargetJar == targetDestructable)
+                {
+                    findTarget();
+                }
+                else
+                {
+                    targetDestructable = shakeObjects[selectShake];
+                    lastTargetJar = targetDestructable.GetComponent<GameObject>();
+                }
                 if (targetDestructable.destroyed)
                 {
                     findTarget();
@@ -151,7 +175,7 @@ public class Shadow : MonoBehaviour {
         }
         else if(actionChosen == 1)
         {
-            Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+            
             Debug.Log("bedObjects " + bedObjects.Length);
             if (bedObjects.Length == 0)
             {
@@ -161,6 +185,16 @@ public class Shadow : MonoBehaviour {
             {
                 int selectBed = Random.Range(0, bedObjects.Length);
                 targetBed = bedObjects[selectBed];
+                
+                if (lastTargetHuman == targetBed)
+                {
+                    findTarget();
+                }
+                else
+                {
+                    targetBed = bedObjects[selectBed];
+                    lastTargetHuman = targetBed.GetComponent<GameObject>();
+                }
             }
             else
             {

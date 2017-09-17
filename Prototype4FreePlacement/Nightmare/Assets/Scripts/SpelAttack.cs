@@ -18,11 +18,15 @@ public class SpelAttack : MonoBehaviour {
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         if (cooldown > 0)
         {
             GetComponent<Renderer>().material.color = new Color(0.25f, 0.25f, 0.25f, 1);
             cooldown -= Time.deltaTime;
+        }
+        else if (circle.GetComponent<SpellPlacement>().spellAreaChoosing)
+        {
+            GetComponent<Renderer>().material.color = new Color(0.25f, 0.25f, 0.25f, 1);
         }
         else
         {
