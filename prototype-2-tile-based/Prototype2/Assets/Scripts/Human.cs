@@ -31,7 +31,7 @@ public class Human : Damagable
         shieldPoints = 3;
     }
 
-    public void EndPlayerTurn()
+    public void BeginPlayerTurn()
     {
         if (Shielded)
         {

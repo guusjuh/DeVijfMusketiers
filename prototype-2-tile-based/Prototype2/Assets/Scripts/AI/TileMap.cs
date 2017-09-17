@@ -132,8 +132,8 @@ public class TileMap
 
     public void SwitchVaseStatus(int x, int y, bool broken)
     {
-        tiles[x, y] = broken ? Types.BrokenVase : Types.Vase;
-        Debug.Log(tiles[x,y]);
+        // cannot walk on vases, not even when broken when commented out
+        //tiles[x, y] = broken ? Types.BrokenVase : Types.Vase;
     }
 
     public List<Node> GeneratePathTo(int fromX, int fromY, int toX, int toY)

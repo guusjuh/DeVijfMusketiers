@@ -45,17 +45,21 @@ public class GameManager : MonoBehaviour
 
     private List<SpellButton> spellButtons;
 
+    public void BeginPlayerTurn()
+    {
+        ActivateButtons();
+        Human[] humans = FindObjectsOfType<Human>() as Human[];
+        for (int i = 0; i < humans.Length; i++)
+        {
+            humans[i].BeginPlayerTurn();
+        }
+    }
+
     public void EndPlayerTurn()
     {
         DeactivateButtons();
 
         spellButtons.HandleAction(b => b.EndPlayerTurn());
-
-        Human[] humans = FindObjectsOfType<Human>() as Human[];
-        for (int i = 0; i < humans.Length; i++)
-        {
-            humans[i].EndPlayerTurn();
-        }
 
         playersTurn = false;
     }
@@ -130,7 +134,7 @@ public class GameManager : MonoBehaviour
 
         // switch turns
         playersTurn = true;
-        ActivateButtons();
+        BeginPlayerTurn();
         othersTurn = false;
     }
 
