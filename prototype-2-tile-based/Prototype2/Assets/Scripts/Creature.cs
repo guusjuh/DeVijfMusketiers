@@ -19,6 +19,7 @@ public class Creature : MonoBehaviour
     private float inverseMoveTime;          //Used to make movement more efficient.
 
     private Damagable target;
+    private Damagable prevTarget;
     private int x, y;
     private List<Node> currentPath = null;
 
@@ -49,10 +50,12 @@ public class Creature : MonoBehaviour
 
         // select the first target to destory! mwoehahaha
         target = SelectTarget();
+        prevTarget = target;
         while (target.type == DamagableType.Human)
         {
             target.Targeted = false;
             target = SelectTarget();
+            prevTarget = target;
         }
 
         currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
@@ -63,6 +66,7 @@ public class Creature : MonoBehaviour
             target.Targeted = false;
 
             target = SelectTarget();
+            prevTarget = target;
             currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
         }
 
@@ -200,6 +204,7 @@ public class Creature : MonoBehaviour
         {
             // attempt to select a new target
             target = SelectTarget();
+            prevTarget = target;
 
             // game is lost, will go to game over from levelmanager
             if (target == null) return;
@@ -212,6 +217,7 @@ public class Creature : MonoBehaviour
                 target.Targeted = false;
 
                 target = SelectTarget();
+                prevTarget = target;
                 currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
             }
 
@@ -254,9 +260,13 @@ public class Creature : MonoBehaviour
             possibleTargets.Add(tempTargets[i].gameObject);
         }
 
+        // first select target this is null
+        if(prevTarget != null)
+            possibleTargets.Remove(prevTarget.gameObject);
+
         if (possibleTargets.Count <= 0)
         {
-            return null;
+            return prevTarget;
         }
         else
         {
