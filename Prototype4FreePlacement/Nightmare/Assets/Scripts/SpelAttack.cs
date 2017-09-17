@@ -32,6 +32,7 @@ public class SpelAttack : MonoBehaviour {
 
     void OnMouseDown()
     {
+        done = false;
         if (cooldown <= 0)
         {
             cooldown = cooldownTime;

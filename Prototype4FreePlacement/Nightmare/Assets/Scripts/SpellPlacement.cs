@@ -159,7 +159,8 @@ public class SpellPlacement : MonoBehaviour {
         attackOn2 = false;
         protectOn2 = false;
         repairOn2 = false;
-       
+        enemyHasBeenAttacked = false;
+
         spellAreaChoosing = true;
         if (name == "CubeAttack")
         {

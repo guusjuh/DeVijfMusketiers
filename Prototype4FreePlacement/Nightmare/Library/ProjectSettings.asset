@@ -141,12 +141,12 @@ PlayerSettings:
   targetPixelDensity: 200
   resolutionScalingMode: 0
   applicationIdentifier:
-    Android: Tim.DeVijfMusketiers.GreekPrototype4Drawing
+    Android: Tim.DeVijfMusketiers.GreekPrototype4NotDrawing
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
-  AndroidPreferredInstallLocation: 1
+  AndroidPreferredInstallLocation: 0
   aotOptions: 
   stripEngineCode: 1
   iPhoneStrippingLevel: 0

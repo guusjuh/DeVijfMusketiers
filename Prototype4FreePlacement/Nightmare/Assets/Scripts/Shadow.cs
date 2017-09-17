@@ -11,7 +11,7 @@ public class Shadow : MonoBehaviour {
     public float ShieldTimer;
     Color defaultColor;
 
-    float speed = 2f;
+    float speed = 2.5f;
 
 	// Use this for initialization
 	void Start ()
