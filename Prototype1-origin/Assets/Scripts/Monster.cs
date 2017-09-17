@@ -27,7 +27,6 @@ public class Monster : MonoBehaviour
         if (selectedCount == draw.Length)
         {
             Time.timeScale = 1f;
-            SpelAttack.disabled = false;
             //TO DO
             //spell effect
             if (effect == 0)
@@ -58,8 +57,9 @@ public class Monster : MonoBehaviour
                     if (target[i].destroyed)
                     {
                         target[i].GetComponent<Renderer>().material = materials[2];
+                        target[i].selected = true;
                         isYellow = true;
-                        target[i].destroyed = false;
+                        
                     }
                 }
             }

@@ -30,17 +30,23 @@ public class Bed : MonoBehaviour {
         }
 	}
 
+    public void ResetMat()
+    {
+        GetComponent<Renderer>().material = normalMat;
+    }
+
     void OnMouseDown()
     {
         if (monster.isYellow)
         {
             ShieldTimer = 5;
             monster.isYellow = false;
+            SpelAttack.disabled = false;
 
             Bed[] beds = FindObjectsOfType<Bed>();
             for (int i = 0; i < beds.Length; i++)
             {
-                beds[i].GetComponent<MeshRenderer>().material = normalMat;
+                beds[i].ResetMat();
             }
         }
         

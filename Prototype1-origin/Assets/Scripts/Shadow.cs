@@ -110,13 +110,19 @@ public class Shadow : MonoBehaviour {
         }
     }
 
+    public void ResetMat()
+    {
+            GetComponent<Renderer>().material = normalMat;
+    }
+
     void OnMouseDown()
     {
         if(monster.isYellow)
         {
             health -= 10;
             monster.isYellow = false;
-            GetComponent<Renderer>().material = normalMat;
+            SpelAttack.disabled = false;
+            ResetMat();
         }
     }
 }

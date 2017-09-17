@@ -8,6 +8,7 @@ public class Shake : MonoBehaviour {
     bool up;
     int count;
     float timeLeft;
+    public bool selected = false;
     Quaternion rot;
     public bool destroyed;
     public Material broken;
@@ -27,7 +28,7 @@ public class Shake : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (destroyed)
+        if (destroyed && !selected)
         {
             GetComponent<Renderer>().material = broken;
         }
@@ -37,17 +38,29 @@ public class Shake : MonoBehaviour {
         }
 	}
 
+    public void ResetMat()
+    {
+        
+        GetComponent<Renderer>().material = (destroyed)?broken:normal;
+    }
+
     void OnMouseDown()
     {
         if (monster.isYellow)
         {
             GetComponent<Renderer>().material = normal;
             global::Shake[] vases = FindObjectsOfType<Shake>();
+            SpelAttack.disabled = false;
+            destroyed = false;
             for (int i = 0; i < vases.Length; i++)
             {
                 if (vases[i].destroyed)
                 {
-                    vases[i].gameObject.GetComponent<MeshRenderer>().material = broken;
+                    vases[i].ResetMat();
+                }
+                if (vases[i].selected)
+                {
+                    selected = false;
                 }
             }
             monster.isYellow = false;
