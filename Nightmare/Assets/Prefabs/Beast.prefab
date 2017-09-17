@@ -189,8 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f407208460dd3844aabec9272f729d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeTime: 1
-  cooldownTime: 2
+  chargeTime: 2
+  cooldownTime: 1
   vaseChance: 50
   projectile: {fileID: 1258757227365116, guid: d59a4a6b8ee19444c86124380fb1e4d1, type: 2}
   targetGraphic: {fileID: 1986286376874368, guid: 97f97efc8f794df4a9e9b4f910d0f42b,
