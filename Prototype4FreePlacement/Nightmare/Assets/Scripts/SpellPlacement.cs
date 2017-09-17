@@ -39,18 +39,14 @@ public class SpellPlacement : MonoBehaviour {
 
         if (spellAreaChoosing)
         {
-            Debug.Log("spellAreaChoosing");
             if (Input.GetMouseButton(0))
             {
-                Debug.Log("keydown");
                 mousePos = Input.mousePosition;
                 gameObject.GetComponent<Renderer>().enabled = true;
                 gameObject.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(mousePos).x, 0, (Camera.main.ScreenToWorldPoint(mousePos).z));
             }
             if (Input.GetMouseButtonUp(0))
             {
-                Debug.Log("keyup");
-
                 if (attackOn)
                 {
                     attackOn = false;
@@ -124,12 +120,12 @@ public class SpellPlacement : MonoBehaviour {
                         {
                             Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
                             manager.destroyBed(gObject.GetComponent<Bed>());
-                            Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
-                            Debug.Log("bedobjects: " + bedObjects.Length);
-                            if (bedObjects.Length == 0)
-                            {
-                                SceneManager.LoadScene("GameOver");
-                            }
+                            //Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+                            //Debug.Log("bedobjects: " + bedObjects.Length);
+                            //if (bedObjects.Length == 0)
+                            //{
+                            //    SceneManager.LoadScene("GameOver");
+                            //}
                         }
                     }
                 }
@@ -164,6 +160,7 @@ public class SpellPlacement : MonoBehaviour {
     public void ChooseSpellPlace(string name, float timer)
     {
         Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+        Debug.Log("bedobjects " + bedObjects.Length);
         for(int i = 0; i < bedObjects.Length; i++)
         {
             bedObjects[i].GetComponent<Bed>().canBeAttacked = true;

@@ -21,6 +21,7 @@ public class Manager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        Debug.Log("beds " + beds.Length);
         if (beds.Length == 0)
         {
             SceneManager.LoadScene("GameOver");

@@ -16,9 +16,8 @@ public class Shadow : MonoBehaviour {
     private bool canDoOnce = true;
     public int lastActionChosen;
     public int wholejars;
-    public GameObject lastTargetHuman;
-    public GameObject lastTargetJar;
-
+    private GameObject lastTargetJar;
+    private GameObject lastTargetHuman;
     float speed = 2.5f;
 
 	// Use this for initialization
@@ -72,7 +71,7 @@ public class Shadow : MonoBehaviour {
             {
                 findTarget();
             }
-            wholejars = 0;
+            
             if (targetDestructable == null)
             {
                 findTarget();
@@ -85,6 +84,7 @@ public class Shadow : MonoBehaviour {
 
                 findTarget();
             }
+            wholejars = 0;
         }
         else
         {
@@ -117,83 +117,88 @@ public class Shadow : MonoBehaviour {
 
     public void findTarget()
     {
-        Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
-        Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
-        for (int i = 0; i < shakeObjects.Length; i++)
+        try
         {
-            if (!shakeObjects[i].GetComponent<Shake>().destroyed)
+            Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+            Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
+            for (int i = 0; i < shakeObjects.Length; i++)
             {
-                wholejars++;
-            }
-        }
-        Debug.Log("wholejars " + wholejars);
-        if (bedObjects.Length == 1 && wholejars == 1 && lastActionChosen == 1)
-        {
-            actionChosen = 0;
-        }
-        else if (bedObjects.Length == 1 && wholejars == 1 && lastActionChosen == 0)
-        {
-            actionChosen = 1;
-        }
-        else if (lastActionChosen == 1 && wholejars != 0)
-        {
-            actionChosen = 0;
-        }
-        else
-        {
-            actionChosen = Random.Range(0, 2);            
-        }
-        lastActionChosen = actionChosen;
-        wholejars = 0;
-
-
-        if (actionChosen == 0)
-        {
-            
-            if (shakeObjects.Length > 0)
-            {
-                int selectShake = Random.Range(0, shakeObjects.Length);
-                targetDestructable = shakeObjects[selectShake];
-                if (lastTargetJar == targetDestructable)
+                if (!shakeObjects[i].GetComponent<Shake>().destroyed)
                 {
-                    findTarget();
+                    wholejars++;
                 }
-                else
+            }
+            Debug.Log("wholejars " + wholejars);
+
+            if (wholejars == 0)
+            {
+                actionChosen = 1;
+            }
+            else if (FindObjectOfType<Manager>().beds.Length == 1 && wholejars == 1 && lastActionChosen == 1)
+            {
+                actionChosen = 0;
+            }
+            else if (FindObjectOfType<Manager>().beds.Length == 1 && wholejars <= 1 && lastActionChosen == 0)
+            {
+                actionChosen = 1;
+            }
+            else if (lastActionChosen == 1 && wholejars >= 2)
+            {
+                actionChosen = 0;
+            }
+            else
+            {
+                actionChosen = Random.Range(0, 2);
+            }
+            lastActionChosen = actionChosen;
+            wholejars = 0;
+
+
+            if (actionChosen == 0)
+            {
+                if (shakeObjects.Length > 0)
                 {
+                    int selectShake = Random.Range(0, shakeObjects.Length);
                     targetDestructable = shakeObjects[selectShake];
-                    lastTargetJar = targetDestructable.GetComponent<GameObject>();
-                }
-                if (targetDestructable.destroyed)
-                {
-                    findTarget();
-                }
-            }
-            else
-            {
-                findTarget();
-            }
-        }
-        else if(actionChosen == 1)
-        {
-            
-            Debug.Log("bedObjects " + bedObjects.Length);
-            if (bedObjects.Length == 0)
-            {
-                SceneManager.LoadScene("GameOver");
-            }
-            if (bedObjects.Length > 0)
-            {
-                int selectBed = Random.Range(0, bedObjects.Length);
-                targetBed = bedObjects[selectBed];
-                
-                if (lastTargetHuman == targetBed)
-                {
-                    findTarget();
+                    if (lastTargetJar == targetDestructable)
+                    {
+                        findTarget();
+                    }
+                    else
+                    {
+                        targetDestructable = shakeObjects[selectShake];
+                        lastTargetJar = targetDestructable.GetComponent<GameObject>();
+                    }
+                    if (targetDestructable.destroyed)
+                    {
+                        findTarget();
+                    }
                 }
                 else
                 {
+                    findTarget();
+                }
+            }
+            else if (actionChosen == 1)
+            {
+                if (bedObjects.Length > 0)
+                {
+                    int selectBed = Random.Range(0, bedObjects.Length);
                     targetBed = bedObjects[selectBed];
-                    lastTargetHuman = targetBed.GetComponent<GameObject>();
+
+                    if (lastTargetHuman == targetBed)
+                    {
+                        findTarget();
+                    }
+                    else
+                    {
+                        targetBed = bedObjects[selectBed];
+                        lastTargetHuman = targetBed.GetComponent<GameObject>();
+                    }
+                }
+                else
+                {
+                    findTarget();
                 }
             }
             else
@@ -201,9 +206,10 @@ public class Shadow : MonoBehaviour {
                 findTarget();
             }
         }
-        else
+        catch
         {
-            findTarget();
+            SceneManager.LoadScene("Win");
         }
-    }
+        }
+        
 }
