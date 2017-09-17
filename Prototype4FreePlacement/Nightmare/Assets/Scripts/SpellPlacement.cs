@@ -19,6 +19,11 @@ public class SpellPlacement : MonoBehaviour {
     Bed selectedBed;
     public bool enemyHasBeenAttacked = false;
     public float timeLeft;
+    public float canCollide;
+    public GameObject CubeAttack;
+    public GameObject CubeProtect;
+    public GameObject CubeRepair;
+    
 
     private int cdt;
     private string nme;
@@ -69,91 +74,107 @@ public class SpellPlacement : MonoBehaviour {
                 }
                 gameObject.GetComponent<Renderer>().enabled = false;
                 spellAreaChoosing = false;
+                CubeAttack.SetActive(true);
+                CubeProtect.SetActive(true);
+                CubeRepair.SetActive(true);
+                canCollide = 0.1f;
             }
             
         }
+
+        canCollide -= Time.deltaTime;
+
 	}
 
     void OnTriggerStay(Collider other)
     {
-        List<GameObject> currentCollisions = new List<GameObject>();
-        currentCollisions.Add(other.gameObject);
-
-        foreach (GameObject gObject in currentCollisions)
+        if (canCollide > 0)
         {
-            if (gObject.tag == "enemy" && attackOn2)
-            {                
-                if(enemyHasBeenAttacked)
+            List<GameObject> currentCollisions = new List<GameObject>();
+            currentCollisions.Add(other.gameObject);
+
+            foreach (GameObject gObject in currentCollisions)
+            {
+                if (gObject.tag == "enemy" && attackOn2)
                 {
-                    Shadow enemy = FindObjectOfType(typeof(Shadow)) as Shadow;
-                    if (gObject.GetComponent<Shadow>().ShieldTimer <= 0)
+                    if (enemyHasBeenAttacked)
                     {
-                        enemy.health -= 10;
+                        Shadow enemy = FindObjectOfType(typeof(Shadow)) as Shadow;
+                        if (gObject.GetComponent<Shadow>().ShieldTimer <= 0)
+                        {
+                            enemy.health -= 10;
+                        }
+                        else
+                        {
+                            gObject.GetComponent<Shadow>().ShieldTimer = 0;
+                        }
+                        enemyHasBeenAttacked = false;
+                    }
+                }
+                else if (gObject.tag == "human" && attackOn2)
+                {
+                    if (gObject.GetComponent<Bed>().ShieldTimer > 0)
+                    {
+                        if (gObject != null && gObject.GetComponent<Bed>().canBeAttacked)
+                        {
+                            gObject.GetComponent<Bed>().canBeAttacked = false;
+                            gObject.GetComponent<Bed>().ShieldTimer = 0;
+                        }
                     }
                     else
                     {
-                        gObject.GetComponent<Shadow>().ShieldTimer -= 5;
-                    }
-                    enemyHasBeenAttacked = false;
-                }
-                
-                
-            }
-            else if (gObject.tag == "human" && attackOn2)
-            {
-                if (gObject.GetComponent<Bed>().ShieldTimer >= 0)
-                {
-                    if(gObject != null && gObject.GetComponent<Bed>().canBeAttacked)
-                    {
-                        gObject.GetComponent<Bed>().canBeAttacked = false;
-                        gObject.GetComponent<Bed>().ShieldTimer -= 5;
-                    }
-                    
-                }
-                else
-                {
-                    if(gObject != null && gObject.GetComponent<Bed>().canBeAttacked)
-                    {
-                        gObject.GetComponent<Bed>().canBeAttacked = false;
-                        Destroy(gObject);
-                        Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
-                        if (bedObjects.Length <= 0)
+                        if (gObject != null && gObject.GetComponent<Bed>().canBeAttacked)
                         {
-                            SceneManager.LoadScene("GameOver");
+                            Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
+                            manager.destroyBed(gObject.GetComponent<Bed>());
+                            Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+                            Debug.Log("bedobjects: " + bedObjects.Length);
+                            if (bedObjects.Length == 0)
+                            {
+                                SceneManager.LoadScene("GameOver");
+                            }
                         }
                     }
-                    
+                }
+
+                else if (gObject.tag == "repairobject" && attackOn2)
+                {
+                    gObject.GetComponent<Shake>().destroyed = true;
+                }
+
+                else if (gObject.tag == "human" && protectOn2)
+                {
+                    gObject.GetComponent<Bed>().ShieldTimer = 15;
+                }
+
+                else if (gObject.tag == "enemy" && protectOn2)
+                {
+                    Shadow enemy = FindObjectOfType(typeof(Shadow)) as Shadow;
+                    gObject.GetComponent<Shadow>().ShieldTimer = 15;
+                }
+                else if (gObject.tag == "repairobject" && repairOn2)
+                {
+                    gObject.GetComponent<Shake>().destroyed = false;
                 }
 
             }
-
-            else if (gObject.tag == "repairobject" && attackOn2)
-            {
-                gObject.GetComponent<Shake>().destroyed = true;
-            }
-
-            else if (gObject.tag == "human" && protectOn2)
-            {
-                gObject.GetComponent<Bed>().ShieldTimer = 15;
-            }
-
-            else if (gObject.tag == "enemy" && protectOn2)
-            {
-                Shadow enemy = FindObjectOfType(typeof(Shadow)) as Shadow;
-                gObject.GetComponent<Shadow>().ShieldTimer = 15;
-            }
-            else if (gObject.tag == "repairobject" && repairOn2)
-            {
-                gObject.GetComponent<Shake>().destroyed = false;
-            }
-
+            currentCollisions.Clear();
         }
-        currentCollisions.Clear();
+        
     }
 
 
     public void ChooseSpellPlace(string name, float timer)
     {
+        GameObject.Find("CubeAttack").SetActive(false);
+        GameObject.Find("CubeProtect").SetActive(false);
+        GameObject.Find("CubeRepair").SetActive(false);
+        Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+        for(int i = 0; i < bedObjects.Length; i++)
+        {
+            bedObjects[i].GetComponent<Bed>().canBeAttacked = true;
+        }
+            
         timeLeft = timer;
         nme = name;
         attackOn2 = false;
@@ -178,8 +199,5 @@ public class SpellPlacement : MonoBehaviour {
             repairOn = true;
             gameObject.GetComponent<SpriteRenderer>().sprite = circleGreen;
         }
-        
-        
-        
     }
 }

@@ -32,20 +32,23 @@ public class SpelAttack : MonoBehaviour {
 
     void OnMouseDown()
     {
-        done = false;
-        if (cooldown <= 0)
+        if (!circle.GetComponent<SpellPlacement>().spellAreaChoosing)
         {
-            cooldown = cooldownTime;
-            if (withFigure)
+            done = false;
+            if (cooldown <= 0)
             {
-                figure.SetActive(true);
-                figure.GetComponent<Monster>().startSpel(gameObject.name);
+                cooldown = cooldownTime;
+                if (withFigure)
+                {
+                    figure.SetActive(true);
+                    figure.GetComponent<Monster>().startSpel(gameObject.name);
+                }
+                else
+                {
+                    done = true;
+                }
             }
-            else
-            {
-                done = true;                
-            }
-        }
+        }        
     }
     void OnGUI()
     {

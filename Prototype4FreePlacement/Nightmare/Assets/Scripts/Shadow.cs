@@ -10,6 +10,12 @@ public class Shadow : MonoBehaviour {
     public int health;
     public float ShieldTimer;
     Color defaultColor;
+    public float decreasingTransparansy;
+    private float t = 0;
+    private float duration = 1.5f;
+    private bool canDoOnce = true;
+    public int lastActionChosen;
+    public int wholejars;
 
     float speed = 2.5f;
 
@@ -22,7 +28,8 @@ public class Shadow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update ()
-    {        
+    {
+        ShieldTimer -= Time.deltaTime;
         if (health <= 0)
         {
             SceneManager.LoadScene("Win");
@@ -32,10 +39,13 @@ public class Shadow : MonoBehaviour {
         {
             return;
         }
-        if (ShieldTimer >= 0)
+        if (ShieldTimer > 0)
         {
-            ShieldTimer -= Time.deltaTime;
-            GetComponent<Renderer>().material.color = new Color(0.25f, 0.25f, 1, 1);
+            GetComponent<Renderer>().material.color = Color.Lerp(new Color(0.25f, 0.25f, 1, 1f), defaultColor, t);
+            if (t < 1)
+            {
+                t += Time.deltaTime / ShieldTimer;
+            }
         }
         else
         {
@@ -44,7 +54,20 @@ public class Shadow : MonoBehaviour {
         Vector3 dir;
         if (actionChosen == 0)
         {
-            if(targetDestructable == null)
+            Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
+            for(int i = 0; i < shakeObjects.Length; i++)
+            {
+                if (!shakeObjects[i].GetComponent<Shake>().destroyed)
+                {
+                    wholejars++;
+                }
+            }
+            if(wholejars == 0)
+            {
+                findTarget();
+            }
+            wholejars = 0;
+            if (targetDestructable == null)
             {
                 findTarget();
             }
@@ -59,11 +82,6 @@ public class Shadow : MonoBehaviour {
         }
         else
         {
-            Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
-            if(bedObjects.Length <= 0)
-            {
-                SceneManager.LoadScene("GameOver");
-            }
             if (targetBed == null)
             {
                 findTarget();
@@ -75,9 +93,9 @@ public class Shadow : MonoBehaviour {
                 if (dir.magnitude < 1)
                 {
                     Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
-                    if (targetBed.ShieldTimer >= 0)
+                    if (targetBed.ShieldTimer > 0)
                     {
-                        targetBed.ShieldTimer -= 5;
+                        targetBed.ShieldTimer = 0;
                     }
                     else
                     {
@@ -93,10 +111,30 @@ public class Shadow : MonoBehaviour {
 
     public void findTarget()
     {
-        actionChosen = Random.Range(0, 2);
-        if(actionChosen == 0)
+        Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
+        for (int i = 0; i < shakeObjects.Length; i++)
         {
-            Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
+            if (!shakeObjects[i].GetComponent<Shake>().destroyed)
+            {
+                wholejars++;
+            }
+        }
+        Debug.Log("wholejars " + wholejars);
+        if (lastActionChosen == 1 && wholejars != 0)
+        {
+            actionChosen = 0;
+        }
+        else
+        {
+            actionChosen = Random.Range(0, 2);            
+        }
+        lastActionChosen = actionChosen;
+        wholejars = 0;
+
+
+        if (actionChosen == 0)
+        {
+            
             if (shakeObjects.Length > 0)
             {
                 int selectShake = Random.Range(0, shakeObjects.Length);
@@ -111,9 +149,14 @@ public class Shadow : MonoBehaviour {
                 findTarget();
             }
         }
-        else
+        else if(actionChosen == 1)
         {
             Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+            Debug.Log("bedObjects " + bedObjects.Length);
+            if (bedObjects.Length == 0)
+            {
+                SceneManager.LoadScene("GameOver");
+            }
             if (bedObjects.Length > 0)
             {
                 int selectBed = Random.Range(0, bedObjects.Length);
@@ -123,6 +166,10 @@ public class Shadow : MonoBehaviour {
             {
                 findTarget();
             }
+        }
+        else
+        {
+            findTarget();
         }
     }
 }

@@ -6,6 +6,8 @@ public class Bed : MonoBehaviour {
     public float ShieldTimer;
     Color defaultColor;
     public bool canBeAttacked = false;
+    private float t;
+    public float duration = 15;
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +19,11 @@ public class Bed : MonoBehaviour {
         if(ShieldTimer >= 0)
         {
             ShieldTimer -= Time.deltaTime;
-            GetComponent<Renderer>().material.color = new Color(0.25f, 0.25f, 1, 1);
+            GetComponent<Renderer>().material.color = Color.Lerp(new Color(0.25f, 0.25f, 1, 1f), defaultColor, t);
+            if (t < 1)
+            {
+                t += Time.deltaTime / duration;
+            }
         }
         else
         {

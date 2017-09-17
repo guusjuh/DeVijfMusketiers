@@ -29,8 +29,8 @@ public class Manager : MonoBehaviour {
 
     void loadObjectsFromScene()
     {
-        shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
         beds = FindObjectsOfType(typeof(Bed)) as Bed[];
+        shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
         monsters = FindObjectsOfType(typeof(Monster)) as Monster[];
     }
 
