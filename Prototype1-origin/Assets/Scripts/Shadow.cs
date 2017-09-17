@@ -10,6 +10,7 @@ public class Shadow : MonoBehaviour {
     public int health;
 
     float speed = 1.5f;
+    [SerializeField] private Material normalMat;
 
 	// Use this for initialization
 	void Start ()
@@ -29,7 +30,7 @@ public class Shadow : MonoBehaviour {
         Vector3 dir;
         if (actionChosen == 0)
         {
-            if(targetDestructable == null)
+            if(targetDestructable == null || targetDestructable.destroyed == true)
             {
                 findTarget();
             }
@@ -50,12 +51,19 @@ public class Shadow : MonoBehaviour {
             }
             dir = targetBed.transform.position - gameObject.transform.position;
             gameObject.transform.Translate(dir.normalized * Time.deltaTime * speed);
-            if (dir.magnitude < 1)
+            if (dir.magnitude <= 1.0f)
             {
                 Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
-                if (targetBed.ShieldTimer >= 0)
+                if (targetBed.ShieldTimer > 0.0f)
                 {
-                    targetBed.ShieldTimer -= 5;
+                    if (targetBed.ShieldTimer - 5.0f <= 0.0f)
+                    {
+                        targetBed.ShieldTimer = 0.0f;
+                    }
+                    else
+                    {
+                        targetBed.ShieldTimer -= 5.0f;
+                    }
                 }
                 else
                 {
@@ -108,7 +116,7 @@ public class Shadow : MonoBehaviour {
         {
             health -= 10;
             monster.isYellow = false;
-            GetComponent<Renderer>().material.color = Color.white;
+            GetComponent<Renderer>().material = normalMat;
         }
     }
 }

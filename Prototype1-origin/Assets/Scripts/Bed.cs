@@ -7,8 +7,11 @@ public class Bed : MonoBehaviour {
     Color defaultColor;
     public Monster monster;
 
-	// Use this for initialization
-	void Start ()
+    [SerializeField]
+    private Material normalMat;
+
+    // Use this for initialization
+    void Start ()
     {
         defaultColor = GetComponent<Renderer>().material.color;
     }
@@ -33,7 +36,12 @@ public class Bed : MonoBehaviour {
         {
             ShieldTimer = 5;
             monster.isYellow = false;
-            GetComponent<Renderer>().material.color = Color.white;
+
+            Bed[] beds = FindObjectsOfType<Bed>();
+            for (int i = 0; i < beds.Length; i++)
+            {
+                beds[i].GetComponent<MeshRenderer>().material = normalMat;
+            }
         }
         
     }

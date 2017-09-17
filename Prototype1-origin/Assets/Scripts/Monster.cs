@@ -11,14 +11,10 @@ public class Monster : MonoBehaviour
     public bool isYellow = false;
     public Shadow shadow;
 
-    // Use this for initialization
-    void Start ()
-    {
+    [SerializeField] private Material[] materials = new Material[3];
 
-    }
-	
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update ()
     {
         int selectedCount = 0;
         for (int x = 0; x < draw.Length; x++)
@@ -35,25 +31,25 @@ public class Monster : MonoBehaviour
             //TO DO
             //spell effect
             if (effect == 0)
-            {
+            {//TARGET BOSS
                 Shadow target = FindObjectOfType(typeof(Shadow)) as Shadow;
-                target.GetComponent<Renderer>().material.color = Color.yellow;
+                target.GetComponent<Renderer>().material = materials[0];
                 isYellow = true;
             }
             else if (effect == 1)
-            {
+            {//TARGET SHIELD
                 //activate shield;
                 Bed[] target = FindObjectsOfType(typeof(Bed)) as Bed[];
                 isYellow = true;
                 for (int i = 0; i < target.Length; i++)
                 {
-                    target[i].GetComponent<Renderer>().material.color = Color.yellow;
+                    target[i].GetComponent<Renderer>().material = materials[1];
                 }
                 //int select = Random.Range(0, target.Length);
                 //target[select].ShieldTimer = 15;
             }
             else
-            {
+            {//TARGET REPAIR
                 //repair
                 Shake[] target = FindObjectsOfType(typeof(Shake)) as Shake[];
 
@@ -61,7 +57,7 @@ public class Monster : MonoBehaviour
                 {
                     if (target[i].destroyed)
                     {
-                        target[i].GetComponent<Renderer>().material.color = Color.red;
+                        target[i].GetComponent<Renderer>().material = materials[2];
                         isYellow = true;
                         target[i].destroyed = false;
                     }

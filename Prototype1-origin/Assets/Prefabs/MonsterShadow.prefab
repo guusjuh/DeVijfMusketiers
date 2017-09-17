@@ -95,6 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster: {fileID: 0}
   health: 100
+  normalMat: {fileID: 2100000, guid: e99b4f08bf9c58247afd9a5a9c29579b, type: 2}
 --- !u!136 &136863819493594148
 CapsuleCollider:
   m_ObjectHideFlags: 1

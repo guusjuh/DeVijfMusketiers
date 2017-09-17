@@ -14,6 +14,8 @@ public class Shake : MonoBehaviour {
     public Material normal;
     public Monster monster;
 
+
+
 	// Use this for initialization
 	void Start () {
         active = false;
@@ -40,6 +42,14 @@ public class Shake : MonoBehaviour {
         if (monster.isYellow)
         {
             GetComponent<Renderer>().material = normal;
+            global::Shake[] vases = FindObjectsOfType<Shake>();
+            for (int i = 0; i < vases.Length; i++)
+            {
+                if (vases[i].destroyed)
+                {
+                    vases[i].gameObject.GetComponent<MeshRenderer>().material = broken;
+                }
+            }
             monster.isYellow = false;
         }
     }
