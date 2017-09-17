@@ -51,9 +51,7 @@ public class Human : Damagable
     {
         if (Shielded)
         {
-            shieldPoints--;
-
-            GetComponent<SpriteRenderer>().color += new Color(0.25f, 0.25f, 0, 0);
+            shieldPoints = 0;
 
             if (shieldPoints <= 0)
             {

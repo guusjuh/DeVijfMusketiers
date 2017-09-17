@@ -90,7 +90,7 @@ public class Spell : MonoBehaviour
     {
         this.source = source;
 
-        timeLeft = 3.0f;
+        timeLeft = 2.5f;
 
         spellParts.Clear();
         spellParts.AddMultiple(FindObjectsOfType(typeof(SpellPart)) as SpellPart[]);

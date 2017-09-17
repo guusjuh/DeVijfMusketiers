@@ -61,8 +61,8 @@ public class LevelManager  {
         hole = (GameObject)GameObject.Instantiate(hole, centerPosition, Quaternion.identity);
 
         // init world objects
-        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 3, 6);
-        LayoutObjectAtRandom(TileMap.Types.Human, human, 5, 7);
+        LayoutObjectAtRandom(TileMap.Types.Vase, vase, 5, 8);
+        LayoutObjectAtRandom(TileMap.Types.Human, human, 4, 6);
 
         humans = new List<Human>();
         humans.AddMultiple(GameObject.FindObjectsOfType(typeof(Human)) as Human[]);
@@ -95,6 +95,9 @@ public class LevelManager  {
 
                 // set parent for pritty scene structure
                 instance.transform.SetParent(boardHolder);
+
+                if (x < 0 || x >= columns || y < 0 || y >= rows)
+                    instance.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.7f, 0.7f, 1);
             }
         }
     }

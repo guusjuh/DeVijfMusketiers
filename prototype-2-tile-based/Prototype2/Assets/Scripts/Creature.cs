@@ -66,7 +66,7 @@ public class Creature : MonoBehaviour
             currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
         }
 
-        if (currentPath.Count <= 4)
+        if (currentPath.Count <= 2)
         {
             target.Targeted = true;
         }
@@ -136,7 +136,7 @@ public class Creature : MonoBehaviour
         // remove the node we are standing on
         currentPath.RemoveAt(0);
 
-        if (currentPath.Count <= 4)
+        if (currentPath.Count <= 2)
         {
             target.Targeted = true;
         }
@@ -215,7 +215,7 @@ public class Creature : MonoBehaviour
                 currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
             }
 
-            if (currentPath.Count <= 4)
+            if (currentPath.Count <= 2)
             {
                 target.Targeted = true;
             }

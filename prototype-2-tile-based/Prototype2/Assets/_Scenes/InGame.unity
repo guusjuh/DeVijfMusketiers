@@ -1881,7 +1881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 2
+  totalCooldown: 1
   spellFigure: {fileID: 1187445790}
 --- !u!114 &959365250
 MonoBehaviour:
@@ -3407,7 +3407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 1
+  totalCooldown: 2
   spellFigure: {fileID: 350209078}
 --- !u!114 &1704187044
 MonoBehaviour:
@@ -4257,7 +4257,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.08088237, g: 0.08088237, b: 0.08088237, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
