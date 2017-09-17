@@ -9,7 +9,7 @@ public class Shadow : MonoBehaviour {
     public int health;
     public GameObject target;
 
-    float speed = 1.0f;
+    float speed = 1.5f;
 
 	// Use this for initialization
 	void Start ()
@@ -56,11 +56,7 @@ public class Shadow : MonoBehaviour {
             if (dir.magnitude < 1)
             {
                 Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
-                if (targetBed.ShieldTimer >= 0)
-                {
-                    targetBed.ShieldTimer -= 5;
-                }
-                else
+                if (targetBed.ShieldTimer <= 0)
                 {
                     manager.destroyBed(targetBed);
                 }

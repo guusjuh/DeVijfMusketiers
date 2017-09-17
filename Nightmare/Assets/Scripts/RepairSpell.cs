@@ -24,11 +24,11 @@ public class RepairSpell : MonoBehaviour
             GetComponent<Renderer>().material.color = new Color(0.25f, 0.25f, 0.25f, 1);
             cooldown -= Time.deltaTime;
             circle.SetActive(true);
-            circle.transform.localScale = new Vector3(2f + cooldown, 0.2f, 2f + cooldown);
+            circle.transform.localScale = new Vector3(3f + cooldown, 0.2f, (3f + cooldown) / 2);
 
-            if (cooldown < 0.5f)
+            if (cooldown % 0.8f < 0.4f)
             {
-                circle.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 1);
+                circle.GetComponent<Renderer>().material.color = new Color(0, 1, 0, 1);
             }
             else
             {
@@ -38,12 +38,12 @@ public class RepairSpell : MonoBehaviour
         else if (manager.RepairCooldown > 0)
         {
             circle.SetActive(false);
-            GetComponent<Renderer>().material.color = new Color(0.1f, 0.1f, 0.1f, 1);
+            GetComponent<Renderer>().material.color = new Color(0.2f, 0.2f, 0.2f, 1);
         }
         else
         {
             circle.SetActive(false);
-            GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 1);
+            GetComponent<Renderer>().material.color = new Color(0.8f, 0.8f, 0.8f, 1);
         }
     }
 
@@ -58,7 +58,7 @@ public class RepairSpell : MonoBehaviour
                 manager.RepairCooldown = 4;
             }
         }
-        else if (cooldown <= 0.5f && cooldown > 0)
+        else if (cooldown % 0.8f < 0.4f && cooldown > 0)
         {
             target.destroyed = false;
             cooldown = -1;
