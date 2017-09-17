@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpellPlacement : MonoBehaviour {
 
@@ -115,6 +116,11 @@ public class SpellPlacement : MonoBehaviour {
                     {
                         gObject.GetComponent<Bed>().canBeAttacked = false;
                         Destroy(gObject);
+                        Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
+                        if (bedObjects.Length <= 0)
+                        {
+                            SceneManager.LoadScene("GameOver");
+                        }
                     }
                     
                 }

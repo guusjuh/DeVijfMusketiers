@@ -40,6 +40,7 @@ public class Monster : MonoBehaviour
             {
                 //TO DO
                 //spell effect
+                done = false;
                 fingerLifted = false;
                 if (effect == 0)
                 {
@@ -53,6 +54,7 @@ public class Monster : MonoBehaviour
                 {
                     circle.GetComponent<SpellPlacement>().ChooseSpellPlace(nme, 0.1f);
                 }
+                
                 this.gameObject.SetActive(false);
             }
             
@@ -62,6 +64,8 @@ public class Monster : MonoBehaviour
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
+            fingerLifted = false;
+            done = false;
             this.gameObject.SetActive(false);
         }
     }
