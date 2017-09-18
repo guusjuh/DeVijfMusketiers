@@ -17,7 +17,7 @@ public class Shadow : MonoBehaviour {
     public int lastActionChosen;
     public int wholejars;
     private GameObject lastTargetJar;
-    private GameObject lastTargetHuman;
+    private Bed lastTargetHuman;
     float speed = 2.5f;
 
 	// Use this for initialization
@@ -107,6 +107,10 @@ public class Shadow : MonoBehaviour {
                     {
                         manager.destroyBed(targetBed);
                     }
+                    if(manager.beds.Length == 0)
+                    {
+                        SceneManager.LoadScene("GameOver");
+                    }
 
                     findTarget();
                 }
@@ -121,6 +125,7 @@ public class Shadow : MonoBehaviour {
         {
             Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
             Shake[] shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
+            wholejars = 0;
             for (int i = 0; i < shakeObjects.Length; i++)
             {
                 if (!shakeObjects[i].GetComponent<Shake>().destroyed)
@@ -146,7 +151,7 @@ public class Shadow : MonoBehaviour {
                 actionChosen = Random.Range(0, 2);
             }
             lastActionChosen = actionChosen;
-            wholejars = 0;
+            
 
 
             if (actionChosen == 0)
@@ -189,7 +194,7 @@ public class Shadow : MonoBehaviour {
                     else
                     {
                         targetBed = manager.beds[selectBed];
-                        lastTargetHuman = targetBed.GetComponent<GameObject>();
+                        lastTargetHuman = targetBed;
                     }
                 }
                 else
