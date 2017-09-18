@@ -128,7 +128,6 @@ public class Shadow : MonoBehaviour {
                     wholejars++;
                 }
             }
-            Debug.Log("wholejars " + wholejars);
 
             if (wholejars == 0)
             {
@@ -137,10 +136,6 @@ public class Shadow : MonoBehaviour {
             else if (FindObjectOfType<Manager>().beds.Length == 1 && wholejars == 1 && lastActionChosen == 1)
             {
                 actionChosen = 0;
-            }
-            else if (FindObjectOfType<Manager>().beds.Length == 1 && wholejars <= 1 && lastActionChosen == 0)
-            {
-                actionChosen = 1;
             }
             else if (lastActionChosen == 1 && wholejars >= 2)
             {
@@ -156,19 +151,12 @@ public class Shadow : MonoBehaviour {
 
             if (actionChosen == 0)
             {
+                shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
                 if (shakeObjects.Length > 0)
                 {
                     int selectShake = Random.Range(0, shakeObjects.Length);
-                    targetDestructable = shakeObjects[selectShake];
-                    if (lastTargetJar == targetDestructable)
-                    {
-                        findTarget();
-                    }
-                    else
-                    {
-                        targetDestructable = shakeObjects[selectShake];
-                        lastTargetJar = targetDestructable.GetComponent<GameObject>();
-                    }
+                    targetDestructable = shakeObjects[selectShake];                  
+                    
                     if (targetDestructable.destroyed)
                     {
                         findTarget();
@@ -181,18 +169,26 @@ public class Shadow : MonoBehaviour {
             }
             else if (actionChosen == 1)
             {
-                if (bedObjects.Length > 0)
+                Manager manager = FindObjectOfType(typeof(Manager)) as Manager;
+                
+                if (manager.beds.Length > 0)
                 {
-                    int selectBed = Random.Range(0, bedObjects.Length);
-                    targetBed = bedObjects[selectBed];
+                    int selectBed = Random.Range(0, manager.beds.Length);
+                    targetBed = manager.beds[selectBed];
 
-                    if (lastTargetHuman == targetBed)
+                    if (lastTargetHuman == manager.beds[selectBed] && wholejars != 0)
                     {
-                        findTarget();
+                        shakeObjects = FindObjectsOfType(typeof(Shake)) as Shake[];
+                        int selectShake = Random.Range(0, shakeObjects.Length);
+                        targetDestructable = shakeObjects[selectShake];
+                        if (targetDestructable.destroyed)
+                        {
+                            findTarget();
+                        }
                     }
                     else
                     {
-                        targetBed = bedObjects[selectBed];
+                        targetBed = manager.beds[selectBed];
                         lastTargetHuman = targetBed.GetComponent<GameObject>();
                     }
                 }

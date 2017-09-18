@@ -160,7 +160,6 @@ public class SpellPlacement : MonoBehaviour {
     public void ChooseSpellPlace(string name, float timer)
     {
         Bed[] bedObjects = FindObjectsOfType(typeof(Bed)) as Bed[];
-        Debug.Log("bedobjects " + bedObjects.Length);
         for(int i = 0; i < bedObjects.Length; i++)
         {
             bedObjects[i].GetComponent<Bed>().canBeAttacked = true;
