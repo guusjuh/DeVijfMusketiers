@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Vase
   - Creature
   - Human
+  - Barrel
+  - Shrine
   layers:
   - Default
   - TransparentFX

@@ -11,8 +11,11 @@ public class TileMap
     {
         Empty = 0,
         Human,
-        Vase,
-        BrokenVase
+        Barrel,
+        BrokenBarrel,
+        Shrine,
+        Monster,
+        Hole
     }
 
     [SerializeField]
@@ -21,6 +24,23 @@ public class TileMap
     private Types[,] tiles;
 
     private int columns, rows;
+
+    public bool Empty(int x, int y)
+    {
+        // outside board
+        if (x < 0 || x >= columns || y < 0 || y >= rows)
+        {
+            return false;
+        }
+
+        // not empty tile
+        if (tiles[x, y] != Types.Empty)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     public void Initialize(int columns, int rows, Types[,] generatedLevel)
     {

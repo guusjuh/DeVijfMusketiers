@@ -8,4 +8,5 @@ public class TileType
     public GameObject prefab;
     public float movementCost = 1;
     public bool canEnter = true;
+    public bool canFlyOver = true;
 }
