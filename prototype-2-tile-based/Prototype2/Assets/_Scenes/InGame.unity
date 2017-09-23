@@ -2674,7 +2674,7 @@ MonoBehaviour:
       - type: 2
         prefab: {fileID: 0}
         movementCost: 2
-        canEnter: 0
+        canEnter: 1
         canFlyOver: 1
       - type: 3
         prefab: {fileID: 0}

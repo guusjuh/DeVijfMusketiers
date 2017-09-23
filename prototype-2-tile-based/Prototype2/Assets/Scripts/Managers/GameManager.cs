@@ -35,18 +35,10 @@ public class GameManager : MonoBehaviour
     public GameObject FloorTile { get; private set; }
 
     [SerializeField] private LevelManager levelManager = new LevelManager();
-
-    public LevelManager LevelManager
-    {
-        get { return levelManager; }
-    }
+    public LevelManager LevelManager { get { return levelManager; } }
 
     private List<Creature> creatures;
-
-    public List<Creature> Creatures
-    {
-        get { return creatures; }
-    }
+    public List<Creature> Creatures { get { return creatures; } }
 
     private List<SpellButton> spellButtons;
     private SkipButton skipButton;
@@ -128,6 +120,11 @@ public class GameManager : MonoBehaviour
         skipButton = FindObjectOfType<SkipButton>() as SkipButton;
 
         DeactivateButtons();
+
+        // start with player turn
+        playersTurn = true;
+        BeginPlayerTurn();
+        othersTurn = false;
     }
 
     // update is called every frame
@@ -162,10 +159,15 @@ public class GameManager : MonoBehaviour
             while (creatures[i].CurrentActionPoints > 0)
             {
                 // make creature move
-                creatures[i].MoveEnemy();
+                bool movedButNotLastTarget = creatures[i].MoveEnemy();
 
                 // delay
                 yield return new WaitForSeconds(0.6f);
+
+                if (!movedButNotLastTarget)
+                {
+                    creatures[i].MoveEnemy(false);
+                }
             }
         }
 
