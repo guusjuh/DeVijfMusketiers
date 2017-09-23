@@ -119,35 +119,32 @@ public class BaseEnemy : MonoBehaviour {
     //TODO: different chances and stuff
     protected void SelectTarget()
     {
-        /*if (target != null) target.Targeted = false;
-
-        // declare super ugly unoptimazed list and arrays
+        // no target find a new one
         List<GameObject> possibleTargets = new List<GameObject>();
-        Damagable[] tempTargets = FindObjectsOfType(typeof(Damagable)) as Damagable[];
-
-        // only add vases which are destroyed already
-        for (int i = 0; i < tempTargets.Length; i++)
+        Damagable[] damagables = FindObjectsOfType(typeof(Damagable)) as Damagable[];
+        //add all possible targets to possible target list
+        for (int i = 0; i < damagables.Length; i++)
         {
             // barrels are no target
-            if (tempTargets[i].type == DamagableType.Barrel) continue;
+            if (damagables[i].type == DamagableType.Barrel) continue;
 
             // dont target dead humans
-            if (tempTargets[i].type == DamagableType.Human)
+            if (damagables[i].type == DamagableType.Human)
             {
-                if (tempTargets[i].GetComponent<Human>().dead || tempTargets[i].GetComponent<Human>().Invisible) continue;
+                if (damagables[i].GetComponent<Human>().dead || damagables[i].GetComponent<Human>().Invisible) continue;
             }
 
             // dont target destoryed or nonactive shrines
-            if (tempTargets[i].type == DamagableType.Shrine)
+            if (damagables[i].type == DamagableType.Shrine)
             {
-                if (tempTargets[i].GetComponent<Shrine>().destroyed || !tempTargets[i].GetComponent<Shrine>().Active) continue; 
+                if (damagables[i].GetComponent<Shrine>().destroyed || !damagables[i].GetComponent<Shrine>().Active) continue;
             }
 
-            possibleTargets.Add(tempTargets[i].gameObject);
+            possibleTargets.Add(damagables[i].gameObject);
         }
 
         // first call to SelectTarget this is null
-        if (prevTarget != null)
+        if (prevTarget != null && possibleTargets.Count > 1)
             possibleTargets.Remove(prevTarget.gameObject);
 
         // no possible targets were found
@@ -155,6 +152,7 @@ public class BaseEnemy : MonoBehaviour {
         {
             target = null;
             prevTarget = null;
+            currentPath = null;
         }
         else
         {
@@ -162,7 +160,39 @@ public class BaseEnemy : MonoBehaviour {
             int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
             target = possibleTargets[selection].GetComponent<Damagable>();
             prevTarget = target;
-        }*/
+
+            //try first targte
+            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+            if (currentPath == null)
+            {
+                //if targets > 1
+                if (possibleTargets.Count > 1)
+                {
+                    for (int i = 0; i < possibleTargets.Count; i++)
+                    {
+                        currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y,
+                            (int) possibleTargets[i].transform.position.x, (int) possibleTargets[i].transform.position.y);
+                        if (currentPath != null)
+                        {
+                            target = possibleTargets[i].GetComponent<Damagable>();
+                            prevTarget = target;
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    target = null;
+                    prevTarget = null;
+                    currentPath = null;
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 
     public virtual void Hit(int dmg)

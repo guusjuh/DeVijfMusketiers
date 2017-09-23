@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         {
             DeactivateButtons();
 
-            UpdateEnemyPaths();
+            //UpdateEnemyPaths();
 
             if(creature != null) Creature.EndPlayerTurn();
 
@@ -114,12 +114,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateEnemyPaths()
+    /*public void UpdateEnemyPaths()
     {
         Instance.Creatures.HandleAction(c => c.UpdateTarget());
         if(creature != null)
             Creature.UpdateTarget();
-    }
+    }*/
 
     public void SkipButtonClick()
     {

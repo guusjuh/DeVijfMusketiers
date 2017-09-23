@@ -28,18 +28,6 @@ public class Creature : BaseEnemy
         // select the first target to destory! mwoehahaha
         SelectTarget();
 
-        currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-        while (currentPath == null)
-        {
-            // there is no way the creature can get to that target right now.
-            Debug.Log("Creature did not find a valid path");
-            target.Targeted = false;
-
-            SelectTarget();
-            prevTarget = target;
-            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-        }
-
         if (currentPath.Count <= 2) target.Targeted = true;
     }
 
@@ -53,6 +41,23 @@ public class Creature : BaseEnemy
         }
 
         //TODO: targets
+        if (target == null)
+        {
+            SelectTarget();
+        }
+        if (currentPath == null || target == null || prevTarget == null)
+        {
+            if (currentPath == null && target == null && prevTarget == null)
+            {
+                currentActionPoints = 0;
+                Debug.Log("skipped a move: no target or route found");
+                return;
+            }
+            Debug.LogError("Wubba lubba dup dup");
+            return;
+        }
+
+        UpdateTarget();
 
         // do raycast to check for world objects
         RaycastHit2D hit;
@@ -73,7 +78,6 @@ public class Creature : BaseEnemy
 
                 // set the target to null so the next turn, searching for new target
                 target = null;
-                currentPath = null;
             }
             // barrel in my way
             else
@@ -101,10 +105,11 @@ public class Creature : BaseEnemy
             if (currentPath.Count <= 2) target.Targeted = true; 
         }
 
-        GameManager.Instance.UpdateEnemyPaths();
-
         // lose one action point
-        currentActionPoints--;
+        if (currentActionPoints != 0)
+        {
+            currentActionPoints--;
+        }
     }
 
     protected bool CanMove(int xDir, int yDir, out RaycastHit2D hit)

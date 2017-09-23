@@ -17,22 +17,7 @@ public class Minion : BaseEnemy
         // select the first target to destory! mwoehahaha
         SelectTarget();
 
-        currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y, false);
-        while (currentPath == null)
-        {
-            // there is no way the creature can get to that target right now.
-            Debug.Log("Creature did not find a valid path");
-            target.Targeted = false;
-
-            SelectTarget();
-
-            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y, false);
-        }
-
-        if (currentPath.Count <= 2)
-        {
-            target.Targeted = true;
-        }
+        if (currentPath.Count <= 2) target.Targeted = true;
 
         GameManager.Instance.AddCreature(this);
     }
@@ -40,6 +25,23 @@ public class Minion : BaseEnemy
     public override void MoveEnemy()
     {
         //TODO: targets
+        if (target == null)
+        {
+            SelectTarget();
+        }
+        if (currentPath == null || target == null || prevTarget == null)
+        {
+            if (currentPath == null && target == null && prevTarget == null)
+            {
+                currentActionPoints = 0;
+                Debug.Log("Minion: skipped a move: no target or route found");
+                return;
+            }
+            Debug.LogError("Minion: Wubba lubba dup dup");
+            return;
+        }
+
+        UpdateTarget();
 
         // do raycast to check for world objects
         RaycastHit2D hit;
@@ -60,7 +62,6 @@ public class Minion : BaseEnemy
 
                 // set the target to null so the next turn, searching for new target
                 target = null;
-                currentPath = null;
             }
             // barrel in my way
             else if(hit.transform.GetComponent<Barrel>() != null)
@@ -101,8 +102,6 @@ public class Minion : BaseEnemy
             // update target if needed
             if (currentPath.Count <= 2) target.Targeted = true;
         }
-
-        GameManager.Instance.UpdateEnemyPaths();
 
         // lose one action point
         currentActionPoints--;
