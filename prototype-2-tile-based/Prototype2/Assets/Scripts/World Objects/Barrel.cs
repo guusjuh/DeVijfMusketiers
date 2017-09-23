@@ -86,6 +86,8 @@ public class Barrel : Damagable {
     public void Move(int x, int y)
     {
         transform.position = new Vector3(x, y, transform.position.z);
+        this.x = (int)transform.position.x;
+        this.y = (int)transform.position.y;
 
         highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
 

@@ -119,6 +119,8 @@ public class Human : Damagable
     public void Move(int x, int y)
     {
         transform.position = new Vector3(x, y, transform.position.z);
+        this.x = (int) transform.position.x;
+        this.y = (int) transform.position.y;
 
         highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
 
@@ -127,5 +129,10 @@ public class Human : Damagable
             surroundingHighlightBttns[i].GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position + positions[i]);
             surroundingHighlightBttns[i].Initialize(transform.position + positions[i]);
         }
+
+        List<Shrine> all = new List<Shrine>();
+        all.AddMultiple(FindObjectsOfType<Shrine>() as Shrine[]);
+
+        all.HandleAction(s => s.CheckForActive());
     }
 }

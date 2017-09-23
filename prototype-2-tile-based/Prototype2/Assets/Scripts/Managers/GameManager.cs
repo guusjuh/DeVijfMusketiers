@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
         }
         currentActionPoints = totalActionPoints + addedActionPoints;
 
+        Debug.Log(currentActionPoints);
+
         ActivateButtons();
         Human[] humans = FindObjectsOfType<Human>() as Human[];
         for (int i = 0; i < humans.Length; i++)
