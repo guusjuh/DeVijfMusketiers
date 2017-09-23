@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
 using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour {
@@ -20,7 +21,7 @@ public class BaseEnemy : MonoBehaviour {
 
     protected Damagable target;
     protected Damagable prevTarget;
-    protected int x, y;
+    public int x, y;
     protected List<Node> currentPath = null;
 
     protected HighlightButton highlightBttn;
@@ -32,10 +33,7 @@ public class BaseEnemy : MonoBehaviour {
         this.x = x;
         this.y = y;
 
-        highlightBttn = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HighlightButton")).GetComponent<HighlightButton>();
-        highlightBttn.transform.SetParent(FindObjectOfType<Canvas>().transform);
-        highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
-        highlightBttn.Deactive();
+        InitializeHighlight();
 
         // obtain components
         boxCollider = GetComponent<BoxCollider2D>();
@@ -45,32 +43,14 @@ public class BaseEnemy : MonoBehaviour {
         inverseMoveTime = 1f / moveTime;
     }
 
-    protected virtual bool Move(int xDir, int yDir, out RaycastHit2D hit)
+    private void InitializeHighlight()
     {
-        //Store start position to move from, based on objects current transform position.
-        Vector2 start = transform.position;
-
-        // Calculate end position based on the direction parameters passed in when calling Move.
-        Vector2 end = start + new Vector2(xDir, yDir);
-
-        //Disable the boxCollider so that linecast doesn't hit this object's own collider.
-        boxCollider.enabled = false;
-
-        //Cast a line from start point to end point checking collision on blockingLayer.
-        hit = Physics2D.Linecast(start, end, blockingLayer);
-
-        //Re-enable boxCollider after linecast
-        boxCollider.enabled = true;
-
-        //If something was hit, return false, Move was unsuccesful.
-        return false;
+        highlightBttn = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HighlightButton")).GetComponent<HighlightButton>();
+        highlightBttn.transform.SetParent(FindObjectOfType<Canvas>().transform);
+        highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
+        highlightBttn.Deactive();
     }
-
-    protected virtual bool AttemptMove(bool secondTry = true)
-    {
-        return true;
-    }
-
+    
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
@@ -104,14 +84,43 @@ public class BaseEnemy : MonoBehaviour {
         other.Hit();
     }
 
-    public virtual bool MoveEnemy(bool secondTry = true)
+    protected virtual bool CanMove(int xDir, int yDir, out RaycastHit2D hit)
     {
-        return true;
+        //Store start position to move from, based on objects current transform position.
+        Vector2 start = transform.position;
+
+        // Calculate end position based on the direction parameters passed in when calling Move.
+        Vector2 end = start + new Vector2(xDir, yDir);
+
+        //Disable the boxCollider so that linecast doesn't hit this object's own collider.
+        boxCollider.enabled = false;
+
+        //Cast a line from start point to end point checking collision on blockingLayer.
+        hit = Physics2D.Linecast(start, end, blockingLayer);
+
+        //Re-enable boxCollider after linecast
+        boxCollider.enabled = true;
+
+        //Check if anything was hit
+        if (hit.transform == null)
+        {
+            //Return true to say that it can move
+            return true;
+        }
+
+        //If something was hit, return false, cannot move.
+        return false;
+    }
+
+    public virtual void MoveEnemy()
+    {
     }
 
     //TODO: different chances and stuff
-    protected Damagable SelectTarget()
+    protected void SelectTarget()
     {
+        if (target != null) target.Targeted = false;
+
         // declare super ugly unoptimazed list and arrays
         List<GameObject> possibleTargets = new List<GameObject>();
         Damagable[] tempTargets = FindObjectsOfType(typeof(Damagable)) as Damagable[];
@@ -119,49 +128,40 @@ public class BaseEnemy : MonoBehaviour {
         // only add vases which are destroyed already
         for (int i = 0; i < tempTargets.Length; i++)
         {
-            if (tempTargets[i].type == DamagableType.Barrel)
-            {
-                //if (tempTargets[i].GetComponent<Barrel>().Destroyed)
-                //{
-                    continue;
-                //}
-            }
+            // barrels are no target
+            if (tempTargets[i].type == DamagableType.Barrel) continue;
 
+            // dont target dead humans
             if (tempTargets[i].type == DamagableType.Human)
             {
-                // dont target dead humans
-                if (tempTargets[i].GetComponent<Human>().dead)
-                {
-                    continue;
-                }
+                if (tempTargets[i].GetComponent<Human>().dead || tempTargets[i].GetComponent<Human>().Invisible) continue;
             }
 
+            // dont target destoryed or nonactive shrines
             if (tempTargets[i].type == DamagableType.Shrine)
             {
-                // dont target destory or nonactive shrines
-                if (tempTargets[i].GetComponent<Shrine>().destroyed || !tempTargets[i].GetComponent<Shrine>().Active)
-                {
-                    continue;
-                }
+                if (tempTargets[i].GetComponent<Shrine>().destroyed || !tempTargets[i].GetComponent<Shrine>().Active) continue; 
             }
 
             possibleTargets.Add(tempTargets[i].gameObject);
         }
 
-        // first select target this is null
+        // first call to SelectTarget this is null
         if (prevTarget != null)
             possibleTargets.Remove(prevTarget.gameObject);
 
+        // no possible targets were found
         if (possibleTargets.Count <= 0)
         {
-            return prevTarget;
+            target = null;
+            prevTarget = null;
         }
         else
         {
             // select a target
             int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
-            //possibleTargets[selection].GetComponent<Damagable>().Targeted = true;
-            return possibleTargets[selection].GetComponent<Damagable>();
+            target = possibleTargets[selection].GetComponent<Damagable>();
+            prevTarget = target;
         }
     }
 
@@ -185,12 +185,107 @@ public class BaseEnemy : MonoBehaviour {
     {
         if (value)
         {
-            highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(this.transform.position);
             highlightBttn.Activate(bttn, this.gameObject);
+            highlightBttn.GetComponent<RectTransform>().anchoredPosition = GameManager.Instance.WorldToCanvas(new Vector3(this.transform.position.x, this.transform.position.y, 0));
         }
         else
         {
             highlightBttn.Deactive();
         }
+    }
+
+    public void UpdateTarget()
+    {
+        // if no current path avaible (blocked last step)
+        if (currentPath == null)
+        {
+            if (target == null)
+            {
+                // attempt to select a new target
+                SelectTarget();
+                
+                // no possible targets have been found
+                if (target == null)
+                {
+                    currentActionPoints = 0;
+                    return;
+                }
+            }
+
+            // is my target a human? than i have to check if he's not invisible
+            if (target.type == DamagableType.Human && target.GetComponent<Human>().Invisible)
+            {
+                SelectTarget();
+
+                // no possible targets have been found
+                if (target == null)
+                {
+                    currentActionPoints = 0;
+                    return;
+                }
+
+                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+            }
+
+            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+            if (currentPath == null)
+            {
+                currentActionPoints = 0;
+                return;
+            }
+        }
+
+        // do I still have a target?
+        if (target != null)
+        {
+            // is my target a human? than i have to check if he's not invisible
+            if (target.type == DamagableType.Human && target.GetComponent<Human>().Invisible)
+            {
+                SelectTarget();
+
+                // no possible targets have been found
+                if (target == null)
+                {
+                    currentActionPoints = 0;
+                    return;
+                }
+
+                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+            }
+            else
+            {
+                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+
+                if (currentPath == null)
+                {
+                    currentActionPoints = 0;
+                    return;
+                }
+            }
+        }
+        // target is dead/broken
+        else
+        {
+            // attempt to select a new target
+            SelectTarget();
+
+            // game is lost, will go to game over from levelmanager
+            if (target == null)
+            {
+                currentActionPoints = 0;
+                return;
+            }
+
+            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+
+            if (currentPath == null)
+            {
+                currentActionPoints = 0;
+                return;
+            }
+
+        }
+
+        if (currentPath.Count <= 2) target.Targeted = true;
     }
 }

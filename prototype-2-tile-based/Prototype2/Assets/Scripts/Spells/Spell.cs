@@ -49,7 +49,10 @@ public class Spell : MonoBehaviour
             {
                 case SpellTypes.Attack:
                     Debug.Log("Attack!");
-                    source.GetComponent<Creature>().Hit(10);
+                    if (source.GetComponent<Creature>() != null)
+                        source.GetComponent<Creature>().Hit(10);
+                    else
+                        source.GetComponent<Minion>().Hit(10);
                     break;
 
                 case SpellTypes.Protection:
@@ -84,6 +87,11 @@ public class Spell : MonoBehaviour
                     {
                         source.GetComponent<Barrel>().SetSurroundingHighlight(true, bttn);
                     }
+
+                    spellParts.HandleAction(s => s.Reset());
+                    gameObject.SetActive(false);
+
+                    return;
                     break;
 
                 default:
@@ -129,6 +137,9 @@ public class Spell : MonoBehaviour
             // if second, than source is the target button and HIS source is the human to target
             spellParts.HandleAction(s => s.Reset());
             gameObject.SetActive(false);
+
+            GameManager.Instance.EndPlayerTurn(cost);
+
             return;
         }
 

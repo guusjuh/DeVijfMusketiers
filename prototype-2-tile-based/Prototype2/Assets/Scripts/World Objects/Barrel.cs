@@ -35,6 +35,7 @@ public class Barrel : Damagable {
         set
         {
             destroyed = value;
+            cannotBeTarget = destroyed;
             GetComponent<SpriteRenderer>().sprite = destroyed ? destoryedSpr : normalSpr;
             GameManager.Instance.LevelManager.TileMap.SwitchVaseStatus(x, y, destroyed);
             if (destroyed) gameObject.layer = 0;
@@ -42,8 +43,36 @@ public class Barrel : Damagable {
         }
     }
 
+    public bool CheckForCreatureStandingOnMe()
+    {
+        List<Minion> enemies = GameManager.Instance.Creatures;
+
+        if (GameManager.Instance.Creature != null)
+        {
+            if (GameManager.Instance.Creature.x == x && GameManager.Instance.Creature.y == y)
+            {
+                return true;
+            }
+        }
+
+        foreach (BaseEnemy e in enemies)
+        {
+            if (e.x == x && e.y == y)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public override bool Hit()
     {
+        if (target != null)
+        {
+            GameObject.Destroy(target);
+            target = null;
+        }
         Destroyed = true;
         return true;
     }
@@ -69,7 +98,7 @@ public class Barrel : Damagable {
 
             for (int i = 0; i < surroundingHighlightBttns.Count; i++)
             {
-                if (GameManager.Instance.LevelManager.TileMap.Empty(surroundingHighlightBttns[i].x, surroundingHighlightBttns[i].y))
+                if (GameManager.Instance.LevelManager.TileMap.Empty(surroundingHighlightBttns[i].x, surroundingHighlightBttns[i].y, false))
                 {
                     tempButtons.Add(surroundingHighlightBttns[i]);
                 }
@@ -85,6 +114,8 @@ public class Barrel : Damagable {
 
     public void Move(int x, int y)
     {
+        GameManager.Instance.LevelManager.TileMap.MoveObject(this.x, this.y, x, y, TileMap.Types.Barrel);
+
         transform.position = new Vector3(x, y, transform.position.z);
         this.x = (int)transform.position.x;
         this.y = (int)transform.position.y;

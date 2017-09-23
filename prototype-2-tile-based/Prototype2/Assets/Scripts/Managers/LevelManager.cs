@@ -51,10 +51,11 @@ public class LevelManager  {
         gridPositions.Remove(down);
         gridPositions.Remove(left);
         gridPositions.Remove(right);
-        
+
         // instantiate creature
         // init done in GM (yea not so pritty, i know, i know)
         creature = (GameObject)GameObject.Instantiate(creature, centerPosition, Quaternion.identity);
+       // minion = (GameObject)GameObject.Instantiate(minion, centerPosition, Quaternion.identity);
         smug = (GameObject)GameObject.Instantiate(smug, centerPosition, Quaternion.identity);
 
         // init world objects

@@ -37,11 +37,41 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelManager levelManager = new LevelManager();
     public LevelManager LevelManager { get { return levelManager; } }
 
-    private List<Creature> creatures;
-    public List<Creature> Creatures { get { return creatures; } }
+    private Creature creature;
+    public Creature Creature {get { return creature; } }
+
+    private List<Minion> creatures;
+    public List<Minion> Creatures { get { return creatures; } }
 
     private List<SpellButton> spellButtons;
     private SkipButton skipButton;
+
+    public void AddCreature(Minion enemy)
+    {
+        creatures.Add(enemy);
+    }
+
+    public void RemoveCreature(Minion enemy)
+    {
+        creatures.Remove(enemy);
+
+        // if everything dead
+        if(creature == null && creatures.Count <= 0)
+        {
+            Application.LoadLevel("Win");
+        }
+    }
+
+    public void BossDead()
+    {
+        creature = null;
+        
+        // if everything is dead
+        if (creatures.Count <= 0)
+        {
+            Application.LoadLevel("Win");
+        }
+    }
 
     public void BeginPlayerTurn()
     {
@@ -72,12 +102,23 @@ public class GameManager : MonoBehaviour
         {
             DeactivateButtons();
 
+            UpdateEnemyPaths();
+
+            if(creature != null) Creature.EndPlayerTurn();
+
             playersTurn = false;
         }
         else
         {
             ActivateButtons();
         }
+    }
+
+    public void UpdateEnemyPaths()
+    {
+        Instance.Creatures.HandleAction(c => c.UpdateTarget());
+        if(creature != null)
+            Creature.UpdateTarget();
     }
 
     public void SkipButtonClick()
@@ -107,11 +148,14 @@ public class GameManager : MonoBehaviour
         camera.transform.position = new Vector3((levelManager.columns / 2.0f) - 0.5f, (levelManager.rows / 2.0f) - 0.5f, -10.0f);
 
         // find the creature
-        creatures = new List<Creature>();
-        Creature[] tempTargets = FindObjectsOfType(typeof(Creature)) as Creature[];
-        creatures.AddMultiple(tempTargets);
+        creatures = new List<Minion>();
+        //Minion[] tempTargets = FindObjectsOfType(typeof(Minion)) as Minion[];
+        //creatures.AddMultiple(tempTargets);
 
-        creatures.HandleAction(c => c.Initialize((int) (levelManager.columns / 2.0f), (int) (levelManager.rows / 2.0f)));
+        //creatures.HandleAction(c => c.Initialize();
+
+        creature = FindObjectOfType<Creature>() as Creature;
+        creature.Initialize((int)(levelManager.columns / 2.0f), (int)(levelManager.rows / 2.0f));
 
         // find all buttons
         spellButtons = new List<SpellButton>();
@@ -152,24 +196,36 @@ public class GameManager : MonoBehaviour
         // wait for turn delay
         yield return new WaitForSeconds(1.0f);
 
-        creatures.HandleAction(c => c.StartTurn());
-
-        for (int i = 0; i < creatures.Count; i++)
+        if (creatures.Count > 0)
         {
-            while (creatures[i].CurrentActionPoints > 0)
+            creatures.HandleAction(c => c.StartTurn());
+
+            for (int i = 0; i < creatures.Count; i++)
             {
-                // make creature move
-                bool movedButNotLastTarget = creatures[i].MoveEnemy();
-
-                // delay
-                yield return new WaitForSeconds(0.6f);
-
-                if (!movedButNotLastTarget)
+                while (creatures[i].CurrentActionPoints > 0)
                 {
-                    creatures[i].MoveEnemy(false);
+                    // make creature move
+                    creatures[i].MoveEnemy();
+
+                    // delay
+                    yield return new WaitForSeconds(0.6f);
                 }
             }
         }
+
+        if (creature != null)
+        {
+            creature.StartTurn();
+            while (creature.CurrentActionPoints > 0)
+            {
+                // make creature move
+                creature.MoveEnemy();
+
+                // delay
+                yield return new WaitForSeconds(0.6f);
+            }
+        }
+
 
         // switch turns
         playersTurn = true;

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4423280240553302}
   - component: {fileID: 212448280821792858}
   - component: {fileID: 61725867244329658}
-  - component: {fileID: 114020250795274280}
+  - component: {fileID: 114386562613717160}
   - component: {fileID: 50017664953047360}
   m_Layer: 0
   m_Name: Minion
@@ -72,7 +72,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -88,7 +88,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &114020250795274280
+--- !u!114 &114386562613717160
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,13 +96,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1114718631976980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22766c81e7c17884b8c8e45bfd6d9c99, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b4919af1b41cb043966a23294c42bc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveTime: 0.1
   blockingLayer:
     serializedVersion: 2
     m_Bits: 256
+  x: 0
+  y: 0
 --- !u!212 &212448280821792858
 SpriteRenderer:
   m_ObjectHideFlags: 1

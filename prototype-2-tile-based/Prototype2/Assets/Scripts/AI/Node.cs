@@ -6,6 +6,9 @@ public class Node
     public List<Node> neighbours;
     public int x, y;
 
+    private bool batOnThisTile = false;
+    public bool BatOnThisTile { get { return batOnThisTile; } set { batOnThisTile = value; } }
+
     public Node()
     {
         neighbours = new List<Node>();

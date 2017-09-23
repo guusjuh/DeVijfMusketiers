@@ -22,10 +22,11 @@ public class TileMap
     public TileType[] tileTypes;
     private Node[,] graph;
     private Types[,] tiles;
+    public Types[,] Tiles { get { return tiles; } }
 
     private int columns, rows;
 
-    public bool Empty(int x, int y)
+    public bool Empty(int x, int y, bool interstedInBats = true)
     {
         // outside board
         if (x < 0 || x >= columns || y < 0 || y >= rows)
@@ -34,9 +35,37 @@ public class TileMap
         }
 
         // not empty tile
-        if (tiles[x, y] != Types.Empty)
+        if (interstedInBats)
+        {
+            if (tiles[x, y] != Types.Empty || graph[x, y].BatOnThisTile)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (tiles[x, y] != Types.Empty)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool CanSpawnMinion(int x, int y)
+    {
+        // outside board
+        if (x < 0 || x >= columns || y < 0 || y >= rows)
         {
             return false;
+        }
+        else
+        {
+            if (tiles[x, y] != Types.Barrel && tiles[x, y] != Types.Hole && tiles[x, y] != Types.Empty)
+            {
+                return false;
+            }
         }
 
         return true;
@@ -115,17 +144,17 @@ public class TileMap
         }
     }
 
-    public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY, Node endTarget)
+    public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY, Node endTarget, bool flying = false)
     {
         TileType tt = tileTypes[(int)tiles[targetX, targetY]];
 
         if (new Vector2(endTarget.x - targetX, endTarget.y - targetY).magnitude > 0.1f)
         {
-            if (!UnitCanEnterTile(targetX, targetY))
+            if (!UnitCanEnterTile(targetX, targetY, flying))
                 return Mathf.Infinity;
         }
 
-        float cost = tt.movementCost;
+        float cost = flying ? 1 : tt.movementCost;
 
         //adding very tiny extra cost to diagonals, looks better
         if (sourceX != targetX && sourceY != targetY)
@@ -139,10 +168,32 @@ public class TileMap
         return new Vector3(x, y, 0);
     }
 
-    public bool UnitCanEnterTile(int x, int y)
+    public bool UnitCanEnterTile(int x, int y, bool flying = false)
     {
         //possible to check for walk/hover/fly skills or whatever against terrain types
-        return tileTypes[(int)tiles[x, y]].canEnter;
+        if (!flying)
+        {
+            if (tileTypes[(int) tiles[x, y]].canEnter)
+            {
+                return !graph[x, y].BatOnThisTile;
+            }
+
+            return false;
+        }
+        else
+        {
+            if (tileTypes[(int) tiles[x, y]].canFlyOver)
+            {
+                return !graph[x, y].BatOnThisTile;
+            }
+
+            return false;
+        }
+    }
+
+    public void SetObject(int x, int y, Types type)
+    {
+        tiles[x, y] = type;
     }
 
     public void RemoveObject(int x, int y)
@@ -150,13 +201,35 @@ public class TileMap
         tiles[x, y] = Types.Empty;
     }
 
+    public void MoveObject(int currX, int currY, int newX, int newY, Types type)
+    {
+        RemoveObject(currX, currY);
+        SetObject(newX, newY, type);
+    }
+
+    public void SetBat(int x, int y)
+    {
+        graph[x, y].BatOnThisTile = true;
+    }
+
+    public void RemoveBat(int x, int y)
+    {
+        graph[x, y].BatOnThisTile = false;
+    }
+
+    public void MoveBat(int currX, int currY, int newX, int newY)
+    {
+        RemoveBat(currX, currY);
+        SetBat(newX, newY);
+    }
+
     public void SwitchVaseStatus(int x, int y, bool broken)
     {
         // cannot walk on vases, not even when broken when commented out
-        //tiles[x, y] = broken ? Types.BrokenVase : Types.Vase;
+        tiles[x, y] = broken ? Types.BrokenBarrel : Types.Barrel;
     }
 
-    public List<Node> GeneratePathTo(int fromX, int fromY, int toX, int toY)
+    public List<Node> GeneratePathTo(int fromX, int fromY, int toX, int toY, bool flying = false)
     {
         //if (!UnitCanEnterTile(toX, toY))
         //    return null;
@@ -204,7 +277,7 @@ public class TileMap
             foreach (Node v in u.neighbours)
             {
                 //float alt = dist[u] + u.DistTo(v);
-                float alt = dist[u] + CostToEnterTile(u.x, u.y, v.x, v.y, target);
+                float alt = dist[u] + CostToEnterTile(u.x, u.y, v.x, v.y, target, flying);
 
                 if (alt < dist[v])
                 {

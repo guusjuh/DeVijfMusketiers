@@ -109,7 +109,7 @@ public class SpellButton : MonoBehaviour
                 vases.AddMultiple(FindObjectsOfType(typeof(Barrel)) as Barrel[]);
                 for (int i = 0; i < vases.Count; i++)
                 {
-                    if (vases[i].Destroyed)
+                    if (vases[i].Destroyed && !vases[i].CheckForCreatureStandingOnMe())
                     {
                         temp = true;
                     }
@@ -171,7 +171,10 @@ public class SpellButton : MonoBehaviour
 
     void HighlightBeast()
     {
-        GameObject.FindObjectOfType<Creature>().SetHighlight(true, this);
+        Creature boss = GameObject.FindObjectOfType<Creature>();
+        if(boss != null) boss.SetHighlight(true, this);
+
+        GameManager.Instance.Creatures.HandleAction(c => c.SetHighlight(true, this));
     }
 
     void HighlightHuman()
@@ -191,7 +194,7 @@ public class SpellButton : MonoBehaviour
 
         for (int i = 0; i < possibleTargets.Count; i++)
         {
-            if (possibleTargets[i].Destroyed)
+            if (possibleTargets[i].Destroyed && !possibleTargets[i].CheckForCreatureStandingOnMe())
                 possibleTargets[i].SetHighlight(true, this);
         }
     }
@@ -212,7 +215,9 @@ public class SpellButton : MonoBehaviour
     void DeHighlight()
     {
         // dehighlight creature
-        GameObject.FindObjectOfType<Creature>().SetHighlight(false, this);
+        Creature boss = GameObject.FindObjectOfType<Creature>();
+        if (boss != null) boss.SetHighlight(false, this);
+        GameManager.Instance.Creatures.HandleAction(c => c.SetHighlight(false, this));
 
         // humans
         List<Human> possibleTargets = new List<Human>();

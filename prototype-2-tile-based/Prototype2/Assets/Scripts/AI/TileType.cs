@@ -9,4 +9,5 @@ public class TileType
     public float movementCost = 1;
     public bool canEnter = true;
     public bool canFlyOver = true;
+
 }

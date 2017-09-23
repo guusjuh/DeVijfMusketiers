@@ -9,6 +9,12 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.Creature == null)
+        {
+            rectTransform.sizeDelta = new Vector2((0.0f / 100.0f) * 1000.0f, GetComponent<RectTransform>().sizeDelta.y);
+            return;
+        }
+
         if (creatureReference == null || rectTransform == null)
         {
             creatureReference = FindObjectOfType(typeof(Creature)) as Creature;

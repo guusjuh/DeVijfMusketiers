@@ -35,6 +35,7 @@ public class Shrine : Damagable {
     public override bool Hit()
     {
         destroyed = true;
+        cannotBeTarget = true;
         GameManager.Instance.LevelManager.RemoveShrine(this);
 
         return true;

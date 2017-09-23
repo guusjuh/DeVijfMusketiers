@@ -8,9 +8,12 @@ public class Damagable : MonoBehaviour
     public DamagableType type;
     public int x, y;
 
+    // either dead or broken, set from child classes
+    protected bool cannotBeTarget;
+
     // het rooie blokje eronder :D
-    private GameObject target;
-    private bool targeted = false;
+    protected GameObject target;
+    protected bool targeted = false;
     public bool Targeted
     {
         get
@@ -20,13 +23,8 @@ public class Damagable : MonoBehaviour
         set
         {
             targeted = value;
-            if (targeted)
-            {
-                if(target == null)
-                    target = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Target"), this.transform.position,
-                    this.transform.rotation);
-            }
-            else
+
+            if (cannotBeTarget)
             {
                 if (target != null)
                 {
@@ -34,6 +32,32 @@ public class Damagable : MonoBehaviour
                     target = null;
                 }
             }
+            else
+            {
+
+                if (targeted)
+                {
+                    if (target == null)
+                        target = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Target"),
+                            this.transform.position,
+                            this.transform.rotation);
+
+                    else
+                    {
+                        target.transform.position = this.transform.position;
+                    }
+
+                }
+                else
+                {
+                    if (target != null)
+                    {
+                        GameObject.Destroy(target);
+                        target = null;
+                    }
+                }
+            }
+
         }
     }
 

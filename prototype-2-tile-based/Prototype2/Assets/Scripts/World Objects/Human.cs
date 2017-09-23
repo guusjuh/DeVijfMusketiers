@@ -6,7 +6,7 @@ public class Human : Damagable
 {
     private Color shieldColor = new Color(0.0f, 0.0f, 1, 1);
     private Color normalColor;
-    public bool Shielded { get; private set; }
+    public bool Invisible { get; private set; }
     private int shieldPoints = 2;
 
     public bool dead = false;
@@ -18,7 +18,7 @@ public class Human : Damagable
 
     public void Start()
     {
-        Shielded = false;
+        Invisible = false;
         normalColor = GetComponent<SpriteRenderer>().color;
 
         highlightBttn = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HighlightButton")).GetComponent<HighlightButton>();
@@ -40,13 +40,13 @@ public class Human : Damagable
     public void Shield()
     {
         GetComponent<SpriteRenderer>().color = shieldColor;
-        Shielded = true;
+        Invisible = true;
         shieldPoints = 3;
     }
 
     public void BeginPlayerTurn()
     {
-        if (Shielded)
+        if (Invisible)
         {
             shieldPoints--;
 
@@ -55,28 +55,34 @@ public class Human : Damagable
             if (shieldPoints <= 0)
             {
                 GetComponent<SpriteRenderer>().color = normalColor;
-                Shielded = false;
+                Invisible = false;
             }
         }
     }
 
     public override bool Hit()
     {
-        if (Shielded)
+        /*if (Invisible)
         {
             shieldPoints = 0;
 
             if (shieldPoints <= 0)
             {
                 GetComponent<SpriteRenderer>().color = normalColor;
-                Shielded = false;
+                Invisible = false;
             }
         }
         else
-        {
+        {*/
             dead = true;
+            cannotBeTarget = true;
+            if (target != null)
+            {
+                GameObject.Destroy(target);
+                target = null;
+            }
             GameManager.Instance.LevelManager.RemoveHuman(this);
-        }
+        //}
 
         return true;
     }
@@ -118,6 +124,8 @@ public class Human : Damagable
 
     public void Move(int x, int y)
     {
+        GameManager.Instance.LevelManager.TileMap.MoveObject(this.x, this.y, x, y, TileMap.Types.Human);
+
         transform.position = new Vector3(x, y, transform.position.z);
         this.x = (int) transform.position.x;
         this.y = (int) transform.position.y;
@@ -134,5 +142,28 @@ public class Human : Damagable
         all.AddMultiple(FindObjectsOfType<Shrine>() as Shrine[]);
 
         all.HandleAction(s => s.CheckForActive());
+
+        if (target != null)
+        {
+            target.transform.position = this.transform.position;
+
+            bool stillTarget = false;
+            for (int i = 0; i < GameManager.Instance.Creatures.Count; i++)
+            {
+                for (int j = 0; j < positions.Length; j++)
+                {
+                    if (Mathf.Abs(GameManager.Instance.Creatures[i].x - (x + positions[j].x)) < 0.1f &&
+                        Mathf.Abs(GameManager.Instance.Creatures[i].y - (y + positions[j].y)) < 0.1f)
+                    {
+                        stillTarget = true;
+                    }
+                }
+            }
+
+            if (!stillTarget)
+            {
+                Targeted = false;
+            }
+        }
     }
 }
