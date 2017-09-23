@@ -117,7 +117,26 @@ public class SpellButton : MonoBehaviour
                 break;
 
             case Spell.SpellTypes.Push:
-                temp = true; // cuz you can always push, else u dead.
+                List<Human> humans2 = new List<Human>();
+                humans2.AddMultiple(FindObjectsOfType(typeof(Human)) as Human[]);
+
+                for (int i = 0; i < humans2.Count; i++)
+                {
+                    if (humans2[i].CanBePushed())
+                    {
+                        temp = true; // cuz you can always push, else u dead.
+                    }
+                }
+
+                List<Barrel> barrel = new List<Barrel>();
+                barrel.AddMultiple(FindObjectsOfType(typeof(Barrel)) as Barrel[]);
+                for (int i = 0; i < barrel.Count; i++)
+                {
+                    if (barrel[i].Destroyed && barrel[i].CanBePushed())
+                    {
+                        temp = true;
+                    }
+                }
 
                 break;
 
@@ -148,8 +167,8 @@ public class SpellButton : MonoBehaviour
                 break;
 
             case Spell.SpellTypes.Push:
-                HighlightHuman();
-                HighlightBarrel();
+                HighlightHuman(true);
+                HighlightBarrel(true);
                 break;
 
             default:
@@ -177,13 +196,21 @@ public class SpellButton : MonoBehaviour
         GameManager.Instance.Creatures.HandleAction(c => c.SetHighlight(true, this));
     }
 
-    void HighlightHuman()
+    void HighlightHuman(bool push = false)
     {
         List<Human> possibleTargets = new List<Human>();
         Human[] tempTargets = FindObjectsOfType(typeof(Human)) as Human[];
         possibleTargets.AddMultiple(tempTargets);
 
-        possibleTargets.HandleAction(p => p.SetHighlight(true, this));
+        if (!push) possibleTargets.HandleAction(p => p.SetHighlight(true, this));
+        else
+        {
+            for (int i = 0; i < possibleTargets.Count; i++)
+            {
+                if (possibleTargets[i].CanBePushed())
+                    possibleTargets[i].SetHighlight(true, this);
+            }
+        }
     }
 
     void HighlightBrokenBarrel()
@@ -199,18 +226,30 @@ public class SpellButton : MonoBehaviour
         }
     }
 
-    void HighlightBarrel()
+    void HighlightBarrel(bool push = false)
     {
         List<Barrel> possibleTargets = new List<Barrel>();
         Barrel[] tempTargets = FindObjectsOfType(typeof(Barrel)) as Barrel[];
         possibleTargets.AddMultiple(tempTargets);
 
-        for (int i = 0; i < possibleTargets.Count; i++)
+        if (!push)
         {
-            if (!possibleTargets[i].Destroyed)
-                possibleTargets[i].SetHighlight(true, this);
+            for (int i = 0; i < possibleTargets.Count; i++)
+            {
+                if (!possibleTargets[i].Destroyed)
+                    possibleTargets[i].SetHighlight(true, this);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < possibleTargets.Count; i++)
+            {
+                if (possibleTargets[i].CanBePushed() && !possibleTargets[i].Destroyed)
+                    possibleTargets[i].SetHighlight(true, this);
+            }
         }
     }
+
 
     void DeHighlight()
     {

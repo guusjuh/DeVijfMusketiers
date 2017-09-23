@@ -11,6 +11,8 @@ public class Damagable : MonoBehaviour
     // either dead or broken, set from child classes
     protected bool cannotBeTarget;
 
+    static Vector3[] positions = { new Vector3(0, 1), new Vector3(1, 0), new Vector3(-1, 0), new Vector3(0, -1) };
+
     // het rooie blokje eronder :D
     protected GameObject target;
     protected bool targeted = false;
@@ -69,6 +71,19 @@ public class Damagable : MonoBehaviour
 
     public virtual bool Hit()
     {
+        return false;
+    }
+
+    public bool CanBePushed()
+    {
+        for (int i = 0; i < positions.Length; i++)
+        {
+            if (GameManager.Instance.LevelManager.TileMap.Empty((int)positions[i].x + x, (int)positions[i].y + y))
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 }

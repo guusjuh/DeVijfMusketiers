@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Human : Damagable
 {
-    private Color shieldColor = new Color(0.0f, 0.0f, 1, 1);
+    private Color shieldColor = new Color(0.0f, 0.0f, 0.5f, 0.5f);
     private Color normalColor;
     public bool Invisible { get; private set; }
     private int shieldPoints = 2;
@@ -41,7 +41,10 @@ public class Human : Damagable
     {
         GetComponent<SpriteRenderer>().color = shieldColor;
         Invisible = true;
-        shieldPoints = 3;
+        shieldPoints = 2;
+
+        GameManager.Instance.LevelManager.TileMap.SwitchHoomanStatus(x, y, true);
+        gameObject.layer = 0;
     }
 
     public void BeginPlayerTurn()
@@ -50,12 +53,14 @@ public class Human : Damagable
         {
             shieldPoints--;
 
-            GetComponent<SpriteRenderer>().color += new Color(0.25f, 0.25f, 0, 0);
+            GetComponent<SpriteRenderer>().color += new Color(0.25f, 0.25f, 0.25f, 0.25f);
 
             if (shieldPoints <= 0)
             {
                 GetComponent<SpriteRenderer>().color = normalColor;
                 Invisible = false;
+                GameManager.Instance.LevelManager.TileMap.SwitchHoomanStatus(x, y, false);
+                gameObject.layer = 8;
             }
         }
     }
@@ -89,7 +94,7 @@ public class Human : Damagable
 
     public void SetHighlight(bool value, SpellButton bttn)
     {
-        if (value)
+        if (value && !Invisible)
         {
             highlightBttn.Activate(bttn, this.gameObject);
         }

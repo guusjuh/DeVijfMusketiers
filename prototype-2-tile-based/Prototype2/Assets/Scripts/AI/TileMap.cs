@@ -11,6 +11,7 @@ public class TileMap
     {
         Empty = 0,
         Human,
+        InvisibleHooman,
         Barrel,
         BrokenBarrel,
         Shrine,
@@ -227,6 +228,12 @@ public class TileMap
     {
         // cannot walk on vases, not even when broken when commented out
         tiles[x, y] = broken ? Types.BrokenBarrel : Types.Barrel;
+    }
+
+    public void SwitchHoomanStatus(int x, int y, bool inktvis)
+    {
+        // cannot walk on vases, not even when broken when commented out
+        tiles[x, y] = inktvis ? Types.InvisibleHooman : Types.Human;
     }
 
     public List<Node> GeneratePathTo(int fromX, int fromY, int toX, int toY, bool flying = false)

@@ -119,7 +119,7 @@ public class BaseEnemy : MonoBehaviour {
     //TODO: different chances and stuff
     protected void SelectTarget()
     {
-        if (target != null) target.Targeted = false;
+        /*if (target != null) target.Targeted = false;
 
         // declare super ugly unoptimazed list and arrays
         List<GameObject> possibleTargets = new List<GameObject>();
@@ -162,7 +162,7 @@ public class BaseEnemy : MonoBehaviour {
             int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
             target = possibleTargets[selection].GetComponent<Damagable>();
             prevTarget = target;
-        }
+        }*/
     }
 
     public virtual void Hit(int dmg)
@@ -196,96 +196,6 @@ public class BaseEnemy : MonoBehaviour {
 
     public void UpdateTarget()
     {
-        // if no current path avaible (blocked last step)
-        if (currentPath == null)
-        {
-            if (target == null)
-            {
-                // attempt to select a new target
-                SelectTarget();
-                
-                // no possible targets have been found
-                if (target == null)
-                {
-                    currentActionPoints = 0;
-                    return;
-                }
-            }
-
-            // is my target a human? than i have to check if he's not invisible
-            if (target.type == DamagableType.Human && target.GetComponent<Human>().Invisible)
-            {
-                SelectTarget();
-
-                // no possible targets have been found
-                if (target == null)
-                {
-                    currentActionPoints = 0;
-                    return;
-                }
-
-                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-            }
-
-            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-            if (currentPath == null)
-            {
-                currentActionPoints = 0;
-                return;
-            }
-        }
-
-        // do I still have a target?
-        if (target != null)
-        {
-            // is my target a human? than i have to check if he's not invisible
-            if (target.type == DamagableType.Human && target.GetComponent<Human>().Invisible)
-            {
-                SelectTarget();
-
-                // no possible targets have been found
-                if (target == null)
-                {
-                    currentActionPoints = 0;
-                    return;
-                }
-
-                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-            }
-            else
-            {
-                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-
-                if (currentPath == null)
-                {
-                    currentActionPoints = 0;
-                    return;
-                }
-            }
-        }
-        // target is dead/broken
-        else
-        {
-            // attempt to select a new target
-            SelectTarget();
-
-            // game is lost, will go to game over from levelmanager
-            if (target == null)
-            {
-                currentActionPoints = 0;
-                return;
-            }
-
-            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-
-            if (currentPath == null)
-            {
-                currentActionPoints = 0;
-                return;
-            }
-
-        }
-
-        if (currentPath.Count <= 2) target.Targeted = true;
+        
     }
 }

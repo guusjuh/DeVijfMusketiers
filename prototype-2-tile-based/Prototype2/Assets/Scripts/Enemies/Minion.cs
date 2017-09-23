@@ -39,53 +39,7 @@ public class Minion : BaseEnemy
 
     public override void MoveEnemy()
     {
-        if (currentPath == null)
-        {
-            if (target == null)
-            {
-                // attempt to select a new target
-                SelectTarget();
-            }
-
-            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
-            if (currentPath == null)
-            {
-                currentActionPoints = 0;
-                return;
-            }
-        }
-
-        if (target == null)
-        {
-            // attempt to select a new target
-            SelectTarget();
-            prevTarget = target;
-
-            // game is lost, will go to game over from levelmanager
-            if (target == null)
-            {
-                currentActionPoints--;
-                return;
-            }
-
-            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y, true);
-            /*while (currentPath == null)
-            {
-                // there is no way the creature can get to that target right now.
-                target.Targeted = false;
-
-                target = SelectTarget();
-                prevTarget = target;
-                currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y, true);
-            }*/
-            if (currentPath == null)
-            {
-                currentActionPoints = 0;
-                return;
-            }
-
-            if (currentPath.Count <= 2) target.Targeted = true;
-        }
+        //TODO: targets
 
         // do raycast to check for world objects
         RaycastHit2D hit;
