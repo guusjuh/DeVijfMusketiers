@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework.Interfaces;
 using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour {
@@ -224,8 +223,32 @@ public class BaseEnemy : MonoBehaviour {
         }
     }
 
+    public bool CheckTargetForSuperSafe()
+    {
+        if (currentPath == null || target == null || prevTarget == null)
+        {
+            if (currentPath == null && target == null && prevTarget == null)
+            {
+                currentActionPoints = 0;
+                Debug.Log("skipped a move: no target or route found");
+                return false;
+            }
+            Debug.LogError("Wubba lubba dup dup");
+            return false;
+        }
+        return true;
+    }
+
     public void UpdateTarget()
     {
-        
+        // is my target a human? than i have to check if he's not invisible
+        if (target.type == DamagableType.Human && target.GetComponent<Human>().Invisible)
+        {
+            SelectTarget();
+        }
+        else
+        {
+            currentPath = GameManager.Instance.LevelManager.TileMap.GeneratePathTo(x, y, target.x, target.y);
+        }
     }
 }

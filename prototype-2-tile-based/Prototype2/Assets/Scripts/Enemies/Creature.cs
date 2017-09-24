@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Channels;
-using UnityEditor.Experimental.Animations;
 using UnityEngine;
 
 public class Creature : BaseEnemy
@@ -45,19 +43,9 @@ public class Creature : BaseEnemy
         {
             SelectTarget();
         }
-        if (currentPath == null || target == null || prevTarget == null)
-        {
-            if (currentPath == null && target == null && prevTarget == null)
-            {
-                currentActionPoints = 0;
-                Debug.Log("skipped a move: no target or route found");
-                return;
-            }
-            Debug.LogError("Wubba lubba dup dup");
-            return;
-        }
-
+        if (!CheckTargetForSuperSafe()) return;
         UpdateTarget();
+        if (!CheckTargetForSuperSafe()) return;
 
         // do raycast to check for world objects
         RaycastHit2D hit;

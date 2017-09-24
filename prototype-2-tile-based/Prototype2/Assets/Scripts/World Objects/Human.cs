@@ -45,6 +45,8 @@ public class Human : Damagable
 
         GameManager.Instance.LevelManager.TileMap.SwitchHoomanStatus(x, y, true);
         gameObject.layer = 0;
+
+        Targeted = false;
     }
 
     public void BeginPlayerTurn()
@@ -81,11 +83,7 @@ public class Human : Damagable
         {*/
             dead = true;
             cannotBeTarget = true;
-            if (target != null)
-            {
-                GameObject.Destroy(target);
-                target = null;
-            }
+            Targeted = false;
             GameManager.Instance.LevelManager.RemoveHuman(this);
         //}
 

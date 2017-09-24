@@ -29,19 +29,9 @@ public class Minion : BaseEnemy
         {
             SelectTarget();
         }
-        if (currentPath == null || target == null || prevTarget == null)
-        {
-            if (currentPath == null && target == null && prevTarget == null)
-            {
-                currentActionPoints = 0;
-                Debug.Log("Minion: skipped a move: no target or route found");
-                return;
-            }
-            Debug.LogError("Minion: Wubba lubba dup dup");
-            return;
-        }
-
+        if (!CheckTargetForSuperSafe()) return;
         UpdateTarget();
+        if (!CheckTargetForSuperSafe()) return;
 
         // do raycast to check for world objects
         RaycastHit2D hit;
