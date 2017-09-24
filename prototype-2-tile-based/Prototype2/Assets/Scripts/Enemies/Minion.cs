@@ -17,7 +17,10 @@ public class Minion : BaseEnemy
         // select the first target to destory! mwoehahaha
         SelectTarget();
 
-        if (currentPath.Count <= 2) target.Targeted = true;
+        if (CheckTargetForSuperSafe())
+        {
+            if (currentPath.Count <= 2) target.Targeted = true;
+        }
 
         GameManager.Instance.AddCreature(this);
     }

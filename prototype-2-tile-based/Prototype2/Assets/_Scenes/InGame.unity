@@ -1541,7 +1541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 2
+  totalCooldown: 1
   cost: 2
   spellFigure: {fileID: 1999985659}
   disabled: {fileID: 686920865}

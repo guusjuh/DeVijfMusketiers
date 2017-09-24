@@ -45,6 +45,7 @@ public class Human : Damagable
 
         GameManager.Instance.LevelManager.TileMap.SwitchHoomanStatus(x, y, true);
         gameObject.layer = 0;
+        Debug.Log("I have a shield now");
 
         Targeted = false;
     }
@@ -59,6 +60,7 @@ public class Human : Damagable
 
             if (shieldPoints <= 0)
             {
+                Debug.Log("I have no shield anymore");
                 GetComponent<SpriteRenderer>().color = normalColor;
                 Invisible = false;
                 GameManager.Instance.LevelManager.TileMap.SwitchHoomanStatus(x, y, false);

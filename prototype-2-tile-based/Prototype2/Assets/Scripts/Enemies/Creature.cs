@@ -161,15 +161,16 @@ public class Creature : BaseEnemy
         if (availablePositions.Count > 0)
         {
             int selected = 0;
-            List<Vector3> availablePositionsCopy = availablePositions;
-            for (int i = 0; i < (availablePositions.Count >= 2 ? 2 : 1); i++)
+            int nPositions = availablePositions.Count;
+            for (int i = 0; i < (nPositions >= 2 ? 2 : 1); i++)
             {
-                selected = UnityEngine.Random.Range(0, availablePositionsCopy.Count);
+                selected = UnityEngine.Random.Range(0, availablePositions.Count);
 
-                GameObject go = GameObject.Instantiate(minionPrefab, availablePositionsCopy[selected], Quaternion.identity);
-                go.GetComponent<Minion>().Initialize((int)availablePositionsCopy[selected].x, (int)availablePositionsCopy[selected].y);
+                GameObject go = GameObject.Instantiate(minionPrefab, availablePositions[selected], Quaternion.identity);
+                go.GetComponent<Minion>().Initialize((int)availablePositions[selected].x, (int)availablePositions[selected].y);
 
-                availablePositionsCopy.RemoveAt(selected);
+                availablePositions.RemoveAt(selected);
+                int debug = 0;
             }
         }
         else
