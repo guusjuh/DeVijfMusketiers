@@ -114,7 +114,6 @@ public class LevelManager  {
         
         //initialize first spot of goo
         tileMap.SetObject((int)centerPosition.x, (int)centerPosition.y, TileMap.Types.Goo);
-        int debug = 0;
     }
 
     // loads all objects/tiles required to build the level
@@ -242,17 +241,21 @@ public class LevelManager  {
             for (int j = 0; j < positions.Length; j++)
             {
                 Vector2 curPos = gooPostions[i] + (Vector2)positions[j];
-                if (gooPostions.Contains(curPos) && 
-                    (curPos.x <= 0 || curPos.x >= rows -1) && 
-                    (curPos.y <= 0 || curPos.y >= columns - 1))
+                if (gooPostions.Contains(curPos) &&
+                    ((int)curPos.x <= 0 || (int)curPos.x >= rows - 1) &&
+                    ((int)curPos.y <= 0 || (int)curPos.y >= columns - 1))
                     continue;
-                else 
+                else
+                {
                     posGooPostions.Add(curPos);
+                }
+                    
             }
         }
         // select een tegel
         int rnd = UnityEngine.Random.Range(0, posGooPostions.Count);
         Vector2 theChosenGoo = posGooPostions[rnd];
+        Debug.Log("Chose goo {" + theChosenGoo.x + "," + theChosenGoo + "}");
 
         // kill all stuff on de tegel
         TileMap.Types t = TileMap.Tiles[(int) theChosenGoo.x, (int) theChosenGoo.y];

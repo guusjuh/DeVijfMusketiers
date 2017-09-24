@@ -19,7 +19,7 @@ public class Creature : BaseEnemy
         minionPrefab = Resources.Load<GameObject>("Prefabs/Minion");
 
         totalActionPoints = 3;
-        health = 100;
+        health = 150;
 
         GameManager.Instance.LevelManager.TileMap.SetMonster(x, y);
 
@@ -130,7 +130,7 @@ public class Creature : BaseEnemy
 
     public override void Hit(int dmg)
     {
-        base.Hit(50);
+        base.Hit(dmg);
 
         if (health <= 0)
         {

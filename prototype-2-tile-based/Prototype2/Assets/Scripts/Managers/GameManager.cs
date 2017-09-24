@@ -93,12 +93,12 @@ public class GameManager : MonoBehaviour
     public void BeginPlayerTurn()
     {
         amountOfTurns++;
-        if (amountOfTurns == 4)
+        if (amountOfTurns == 1)
         {
             StartCoroutine(WarningText());
         }
 
-        if (amountOfTurns > 4)
+        if (amountOfTurns > 1)
         {
             levelManager.SpawnGoo();
         }

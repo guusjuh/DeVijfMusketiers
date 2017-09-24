@@ -11,7 +11,7 @@ public class HealthBar : MonoBehaviour
     {
         if (GameManager.Instance.Creature == null)
         {
-            rectTransform.sizeDelta = new Vector2((0.0f / 100.0f) * 1000.0f, GetComponent<RectTransform>().sizeDelta.y);
+            rectTransform.sizeDelta = new Vector2((0.0f / 150.0f) * 1000.0f, GetComponent<RectTransform>().sizeDelta.y);
             return;
         }
 
@@ -21,6 +21,6 @@ public class HealthBar : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
         } 
 
-        rectTransform.sizeDelta = new Vector2((creatureReference.Health / 100.0f) * 1000.0f, GetComponent<RectTransform>().sizeDelta.y);
+        rectTransform.sizeDelta = new Vector2((creatureReference.Health / 150.0f) * 1000.0f, GetComponent<RectTransform>().sizeDelta.y);
     }
 }

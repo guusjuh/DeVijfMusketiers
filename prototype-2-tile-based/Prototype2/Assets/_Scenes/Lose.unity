@@ -237,7 +237,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'The creature kiled them all.
+  m_Text: 'The creature killed them all.
 
     They are dead now and it is your fault!'
 --- !u!222 &1094915656
