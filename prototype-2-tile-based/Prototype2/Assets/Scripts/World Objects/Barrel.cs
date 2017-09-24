@@ -77,6 +77,14 @@ public class Barrel : Damagable {
         return true;
     }
 
+    public void Remove()
+    {
+        cannotBeTarget = true;
+        Targeted = false;
+        GameManager.Instance.LevelManager.TileMap.RemoveObject(x, y);
+        GameObject.Destroy(gameObject);
+    }
+
     public void SetHighlight(bool value, SpellButton bttn)
     {
         if (value)

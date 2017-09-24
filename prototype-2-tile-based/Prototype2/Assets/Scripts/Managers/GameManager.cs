@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private Text apText;
+
     public bool playersTurn = false; // bool to check if it's players turn, hidden in inspector but public
     protected bool othersTurn = false;
     public float turnDelay = 0.1f; // delay between each players turn
@@ -35,6 +37,8 @@ public class GameManager : MonoBehaviour
     // voor player
     private int totalActionPoints = 3;       // total points
     private int currentActionPoints;        // points left this turn
+
+    public int CurrentActionPoints { get { return currentActionPoints; } }
 
     public GameObject FloorTile { get; private set; }
 
@@ -94,7 +98,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(WarningText());
         }
 
-        if (amountOfTurns > 5)
+        if (amountOfTurns > 4)
         {
             levelManager.SpawnGoo();
         }
@@ -105,6 +109,9 @@ public class GameManager : MonoBehaviour
             addedActionPoints += levelManager.Shrines[i].GetActionPoints();
         }
         currentActionPoints = totalActionPoints + addedActionPoints;
+
+        apText.gameObject.SetActive(true);
+        apText.text = currentActionPoints + "";
 
         Debug.Log(currentActionPoints);
 
@@ -121,6 +128,7 @@ public class GameManager : MonoBehaviour
     public void EndPlayerTurn(int cost = 1, bool endTotally = false)
     {
         currentActionPoints = endTotally ? 0 : currentActionPoints - cost;
+        apText.text = currentActionPoints + "";
 
         if (currentActionPoints <= 0)
         {
@@ -130,12 +138,18 @@ public class GameManager : MonoBehaviour
 
             if(creature != null) Creature.EndPlayerTurn();
 
+            apText.gameObject.SetActive(false);
             playersTurn = false;
         }
         else
         {
             ActivateButtons();
         }
+
+        List<Shrine> all = new List<Shrine>();
+        all.AddMultiple(FindObjectsOfType<Shrine>() as Shrine[]);
+
+        all.HandleAction(s => s.CheckForActive());
     }
 
     /*public void UpdateEnemyPaths()
@@ -163,6 +177,9 @@ public class GameManager : MonoBehaviour
     {
         warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<Text>();
         warningText.gameObject.SetActive(false);
+
+        apText = GameObject.FindGameObjectWithTag("ActionPointText").GetComponent<Text>();
+        apText.gameObject.SetActive(false);
 
         // load floor from resources
         FloorTile = Resources.Load<GameObject>("Prefabs/FloorTile");

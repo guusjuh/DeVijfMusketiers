@@ -21,7 +21,7 @@ public class Creature : BaseEnemy
         totalActionPoints = 3;
         health = 100;
 
-        GameManager.Instance.LevelManager.TileMap.SetObject(x, y, TileMap.Types.Monster);
+        GameManager.Instance.LevelManager.TileMap.SetMonster(x, y);
 
         // select the first target to destory! mwoehahaha
         SelectTarget();
@@ -77,7 +77,7 @@ public class Creature : BaseEnemy
         else
         {
             // update pos in tile map
-            GameManager.Instance.LevelManager.TileMap.MoveObject(x, y, x + xDir, y + yDir, TileMap.Types.Monster);
+            GameManager.Instance.LevelManager.TileMap.MoveMonster(x, y, x + xDir, y + yDir);
 
             // update x and y
             x += xDir;
@@ -135,6 +135,7 @@ public class Creature : BaseEnemy
         if (health <= 0)
         {
             GameManager.Instance.BossDead();
+            GameManager.Instance.LevelManager.TileMap.RemoveMonster((int)transform.position.x, (int)transform.position.y);
             Destroy(this.gameObject);
         }
         else

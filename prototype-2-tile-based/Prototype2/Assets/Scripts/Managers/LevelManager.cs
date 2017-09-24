@@ -25,6 +25,8 @@ public class LevelManager  {
     private Transform boardHolder;
     private List<Vector2> gridPositions = new List<Vector2>();
 
+    static Vector3[] positions = { new Vector3(0, 1), new Vector3(1, 0), new Vector3(-1, 0), new Vector3(0, -1) };
+
     private TileMap.Types[,] generatedLevel;
     [SerializeField]
     private TileMap tileMap = new TileMap();
@@ -57,7 +59,6 @@ public class LevelManager  {
         creature = (GameObject)GameObject.Instantiate(creature, centerPosition, Quaternion.identity);
        // minion = (GameObject)GameObject.Instantiate(minion, centerPosition, Quaternion.identity);
         smug = (GameObject)GameObject.Instantiate(smug, centerPosition, Quaternion.identity);
-        tileMap.SetObject((int)centerPosition.x, (int)centerPosition.y, TileMap.Types.Goo);
 
         // init world objects
         List<Vector2> humanSpawnPosses = new List<Vector2>();
@@ -110,6 +111,10 @@ public class LevelManager  {
 
         // set up the tilemap for A*
         tileMap.Initialize(columns, rows, generatedLevel);
+        
+        //initialize first spot of goo
+        tileMap.SetObject((int)centerPosition.x, (int)centerPosition.y, TileMap.Types.Goo);
+        int debug = 0;
     }
 
     // loads all objects/tiles required to build the level
@@ -217,14 +222,84 @@ public class LevelManager  {
     public void SpawnGoo()
     {
         // wat is allemaal al goo
-
-
+        TileMap.Types[,] map = TileMap.Tiles;
+        List<Vector2> gooPostions = new List<Vector2>();
+        List<Vector2> posGooPostions = new List<Vector2>();
+        for (int x = 0; x < columns; x++)
+        {
+            for (int y = 0; y < rows; y++)
+            {
+                if (map[x, y] == TileMap.Types.Goo)
+                {
+                    gooPostions.Add(new Vector2(x, y));
+                }
+            }
+        }
+        
         // waar kunnen we dan spawnen
-
+        for (int i = 0; i < gooPostions.Count; i++)
+        {
+            for (int j = 0; j < positions.Length; j++)
+            {
+                Vector2 curPos = gooPostions[i] + (Vector2)positions[j];
+                if (gooPostions.Contains(curPos) && 
+                    (curPos.x <= 0 || curPos.x >= rows -1) && 
+                    (curPos.y <= 0 || curPos.y >= columns - 1))
+                    continue;
+                else 
+                    posGooPostions.Add(curPos);
+            }
+        }
         // select een tegel
+        int rnd = UnityEngine.Random.Range(0, posGooPostions.Count);
+        Vector2 theChosenGoo = posGooPostions[rnd];
 
         // kill all stuff on de tegel
+        TileMap.Types t = TileMap.Tiles[(int) theChosenGoo.x, (int) theChosenGoo.y];
+        switch (t)
+        {
+            case TileMap.Types.Human:
+            case TileMap.Types.InvisibleHooman:
+                List<Human> humans = new List<Human>();
+                humans.AddMultiple(GameObject.FindObjectsOfType<Human>() as Human[]);
+                for (int i = 0; i < humans.Count; i++)
+                {
+                    if (Mathf.Abs(humans[i].x - theChosenGoo.x) <= 0.1f &&
+                        Mathf.Abs(humans[i].y - theChosenGoo.y) <= 0.1f)
+                    {
+                        humans[i].Hit();
+                    }
+                }
+                break;
+            case TileMap.Types.Barrel:
+            case TileMap.Types.BrokenBarrel:
+                List<Barrel> barrels = new List<Barrel>();
+                barrels.AddMultiple(GameObject.FindObjectsOfType<Barrel>() as Barrel[]);
+                for (int i = 0; i < barrels.Count; i++)
+                {
+                    if (Mathf.Abs(barrels[i].x - theChosenGoo.x) <= 0.1f &&
+                        Mathf.Abs(barrels[i].y - theChosenGoo.y) <= 0.1f)
+                    {
+                        barrels[i].Remove();
+                    }
+                }
+                break;
+            case TileMap.Types.Shrine:
+                List<Shrine> shrines = new List<Shrine>();
+                shrines.AddMultiple(GameObject.FindObjectsOfType<Shrine>() as Shrine[]);
+                for (int i = 0; i < shrines.Count; i++)
+                {
+                    if (Mathf.Abs(shrines[i].x - theChosenGoo.x) <= 0.1f &&
+                        Mathf.Abs(shrines[i].y - theChosenGoo.y) <= 0.1f)
+                    {
+                        shrines[i].Hit();
+                    }
+                }
+                break;
+        }
 
         // add in tilemanager
+        smug = (GameObject)GameObject.Instantiate(smug, theChosenGoo, Quaternion.identity);
+        tileMap.SetObject((int)theChosenGoo.x, (int)theChosenGoo.y, TileMap.Types.Goo);
     }
 }

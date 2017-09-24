@@ -86,6 +86,11 @@ public class SpellButton : MonoBehaviour
 
         bool temp = false;
 
+        if (cost > GameManager.Instance.CurrentActionPoints)
+        {
+            return false;
+        }
+
         switch (spellFigure.GetComponent<Spell>().spellType)
         {
             case Spell.SpellTypes.Attack:

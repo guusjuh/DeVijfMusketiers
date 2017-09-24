@@ -9,6 +9,9 @@ public class Node
     private bool batOnThisTile = false;
     public bool BatOnThisTile { get { return batOnThisTile; } set { batOnThisTile = value; } }
 
+    private bool monsterOnThisTile = false;
+    public bool MonsterOnThisTile { get { return monsterOnThisTile; } set { monsterOnThisTile = value; } }
+
     public Node()
     {
         neighbours = new List<Node>();

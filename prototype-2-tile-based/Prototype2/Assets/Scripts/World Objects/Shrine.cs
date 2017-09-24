@@ -54,7 +54,7 @@ public class Shrine : Damagable {
             for (int j = 0; j < positions.Length; j++)
             {
                 if (Mathf.Abs(x - (all[i].x + positions[j].x)) < 0.1f
-                    && Mathf.Abs(y - (all[i].y + positions[j].y)) < 0.1f)
+                    && Mathf.Abs(y - (all[i].y + positions[j].y)) < 0.1f && !all[i].Invisible)
                 {
                     Active = true;
                     return;

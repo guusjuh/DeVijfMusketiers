@@ -123,7 +123,8 @@ public class Minion : BaseEnemy
             {
                 if ((tempHit.transform.position - transform.position).magnitude > 0.1f)
                 {
-                    Debug.LogError("This is not what the bat is standing on!");
+                    Debug.LogError(tempHit.transform.position + "-" + transform.position);
+                    Debug.LogError("This is not what the bat is standing on! {" + tempHit.transform.gameObject.name + "}");
                 }
 
                 goToReset = tempHit.transform.gameObject;

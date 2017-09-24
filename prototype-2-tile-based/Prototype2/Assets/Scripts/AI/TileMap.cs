@@ -15,7 +15,6 @@ public class TileMap
         Barrel,
         BrokenBarrel,
         Shrine,
-        Monster,
         Goo
     }
 
@@ -38,14 +37,14 @@ public class TileMap
         // not empty tile
         if (interstedInBats)
         {
-            if (tiles[x, y] != Types.Empty || graph[x, y].BatOnThisTile)
+            if (tiles[x, y] != Types.Empty || graph[x, y].BatOnThisTile || graph[x,y].MonsterOnThisTile)
             {
                 return false;
             }
         }
         else
         {
-            if (tiles[x, y] != Types.Empty)
+            if (tiles[x, y] != Types.Empty || graph[x,y].MonsterOnThisTile)
             {
                 return false;
             }
@@ -176,7 +175,7 @@ public class TileMap
         {
             if (tileTypes[(int) tiles[x, y]].canEnter)
             {
-                return !graph[x, y].BatOnThisTile;
+                return !graph[x, y].BatOnThisTile && !graph[x,y].MonsterOnThisTile;
             }
 
             return false;
@@ -185,7 +184,7 @@ public class TileMap
         {
             if (tileTypes[(int) tiles[x, y]].canFlyOver)
             {
-                return !graph[x, y].BatOnThisTile;
+                return !graph[x, y].BatOnThisTile && !graph[x,y].MonsterOnThisTile;
             }
 
             return false;
@@ -222,6 +221,22 @@ public class TileMap
     {
         RemoveBat(currX, currY);
         SetBat(newX, newY);
+    }
+
+    public void SetMonster(int x, int y)
+    {
+        graph[x, y].MonsterOnThisTile = true;
+    }
+
+    public void RemoveMonster(int x, int y)
+    {
+        graph[x, y].MonsterOnThisTile = false;
+    }
+
+    public void MoveMonster(int currX, int currY, int newX, int newY)
+    {
+        RemoveMonster(currX, currY);
+        SetMonster(newX, newY);
     }
 
     public void SwitchVaseStatus(int x, int y, bool broken)
