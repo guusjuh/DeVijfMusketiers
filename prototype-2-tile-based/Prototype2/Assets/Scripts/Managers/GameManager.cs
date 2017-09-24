@@ -103,6 +103,11 @@ public class GameManager : MonoBehaviour
             levelManager.SpawnGoo();
         }
 
+        List<Shrine> all = new List<Shrine>();
+        all.AddMultiple(FindObjectsOfType<Shrine>() as Shrine[]);
+
+        all.HandleAction(s => s.CheckForActive());
+
         int addedActionPoints = 0;
         for (int i = 0; i < levelManager.Shrines.Count; i++)
         {
@@ -269,7 +274,6 @@ public class GameManager : MonoBehaviour
                 yield return new WaitForSeconds(0.6f);
             }
         }
-
 
         // switch turns
         playersTurn = true;

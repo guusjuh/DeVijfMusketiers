@@ -62,7 +62,7 @@ public class TileMap
         }
         else
         {
-            if (tiles[x, y] != Types.Barrel && tiles[x, y] != Types.BrokenBarrel && tiles[x, y] != Types.Empty)
+            if (tiles[x, y] != Types.Barrel && tiles[x, y] != Types.BrokenBarrel && tiles[x, y] != Types.Goo && tiles[x, y] != Types.Empty)
             {
                 return false;
             }

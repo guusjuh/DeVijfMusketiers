@@ -81,6 +81,7 @@ public class Human : Damagable
         }
         else
         {*/
+
             dead = true;
             cannotBeTarget = true;
             Targeted = false;

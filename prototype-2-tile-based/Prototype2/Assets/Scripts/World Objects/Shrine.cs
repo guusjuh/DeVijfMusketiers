@@ -6,8 +6,8 @@ public class Shrine : Damagable {
     public bool destroyed = false;
     private bool active = false;
 
-    private Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1);
-    private Color normalColor;
+    private Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    private Color normalColor = new Color(0.55f, 0.55f, 0.55f, 1.0f);
 
     static Vector3[] positions = { new Vector3(0, 1), new Vector3(1, 0), new Vector3(-1, 0), new Vector3(0, -1) };
 

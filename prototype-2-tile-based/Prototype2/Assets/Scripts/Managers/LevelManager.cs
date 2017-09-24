@@ -209,6 +209,11 @@ public class LevelManager  {
         {
             Application.LoadLevel("Lose");
         }
+
+        List<Shrine> all = new List<Shrine>();
+        all.AddMultiple(GameObject.FindObjectsOfType<Shrine>() as Shrine[]);
+
+        all.HandleAction(s => s.CheckForActive());
     }
 
     public void RemoveShrine(Shrine toRemove)
@@ -242,7 +247,7 @@ public class LevelManager  {
             {
                 Vector2 curPos = gooPostions[i] + (Vector2)positions[j];
                 if (gooPostions.Contains(curPos) ||
-                    ((int)curPos.x <= 0 || (int)curPos.x >= rows - 1) &&
+                    ((int)curPos.x <= 0 || (int)curPos.x >= rows - 1) ||
                     ((int)curPos.y <= 0 || (int)curPos.y >= columns - 1))
                     continue;
                 else
