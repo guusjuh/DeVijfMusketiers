@@ -16,7 +16,7 @@ public class TileMap
         BrokenBarrel,
         Shrine,
         Monster,
-        Hole
+        Goo
     }
 
     [SerializeField]
@@ -63,7 +63,7 @@ public class TileMap
         }
         else
         {
-            if (tiles[x, y] != Types.Barrel && tiles[x, y] != Types.Hole && tiles[x, y] != Types.Empty)
+            if (tiles[x, y] != Types.Barrel && tiles[x, y] != Types.Empty)
             {
                 return false;
             }

@@ -8,6 +8,8 @@ TagManager:
   - Human
   - Barrel
   - Shrine
+  - Vase
+  - WarningText
   layers:
   - Default
   - TransparentFX

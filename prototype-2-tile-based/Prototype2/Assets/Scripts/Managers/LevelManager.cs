@@ -57,6 +57,7 @@ public class LevelManager  {
         creature = (GameObject)GameObject.Instantiate(creature, centerPosition, Quaternion.identity);
        // minion = (GameObject)GameObject.Instantiate(minion, centerPosition, Quaternion.identity);
         smug = (GameObject)GameObject.Instantiate(smug, centerPosition, Quaternion.identity);
+        tileMap.SetObject((int)centerPosition.x, (int)centerPosition.y, TileMap.Types.Goo);
 
         // init world objects
         List<Vector2> humanSpawnPosses = new List<Vector2>();
@@ -211,5 +212,19 @@ public class LevelManager  {
         shrines.Remove(toRemove);
         tileMap.RemoveObject(toRemove.x, toRemove.y);
         GameObject.Destroy(toRemove.gameObject);
+    }
+
+    public void SpawnGoo()
+    {
+        // wat is allemaal al goo
+
+
+        // waar kunnen we dan spawnen
+
+        // select een tegel
+
+        // kill all stuff on de tegel
+
+        // add in tilemanager
     }
 }

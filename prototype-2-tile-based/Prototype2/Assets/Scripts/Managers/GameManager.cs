@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum DamagableType
 {
@@ -27,6 +28,9 @@ public class GameManager : MonoBehaviour
     protected bool othersTurn = false;
     public float turnDelay = 0.1f; // delay between each players turn
     private bool doingSetup = true;
+
+    private int amountOfTurns = 0;
+    private Text warningText;
 
     // voor player
     private int totalActionPoints = 3;       // total points
@@ -73,8 +77,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator WarningText()
+    {
+        warningText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2.0f);
+
+        warningText.gameObject.SetActive(false);
+    }
+
     public void BeginPlayerTurn()
     {
+        amountOfTurns++;
+        if (amountOfTurns == 4)
+        {
+            StartCoroutine(WarningText());
+        }
+
+        if (amountOfTurns > 5)
+        {
+            levelManager.SpawnGoo();
+        }
+
         int addedActionPoints = 0;
         for (int i = 0; i < levelManager.Shrines.Count; i++)
         {
@@ -137,6 +161,9 @@ public class GameManager : MonoBehaviour
 
     private void InitGame()
     {
+        warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<Text>();
+        warningText.gameObject.SetActive(false);
+
         // load floor from resources
         FloorTile = Resources.Load<GameObject>("Prefabs/FloorTile");
 
