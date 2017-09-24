@@ -247,8 +247,8 @@ public class LevelManager  {
             {
                 Vector2 curPos = gooPostions[i] + (Vector2)positions[j];
                 if (gooPostions.Contains(curPos) ||
-                    ((int)curPos.x <= 0 || (int)curPos.x >= rows - 1) ||
-                    ((int)curPos.y <= 0 || (int)curPos.y >= columns - 1))
+                    ((int)curPos.x <= 0 || (int)curPos.x > rows - 1) ||
+                    ((int)curPos.y <= 0 || (int)curPos.y > columns - 1))
                     continue;
                 else
                 {
