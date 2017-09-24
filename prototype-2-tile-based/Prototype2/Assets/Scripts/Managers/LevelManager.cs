@@ -247,8 +247,8 @@ public class LevelManager  {
             {
                 Vector2 curPos = gooPostions[i] + (Vector2)positions[j];
                 if (gooPostions.Contains(curPos) ||
-                    ((int)curPos.x <= 0 || (int)curPos.x > rows - 1) ||
-                    ((int)curPos.y <= 0 || (int)curPos.y > columns - 1))
+                    ((int)curPos.x <= 0 || (int)curPos.x >= columns - 1) ||
+                    ((int)curPos.y <= 0 || (int)curPos.y >= rows - 1))
                     continue;
                 else
                 {
@@ -257,6 +257,13 @@ public class LevelManager  {
                     
             }
         }
+
+        if (posGooPostions.Count <= 0)
+        {
+            Debug.Log("NO goo spots D:!");
+            return;
+        }
+
         // select een tegel
         int rnd = UnityEngine.Random.Range(0, posGooPostions.Count);
         Vector2 theChosenGoo = posGooPostions[rnd];
