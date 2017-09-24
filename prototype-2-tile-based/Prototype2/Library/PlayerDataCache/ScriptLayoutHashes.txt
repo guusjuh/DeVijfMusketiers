@@ -144,3 +144,4 @@ badda10670961e7ab851887c780f5cc3 Assembly-CSharp.dll:.Spell
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SkipButton
 d801fc5d3070929e75e577681eff20da Assembly-CSharp.dll:.Minion
 5ca1694e5e2115862181ae46a36b4c38 Assembly-CSharp.dll:.SpellPart
+3e365ca85c63e2bc587e8eb2316e3a2d Assembly-CSharp.dll:.AliveHumans

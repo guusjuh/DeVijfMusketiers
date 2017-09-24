@@ -1541,7 +1541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48fe71d05d19bc478694cf5f5f148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCooldown: 1
+  totalCooldown: 3
   cost: 2
   spellFigure: {fileID: 1999985659}
   disabled: {fileID: 686920865}
@@ -1762,6 +1762,47 @@ GameObject:
   m_PrefabParentObject: {fileID: 1012288316407168, guid: 0b6a7b3f9630a5a4ca068ce428d4dc15,
     type: 2}
   m_PrefabInternal: {fileID: 115478788}
+--- !u!1 &1375707182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1375707184}
+  - component: {fileID: 1375707183}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1375707183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1375707182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9be87a35f99c240bec4d2cb6bf368b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deadHumans: 0
+--- !u!4 &1375707184
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1375707182}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 486.03317, y: 779.9087, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1391103235 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1973378578137694, guid: 6b1feef84b7193344bfc63c5d8dc5338,

@@ -86,6 +86,7 @@ public class Human : Damagable
 
             dead = true;
             cannotBeTarget = true;
+        FindObjectOfType<AliveHumans>().deadHumans++;
             Targeted = false;
             GameManager.Instance.LevelManager.RemoveHuman(this);
         //}
