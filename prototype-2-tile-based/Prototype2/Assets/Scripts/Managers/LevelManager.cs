@@ -241,7 +241,7 @@ public class LevelManager  {
             for (int j = 0; j < positions.Length; j++)
             {
                 Vector2 curPos = gooPostions[i] + (Vector2)positions[j];
-                if (gooPostions.Contains(curPos) &&
+                if (gooPostions.Contains(curPos) ||
                     ((int)curPos.x <= 0 || (int)curPos.x >= rows - 1) &&
                     ((int)curPos.y <= 0 || (int)curPos.y >= columns - 1))
                     continue;
