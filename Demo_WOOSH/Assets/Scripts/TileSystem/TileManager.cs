@@ -4,6 +4,58 @@ using UnityEngine;
 
 public class TileManager
 {
+    public enum TileType
+    {
+        Normal = 0,
+        Goo,
+    }
+
+    public enum ContentType
+    {
+        Unknown = -1,
+        Human = 0,
+        InivisbleHuman,
+        Barrel,
+        BrokenBarrel,
+        Shrine,
+        FlyingMonster,
+        WalkingMonster,
+    }
+
+    private static Coordinate[] directionsEven = new Coordinate[] {
+            /*right up*/ new Coordinate(1, 0),
+            /*left up*/ new Coordinate(-1, 0),
+
+            /*up*/ new Coordinate(0, 1), 
+            /*down*/ new Coordinate(0, -1), 
+
+            /*right down*/ new Coordinate(1, -1), 
+            /*left down*/ new Coordinate(-1, -1), 
+        };
+
+    private static Coordinate[] directionsUneven = new Coordinate[] {
+            /*right up*/ new Coordinate(1, 1),
+            /*left up*/ new Coordinate(-1, 1),
+
+            /*up*/ new Coordinate(0, 1), 
+            /*down*/ new Coordinate(0, -1), 
+
+            /*right down*/ new Coordinate(1, 0), 
+            /*left down*/ new Coordinate(-1, 0),
+        };
+
+    public Coordinate[] Directions(Coordinate from)
+    {
+        if (from.x % 2 == 0)
+        {
+            return directionsEven;
+        }
+        else
+        {
+            return directionsUneven;
+        }
+    }
+
     private int rows;
     private int columns;
     public int Rows { get { return rows; } }
@@ -19,7 +71,7 @@ public class TileManager
     private GameObject gridParent;
 
     // Hexagon scale.
-    private float hexagonScale = 10f;
+    private float hexagonScale = 1.2f;
     public float HexagonScale { get { return hexagonScale; } }
 
     /// <summary>
@@ -37,11 +89,11 @@ public class TileManager
     /// <summary>
     /// Initialize the gridsystem
     /// </summary>
-    public void Initialize(int rows, int columns)
+    public void Initialize()
     {
         // Get the amount of rows and colomns from the level
-        this.rows = rows;
-        this.columns = columns;
+        this.rows = ContentManager.Instance.Levels[GameManager.Instance.CurrentLevel].rows;
+        this.columns = ContentManager.Instance.Levels[GameManager.Instance.CurrentLevel].columns;
         
         // Initialize the grid 2D array.
         grid = new TileNode[rows, columns];
@@ -61,7 +113,7 @@ public class TileManager
             }
         }
 
-
+        //grid[1,1].NeightBours.HandleAction(n => n.SetTestColor());
 
     }
 
@@ -77,7 +129,7 @@ public class TileManager
             for (int j = 0; j < sizeY; j++)
             {
                 // Determine grid- and worldposition. 
-                Vector2 gridPosition = new Vector2(i, j);
+                Coordinate gridPosition = new Coordinate(i, j);
                 Vector3 worldPosition = GetWorldPosition(gridPosition);
 
                 // Create the grid node. 
@@ -90,12 +142,193 @@ public class TileManager
         }
     }
 
+
+    public List<TileNode> GeneratePathTo(Coordinate from, Coordinate to, ContentType type)
+    {
+        //if (!UnitCanEnterTile(toX, toY))
+        //    return null;
+
+        Dictionary<TileNode, float> dist = new Dictionary<TileNode, float>();
+        Dictionary<TileNode, TileNode> prev = new Dictionary<TileNode, TileNode>();
+
+        //setup 'Q', list of nodes that are not checked yet
+        List<TileNode> unvisited = new List<TileNode>();
+
+        TileNode source = grid[from.x, from.y];
+        TileNode target = grid[to.x, to.y];
+
+        dist[source] = 0;
+        prev[source] = null;
+
+        bool targetFound = false;
+
+        //initialize everything to have infinity distance 
+        foreach (TileNode v in grid)
+        {
+            if (v != source)
+            {
+                dist[v] = Mathf.Infinity;
+                prev[v] = null;
+            }
+            unvisited.Add(v);
+        }
+
+        while (unvisited.Count > 0)
+        {
+            //u is unvisited node with smallest distance
+            TileNode u = null;
+            foreach (TileNode possible in unvisited)
+            {
+                if (u == null || dist[possible] < dist[u])
+                    u = possible;
+            }
+
+            if (u == target)
+                break; //exit while loop if target is found
+
+            unvisited.Remove(u);
+
+            foreach (TileNode v in u.NeightBours)
+            {
+                //float alt = dist[u] + u.DistTo(v);
+                float alt = dist[u] + CostToEnterTile(v, target, type);
+
+                if (alt < dist[v])
+                {
+                    dist[v] = alt;
+                    prev[v] = u;
+                }
+            }
+        }
+
+        //either found shortest route or there is no route at all
+        if (prev[target] == null)
+            return null; //no possible route 
+
+        List<TileNode> currentPath = new List<TileNode>();
+
+        TileNode curr = target;
+
+        //loop through prev chain and add it to path
+        while (curr != null)
+        {
+            currentPath.Add(curr);
+            curr = prev[curr];
+        }
+
+        //path is now route from target to source, so reverse
+        currentPath.Reverse();
+
+        currentPath.HandleAction(n => n.SetTestColor(true, Color.red));
+
+        return currentPath;
+    }
+
+    public float CostToEnterTile(TileNode nextTile, TileNode endTile, ContentType type)
+    {
+        if (new Vector2(endTile.GridPosition.x - nextTile.GridPosition.x, endTile.GridPosition.y - nextTile.GridPosition.y).magnitude > 0.1f)
+        {
+            if (!UnitCanEnterTile(nextTile.GridPosition, type))
+                return Mathf.Infinity;
+        }
+
+        float cost = endTile.EnterCost();
+
+        return cost;
+    }
+
+    /// <summary>
+    /// Units the can enter tile (ENEMIES ONLY)
+    /// </summary>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
+    /// <returns></returns>
+    /// //TODO: implement flying behavior
+    public bool UnitCanEnterTile(Coordinate pos, ContentType type)
+    {
+        if (pos.x < 0 || pos.x >= columns || pos.y < 0 || pos.y >= rows)
+        {
+            return false;
+        }
+
+        List<ContentType> typesToEnter = GameManager.Instance.TypesToEnter.Get(type);
+
+        for (int j = 0; j < grid[pos.x, pos.y].Content.ContentTypes.Count; j++)
+        {
+            if (!typesToEnter.Contains(grid[pos.x, pos.y].Content.ContentTypes[j]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void SetTileType(TileManager.TileType type, Coordinate pos)
+    {
+        grid[pos.x,pos.y].Content.SetTileType(type);
+    }
+
+    public void SetObject(Coordinate pos, ContentType type)
+    {
+        grid[pos.x, pos.y].Content.AddContent(type);
+    }
+
+    public void RemoveObject(Coordinate pos, ContentType type)
+    {
+        grid[pos.x, pos.y].Content.RemoveContent(type);
+    }
+
+    public void MoveObject(Coordinate currPos, Coordinate nextPos, ContentType type)
+    {
+        RemoveObject(currPos, type);
+        SetObject(nextPos, type);
+    }
+
+    public void SwitchStateTile(TileManager.ContentType type, Coordinate pos)
+    {
+        TileManager.ContentType newContentType = TileManager.ContentType.Unknown;
+        switch (type)
+        {
+            case ContentType.Barrel:
+                newContentType = ContentType.BrokenBarrel;
+                break;
+            case ContentType.BrokenBarrel:
+                newContentType = ContentType.Barrel;
+                break;
+            case ContentType.Human:
+                newContentType = ContentType.InivisbleHuman;
+                break;
+            case ContentType.InivisbleHuman:
+                newContentType = ContentType.Human;
+                break;
+        }
+
+        grid[pos.x, pos.y].Content.ReplaceContent(type, newContentType);
+    }
+
+
     /// <summary>
     /// Calculate world position from grid position.
     /// </summary>
     /// <param name="gridPosition">The position of the node in the grid.</param>
     /// <returns></returns>
     public Vector2 GetWorldPosition(Vector2 gridPosition)
+    {
+        // Calculate gridpoint world position.
+        float xPos = gridPosition.x * HexagonWidth;
+        float yPos = gridPosition.y * (HexagonHeight * 2) + (HexagonHeight * (Mathf.Abs(gridPosition.x % 2)));
+
+        // Return world position.
+        return new Vector2(xPos, yPos);
+    }
+
+    /// <summary>
+    /// Calculate world position from grid position.
+    /// </summary>
+    /// <param name="gridPosition">The position of the node in the grid.</param>
+    /// <returns></returns>
+    public Vector2 GetWorldPosition(Coordinate gridPosition)
     {
         // Calculate gridpoint world position.
         float xPos = gridPosition.x * HexagonWidth;
@@ -145,7 +378,7 @@ public class TileManager
     /// </summary>
     /// <param name="gridPos">The position of the grid node.</param>
     /// <returns></returns>
-    public TileNode GetNodeReference(Vector2 gridPos)
+    public TileNode GetNodeReference(Coordinate gridPos)
     {
         // Check for every grid node.
         foreach (TileNode t in grid)

@@ -168,7 +168,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -224,7 +224,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921e6627ae1798b4d9a7d4482688e27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnDelay: 0.1
+  contentManager:
+    levels:
+    - rows: 5
+      columns: 5
+      spawnNodes:
+      - type: 0
+        position:
+          x: 2
+          y: 2
+      - type: 0
+        position:
+          x: 1
+          y: 3
+      - type: 0
+        position:
+          x: 4
+          y: 2
+      - type: 6
+        position:
+          x: 0
+          y: 0
+      gooStartPos:
+        x: 0
+        y: 0
+      amountOfHumans: 3
 --- !u!4 &1638883504
 Transform:
   m_ObjectHideFlags: 0
