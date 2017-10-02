@@ -51,8 +51,13 @@ public class GameManager : MonoBehaviour {
         tileManager = new TileManager();
         tileManager.Initialize();
 
+        uiManager = new UIManager();
+        uiManager.Initialize();
+
         levelManager = new LevelManager();
         levelManager.Initialize();
+
+
     }
 
     private void SetTypesToEnter()

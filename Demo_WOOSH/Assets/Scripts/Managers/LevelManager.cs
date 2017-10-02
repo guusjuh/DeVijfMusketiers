@@ -70,6 +70,7 @@ public class LevelManager
                 // delay
                 yield return new WaitForSeconds(moveDelay);
             }
+            e.EndTurn();
         }
 
         // switch turns

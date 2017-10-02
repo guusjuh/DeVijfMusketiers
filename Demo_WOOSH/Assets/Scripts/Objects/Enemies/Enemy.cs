@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 
 public class Enemy : WorldObject {
@@ -7,9 +8,17 @@ public class Enemy : WorldObject {
     protected int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
-    protected int startHealth = 100;
-    protected int health;
-    public int Health { get { return health; } }
+    protected bool hasSpecial = true;
+    public bool HasSpecial { get { return hasSpecial; } }
+
+    private int spawnCooldown = 0;
+    public int SpawnCooldown { get { return spawnCooldown; } }
+    private int totalSpawnCooldown = 3;
+
+    protected float startHealth = 100;
+    protected float health;
+    public float Health { get { return health; } }
+    public float HealthPercentage { get { return (health / startHealth) * 100; } }
 
     protected const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
     protected float inverseMoveTime;          //Used to make movement more efficient.
@@ -21,6 +30,9 @@ public class Enemy : WorldObject {
     protected EnemyTarget target;
     protected EnemyTarget prevTarget;
     protected List<TileNode> currentPath = null;
+
+    private bool selectedInUI = true;
+    public bool SelectedInUI { get { return selectedInUI; } }
 
     public override void Initialize(Coordinate startPos)
     {
@@ -35,8 +47,9 @@ public class Enemy : WorldObject {
         inverseMoveTime = 1f / moveTime;
 
         currentActionPoints = totalActionPoints;
+        health = startHealth;
 
-        
+        SetUIInfo();
     }
 
     protected virtual void Attack(EnemyTarget other)
@@ -48,6 +61,8 @@ public class Enemy : WorldObject {
     public virtual void Hit(int dmg)
     {
         health -= dmg;
+
+        SetUIInfo();
     }
 
     protected IEnumerator HitVisual()
@@ -81,7 +96,17 @@ public class Enemy : WorldObject {
 
     public virtual void StartTurn()
     {
-        //TODO: reduce cooldown
+        if (spawnCooldown > 0)
+        {
+            spawnCooldown--;
+        }
+
+        SetUIInfo();
+    }
+
+    public virtual void EndTurn()
+    {
+
     }
 
     public virtual void EnemyMove()
@@ -150,6 +175,7 @@ public class Enemy : WorldObject {
         StartCoroutine(SmoothMovement(GameManager.Instance.TileManager.GetWorldPosition(gridPosition)));
 
         currentPath[0].SetTestColor(false);
+
         // remove current path[0], e.g. node i was standing on
         currentPath.RemoveAt(0);
     }
@@ -157,11 +183,15 @@ public class Enemy : WorldObject {
     protected virtual void EndMove()
     {
         // lose one action point
-        if (currentActionPoints != 0)
+        if (currentActionPoints > 0)
         {
             currentActionPoints--;
         }
+
+        SetUIInfo();
     }
+
+
 
     // note: works for everything nonflying!
     protected virtual bool CanMove(Coordinate direction, out RaycastHit2D hit)
@@ -322,5 +352,10 @@ public class Enemy : WorldObject {
         {
             currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, TileManager.ContentType.WalkingMonster);
         }
+    }
+
+    private void SetUIInfo()
+    {
+        GameManager.Instance.UiManager.EnemyInfoUI.OnChange(this);
     }
 }
