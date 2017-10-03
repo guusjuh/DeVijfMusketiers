@@ -42,18 +42,16 @@ public class Shrine : EnemyTarget
     public void CheckForActive()
     {
         // check for standing next to a shrine
-        //TODO: obtain humans through levelmanager
-        List<Human> all = new List<Human>();
-        all.AddMultiple(FindObjectsOfType<Human>() as Human[]);
+        List<Human> humans = GameManager.Instance.LevelManager.Humans;
 
         // each human
-        for (int i = 0; i < all.Count; i++)
+        for (int i = 0; i < humans.Count; i++)
         {
             // each neighbouring node
-            for (int j = 0; j < GameManager.Instance.TileManager.Directions(gridPosition).Length; j++)
-            {
-                if (Mathf.Abs(gridPosition.x - (all[i].GridPosition.x + GameManager.Instance.TileManager.Directions(gridPosition)[j].x)) < 0.1f
-                    && Mathf.Abs(gridPosition.y - (all[i].GridPosition.y + GameManager.Instance.TileManager.Directions(gridPosition)[j].y)) < 0.1f)
+            for (int j = 0; j < GameManager.Instance.TileManager.Directions(humans[i].GridPosition).Length; j++)
+            {             
+                if (Mathf.Abs(gridPosition.x - (humans[i].GridPosition.x + GameManager.Instance.TileManager.Directions(humans[i].GridPosition)[j].x)) < 0.1f
+                    && Mathf.Abs(gridPosition.y - (humans[i].GridPosition.y + GameManager.Instance.TileManager.Directions(humans[i].GridPosition)[j].y)) < 0.1f)
                 {
                     Active = true;
                     return;

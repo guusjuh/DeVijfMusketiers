@@ -25,7 +25,6 @@ public class EnemyInfoUI : MonoBehaviour
         specialAttack = transform.Find("Spell").gameObject;
         disabledSpecialAttack = specialAttack.transform.Find("Disabled").gameObject;
         cooldownText = specialAttack.GetComponentInChildren<Text>();
-        int r = 0;
     }
 
     public void OnChange(Enemy selectedEnemy = null)
@@ -36,6 +35,7 @@ public class EnemyInfoUI : MonoBehaviour
             if(!active) return;
 
             //TODO slide out of screen anim
+            active = false;
             gameObject.SetActive(false);
         }
         else

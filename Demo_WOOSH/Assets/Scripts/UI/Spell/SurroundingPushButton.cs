@@ -1,0 +1,36 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class SurroundingPushButton : MonoBehaviour
+{
+    private MovableObject source;
+    private Coordinate gridPosition;
+    public Coordinate GridPosition { get { return gridPosition;} }
+    private Coordinate relativePosition;
+
+    public void Initialize(Coordinate gridPosition, Coordinate relativePosition)
+    {
+        this.gridPosition = gridPosition;
+        this.relativePosition = relativePosition;
+    }
+
+    public void Activate(MovableObject source)
+    {
+        this.source = source;
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        this.source = null;
+        gameObject.SetActive(false);
+    }
+
+    public void PushSource()
+    {
+        source.Push(relativePosition);
+        GameManager.Instance.LevelManager.EndPlayerMove(1);
+    }
+}

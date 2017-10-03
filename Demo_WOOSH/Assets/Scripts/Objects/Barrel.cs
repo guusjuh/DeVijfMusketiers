@@ -9,7 +9,7 @@ public class Barrel : MovableObject
 
     private SpriteRenderer sprRender;
 
-    public bool destroyed = false;
+    private bool destroyed = false;
     public bool Destroyed
     {
         get { return destroyed; }
@@ -17,10 +17,10 @@ public class Barrel : MovableObject
         {
             destroyed = value;
             canBeTargeted = !destroyed;
+            GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
             type = destroyed ? TileManager.ContentType.BrokenBarrel : TileManager.ContentType.Barrel;
 
             GetComponent<SpriteRenderer>().sprite = destroyed ? destoryedSpr : normalSpr;
-            GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
             if (destroyed) gameObject.layer = 0;
             else gameObject.layer = 8;
         }
@@ -30,16 +30,20 @@ public class Barrel : MovableObject
     {
         base.Initialize(startPos);
 
-        //TODO: obtain sprites
-
         sprRender = GetComponent<SpriteRenderer>();
         type = TileManager.ContentType.Barrel;
+
+        normalSpr = sprRender.sprite;
+        destoryedSpr = Resources.Load<Sprite>("Sprites/World/brokenbarrel");
+
+        possibleSpellTypes.Add(GameManager.SpellType.Repair);
+        possibleSpellTypes.Add(GameManager.SpellType.Push);
     }
 
     public override bool Hit()
     {
         Destroyed = true;
-        GameManager.Instance.LevelManager.RemoveBarrel(this);
+        //GameManager.Instance.LevelManager.RemoveBarrel(this);
         return true;
     }
 }

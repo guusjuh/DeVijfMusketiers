@@ -325,8 +325,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contentManager:
     levels:
-    - rows: 5
-      columns: 5
+    - rows: 10
+      columns: 10
       spawnNodes:
       - type: 0
         position:
@@ -338,11 +338,35 @@ MonoBehaviour:
           y: 3
       - type: 0
         position:
-          x: 4
-          y: 2
+          x: 0
+          y: 0
       - type: 6
         position:
+          x: 5
+          y: 5
+      - type: 2
+        position:
+          x: 6
+          y: 7
+      - type: 2
+        position:
+          x: 1
+          y: 5
+      - type: 2
+        position:
+          x: 6
+          y: 2
+      - type: 4
+        position:
+          x: 5
+          y: 1
+      - type: 2
+        position:
           x: 0
+          y: 1
+      - type: 2
+        position:
+          x: 1
           y: 0
       gooStartPos:
         x: 0
@@ -511,6 +535,7 @@ RectTransform:
   - {fileID: 646098570}
   - {fileID: 835165020}
   - {fileID: 1133845624}
+  - {fileID: 1762280575}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -518,4 +543,37 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!1 &1762280574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1762280575}
+  m_Layer: 5
+  m_Name: Anchor_BottomLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1762280575
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1762280574}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1746264083}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}

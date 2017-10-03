@@ -22,6 +22,9 @@ public class Human : MovableObject {
         sprRender = GetComponent<SpriteRenderer>();
         type = TileManager.ContentType.Human;
         normalColor = sprRender.color;
+        
+        possibleSpellTypes.Add(GameManager.SpellType.Invisible);
+        possibleSpellTypes.Add(GameManager.SpellType.Push);
     }
 
     public void MakeInvisible()
@@ -31,10 +34,11 @@ public class Human : MovableObject {
         currInvisiblePoints = totalInvisiblePoints;
 
         GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
+        type = TileManager.ContentType.InivisbleHuman;
         gameObject.layer = 0;
     }
 
-    public void DecreaseShieldPoints()
+    public void DecreaseInvisiblePoints()
     {
         if (invisible)
         {
@@ -47,6 +51,7 @@ public class Human : MovableObject {
                 sprRender.color = normalColor;
                 invisible = false;
                 GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
+                type = TileManager.ContentType.Human;
                 gameObject.layer = 8;
             }
         }

@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    public enum SpellType
+    {
+        Attack = 0,
+        Repair,
+        Invisible,
+        Push
+    }
+
     // singleton
     private static GameManager instance = null;
     public static GameManager Instance {
@@ -25,6 +33,9 @@ public class GameManager : MonoBehaviour {
 
     private TileManager tileManager;
     public TileManager TileManager { get { return tileManager; } }
+
+    private InputManager inputManager;
+    public InputManager InputManager { get { return inputManager; } }
 
     //TODO: enum for layers!!
 
@@ -57,6 +68,7 @@ public class GameManager : MonoBehaviour {
         levelManager = new LevelManager();
         levelManager.Initialize();
 
+        inputManager = new InputManager();
 
     }
 
@@ -73,11 +85,18 @@ public class GameManager : MonoBehaviour {
     // update is called every frame
     public void Update()
     {
+        inputManager.CatchInput();
         levelManager.Update();
     }
 
     public void GameOver()
     {
         
+    }
+
+    public void SkipPlayerTurn()
+    {
+        levelManager.EndPlayerMove(1, true);
+        uiManager.HideSpellButtons();
     }
 }

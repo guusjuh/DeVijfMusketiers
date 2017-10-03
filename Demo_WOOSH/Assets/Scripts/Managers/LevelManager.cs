@@ -6,15 +6,44 @@ using UnityEngine;
 public class LevelManager
 {
     private List<Human> humans;
+
+    public List<Human> Humans
+    {
+        get { return humans; }
+    }
+
     private List<Barrel> barrels;
+
+    public List<Barrel> Barrels
+    {
+        get { return barrels; }
+    }
+
     private List<Shrine> shrines;
+
+    public List<Shrine> Shrines
+    {
+        get { return shrines; }
+    }
+
     private List<Enemy> enemies;
+
+    public List<Enemy> Enemies
+    {
+        get { return enemies; }
+    }
+
+    private Player player;
+    public Player Player { get { return player; } }
 
     private bool playersTurn = false;
     private bool othersTurn = false;
     private int amountOfTurns = 0;
 
-    public bool PlayersTurn { get { return playersTurn;} }
+    public bool PlayersTurn
+    {
+        get { return playersTurn; }
+    }
 
     private float turnDelay = 0.8f;
     private float moveDelay = 1f;
@@ -25,6 +54,7 @@ public class LevelManager
         barrels = new List<Barrel>();
         shrines = new List<Shrine>();
         enemies = new List<Enemy>();
+        player = new Player();
 
         SpawnLevel();
 
@@ -34,7 +64,8 @@ public class LevelManager
         //othersTurn = false;
     }
 
-    public void Update() {
+    public void Update()
+    {
         if (playersTurn || othersTurn)
             return;
 
@@ -42,15 +73,65 @@ public class LevelManager
         GameManager.Instance.StartCoroutine(HandleOtherTurn());
     }
 
-    public void BeginPlayerTurn()
+    public IEnumerator BeginPlayerTurn()
     {
-        GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(true));
+        // increase amnt of turns
+        amountOfTurns++;
+
+        // do we have to start goo spawning?
+        yield return GameManager.Instance.StartCoroutine(CheckForGooSpawning());
+
+        // show banner
+        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(true));
+
+        // count extra actionpoints
+        shrines.HandleAction(s => s.CheckForActive());
+        int extraPoints = 0;
+        for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
+        
+        humans.HandleAction(h => h.DecreaseInvisiblePoints());
+
+        // start players turn
+        player.StartPlayerTurn(extraPoints);
+
+        GameManager.Instance.UiManager.BeginPlayerTurn();
     }
 
-    public void EndPlayerTurn()
+    public void EndPlayerMove(int cost = 1, bool endTurn = false)
     {
-        GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(false));
+        if (player.EndPlayerMove(cost, endTurn))
+        {
+            /*//UpdateEnemyPaths();
+            
+            if (creature != null) Creature.EndPlayerTurn();*/
 
+            enemies.HandleAction(e => e.UpdateTarget());
+
+            playersTurn = false;
+            GameManager.Instance.UiManager.EndPlayerTurn();
+            GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(false));
+        }
+
+        //apText.text = currentActionPoints + "";
+    }
+
+    private IEnumerator CheckForGooSpawning()
+    {
+        if (amountOfTurns == 4)
+        {
+            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.WarningText());
+        }
+
+        if (amountOfTurns > 4)
+        {
+            yield return GameManager.Instance.StartCoroutine(SpawnGoo());
+        }
+    }
+
+    private IEnumerator SpawnGoo()
+    {
+//TODO: spawn goo
+        yield return null;
     }
 
     // move creature
@@ -78,10 +159,10 @@ public class LevelManager
 
         // switch turns
         playersTurn = true;
-        BeginPlayerTurn();
         othersTurn = false;
+        yield return GameManager.Instance.StartCoroutine(BeginPlayerTurn());
 
-        yield return new WaitForSeconds(turnDelay);
+        //yield return new WaitForSeconds(turnDelay);
     }
 
     private void SpawnLevel()
@@ -99,20 +180,28 @@ public class LevelManager
             switch (s.type)
             {
                 case TileManager.ContentType.Barrel:
-                    barrels.Add(GameObject.Instantiate(ContentManager.Instance.Barrel, spawnPosition, Quaternion.identity).GetComponent<Barrel>());
+                    barrels.Add(
+                        GameObject.Instantiate(ContentManager.Instance.Barrel, spawnPosition, Quaternion.identity)
+                            .GetComponent<Barrel>());
                     barrels.Last().Initialize(s.position);
                     break;
                 case TileManager.ContentType.Human:
-                    humans.Add(GameObject.Instantiate(ContentManager.Instance.Humans[0], spawnPosition, Quaternion.identity).GetComponent<Human>());
+                    humans.Add(
+                        GameObject.Instantiate(ContentManager.Instance.Humans[0], spawnPosition, Quaternion.identity)
+                            .GetComponent<Human>());
                     humans.Last().Initialize(s.position);
                     break;
                 case TileManager.ContentType.Shrine:
-                    shrines.Add(GameObject.Instantiate(ContentManager.Instance.Shrine, spawnPosition, Quaternion.identity).GetComponent<Shrine>());
+                    shrines.Add(
+                        GameObject.Instantiate(ContentManager.Instance.Shrine, spawnPosition, Quaternion.identity)
+                            .GetComponent<Shrine>());
                     shrines.Last().Initialize(s.position);
                     break;
                 case TileManager.ContentType.WalkingMonster:
                     //TODO: difference between monsters 
-                    enemies.Add(GameObject.Instantiate(ContentManager.Instance.Bosses[0], spawnPosition, Quaternion.identity).GetComponent<Enemy>());
+                    enemies.Add(
+                        GameObject.Instantiate(ContentManager.Instance.Bosses[0], spawnPosition, Quaternion.identity)
+                            .GetComponent<Enemy>());
                     enemies.Last().Initialize(s.position);
                     break;
             }

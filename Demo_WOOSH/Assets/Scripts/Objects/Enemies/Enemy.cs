@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Policy;
 using UnityEngine;
 
@@ -49,7 +50,11 @@ public class Enemy : WorldObject {
         currentActionPoints = totalActionPoints;
         health = startHealth;
 
-        SetUIInfo();
+        possibleSpellTypes.Add(GameManager.SpellType.Attack);
+
+        type = TileManager.ContentType.WalkingMonster;
+
+        //SetUIInfo();
     }
 
     protected virtual void Attack(EnemyTarget other)
@@ -62,7 +67,7 @@ public class Enemy : WorldObject {
     {
         health -= dmg;
 
-        SetUIInfo();
+        GameManager.Instance.UiManager.EnemyInfoUI.OnChange(this);
     }
 
     protected IEnumerator HitVisual()
@@ -96,6 +101,8 @@ public class Enemy : WorldObject {
 
     public virtual void StartTurn()
     {
+        currentActionPoints = totalActionPoints;
+
         if (spawnCooldown > 0)
         {
             spawnCooldown--;
@@ -191,8 +198,6 @@ public class Enemy : WorldObject {
         SetUIInfo();
     }
 
-
-
     // note: works for everything nonflying!
     protected virtual bool CanMove(Coordinate direction, out RaycastHit2D hit)
     {
@@ -252,13 +257,15 @@ public class Enemy : WorldObject {
         currentPath.HandleAction(n => n.SetTestColor(false));
 
         // no target find a new one
-        //TODO: obtain from levelmanager
         // dont get barrels!
         List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
-        EnemyTarget[] damagables = FindObjectsOfType(typeof(EnemyTarget)) as EnemyTarget[];
+        List<EnemyTarget> damagables = new List<EnemyTarget>();
+
+        damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
+        damagables.AddRange(GameManager.Instance.LevelManager.Shrines.Cast<EnemyTarget>());
 
         //add all possible targets to possible target list
-        for (int i = 0; i < damagables.Length; i++)
+        for (int i = 0; i < damagables.Count; i++)
         {
             // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
             if (!damagables[i].CanBeTargeted ||
@@ -344,7 +351,7 @@ public class Enemy : WorldObject {
     public void UpdateTarget()
     {
         // is my target a human? than i have to check if he's not invisible
-        if (target.Type == TileManager.ContentType.Human && target.GetComponent<Human>().Inivisible)
+        if (target.Type == TileManager.ContentType.InivisbleHuman)
         {
             SelectTarget();
         }
@@ -356,6 +363,14 @@ public class Enemy : WorldObject {
 
     private void SetUIInfo()
     {
+        GameManager.Instance.UiManager.EnemyInfoUI.OnChange(currentActionPoints <= 0 ? null : this);
+    }
+
+    public override void Click()
+    {
+        base.Click();
+
+        if (!GameManager.Instance.LevelManager.PlayersTurn) return;
         GameManager.Instance.UiManager.EnemyInfoUI.OnChange(this);
     }
 }
