@@ -14,6 +14,8 @@ public class LevelManager
     private bool othersTurn = false;
     private int amountOfTurns = 0;
 
+    public bool PlayersTurn { get { return playersTurn;} }
+
     private float turnDelay = 0.8f;
     private float moveDelay = 1f;
 
@@ -42,11 +44,12 @@ public class LevelManager
 
     public void BeginPlayerTurn()
     {
-
+        GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(true));
     }
 
     public void EndPlayerTurn()
     {
+        GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(false));
 
     }
 
@@ -77,6 +80,8 @@ public class LevelManager
         playersTurn = true;
         BeginPlayerTurn();
         othersTurn = false;
+
+        yield return new WaitForSeconds(turnDelay);
     }
 
     private void SpawnLevel()

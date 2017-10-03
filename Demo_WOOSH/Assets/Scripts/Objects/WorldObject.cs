@@ -14,4 +14,12 @@ public class WorldObject : MonoBehaviour
     {
         gridPosition = startPos;
     }
+
+    public virtual void OnMouseDown()
+    {
+        if(!GameManager.Instance.LevelManager.PlayersTurn)
+            return;
+
+        Debug.Log("clicked");
+    }
 }

@@ -4,7 +4,7 @@ using System.Security.Policy;
 using UnityEngine;
 
 public class Enemy : WorldObject {
-    protected int totalActionPoints = 100;       // total points
+    protected int totalActionPoints = 3;       // total points
     protected int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
