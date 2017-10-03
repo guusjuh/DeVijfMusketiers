@@ -46,4 +46,10 @@ public class Barrel : MovableObject
         //GameManager.Instance.LevelManager.RemoveBarrel(this);
         return true;
     }
+
+    public void RemoveByGoo()
+    {
+        Destroyed = true;
+        GameManager.Instance.LevelManager.RemoveBarrel(this);
+    }
 }

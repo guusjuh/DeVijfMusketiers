@@ -14,8 +14,6 @@ public class MovableObject : EnemyTarget {
         GameManager.Instance.UiManager.ActivatePushButtons(false, this);
 
         transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
-      
-
     }
 
     public bool CanBePushed()

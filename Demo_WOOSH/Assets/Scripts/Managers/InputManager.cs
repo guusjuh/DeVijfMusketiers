@@ -28,6 +28,7 @@ public class InputManager {
                 else
                 {
                     GameManager.Instance.UiManager.HideSpellButtons();
+                    GameManager.Instance.UiManager.ActivatePushButtons(false);
                 }
             }
         }

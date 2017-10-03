@@ -93,7 +93,7 @@ public class UIManager
         }
     }
 
-    public void ActivatePushButtons(bool on, MovableObject target)
+    public void ActivatePushButtons(bool on, MovableObject target = null)
     {
         if (on)
         {

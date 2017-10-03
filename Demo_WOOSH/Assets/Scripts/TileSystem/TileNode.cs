@@ -26,6 +26,9 @@ public class TileNode {
     private GameObject hexagon;
     public GameObject Hexagon { get { return hexagon; } }
 
+    private SpriteRenderer highlight;
+    public SpriteRenderer Highlight { get { return highlight; } }
+
     /// <summary>
     /// True after node is completely instantiated. 
     /// </summary>
@@ -36,7 +39,7 @@ public class TileNode {
     /// The content on this tile.
     /// </summary>
     private TileContent content;
-    public TileContent Content { get { return content;} }
+    public TileContent Content { get { return content; } }
 
     /// <summary>
     /// Constructor.
@@ -50,15 +53,11 @@ public class TileNode {
 
         neighbours = new List<TileNode>();
 
-        content = new TileContent();
+        content = new TileContent(this);
 
         // Create a hexagon of the given type and store a reference.
         hexagon = CreateHexagon();
-    }
-
-    public void SetTestColor(bool on, Color color = default(Color))
-    {
-        hexagon.GetComponent<SpriteRenderer>().color = on ? color : Color.white;
+        highlight = hexagon.transform.Find("Highlight").GetComponent<SpriteRenderer>();
     }
 
     public void Clear()
@@ -133,5 +132,16 @@ public class TileNode {
     public int EnterCost()
     {
         return content.EnterCost();
+    }
+
+    public void HighlightTile(bool on, Color color = default(Color))
+    {
+        highlight.gameObject.SetActive(on);
+        if (on) highlight.color = color;
+    }
+
+    public void MakeGoo()
+    {
+        hexagon.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.0f, 1.0f);
     }
 }

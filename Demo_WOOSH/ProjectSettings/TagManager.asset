@@ -48,6 +48,9 @@ TagManager:
   - name: Floor
     uniqueID: 3230127399
     locked: 0
+  - name: HighlightFloor
+    uniqueID: 918543489
+    locked: 0
   - name: Item
     uniqueID: 1895337733
     locked: 0

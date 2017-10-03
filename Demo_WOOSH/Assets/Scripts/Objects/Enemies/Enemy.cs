@@ -181,8 +181,6 @@ public class Enemy : WorldObject {
         // perform move
         StartCoroutine(SmoothMovement(GameManager.Instance.TileManager.GetWorldPosition(gridPosition)));
 
-        currentPath[0].SetTestColor(false);
-
         // remove current path[0], e.g. node i was standing on
         currentPath.RemoveAt(0);
     }
@@ -254,8 +252,6 @@ public class Enemy : WorldObject {
 
     public void SelectTarget()
     {
-        currentPath.HandleAction(n => n.SetTestColor(false));
-
         // no target find a new one
         // dont get barrels!
         List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
@@ -350,8 +346,10 @@ public class Enemy : WorldObject {
 
     public void UpdateTarget()
     {
+        //TODO: somehow the target can be zero at this point, but it really shouldn't! find out how!
+        
         // is my target a human? than i have to check if he's not invisible
-        if (target.Type == TileManager.ContentType.InivisbleHuman)
+        if (target == null || target.Type == TileManager.ContentType.InivisbleHuman)
         {
             SelectTarget();
         }

@@ -219,8 +219,6 @@ public class TileManager
         //path is now route from target to source, so reverse
         currentPath.Reverse();
 
-        currentPath.HandleAction(n => n.SetTestColor(true, Color.red));
-
         return currentPath;
     }
 
@@ -390,5 +388,45 @@ public class TileManager
 
         // No matching node is found. 
         return null;
+    }
+
+    private List<TileNode> GetNodeWithGooReferences()
+    {
+        List<TileNode> gooNodes = new List<TileNode>();
+
+        foreach (TileNode t in grid)
+        {
+            if(t.Content.TileType == TileType.Goo)
+                gooNodes.Add(t);
+        }
+
+        return gooNodes;
+    }
+
+    public List<TileNode> GetPossibleGooNodeReferences()
+    {
+        List<TileNode> gooNodes = GetNodeWithGooReferences();
+        List<TileNode> possGooNodes = new List<TileNode>();
+
+        for (int i = 0; i < gooNodes.Count; i++)
+        {
+            for (int j = 0; j < Directions(gooNodes[i].GridPosition).Length; j++)
+            {
+                Coordinate currPos = gooNodes[i].GridPosition + Directions(gooNodes[i].GridPosition)[j];
+
+                if (gooNodes.Contains(GetNodeReference(currPos)) ||
+                    currPos.x < 0 || currPos.x >= columns ||
+                    currPos.y < 0 || currPos.y >= rows)
+                {
+                    continue;
+                }
+                else
+                {
+                    possGooNodes.Add(GetNodeReference(currPos));
+                }
+            }
+        }
+
+        return possGooNodes;
     }
 }

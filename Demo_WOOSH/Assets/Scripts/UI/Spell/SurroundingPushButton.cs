@@ -19,12 +19,19 @@ public class SurroundingPushButton : MonoBehaviour
     public void Activate(MovableObject source)
     {
         this.source = source;
+        GameManager.Instance.TileManager.GetNodeReference(gridPosition).HighlightTile(true, Color.green);
+
         gameObject.SetActive(true);
     }
 
     public void Deactivate()
     {
+        // currently, this button is a non relevant button!
+        if (GameManager.Instance.TileManager.GetNodeReference(gridPosition) == null) return;
+
         this.source = null;
+        GameManager.Instance.TileManager.GetNodeReference(gridPosition).HighlightTile(false);
+
         gameObject.SetActive(false);
     }
 

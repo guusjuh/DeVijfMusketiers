@@ -6,32 +6,16 @@ using UnityEngine;
 public class LevelManager
 {
     private List<Human> humans;
+    public List<Human> Humans { get { return humans; } }
 
-    public List<Human> Humans
-    {
-        get { return humans; }
-    }
+    private List<Barrel> barrels; 
+    public List<Barrel> Barrels { get { return barrels; } }
 
-    private List<Barrel> barrels;
-
-    public List<Barrel> Barrels
-    {
-        get { return barrels; }
-    }
-
-    private List<Shrine> shrines;
-
-    public List<Shrine> Shrines
-    {
-        get { return shrines; }
-    }
+    private List<Shrine> shrines; 
+    public List<Shrine> Shrines { get { return shrines; } }
 
     private List<Enemy> enemies;
-
-    public List<Enemy> Enemies
-    {
-        get { return enemies; }
-    }
+    public List<Enemy> Enemies { get { return enemies; } }
 
     private Player player;
     public Player Player { get { return player; } }
@@ -130,7 +114,12 @@ public class LevelManager
 
     private IEnumerator SpawnGoo()
     {
-//TODO: spawn goo
+        List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
+        int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
+        TileNode chosenGoo = possGooNodes[rnd];
+
+        chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+
         yield return null;
     }
 
@@ -208,6 +197,7 @@ public class LevelManager
         }
 
         // spawn goo
+        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.Levels[0].gooStartPos).Content.SetTileType(TileManager.TileType.Goo);
     }
 
     //TODO: refactor!
