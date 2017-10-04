@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpotLightTouch : MonoBehaviour {
 
-	void OnTriggerStay(Collider other)
+	void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {

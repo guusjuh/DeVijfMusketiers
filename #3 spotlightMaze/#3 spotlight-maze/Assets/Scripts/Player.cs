@@ -91,12 +91,12 @@ public class Player : MonoBehaviour {
 
     private void Reset()
     {
+        transform.position = start;
         dead = false;
         won = false;
         loseMsg.SetActive(false);
         winMsg.SetActive(false);
         spotMsg.SetActive(false);
-        transform.position = start;
         GetComponent<MeshRenderer>().enabled = true;
 
     }
@@ -105,8 +105,8 @@ public class Player : MonoBehaviour {
     {
         if (!won)
         {
-            loseMsg.SetActive(true);
             dead = true;
+            loseMsg.SetActive(true);
         }
 
         GetComponent<MeshRenderer>().enabled = false;
@@ -117,8 +117,8 @@ public class Player : MonoBehaviour {
     {
         if (!won || !dead)
         {
-            spotMsg.SetActive(true);
             dead = true;
+            spotMsg.SetActive(true);
         }
 
         GetComponent<MeshRenderer>().enabled = false;
