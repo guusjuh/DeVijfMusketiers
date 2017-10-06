@@ -325,8 +325,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contentManager:
     levels:
-    - rows: 10
-      columns: 10
+    - rows: 8
+      columns: 14
       spawnNodes:
       - type: 0
         position:

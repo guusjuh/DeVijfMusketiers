@@ -99,8 +99,8 @@ public class TileNode {
             Coordinate tempPos = gridPosition + GameManager.Instance.TileManager.Directions(gridPosition)[i];
 
             // If this position is greater than the minimum of the grid.And if this position is smaller than the maximum of the grid.
-            if (tempPos.x >= 0 && tempPos.y >= 0 && tempPos.x < GameManager.Instance.TileManager.Columns &&
-                tempPos.y < GameManager.Instance.TileManager.Rows)
+            if (tempPos.x >= 0 && tempPos.y >= 0 && tempPos.x < GameManager.Instance.TileManager.Rows &&
+                tempPos.y < GameManager.Instance.TileManager.Columns)
             {
                 // Check for the position containing a node and add it to the list of neighbours.
                 if (GameManager.Instance.TileManager.Grid[tempPos.x, tempPos.y] != null)
