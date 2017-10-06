@@ -173,8 +173,6 @@ public class UIManager
 
     public void ShowSpellButtons(Vector2 position, List<GameManager.SpellType> spellTypes, WorldObject target)
     {
-        //TODO: check is the human can be pushed
-        //TODO: check if the invisibility spell is a legal move
         HideSpellButtons();
 
         Vector2 canvasPos = WorldToCanvas(position);

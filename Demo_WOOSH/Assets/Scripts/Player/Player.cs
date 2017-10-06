@@ -9,11 +9,11 @@ public class Player {
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
     private int invisibleCooldown = 0;
-    public int InvisibleCooldown { get { return invisibleCooldown; } }
+    //public int InvisibleCooldown { get { return invisibleCooldown; } }
     private const int invisibleCooldownTotal = 2;
     
     private int repairCooldown = 0;
-    public int RepairCooldown { get { return repairCooldown; } }
+    //public int RepairCooldown { get { return repairCooldown; } }
     private const int repairCooldownTotal = 1;
 
     private int damage = 10;
@@ -47,5 +47,22 @@ public class Player {
     public void SetRepairCooldown()
     {
         repairCooldown = repairCooldownTotal;
+    }
+
+    public int GetCurrentCooldown(GameManager.SpellType type)
+    {
+        switch (type)
+        {
+            case GameManager.SpellType.Repair:
+                return repairCooldown;
+            case GameManager.SpellType.Attack:
+                return 0;
+            case GameManager.SpellType.Invisible:
+                return invisibleCooldown;
+            case GameManager.SpellType.Push:
+                return 0;
+            default:
+                return -1;
+        }
     }
 }

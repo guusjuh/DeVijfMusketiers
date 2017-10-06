@@ -8,6 +8,8 @@ public class InvisibleButton : SpellButton
     {
         base.Initialize();
         cost = 2;
+        type = GameManager.SpellType.Invisible;
+
     }
 
     public override void CastSpell()
@@ -22,6 +24,6 @@ public class InvisibleButton : SpellButton
     {
         base.Activate(target);
 
-        if (GameManager.Instance.LevelManager.Player.InvisibleCooldown > 0) Active = false;
+        if (GameManager.Instance.LevelManager.Player.GetCurrentCooldown(GameManager.SpellType.Invisible) > 0) Active = false;
     }
 }

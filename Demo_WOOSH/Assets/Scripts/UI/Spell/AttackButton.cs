@@ -9,6 +9,8 @@ public class AttackButton : SpellButton
     {
         base.Initialize();
         cost = 1;
+        type = GameManager.SpellType.Attack;
+
     }
 
     public override void CastSpell()

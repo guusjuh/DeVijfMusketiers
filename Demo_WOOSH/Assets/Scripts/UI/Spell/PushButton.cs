@@ -8,6 +8,8 @@ public class PushButton : SpellButton
     {
         base.Initialize();
         cost = 0;
+        type = GameManager.SpellType.Push;
+
     }
 
     public override void CastSpell()

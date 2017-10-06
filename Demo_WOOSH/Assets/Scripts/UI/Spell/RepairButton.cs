@@ -8,6 +8,7 @@ public class RepairButton : SpellButton
     {
         base.Initialize();
         cost = 1;
+        type = GameManager.SpellType.Repair;
     }
 
     public override void CastSpell()
@@ -22,6 +23,6 @@ public class RepairButton : SpellButton
     {
         base.Activate(target);
 
-        if (!target.GetComponent<Barrel>().Destroyed || GameManager.Instance.LevelManager.Player.RepairCooldown > 0) Active = false;
+        if (!target.GetComponent<Barrel>().Destroyed || GameManager.Instance.LevelManager.Player.GetCurrentCooldown(GameManager.SpellType.Repair) > 0) Active = false;
     }
 }
