@@ -10,7 +10,8 @@ public class UberManager : MonoBehaviour {
         LevelSelection = 0,
         Hub,
         PreGame,
-        InGame
+        InGame,
+        PostGame
     }
 
     // singleton
@@ -38,6 +39,7 @@ public class UberManager : MonoBehaviour {
 
     private GameStates prevState;
     private GameStates state;
+    public GameStates PrevGameState { get { return prevState; } }
     public GameStates GameState { get { return state; } }
 
     private bool doingSetup = true;
@@ -52,9 +54,10 @@ public class UberManager : MonoBehaviour {
         uiManager.Initialize();
 
         stateManagers.Add(GameStates.InGame, new GameManager());
-        
+        stateManagers.Add(GameStates.PostGame, new PostGameManager());
+
         state = GameStates.InGame;
-        stateManagers.Get(state).Initialize();
+        stateManagers.Get(state).Start();
     }
 
     public void Update()
@@ -67,6 +70,6 @@ public class UberManager : MonoBehaviour {
         stateManagers.Get(state).Clear();
         prevState = state;
         state = nextState;
-        stateManagers.Get(state).Restart();
+        stateManagers.Get(state).Start();
     }
 }

@@ -9,11 +9,11 @@ public class PostGameUIManager : SubUIManager
     private RectTransform anchorTopMid;
     private RectTransform anchorBottomRight;
 
-    private GameObject postGameInfoPanel;
+    private PostGameInfoPanel postGameInfoPanel;
     private GameObject backButton;
     private GameObject nextButton;
 
-    public override void Initialize()
+    protected override void Initialize()
     {
         canvas = GameObject.FindGameObjectWithTag("PostGameCanvas").GetComponent<Canvas>();
         anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
@@ -21,12 +21,9 @@ public class PostGameUIManager : SubUIManager
         anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
 
         postGameInfoPanel = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/PostGame/PostGameInfoPanel"), Vector3.zero, Quaternion.identity,
-                anchorCenter.transform);
+                anchorCenter.transform).GetComponent<PostGameInfoPanel>();
         postGameInfoPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
-        
-        //TODO: create class for postgame info panel that sets all info
-        //TODO: set victory/defeat text
-        //TODO: set amount of hoomans lost
+        postGameInfoPanel.Initialize();
 
         GameObject buttonParent = GameObject.Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, anchorBottomRight);
         buttonParent.AddComponent<RectTransform>();
@@ -36,7 +33,9 @@ public class PostGameUIManager : SubUIManager
         backButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/Button"), Vector3.zero, Quaternion.identity,
                 buttonParent.transform);
         backButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(175.0f, 0.0f);
-        backButton.GetComponentInChildren<Text>().text = "Back to world";
+        //TODO: change text tó 'back to levelselection' as soon as that state exists
+        backButton.GetComponentInChildren<Text>().text = "Replay level";
+        backButton.GetComponent<Button>().onClick.AddListener(BackToWorld);
 
         nextButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/Button"), Vector3.zero, Quaternion.identity,
                 buttonParent.transform);
@@ -48,13 +47,22 @@ public class PostGameUIManager : SubUIManager
         nextButton.GetComponent<Button>().interactable = false;
     }
 
-    public override void Restart()
+    protected override void Restart()
     {
+        postGameInfoPanel.Initialize();
 
+        //TODO: actually check if the next level button should be deactivated
+        //TODO: button script that handles active state 
+        nextButton.GetComponent<Button>().interactable = false;
     }
 
     public override void Clear()
     {
+        base.Clear();
+    }
 
+    public void BackToWorld()
+    {
+        UberManager.Instance.GotoState(UberManager.GameStates.InGame);
     }
 }

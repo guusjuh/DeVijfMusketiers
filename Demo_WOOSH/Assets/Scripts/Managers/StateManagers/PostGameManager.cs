@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PostGameManager : StateManager
 {
-    public override void Initialize()
+    protected override void Initialize()
     {
-
+        UIManager.Instance.RestartUI();
     }
 
-    public override void Restart()
+    protected override void Restart()
     {
+        UIManager.Instance.RestartUI();
+
     }
 
     public override void Clear()
     {
+        UIManager.Instance.ClearUI();
 
     }
 

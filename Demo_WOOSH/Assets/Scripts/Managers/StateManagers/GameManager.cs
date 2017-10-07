@@ -23,6 +23,9 @@ public class GameManager : StateManager {
     }
 
     private bool gameOn = false;
+    public bool GameOn { get { return gameOn; } }
+    private bool won = false;
+    public bool Won { get { return won; } }
 
     private LevelManager levelManager = new LevelManager();
     public LevelManager LevelManager { get { return levelManager; } }
@@ -41,24 +44,26 @@ public class GameManager : StateManager {
     private Dictionary<TileManager.ContentType, List<TileManager.ContentType>> typesToEnter = new Dictionary<TileManager.ContentType, List<TileManager.ContentType>>();
     public Dictionary<TileManager.ContentType, List<TileManager.ContentType>> TypesToEnter { get { return typesToEnter; } }
 
-    public override void Initialize()
+    protected override void Initialize()
     { 
         SetTypesToEnter();
 
         tileManager.Initialize();
-        UIManager.Instance.InGameUI.Initialize();
+        UIManager.Instance.RestartUI();//InGameUI.Start();
         levelManager.Initialize();
 
         gameOn = true;
+        won = false;
     }
 
-    public override void Restart()
+    protected override void Restart()
     {
         tileManager.Restart();
-        UIManager.Instance.InGameUI.Restart();
+        UIManager.Instance.RestartUI();//InGameUI.Start();
         levelManager.Restart();
 
         gameOn = true;
+        won = false;
     }
 
     public override void Clear()
@@ -67,7 +72,7 @@ public class GameManager : StateManager {
 
         // call all clear methods
         levelManager.Clear();
-        UIManager.Instance.InGameUI.Clear();
+        UIManager.Instance.ClearUI();
         tileManager.ClearGrid();
 
         // Activate the garbage collector so we start clean.
@@ -75,8 +80,16 @@ public class GameManager : StateManager {
 
         // Unload all unused assets to clear memory.
         Resources.UnloadUnusedAssets();
+    }
 
-        //RestartGame();
+    public void GameOver()
+    {
+        gameOn = false;
+
+        if (LevelManager.Humans.Count > 0) won = true;
+
+        // Switch game state
+        UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
     }
 
     private void SetTypesToEnter()

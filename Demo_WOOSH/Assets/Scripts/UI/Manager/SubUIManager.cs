@@ -5,20 +5,34 @@ using UnityEngine;
 public class SubUIManager
 {
     protected Canvas canvas;
+    protected bool first = true;
 
-    public virtual void Initialize()
+    public void Start()
     {
+        if (first)
+        {
+            Initialize();
+            first = false;
+        }
+        else
+        {
+            Restart();
+        }
 
+        canvas.gameObject.SetActive(true);
     }
 
-    public virtual void Restart()
+    protected virtual void Initialize()
     {
-        
+    }
+
+    protected virtual void Restart()
+    {
     }
 
     public virtual void Clear()
     {
-        
+        canvas.gameObject.SetActive(false);
     }
 
     public Vector2 WorldToCanvas(Vector3 worldPosition)

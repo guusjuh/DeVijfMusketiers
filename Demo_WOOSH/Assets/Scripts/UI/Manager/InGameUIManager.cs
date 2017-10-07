@@ -28,7 +28,7 @@ public class InGameUIManager : SubUIManager {
 
     private const float RADIUS = 200f;
 
-    public override void Initialize()
+    protected override void Initialize()
     {
         canvas = GameObject.FindGameObjectWithTag("InGameCanvas").GetComponent<Canvas>();
 
@@ -87,7 +87,7 @@ public class InGameUIManager : SubUIManager {
         }
     }
 
-    public override void Restart()
+    protected override void Restart()
     {
         enemyInfoUI.Restart();
         skipTurnButton.gameObject.SetActive(true);
@@ -108,6 +108,8 @@ public class InGameUIManager : SubUIManager {
         // hide spell buttons 
         HideSpellButtons();
         ActivatePushButtons(false);
+
+        base.Clear();
     }
 
     public void ActivatePushButtons(bool on, MovableObject target = null)

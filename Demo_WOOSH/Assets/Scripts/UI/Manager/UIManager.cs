@@ -19,25 +19,24 @@ public class UIManager
         }
     }
 
-    private InGameUIManager inGameUI= new InGameUIManager();
-    public InGameUIManager InGameUI { get { return inGameUI; } }
+    public InGameUIManager InGameUI { get { return (InGameUIManager)uiManagers.Get(UberManager.GameStates.InGame); } }
+    public PostGameUIManager PostGameUI { get { return (PostGameUIManager)uiManagers.Get(UberManager.GameStates.PostGame); } }
 
-    private PostGameUIManager postGameUI = new PostGameUIManager();
-    public PostGameUIManager PostGameUI { get { return postGameUI; } }
+    private Dictionary<UberManager.GameStates, SubUIManager> uiManagers = new Dictionary<UberManager.GameStates, SubUIManager>();
 
     public void Initialize()
     {
-        //postGameUI.Initialize();
+        uiManagers.Add(UberManager.GameStates.InGame, new InGameUIManager());
+        uiManagers.Add(UberManager.GameStates.PostGame, new PostGameUIManager());
     }
 
-    public void Restart()
+    public void RestartUI()
     {
-        //postGameUI.Restart();
+        uiManagers.Get(UberManager.Instance.GameState).Start();
     }
 
-    public void Clear()
+    public void ClearUI()
     {
-        //postGameUI.Clear();
-
+        uiManagers.Get(UberManager.Instance.GameState).Clear();
     }
 }

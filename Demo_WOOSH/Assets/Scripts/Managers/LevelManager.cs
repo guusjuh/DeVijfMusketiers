@@ -124,12 +124,15 @@ public class LevelManager
     {
         if (player.EndPlayerMove(cost, endTurn))
         {
-            enemies.HandleAction(e => e.UpdateTarget());
+            if (GameManager.Instance.GameOn)
+            {
+                enemies.HandleAction(e => e.UpdateTarget());
 
-            playersTurn = false;
+                playersTurn = false;
 
-            UIManager.Instance.InGameUI.EndPlayerTurn();
-            UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
+                UIManager.Instance.InGameUI.EndPlayerTurn();
+                UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
+            }
         }
 
         //apText.text = currentActionPoints + "";
@@ -176,15 +179,21 @@ public class LevelManager
                 // make creature move
                 e.EnemyMove();
 
+                if (!GameManager.Instance.GameOn) break;
+
                 // delay
                 yield return new WaitForSeconds(moveDelay);
             }
+
+            if (!GameManager.Instance.GameOn) break;
+
             e.EndTurn();
         }
 
         // switch turns
 
-        yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
+        if (!GameManager.Instance.GameOn) yield return null;
+        else yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
 
         //yield return new WaitForSeconds(turnDelay);
     }
@@ -246,7 +255,7 @@ public class LevelManager
         {
             //TODO: game over
             Debug.Log("You lost!");
-            GameManager.Instance.Clear();
+            GameManager.Instance.GameOver();
         }
 
         shrines.HandleAction(s => s.CheckForActive());
@@ -273,7 +282,7 @@ public class LevelManager
         {
             //TODO: win!
             Debug.Log("You won!");
-            GameManager.Instance.Clear();
+            GameManager.Instance.GameOver();
         }
     }
 
