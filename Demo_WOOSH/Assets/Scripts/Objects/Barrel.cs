@@ -40,6 +40,11 @@ public class Barrel : MovableObject
         possibleSpellTypes.Add(GameManager.SpellType.Push);
     }
 
+    public override void Clear()
+    {
+        GameManager.Instance.LevelManager.RemoveBarrel(this);
+    }
+
     public override bool Hit()
     {
         Destroyed = true;

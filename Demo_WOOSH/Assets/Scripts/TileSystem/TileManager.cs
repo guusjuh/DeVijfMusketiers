@@ -91,15 +91,26 @@ public class TileManager
     /// </summary>
     public void Initialize()
     {
+        gridParent = new GameObject("Grid Parent");
+
+        SetUpGrid();
+    }
+
+    public void Restart()
+    {
+        SetUpGrid();
+    }
+
+    private void SetUpGrid()
+    {
         // Get the amount of rows and colomns from the level
         this.rows = ContentManager.Instance.Levels[GameManager.Instance.CurrentLevel].rows;
         this.columns = ContentManager.Instance.Levels[GameManager.Instance.CurrentLevel].columns;
-        
+
         // Initialize the grid 2D array.
         grid = new TileNode[rows, columns];
 
         // Initialize and set the parent. 
-        gridParent = new GameObject("Grid Parent");
 
         // Create the grid.
         CreateGrid(rows, columns);
@@ -112,9 +123,19 @@ public class TileManager
                 grid[i, j].SearchNeighbours();
             }
         }
+    }
 
-        //grid[1,1].NeightBours.HandleAction(n => n.SetTestColor());
+    public void ClearGrid()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                grid[i,j].Clear();
+            }
+        }
 
+        grid = null;
     }
 
     /// <summary>

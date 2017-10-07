@@ -27,6 +27,11 @@ public class Human : MovableObject {
         possibleSpellTypes.Add(GameManager.SpellType.Push);
     }
 
+    public override void Clear()
+    {
+        GameManager.Instance.LevelManager.RemoveHuman(this);
+    }
+
     public void MakeInvisible()
     {
         GetComponent<SpriteRenderer>().color = shieldColor;
@@ -61,7 +66,7 @@ public class Human : MovableObject {
     {
         canBeTargeted = false;
 
-        GameManager.Instance.LevelManager.RemoveHuman(this);
+        GameManager.Instance.LevelManager.RemoveHuman(this, true);
 
         return true;
     }

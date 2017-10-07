@@ -27,6 +27,11 @@ public class Shrine : EnemyTarget
         type = TileManager.ContentType.Shrine;
     }
 
+    public override void Clear()
+    {
+        GameManager.Instance.LevelManager.RemoveShrine(this);
+    }
+
     public override bool Hit()
     {
         canBeTargeted = false;

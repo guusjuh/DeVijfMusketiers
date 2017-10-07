@@ -34,18 +34,54 @@ public class LevelManager
 
     public void Initialize()
     {
+        SetUpLevel();
+    }
+
+    public void Restart()
+    {
+        SetUpLevel();
+    }
+
+    private void SetUpLevel()
+    {
         humans = new List<Human>();
         barrels = new List<Barrel>();
         shrines = new List<Shrine>();
         enemies = new List<Enemy>();
         player = new Player();
+        player.Initialize();
+
+        amountOfTurns = 0;
 
         SpawnLevel();
 
         // start with player turn
-        //playersTurn = true;
-        //BeginPlayerTurn();
-        //othersTurn = false;
+        playersTurn = true;
+        othersTurn = false;
+        UberManager.Instance.StartCoroutine(BeginPlayerTurn());
+    }
+
+    public void Clear()
+    {
+        // clear objects in list
+        while (humans.Count > 0) humans[0].Clear(); 
+        humans.Clear();
+        humans = null;
+
+        while (barrels.Count > 0) barrels[0].Clear();
+        barrels.Clear();
+        barrels = null;
+
+        while (shrines.Count > 0) shrines[0].Clear();
+        shrines.Clear();
+        shrines = null;
+
+        while (enemies.Count > 0) enemies[0].Clear();
+        enemies.Clear();
+        enemies = null;
+
+        playersTurn = false;
+        othersTurn = false;
     }
 
     public void Update()
@@ -54,7 +90,7 @@ public class LevelManager
             return;
 
         // start moving enemies
-        GameManager.Instance.StartCoroutine(HandleOtherTurn());
+        UberManager.Instance.StartCoroutine(HandleOtherTurn());
     }
 
     public IEnumerator BeginPlayerTurn()
@@ -63,10 +99,10 @@ public class LevelManager
         amountOfTurns++;
 
         // do we have to start goo spawning?
-        yield return GameManager.Instance.StartCoroutine(CheckForGooSpawning());
+        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
 
         // show banner
-        yield return GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(true));
+        yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
         // count extra actionpoints
         shrines.HandleAction(s => s.CheckForActive());
@@ -78,7 +114,7 @@ public class LevelManager
         // start players turn
         player.StartPlayerTurn(extraPoints);
 
-        GameManager.Instance.UiManager.BeginPlayerTurn();
+        UIManager.Instance.InGameUI.BeginPlayerTurn();
 
         playersTurn = true;
         othersTurn = false;
@@ -91,8 +127,9 @@ public class LevelManager
             enemies.HandleAction(e => e.UpdateTarget());
 
             playersTurn = false;
-            GameManager.Instance.UiManager.EndPlayerTurn();
-            GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.StartTurn(false));
+
+            UIManager.Instance.InGameUI.EndPlayerTurn();
+            UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
         }
 
         //apText.text = currentActionPoints + "";
@@ -102,12 +139,12 @@ public class LevelManager
     {
         if (amountOfTurns == 4)
         {
-            yield return GameManager.Instance.StartCoroutine(GameManager.Instance.UiManager.WarningText());
+            yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.WarningText());
         }
 
         if (amountOfTurns > 4)
         {
-            yield return GameManager.Instance.StartCoroutine(SpawnGoo());
+            yield return UberManager.Instance.StartCoroutine(SpawnGoo());
         }
     }
 
@@ -147,7 +184,7 @@ public class LevelManager
 
         // switch turns
 
-        yield return GameManager.Instance.StartCoroutine(BeginPlayerTurn());
+        yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
 
         //yield return new WaitForSeconds(turnDelay);
     }
@@ -199,17 +236,18 @@ public class LevelManager
     }
 
     //TODO: refactor!
-    public void RemoveHuman(Human toRemove)
+    public void RemoveHuman(Human toRemove, bool inGame = false)
     {
         humans.Remove(toRemove);
 
-        GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove.Type);
-        GameObject.Destroy(toRemove.gameObject);
+        Remove(toRemove);
 
-        //if (humans.Count <= 0)
-        //{
-        //    Application.LoadLevel("Lose");
-        //}
+        if (inGame && humans.Count <= 0)
+        {
+            //TODO: game over
+            Debug.Log("You lost!");
+            GameManager.Instance.Clear();
+        }
 
         shrines.HandleAction(s => s.CheckForActive());
     }
@@ -217,13 +255,30 @@ public class LevelManager
     public void RemoveShrine(Shrine toRemove)
     {
         shrines.Remove(toRemove);
-        GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove.Type);
-        GameObject.Destroy(toRemove.gameObject);
+        Remove(toRemove);
     }
 
     public void RemoveBarrel(Barrel toRemove)
     {
         barrels.Remove(toRemove);
+        Remove(toRemove);
+    }
+
+    public void RemoveEnemy(Enemy toRemove, bool inGame = false)
+    {
+        enemies.Remove(toRemove);
+        Remove(toRemove);
+
+        if (inGame && enemies.Count <= 0)
+        {
+            //TODO: win!
+            Debug.Log("You won!");
+            GameManager.Instance.Clear();
+        }
+    }
+
+    private void Remove(WorldObject toRemove)
+    {
         GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove.Type);
         GameObject.Destroy(toRemove.gameObject);
     }

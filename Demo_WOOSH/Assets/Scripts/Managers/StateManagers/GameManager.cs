@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+[Serializable]
+public class GameManager : StateManager {
     public enum SpellType
     {
         Attack = 0,
@@ -15,27 +17,18 @@ public class GameManager : MonoBehaviour {
     private static GameManager instance = null;
     public static GameManager Instance {
         get {
-            if (instance == null) instance = FindObjectOfType(typeof(GameManager)) as GameManager;
+            if (instance == null) instance = UberManager.Instance.GameManager;
             return instance;
         }
     }
 
-    private bool doingSetup = true;
+    private bool gameOn = false;
 
-    [SerializeField] private ContentManager contentManager;
-    public ContentManager ContentManager { get { return contentManager; } }
-
-    private LevelManager levelManager;
+    private LevelManager levelManager = new LevelManager();
     public LevelManager LevelManager { get { return levelManager; } }
 
-    private UIManager uiManager;
-    public UIManager UiManager { get { return uiManager; } }
-
-    private TileManager tileManager;
+    private TileManager tileManager = new TileManager();
     public TileManager TileManager { get { return tileManager; } }
-
-    private InputManager inputManager;
-    public InputManager InputManager { get { return inputManager; } }
 
     //TODO: enum for layers!!
 
@@ -48,28 +41,42 @@ public class GameManager : MonoBehaviour {
     private Dictionary<TileManager.ContentType, List<TileManager.ContentType>> typesToEnter = new Dictionary<TileManager.ContentType, List<TileManager.ContentType>>();
     public Dictionary<TileManager.ContentType, List<TileManager.ContentType>> TypesToEnter { get { return typesToEnter; } }
 
-    public void Awake()
-    {
-        doingSetup = true;
-        InitGame();
-    }
-
-    private void InitGame()
+    public override void Initialize()
     { 
-        contentManager.Initialize();
         SetTypesToEnter();
 
-        tileManager = new TileManager();
         tileManager.Initialize();
-
-        uiManager = new UIManager();
-        uiManager.Initialize();
-
-        levelManager = new LevelManager();
+        UIManager.Instance.InGameUI.Initialize();
         levelManager.Initialize();
 
-        inputManager = new InputManager();
+        gameOn = true;
+    }
 
+    public override void Restart()
+    {
+        tileManager.Restart();
+        UIManager.Instance.InGameUI.Restart();
+        levelManager.Restart();
+
+        gameOn = true;
+    }
+
+    public override void Clear()
+    {
+        gameOn = false;
+
+        // call all clear methods
+        levelManager.Clear();
+        UIManager.Instance.InGameUI.Clear();
+        tileManager.ClearGrid();
+
+        // Activate the garbage collector so we start clean.
+        GC.Collect();
+
+        // Unload all unused assets to clear memory.
+        Resources.UnloadUnusedAssets();
+
+        //RestartGame();
     }
 
     private void SetTypesToEnter()
@@ -83,20 +90,17 @@ public class GameManager : MonoBehaviour {
     }
 
     // update is called every frame
-    public void Update()
+    public override void Update()
     {
-        inputManager.CatchInput();
-        levelManager.Update();
-    }
+        if (!gameOn) return;
 
-    public void GameOver()
-    {
-        
+        UberManager.Instance.InputManager.CatchInput();
+        levelManager.Update();
     }
 
     public void SkipPlayerTurn()
     {
         levelManager.EndPlayerMove(1, true);
-        uiManager.HideSpellButtons();
+        UIManager.Instance.InGameUI.HideSpellButtons();
     }
 }

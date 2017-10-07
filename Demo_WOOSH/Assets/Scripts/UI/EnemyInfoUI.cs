@@ -27,6 +27,18 @@ public class EnemyInfoUI : MonoBehaviour
         cooldownText = specialAttack.GetComponentInChildren<Text>();
     }
 
+    public void Restart()
+    {
+        healthBar.SetHealthbar(100);
+    }
+
+    public void Clear()
+    {
+        active = false;
+        selectedEnemy = null;
+        gameObject.SetActive(false);
+    }
+
     public void OnChange(Enemy selectedEnemy = null)
     {
         // deactivate code

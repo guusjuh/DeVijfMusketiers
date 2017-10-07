@@ -25,6 +25,4 @@ public class SkipTurnButton : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(GameManager.Instance.SkipPlayerTurn);
     }
-
-
 }

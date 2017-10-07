@@ -27,7 +27,7 @@ public class ContentManager {
     {
         get
         {
-            if (instance == null) instance = GameManager.Instance.ContentManager;
+            if (instance == null) instance = UberManager.Instance.ContentManager;
             return instance;
         }
     }

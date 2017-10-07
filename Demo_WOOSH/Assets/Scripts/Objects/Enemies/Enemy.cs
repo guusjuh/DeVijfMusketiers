@@ -16,7 +16,7 @@ public class Enemy : WorldObject {
     public int SpawnCooldown { get { return spawnCooldown; } }
     private int totalSpawnCooldown = 3;
 
-    protected float startHealth = 100;
+    protected float startHealth = 10;
     protected float health;
     public float Health { get { return health; } }
     public float HealthPercentage { get { return (health / startHealth) * 100; } }
@@ -57,17 +57,29 @@ public class Enemy : WorldObject {
         //SetUIInfo();
     }
 
+    public override void Clear()
+    {
+        GameManager.Instance.LevelManager.RemoveEnemy(this);
+    }
+
     protected virtual void Attack(EnemyTarget other)
     {
         // hit the other
         other.Hit();
     }
 
-    public virtual void Hit(int dmg)
+    public virtual bool Hit(int dmg)
     {
         health -= dmg;
+        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
-        GameManager.Instance.UiManager.EnemyInfoUI.OnChange(this);
+        if (health <= 0)
+        {
+            GameManager.Instance.LevelManager.RemoveEnemy(this, true);
+            return true;
+        }
+
+        return false;
     }
 
     protected IEnumerator HitVisual()
@@ -361,7 +373,7 @@ public class Enemy : WorldObject {
 
     private void SetUIInfo()
     {
-        GameManager.Instance.UiManager.EnemyInfoUI.OnChange(currentActionPoints <= 0 ? null : this);
+        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(currentActionPoints <= 0 ? null : this);
     }
 
     public override void Click()
@@ -369,6 +381,6 @@ public class Enemy : WorldObject {
         base.Click();
 
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
-        GameManager.Instance.UiManager.EnemyInfoUI.OnChange(this);
+        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
     }
 }

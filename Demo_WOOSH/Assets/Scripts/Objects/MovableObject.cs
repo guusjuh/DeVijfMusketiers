@@ -11,7 +11,7 @@ public class MovableObject : EnemyTarget {
         gridPosition += dirToGo;
         Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
 
-        GameManager.Instance.UiManager.ActivatePushButtons(false, this);
+        UIManager.Instance.InGameUI.ActivatePushButtons(false, this);
 
         transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
     }

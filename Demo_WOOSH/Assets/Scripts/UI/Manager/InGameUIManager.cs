@@ -1,22 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
-//TODO: begin and end turn 
-//TODO: do a lot of stuff to its own script
-// skipturn button enable/disable
-public class UIManager
-{
-    private EnemyInfoUI enemyInfoUI;
-    public EnemyInfoUI EnemyInfoUI { get { return enemyInfoUI; } }
-
-    private SkipTurnButton skipTurnButton;
-    private PlayerActionPointsUI playerActionPoints;
-    public PlayerActionPointsUI PlayerActionPoints { get { return playerActionPoints; } }
-
-    private Canvas levelCanvas;
+public class InGameUIManager : SubUIManager {
     private RectTransform anchorCenter;
     public RectTransform AnchorCenter { get { return anchorCenter; } }
     private RectTransform anchorTopMid;
@@ -26,6 +13,13 @@ public class UIManager
     private GameObject playerTurnBanner;
     private GameObject enemyTurnBanner;
 
+    private EnemyInfoUI enemyInfoUI;
+    public EnemyInfoUI EnemyInfoUI { get { return enemyInfoUI; } }
+
+    private SkipTurnButton skipTurnButton;
+    private PlayerActionPointsUI playerActionPoints;
+    public PlayerActionPointsUI PlayerActionPoints { get { return playerActionPoints; } }
+
     private Dictionary<GameManager.SpellType, SpellButton> spellButtons;
 
     private List<SurroundingPushButton> surroundingPushButtons;
@@ -34,14 +28,14 @@ public class UIManager
 
     private const float RADIUS = 200f;
 
-    public void Initialize()
+    public override void Initialize()
     {
-        levelCanvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+        canvas = GameObject.FindGameObjectWithTag("InGameCanvas").GetComponent<Canvas>();
 
-        anchorCenter = levelCanvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorTopMid = levelCanvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
-        anchorBottomRight = levelCanvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
-        anchorBottomLeft = levelCanvas.gameObject.transform.Find("Anchor_BottomLeft").GetComponent<RectTransform>();
+        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
+        anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
+        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
+        anchorBottomLeft = canvas.gameObject.transform.Find("Anchor_BottomLeft").GetComponent<RectTransform>();
 
         enemyInfoUI = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/EnemyInfo"), Vector3.zero, Quaternion.identity, anchorTopMid.transform).GetComponent<EnemyInfoUI>();
         enemyInfoUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0.0f, -50.0f, 0.0f);
@@ -85,12 +79,35 @@ public class UIManager
         for (int i = 0; i < 6; i++)
         {
             surroundingPushButtons.Add(
-                GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/SurroundingPushButton"), Vector3.zero, Quaternion.identity, GameManager.Instance.UiManager.AnchorCenter)
+                GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/SurroundingPushButton"), Vector3.zero, Quaternion.identity, AnchorCenter)
                 .GetComponent<SurroundingPushButton>());
 
             surroundingPushButtons[i].Deactivate();
-            surroundingPushButtons[i].Initialize(new Coordinate(0,0), direction);
+            surroundingPushButtons[i].Initialize(new Coordinate(0, 0), direction);
         }
+    }
+
+    public override void Restart()
+    {
+        enemyInfoUI.Restart();
+        skipTurnButton.gameObject.SetActive(true);
+        playerActionPoints.gameObject.SetActive(true);
+    }
+
+    public override void Clear()
+    {
+        // you knwo the banners are off
+
+        // let enemy info ui clear itself
+        enemyInfoUI.Clear();
+
+        // clear skip and player ap elements
+        skipTurnButton.gameObject.SetActive(false);
+        playerActionPoints.gameObject.SetActive(false);
+
+        // hide spell buttons 
+        HideSpellButtons();
+        ActivatePushButtons(false);
     }
 
     public void ActivatePushButtons(bool on, MovableObject target = null)
@@ -105,10 +122,10 @@ public class UIManager
 
                 Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition + direction);
                 surroundingPushButtons[i].GetComponent<RectTransform>().anchoredPosition =
-                    GameManager.Instance.UiManager.WorldToCanvas(worldPos);
+                    WorldToCanvas(worldPos);
 
                 surroundingPushButtons[i].GetComponent<RectTransform>().anchoredPosition =
-                    GameManager.Instance.UiManager.WorldToCanvas(worldPos);
+                    WorldToCanvas(worldPos);
 
                 surroundingPushButtons[i].Initialize(target.GridPosition + direction, direction);
             }
@@ -143,7 +160,7 @@ public class UIManager
 
         //TODO: maybe this from enemy class, but dissable enemyinfo
     }
-    
+
     public void EndPlayerTurn()
     {
         playerActionPoints.SetAPText();
@@ -173,8 +190,6 @@ public class UIManager
 
     public void ShowSpellButtons(Vector2 position, List<GameManager.SpellType> spellTypes, WorldObject target)
     {
-        //if (!GameManager.Instance.LevelManager.PlayersTurn) return;
-
         HideSpellButtons();
 
         Vector2 canvasPos = WorldToCanvas(position);
@@ -188,8 +203,8 @@ public class UIManager
             spellButtons.Get(spellTypes[i]).gameObject.SetActive(true);
             spellButtons.Get(spellTypes[i]).Activate(target);
 
-            Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float) i / divider + offSetCircle * Mathf.PI),
-                -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float) i / divider + offSetCircle * Mathf.PI));
+            Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI),
+                -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI));
             spellButtons.Get(spellTypes[i]).GetComponent<RectTransform>().anchoredPosition = canvasPos - pos;
         }
     }
@@ -200,17 +215,5 @@ public class UIManager
         {
             pair.Value.gameObject.SetActive(false);
         }
-    }
-
-    public Vector2 WorldToCanvas(Vector3 worldPosition)
-    {
-        //TODO: lol we don't have a camera script or ref
-        Camera camera = Camera.main;
-
-        var viewportPos = camera.WorldToViewportPoint(worldPosition);
-        var canvasRect = levelCanvas.GetComponent<RectTransform>();
-
-        return new Vector2((viewportPos.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f),
-            (viewportPos.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f));
     }
 }

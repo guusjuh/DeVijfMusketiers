@@ -18,14 +18,19 @@ public class WorldObject : MonoBehaviour
         possibleSpellTypes = new List<GameManager.SpellType>();
     }
 
-
     public virtual void Click()
     { 
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 
         //TODO: shouldn't only be walking monster but hey
-        if (type != TileManager.ContentType.WalkingMonster) GameManager.Instance.UiManager.EnemyInfoUI.OnChange();
+        if (type != TileManager.ContentType.WalkingMonster) UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
-        GameManager.Instance.UiManager.ShowSpellButtons(transform.position, possibleSpellTypes, this);
+        UIManager.Instance.InGameUI.ShowSpellButtons(transform.position, possibleSpellTypes, this);
+    }
+
+    //TODO: should be moved to an objectpool
+    public virtual void Clear()
+    {
+        
     }
 }

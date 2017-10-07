@@ -7,7 +7,8 @@ TagManager:
   - Creature
   - Human
   - Vase
-  - Canvas
+  - PostGameCanvas
+  - InGameCanvas
   layers:
   - Default
   - TransparentFX

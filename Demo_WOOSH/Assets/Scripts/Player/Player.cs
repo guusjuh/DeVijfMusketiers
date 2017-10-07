@@ -20,6 +20,12 @@ public class Player {
 
     public int Damage{ get { return damage; } }
 
+    public void Initialize()
+    {
+        repairCooldown = 0;
+        invisibleCooldown = 0;
+    }
+
     public void StartPlayerTurn(int extraAP = 0)
     {
         currentActionPoints = totalActionPoints + extraAP;
@@ -30,7 +36,7 @@ public class Player {
     public bool EndPlayerMove(int cost = 1, bool endTurn = false)
     {
         currentActionPoints = endTurn ? 0 : currentActionPoints - cost;
-        GameManager.Instance.UiManager.PlayerActionPoints.SetAPText();
+        UIManager.Instance.InGameUI.PlayerActionPoints.SetAPText();
 
         if (currentActionPoints <= 0)
         {

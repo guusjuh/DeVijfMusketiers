@@ -14,7 +14,7 @@ public class PushButton : SpellButton
 
     public override void CastSpell()
     {
-        GameManager.Instance.UiManager.ActivatePushButtons(true, (MovableObject)target);
+        UIManager.Instance.InGameUI.ActivatePushButtons(true, (MovableObject)target);
 
         base.CastSpell();
     }
