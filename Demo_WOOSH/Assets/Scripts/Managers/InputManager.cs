@@ -16,6 +16,8 @@ public class InputManager {
 
             if(results.Count <= 0)
             {
+                if (!GameManager.Instance.LevelManager.PlayersTurn) return;
+
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
                 if (hit.collider != null)

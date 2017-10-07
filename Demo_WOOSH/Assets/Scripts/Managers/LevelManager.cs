@@ -79,16 +79,15 @@ public class LevelManager
         player.StartPlayerTurn(extraPoints);
 
         GameManager.Instance.UiManager.BeginPlayerTurn();
+
+        playersTurn = true;
+        othersTurn = false;
     }
 
     public void EndPlayerMove(int cost = 1, bool endTurn = false)
     {
         if (player.EndPlayerMove(cost, endTurn))
         {
-            /*//UpdateEnemyPaths();
-            
-            if (creature != null) Creature.EndPlayerTurn();*/
-
             enemies.HandleAction(e => e.UpdateTarget());
 
             playersTurn = false;
@@ -147,8 +146,7 @@ public class LevelManager
         }
 
         // switch turns
-        playersTurn = true;
-        othersTurn = false;
+
         yield return GameManager.Instance.StartCoroutine(BeginPlayerTurn());
 
         //yield return new WaitForSeconds(turnDelay);

@@ -173,6 +173,8 @@ public class UIManager
 
     public void ShowSpellButtons(Vector2 position, List<GameManager.SpellType> spellTypes, WorldObject target)
     {
+        //if (!GameManager.Instance.LevelManager.PlayersTurn) return;
+
         HideSpellButtons();
 
         Vector2 canvasPos = WorldToCanvas(position);
