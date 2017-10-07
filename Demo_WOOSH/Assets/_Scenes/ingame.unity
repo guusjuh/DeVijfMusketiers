@@ -519,26 +519,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contentManager:
-    levels:
-    - rows: 5
-      columns: 5
-      spawnNodes:
-      - type: 0
-        position:
-          x: 1
-          y: 4
-      - type: 2
-        position:
-          x: 2
-          y: 2
-      - type: 6
-        position:
+    levelDataContainer:
+      levelData:
+      - rows: 5
+        columns: 5
+        spawnNodes:
+        - type: 0
+          position:
+            x: 3
+            y: 4
+        - type: 2
+          position:
+            x: 1
+            y: 2
+        - type: 6
+          position:
+            x: 0
+            y: 0
+        gooStartPos:
           x: 0
           y: 0
-      gooStartPos:
-        x: 0
-        y: 0
-      amountOfHumans: 1
+        minAmountOfHumans: 3
+        maxAmountOfHumans: 3
+      - rows: 6
+        columns: 6
+        spawnNodes:
+        - type: 0
+          position:
+            x: 2
+            y: 5
+        - type: 2
+          position:
+            x: 1
+            y: 3
+        - type: 4
+          position:
+            x: 3
+            y: 1
+        - type: 6
+          position:
+            x: 5
+            y: 5
+        gooStartPos:
+          x: 5
+          y: 5
+        minAmountOfHumans: 4
+        maxAmountOfHumans: 4
 --- !u!4 &1638883504
 Transform:
   m_ObjectHideFlags: 0

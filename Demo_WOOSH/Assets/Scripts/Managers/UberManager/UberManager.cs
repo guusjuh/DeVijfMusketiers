@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -73,3 +74,21 @@ public class UberManager : MonoBehaviour {
         stateManagers.Get(state).Start();
     }
 }
+
+#if UNITY_EDITOR  
+[CustomEditor(typeof(UberManager))]
+// ^ This is the script we are making a custom editor for.
+public class UberEditorScript : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        if (GUILayout.Button("Save level data"))
+        {
+            ContentManager.Instance.SaveAllInformation();
+            Debug.Log("Level Data saved");
+        }
+    }
+}
+#endif 

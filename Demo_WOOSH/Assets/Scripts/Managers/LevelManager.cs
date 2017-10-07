@@ -201,7 +201,7 @@ public class LevelManager
     private void SpawnLevel()
     {
         // spawn nodes
-        List<SpawnNode> spawnNodes = ContentManager.Instance.Levels[0].spawnNodes;
+        List<SpawnNode> spawnNodes = ContentManager.Instance.LevelDataContainer.LevelData[0].spawnNodes;
 
         foreach (SpawnNode s in spawnNodes)
         {
@@ -241,7 +241,7 @@ public class LevelManager
         }
 
         // spawn goo
-        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.Levels[0].gooStartPos).Content.SetTileType(TileManager.TileType.Goo);
+        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.LevelDataContainer.LevelData[0].gooStartPos).Content.SetTileType(TileManager.TileType.Goo);
     }
 
     //TODO: refactor!

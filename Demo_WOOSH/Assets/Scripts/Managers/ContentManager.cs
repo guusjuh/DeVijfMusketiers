@@ -2,22 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Xml.Serialization;
 
 [Serializable]
 public struct SpawnNode
 {
     public TileManager.ContentType type;
     public Coordinate position;
-}
-
-[Serializable]
-public struct LevelData
-{
-    public int rows;
-    public int columns;
-    [SerializeField] public List<SpawnNode> spawnNodes;
-    public Coordinate gooStartPos;
-    public int amountOfHumans;
 }
 
 [Serializable]
@@ -40,12 +32,8 @@ public class ContentManager {
     public List<GameObject> Bosses { get; private set; }
     public List<GameObject> Minions { get; private set; }
 
-    [SerializeField] private List<LevelData> levels;
-    public List<LevelData> Levels { get { return levels; } }
-
-    //TODO: level objects
-
-    //TODO: ui objects 
+    [SerializeField] private LevelDataContainer levelDataContainer = new LevelDataContainer();
+    public LevelDataContainer LevelDataContainer { get { return levelDataContainer; } }
 
     public void Initialize()
     {
@@ -56,5 +44,28 @@ public class ContentManager {
         Humans = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Humans"));
         Bosses = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Creatures"));
         Minions = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Minions"));
+
+        ReadLevelData();
+    }
+
+    private void ReadLevelData()
+    {
+        XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
+        TextReader textReader = new StreamReader(Application.streamingAssetsPath + "/LevelData.xml");
+
+        levelDataContainer = (LevelDataContainer)serializer.Deserialize(textReader);
+
+        textReader.Close();
+    }
+
+    public void SaveAllInformation()
+    {
+        FileStream fs = new FileStream(Application.streamingAssetsPath + "/LevelData.xml", FileMode.Create);
+
+        XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
+
+        serializer.Serialize(fs, levelDataContainer);
+
+        fs.Close();
     }
 }

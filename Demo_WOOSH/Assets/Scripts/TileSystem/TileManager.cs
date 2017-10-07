@@ -104,8 +104,8 @@ public class TileManager
     private void SetUpGrid()
     {
         // Get the amount of rows and colomns from the level
-        this.rows = ContentManager.Instance.Levels[GameManager.Instance.CurrentLevel].rows;
-        this.columns = ContentManager.Instance.Levels[GameManager.Instance.CurrentLevel].columns;
+        this.rows = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].rows;
+        this.columns = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].columns;
 
         // Initialize the grid 2D array.
         grid = new TileNode[rows, columns];
