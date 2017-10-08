@@ -58,6 +58,7 @@ public class UberManager : MonoBehaviour {
 
         contentManager.Initialize();
         uiManager.Initialize();
+        contractManager.Initialize();
 
         stateManagers.Add(GameStates.InGame, new GameManager());
         stateManagers.Add(GameStates.PostGame, new PostGameManager());

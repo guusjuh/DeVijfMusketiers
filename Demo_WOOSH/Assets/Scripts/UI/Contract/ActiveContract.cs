@@ -21,10 +21,13 @@ public class ActiveContract : ContractButton
             {
                 //TODO: reset sprite to default sprite (to be made)
                 contractRef = null;
+                ClearHeartsAndStart();
             }
             else
             {
                 iconImage.sprite = contractRef.Portrait;
+                AddHearts(contractRef.Health, contractRef.TotalHealth);
+                AddStars(contractRef.Reputation);
             }
         }
     }
@@ -33,6 +36,8 @@ public class ActiveContract : ContractButton
     {
         iconImage = transform.Find("Image").GetComponent<Image>();
         iconImage.color = nonActiveColor;
+
+        base.Initialize();
     }
 
     public override void OnClick()
