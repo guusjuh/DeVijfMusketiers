@@ -436,8 +436,8 @@ public class TileManager
                 Coordinate currPos = gooNodes[i].GridPosition + Directions(gooNodes[i].GridPosition)[j];
 
                 if (gooNodes.Contains(GetNodeReference(currPos)) ||
-                    currPos.x < 0 || currPos.x >= columns ||
-                    currPos.y < 0 || currPos.y >= rows)
+                    currPos.x < 0 || currPos.x >= rows ||
+                    currPos.y < 0 || currPos.y >= columns)
                 {
                     continue;
                 }
