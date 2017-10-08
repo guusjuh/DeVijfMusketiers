@@ -46,10 +46,10 @@ public class CameraManager : MonoBehaviour
         target = targetTransform;
     }
 
-    public void UnlockAxis(bool x, bool y)
+    public void UnlockAxis()
     {
-        lockedAxis[X_AXIS] = x;
-        lockedAxis[Y_AXIS] = y;
+        lockedAxis[X_AXIS] = false;
+        lockedAxis[Y_AXIS] = false;
     }
 
     public void LockAxis(bool x, bool y, Vector2 lockPosition)
@@ -72,7 +72,7 @@ public class CameraManager : MonoBehaviour
 
     public void Initialize()
     {
-        UnlockAxis(false, false);
+        UnlockAxis();
 
         viewportRect = Camera.main.pixelRect;
         Vector2 min = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(-1, -1));
@@ -81,6 +81,9 @@ public class CameraManager : MonoBehaviour
         speedScalar = Camera.main.orthographicSize * 0.001f;
 
         SetBorderRange(min, max);
+
+        Vector2 position = bordersMin + ((bordersMax - bordersMin) * 0.5f);
+        transform.position = new Vector3(position.x, position.y, transform.position.z);
     }
 
     private void MoveCamera(Vector2 desiredVelocity)
@@ -94,7 +97,7 @@ public class CameraManager : MonoBehaviour
 
         curViewportMin = (Vector3)desiredVelocity + Camera.main.ScreenToWorldPoint(viewportRect.min);
         curViewportMax = (Vector3)desiredVelocity + Camera.main.ScreenToWorldPoint(viewportRect.max);
-        if (!lockedAxis[X_AXIS])
+        if (!lockedAxis[X_AXIS] || target != null)
         {
             if (curViewportMin.x <= bordersMin.x && curViewportMax.x >= bordersMax.x)
             {
@@ -117,7 +120,7 @@ public class CameraManager : MonoBehaviour
                 //normal translation
             }
         }
-        if (!lockedAxis[Y_AXIS])
+        if (!lockedAxis[Y_AXIS] || target != null)
         {
             if (curViewportMin.y <= bordersMin.y && curViewportMax.y >= bordersMax.y)
             {
@@ -151,7 +154,7 @@ public class CameraManager : MonoBehaviour
         {
             if (target != null)
             {
-                transform.position = target.position;
+                MoveCamera(new Vector3(target.position.x, target.position.y, transform.position.z) - transform.position);
             }
         }
         else

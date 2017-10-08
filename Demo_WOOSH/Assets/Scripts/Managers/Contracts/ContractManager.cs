@@ -8,6 +8,11 @@ using UnityEngine;
 public class ContractManager {
     [SerializeField] private List<Contract> contracts = new List<Contract>();
 
+    public void Initialize()
+    {
+        contracts.HandleAction(c => c.Initialize());
+    }
+
     public void AddContract(Contract contract)
     {
         contracts.Add(contract);

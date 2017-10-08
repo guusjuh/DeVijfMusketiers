@@ -13,7 +13,10 @@ public class Contract
     public ContentManager.HumanTypes Type { get { return type; } }
 
     [SerializeField] private int reputation;
-    [SerializeField] private int health;
+    public int Reputation { get { return reputation; } }
+    [SerializeField] private int totalHealth;
+    private int health;
+    public int TotalHealth { get { return totalHealth; } }
     public int Health { get { return health; } }
 
     private int currentLevel;
@@ -41,20 +44,27 @@ public class Contract
         {
             case ContentManager.HumanTypes.Normal:
                 reputation = 1;
-                health = 3;
+                totalHealth = 3;
                 break;
             case ContentManager.HumanTypes.Ok:
                 reputation = 3;
-                health = 4;
+                totalHealth = 4;
                 break;
             case ContentManager.HumanTypes.Good:
                 reputation = 5;
-                health = 5;
+                totalHealth = 5;
                 break;
         }
 
+        health = totalHealth;
+
         inWorld = ContentManager.Instance.GetHumanSprites(type)[0];
         portrait = ContentManager.Instance.GetHumanSprites(type)[1];
+    }
+
+    public void Initialize()
+    {
+        health = totalHealth;
     }
 
     public void SetActive(bool on)//, int level = 0)

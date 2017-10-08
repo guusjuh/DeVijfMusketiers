@@ -116,6 +116,8 @@ public class LevelManager
 
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
+        GameManager.Instance.CameraManager.UnlockAxis();
+
         playersTurn = true;
         othersTurn = false;
     }
@@ -174,6 +176,9 @@ public class LevelManager
         foreach (Enemy e in enemies)
         {
             e.StartTurn();
+
+            GameManager.Instance.CameraManager.LockTarget(e.transform);
+
             while (e.CurrentActionPoints > 0)
             {
                 // make creature move
