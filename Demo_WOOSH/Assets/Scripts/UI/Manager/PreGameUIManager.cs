@@ -41,13 +41,7 @@ public class PreGameUIManager : SubUIManager {
         startGameButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(175.0f, 0.0f);
         startGameButton.GetComponentInChildren<Text>().text = "Start level";
         startGameButton.GetComponent<Button>().onClick.AddListener(StartGame);
-
-        newHumanButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/Button"), Vector3.zero, Quaternion.identity,
-                buttonParent.transform);
-        newHumanButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(-175.0f, 0.0f);
-        newHumanButton.GetComponentInChildren<Text>().text = "Get new contract";
-        newHumanButton.GetComponent<Button>().onClick.AddListener(GenerateNewContract);
-
+        startGameButton.GetComponent<Button>().interactable = false;
     }
 
     protected override void Restart()
@@ -62,28 +56,18 @@ public class PreGameUIManager : SubUIManager {
         base.Clear();
     }
 
+    public void CanStart(bool canStart)
+    {
+        startGameButton.GetComponent<Button>().interactable = canStart;
+    }
+
     public void StartGame()
     {
-        if (preGameInfoPanel.GetSelectedContracts().Count <
-            ContentManager.Instance.LevelDataContainer.LevelData[UberManager.Instance.PreGameManager.SelectedLevel - 1]
-                .minAmountOfHumans)
-        {
-            Debug.Log("Cant play without enough humans!");
-            return;
-        }
-
         UberManager.Instance.GameManager.SetLevelInfo(UberManager.Instance.PreGameManager.SelectedLevel,
             preGameInfoPanel.GetSelectedContracts());
 
-        preGameInfoPanel.GetSelectedContracts().HandleAction(c => c.SetActive(true, UberManager.Instance.PreGameManager.SelectedLevel));
+        preGameInfoPanel.GetSelectedContracts().HandleAction(c => c.SetActive(true));//, UberManager.Instance.PreGameManager.SelectedLevel));
 
         UberManager.Instance.GotoState(UberManager.GameStates.InGame);
-    }
-
-    public void GenerateNewContract()
-    {
-        if (UberManager.Instance.ContractManager.AmountOfContracts() >= 8) return;
-
-        preGameInfoPanel.AddToGrid(UberManager.Instance.ContractManager.GenerateRandomContract());
     }
 }

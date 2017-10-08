@@ -24,6 +24,7 @@ public class InputManager {
                 {
                     if (hit.transform.gameObject.GetComponent<WorldObject>() != null)
                     {
+                        UIManager.Instance.InGameUI.ActivatePushButtons(false);
                         hit.transform.gameObject.GetComponent<WorldObject>().Click();
                     }
                 }
@@ -31,6 +32,7 @@ public class InputManager {
                 {
                     UIManager.Instance.InGameUI.HideSpellButtons();
                     UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                    UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
                 }
             }
         }

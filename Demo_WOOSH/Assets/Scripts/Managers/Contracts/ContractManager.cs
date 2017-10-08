@@ -28,6 +28,16 @@ public class ContractManager {
         return contracts.Count;
     }
 
+    public int AmountOfContracts(int level)
+    {
+        return contracts.FindAll(c => c.CurrentLevel == level).Count;
+    }
+
+    public List<Contract> ContractsInLevel(int level)
+    {
+        return contracts.FindAll(c => c.CurrentLevel == level);
+    }
+
     public Contract GenerateRandomContract()
     {
         int id = AmountOfContracts();

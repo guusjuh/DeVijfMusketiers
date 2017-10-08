@@ -91,6 +91,8 @@ public class GameManager : StateManager {
 
         if (LevelManager.Humans.Count > 0) won = true;
 
+        selectedContracts.HandleAction(c => c.EndLevel());
+
         // Switch game state
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
     }
@@ -118,6 +120,7 @@ public class GameManager : StateManager {
     {
         levelManager.EndPlayerMove(1, true);
         UIManager.Instance.InGameUI.HideSpellButtons();
+        UIManager.Instance.InGameUI.ActivatePushButtons(false);
     }
 
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)

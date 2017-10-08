@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PreGameManager : StateManager
 {
+    //TODO: selected level should start at 0
     private int selectedLevel = 1;
     public int SelectedLevel { get { return selectedLevel; } set { selectedLevel = value; } }
 

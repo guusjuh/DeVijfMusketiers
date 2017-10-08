@@ -16,6 +16,7 @@ public class Contract
     [SerializeField] private int health;
 
     private int currentLevel;
+    public int CurrentLevel { get { return currentLevel; } }
 
     private bool activeInCurrentLevel = false;
     public bool ActiveInCurrentLevel { get { return activeInCurrentLevel; } }
@@ -54,10 +55,10 @@ public class Contract
         portrait = ContentManager.Instance.GetHumanSprites(type)[1];
     }
 
-    public void SetActive(bool on, int level = 0)
+    public void SetActive(bool on)//, int level = 0)
     {
         activeInCurrentLevel = on;
-        currentLevel = level;
+        //currentLevel = level;
     }
 
     public void Die()
@@ -71,12 +72,14 @@ public class Contract
         {
             health--;
             diedLastLevel = false;
+            Debug.Log("died this level");
             //TODO: animation for losing heart
         }
         else
         {
             //TODO: animation for walking to next level
             currentLevel++;
+            Debug.Log("survived this level");
         }
     }
 

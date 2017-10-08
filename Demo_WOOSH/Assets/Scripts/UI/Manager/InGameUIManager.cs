@@ -40,6 +40,7 @@ public class InGameUIManager : SubUIManager {
         enemyInfoUI = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/EnemyInfo"), Vector3.zero, Quaternion.identity, anchorTopMid.transform).GetComponent<EnemyInfoUI>();
         enemyInfoUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0.0f, -50.0f, 0.0f);
         enemyInfoUI.Initialize();
+        enemyInfoUI.OnChange();
 
         skipTurnButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SkipTurnButton"), Vector3.zero, Quaternion.identity, anchorBottomLeft.transform).GetComponent<SkipTurnButton>();
         skipTurnButton.Initialize();

@@ -1,10 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelSelectButton : MonoBehaviour
 {
-    [SerializeField] private int levelID;
+    private int levelID;
+
+    public void Initialize(int id)
+    {
+        levelID = id;
+        GetComponentInChildren<Text>().text = "" + id;
+    }
 
     public void OnClick()
     {
