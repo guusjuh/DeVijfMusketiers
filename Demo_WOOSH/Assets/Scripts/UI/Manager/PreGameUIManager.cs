@@ -53,6 +53,8 @@ public class PreGameUIManager : SubUIManager {
     {
         preGameInfoPanel.Clear();
 
+        CanStart(false);
+
         base.Clear();
     }
 

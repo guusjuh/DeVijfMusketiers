@@ -14,6 +14,7 @@ public class Contract
 
     [SerializeField] private int reputation;
     [SerializeField] private int health;
+    public int Health { get { return health; } }
 
     private int currentLevel;
     public int CurrentLevel { get { return currentLevel; } }
@@ -34,6 +35,7 @@ public class Contract
     {
         this.id = id;
         this.type = type;
+        this.currentLevel = 0;
 
         switch (type)
         {
@@ -64,27 +66,38 @@ public class Contract
     public void Die()
     {
         diedLastLevel = true;
+        health--;
     }
 
     public void EndLevel()
     {
         if (diedLastLevel)
         {
-            health--;
             diedLastLevel = false;
             Debug.Log("died this level");
             //TODO: animation for losing heart
+
+            if (health <= 0)
+            {
+                BreakContract();
+            }
         }
         else
         {
             //TODO: animation for walking to next level
             currentLevel++;
             Debug.Log("survived this level");
+
+            if (currentLevel >= ContentManager.Instance.LevelDataContainer.LevelData.Count)
+            {
+                BreakContract();
+            }
         }
     }
 
     public void BreakContract()
     {
-        //TODO: lose contract completely!
+        UberManager.Instance.ContractManager.RemoveContract(this);
+        GameManager.Instance.SelectedContracts.Remove(this);
     }
 }

@@ -55,6 +55,5 @@ public class ActiveContract : ContractButton
 
         this.contractRef = contractRef;
         Active = on;
-
     }
 }
