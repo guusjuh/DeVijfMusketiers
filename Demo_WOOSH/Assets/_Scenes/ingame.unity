@@ -168,7 +168,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -716,62 +716,363 @@ MonoBehaviour:
   contentManager:
     levelDataContainer:
       levelData:
-      - id: 1
-        rows: 5
-        columns: 5
+      - id: 0
+        rows: 7
+        columns: 10
         spawnNodes:
         - type: 0
           position:
-            x: 3
-            y: 4
+            x: 1
+            y: 1
+        - type: 0
+          position:
+            x: 4
+            y: 8
         - type: 2
           position:
             x: 1
             y: 2
-        - type: 6
-          position:
-            x: 0
-            y: 0
-        - type: 0
+        - type: 2
           position:
             x: 2
             y: 1
+        - type: 2
+          position:
+            x: 2
+            y: 2
+        - type: 2
+          position:
+            x: 1
+            y: 5
+        - type: 2
+          position:
+            x: 1
+            y: 6
+        - type: 2
+          position:
+            x: 2
+            y: 5
+        - type: 2
+          position:
+            x: 3
+            y: 8
+        - type: 2
+          position:
+            x: 3
+            y: 9
+        - type: 2
+          position:
+            x: 4
+            y: 8
+        - type: 2
+          position:
+            x: 5
+            y: 8
+        - type: 2
+          position:
+            x: 5
+            y: 5
+        - type: 2
+          position:
+            x: 6
+            y: 9
+        - type: 6
+          position:
+            x: 3
+            y: 3
+        - type: 4
+          position:
+            x: 3
+            y: 2
+        - type: 4
+          position:
+            x: 6
+            y: 5
+        gooStartPos:
+          x: 0
+          y: 6
+        minAmountOfHumans: 2
+        maxAmountOfHumans: 2
+      - id: 1
+        rows: 9
+        columns: 11
+        spawnNodes:
         - type: 0
+          position:
+            x: 3
+            y: 2
+        - type: 0
+          position:
+            x: 2
+            y: 8
+        - type: 0
+          position:
+            x: 6
+            y: 6
+        - type: 6
+          position:
+            x: 2
+            y: 5
+        - type: 4
+          position:
+            x: 2
+            y: 4
+        - type: 4
+          position:
+            x: 7
+            y: 9
+        - type: 2
+          position:
+            x: 2
+            y: 7
+        - type: 2
+          position:
+            x: 3
+            y: 3
+        - type: 2
           position:
             x: 4
             y: 2
         - type: 2
           position:
-            x: 1
-            y: 1
+            x: 4
+            y: 8
+        - type: 2
+          position:
+            x: 4
+            y: 9
+        - type: 2
+          position:
+            x: 5
+            y: 10
+        - type: 2
+          position:
+            x: 6
+            y: 7
+        - type: 2
+          position:
+            x: 7
+            y: 7
+        - type: 2
+          position:
+            x: 7
+            y: 6
         gooStartPos:
-          x: 0
-          y: 0
+          x: 8
+          y: 2
         minAmountOfHumans: 3
         maxAmountOfHumans: 3
       - id: 2
-        rows: 6
-        columns: 6
+        rows: 13
+        columns: 16
         spawnNodes:
-        - type: 0
-          position:
-            x: 2
-            y: 5
         - type: 2
-          position:
-            x: 1
-            y: 3
-        - type: 4
           position:
             x: 3
             y: 1
-        - type: 6
+        - type: 2
+          position:
+            x: 3
+            y: 2
+        - type: 2
+          position:
+            x: 2
+            y: 4
+        - type: 2
+          position:
+            x: 4
+            y: 4
+        - type: 2
           position:
             x: 5
+            y: 4
+        - type: 2
+          position:
+            x: 3
+            y: 6
+        - type: 2
+          position:
+            x: 4
+            y: 6
+        - type: 2
+          position:
+            x: 3
+            y: 8
+        - type: 2
+          position:
+            x: 3
+            y: 11
+        - type: 2
+          position:
+            x: 4
+            y: 10
+        - type: 2
+          position:
+            x: 4
+            y: 11
+        - type: 2
+          position:
+            x: 4
+            y: 14
+        - type: 2
+          position:
+            x: 3
+            y: 14
+        - type: 2
+          position:
+            x: 2
+            y: 13
+        - type: 2
+          position:
+            x: 1
+            y: 13
+        - type: 2
+          position:
+            x: 7
+            y: 3
+        - type: 2
+          position:
+            x: 7
+            y: 4
+        - type: 2
+          position:
+            x: 7
             y: 5
+        - type: 2
+          position:
+            x: 7
+            y: 6
+        - type: 2
+          position:
+            x: 7
+            y: 7
+        - type: 2
+          position:
+            x: 8
+            y: 2
+        - type: 2
+          position:
+            x: 8
+            y: 7
+        - type: 2
+          position:
+            x: 8
+            y: 11
+        - type: 2
+          position:
+            x: 8
+            y: 12
+        - type: 2
+          position:
+            x: 9
+            y: 3
+        - type: 2
+          position:
+            x: 9
+            y: 6
+        - type: 2
+          position:
+            x: 9
+            y: 7
+        - type: 2
+          position:
+            x: 9
+            y: 9
+        - type: 2
+          position:
+            x: 9
+            y: 10
+        - type: 2
+          position:
+            x: 9
+            y: 11
+        - type: 2
+          position:
+            x: 9
+            y: 12
+        - type: 2
+          position:
+            x: 9
+            y: 14
+        - type: 2
+          position:
+            x: 10
+            y: 2
+        - type: 2
+          position:
+            x: 10
+            y: 3
+        - type: 2
+          position:
+            x: 10
+            y: 4
+        - type: 2
+          position:
+            x: 10
+            y: 6
+        - type: 2
+          position:
+            x: 10
+            y: 13
+        - type: 2
+          position:
+            x: 11
+            y: 7
+        - type: 2
+          position:
+            x: 11
+            y: 8
+        - type: 2
+          position:
+            x: 11
+            y: 9
+        - type: 2
+          position:
+            x: 11
+            y: 10
+        - type: 2
+          position:
+            x: 11
+            y: 11
+        - type: 2
+          position:
+            x: 11
+            y: 12
+        - type: 2
+          position:
+            x: 11
+            y: 13
+        - type: 0
+          position:
+            x: 1
+            y: 2
+        - type: 0
+          position:
+            x: 1
+            y: 7
+        - type: 0
+          position:
+            x: 2
+            y: 14
+        - type: 0
+          position:
+            x: 10
+            y: 12
+        - type: 6
+          position:
+            x: 9
+            y: 3
+        - type: 4
+          position:
+            x: 5
+            y: 11
+        - type: 4
+          position:
+            x: 6
+            y: 7
         gooStartPos:
-          x: 5
-          y: 5
+          x: 9
+          y: 4
         minAmountOfHumans: 4
         maxAmountOfHumans: 4
   contractManager:
