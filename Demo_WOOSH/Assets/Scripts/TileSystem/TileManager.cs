@@ -204,8 +204,8 @@ public class TileManager
                     u = possible;
             }
 
-            if (u == target)
-                break; //exit while loop if target is found
+            /*if (u == target)
+                break; //exit while loop if target is found*/
 
             unvisited.Remove(u);
 
@@ -265,7 +265,7 @@ public class TileManager
     /// //TODO: implement flying behavior
     public bool UnitCanEnterTile(Coordinate pos, ContentType type)
     {
-        if (pos.x < 0 || pos.x >= columns || pos.y < 0 || pos.y >= rows)
+        if (pos.x < 0 || pos.x >= rows || pos.y < 0 || pos.y >= columns)
         {
             return false;
         }
@@ -436,8 +436,8 @@ public class TileManager
                 Coordinate currPos = gooNodes[i].GridPosition + Directions(gooNodes[i].GridPosition)[j];
 
                 if (gooNodes.Contains(GetNodeReference(currPos)) ||
-                    currPos.x < 0 || currPos.x >= columns ||
-                    currPos.y < 0 || currPos.y >= rows)
+                    currPos.x < 0 || currPos.x >= rows ||
+                    currPos.y < 0 || currPos.y >= columns)
                 {
                     continue;
                 }
