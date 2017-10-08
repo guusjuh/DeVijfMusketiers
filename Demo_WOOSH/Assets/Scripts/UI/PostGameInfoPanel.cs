@@ -14,8 +14,6 @@ public class PostGameInfoPanel : MonoBehaviour
     private const string HUMANS_LOST_STRING1 = "You have lost ";
     private const string HUMANS_LOST_STRING2 = " humans.";
 
-    private int counter = 0;
-
     public void Initialize()
     {
         statusText = transform.Find("StatusText").GetComponent<Text>();
@@ -31,9 +29,8 @@ public class PostGameInfoPanel : MonoBehaviour
 
     private void SetText()
     {
-        //TODO: obtain actual amount of humans from a (to be made) ContractManager
+        //TODO: make pritty animations
         statusText.text = GameManager.Instance.Won ? WIN_STRING : LOSE_STRING;
-        humansLostText.text = HUMANS_LOST_STRING1 + counter + HUMANS_LOST_STRING2;
-        counter++;
+        humansLostText.text = HUMANS_LOST_STRING1 + GameManager.Instance.SelectedContracts.FindAll(c => c.Died).Count + HUMANS_LOST_STRING2;
     }
 }

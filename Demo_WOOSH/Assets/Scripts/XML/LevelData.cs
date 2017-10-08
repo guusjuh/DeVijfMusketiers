@@ -7,6 +7,8 @@ using UnityEngine;
 public class LevelData
 {
     [SerializeField]
+    public int id;
+    [SerializeField]
     public int rows;
     [SerializeField]
     public int columns;

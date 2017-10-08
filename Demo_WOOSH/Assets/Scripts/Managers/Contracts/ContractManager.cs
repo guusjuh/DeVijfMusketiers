@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Security.Policy;
+using UnityEngine;
+
+[Serializable]
+public class ContractManager {
+    [SerializeField] private List<Contract> contracts = new List<Contract>();
+
+    public void AddContract(Contract contract)
+    {
+        contracts.Add(contract);
+    }
+
+    public void RemoveContract(Contract contract)
+    {
+        contracts.Remove(contract);
+    }
+
+    public Contract GetContractReference(int id)
+    {
+        return contracts.Find(c => c.ID == id);
+    }
+
+    public int AmountOfContracts()
+    {
+        return contracts.Count;
+    }
+
+    public Contract GenerateRandomContract()
+    {
+        int id = AmountOfContracts();
+        ContentManager.HumanTypes type = (ContentManager.HumanTypes)UnityEngine.Random.Range(0, Enum.GetNames(typeof(ContentManager.HumanTypes)).Length);
+
+        Contract newContract = new Contract(id, type);
+
+        AddContract(newContract);
+        return newContract;
+    }
+}

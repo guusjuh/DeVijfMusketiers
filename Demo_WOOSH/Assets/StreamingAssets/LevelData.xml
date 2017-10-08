@@ -2,6 +2,7 @@
 <LevelDataContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <LevelData>
     <LevelData>
+      <id>1</id>
       <rows>5</rows>
       <columns>5</columns>
       <spawnNodes>
@@ -26,6 +27,27 @@
             <y>0</y>
           </position>
         </SpawnNode>
+        <SpawnNode>
+          <type>Human</type>
+          <position>
+            <x>2</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Human</type>
+          <position>
+            <x>4</x>
+            <y>2</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>1</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
       </spawnNodes>
       <gooStartPos>
         <x>0</x>
@@ -35,6 +57,7 @@
       <maxAmountOfHumans>3</maxAmountOfHumans>
     </LevelData>
     <LevelData>
+      <id>2</id>
       <rows>6</rows>
       <columns>6</columns>
       <spawnNodes>

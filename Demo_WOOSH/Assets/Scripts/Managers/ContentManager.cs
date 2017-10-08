@@ -28,7 +28,13 @@ public class ContentManager {
     public GameObject Shrine { get; private set; }
     public GameObject Goo { get; private set; }
 
-    public List<GameObject> Humans { get; private set; }
+    private List<Sprite> WorldHumans { get; set; }
+    private List<Sprite> PortraitHumans { get; set; }
+    private Dictionary<HumanTypes, List<Sprite>> HumanSprites { get; set; }
+
+    //TODO: at later moment, maybe different human prefabs needed for the different behaviors!
+    public GameObject Human { get; private set; }
+
     public List<GameObject> Bosses { get; private set; }
     public List<GameObject> Minions { get; private set; }
 
@@ -41,11 +47,34 @@ public class ContentManager {
         Shrine = Resources.Load<GameObject>("Prefabs/Shrine");
         Goo = Resources.Load<GameObject>("Prefabs/Hole");
 
-        Humans = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Humans"));
+        WorldHumans = new List<Sprite>(Resources.LoadAll<Sprite>("Sprites/Humans"));
+        PortraitHumans = new List<Sprite>(Resources.LoadAll<Sprite>("Sprites/UI/HumanIcons"));
+        HumanSprites = new Dictionary<HumanTypes, List<Sprite>>();
+        for (int i = 0; i < WorldHumans.Count; i++)
+        {
+            HumanSprites.Add((HumanTypes)i, new List<Sprite>());
+            HumanSprites.Get((HumanTypes)i).Add(WorldHumans[i]);
+            HumanSprites.Get((HumanTypes)i).Add(PortraitHumans[i]);
+        }
+
+        Human = Resources.Load<GameObject>("Prefabs/Humans/Human");
+
         Bosses = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Creatures"));
         Minions = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Minions"));
 
         ReadLevelData();
+    }
+
+    public enum HumanTypes
+    {
+        Normal,
+        Ok, 
+        Good
+    }
+
+    public List<Sprite> GetHumanSprites(HumanTypes type)
+    {
+        return HumanSprites.Get(type);
     }
 
     private void ReadLevelData()
@@ -60,7 +89,7 @@ public class ContentManager {
 
     public void SaveAllInformation()
     {
-        FileStream fs = new FileStream(Application.streamingAssetsPath + "/LevelData.xml", FileMode.Create);
+        FileStream fs = new FileStream(Application.streamingAssetsPath + "/LevelData.xml", FileMode.OpenOrCreate);
 
         XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
 

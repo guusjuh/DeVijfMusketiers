@@ -38,6 +38,9 @@ public class GameManager : StateManager {
     private int currentLevel = 0;
     public int CurrentLevel { get { return currentLevel; } }
 
+    private List<Contract> selectedContracts;
+    public List<Contract> SelectedContracts { get { return selectedContracts; } }
+
     //TODO
     // 1st contenttype becomes content (THIS spefic boss)
     // 2nd contenttype stays the same
@@ -115,5 +118,12 @@ public class GameManager : StateManager {
     {
         levelManager.EndPlayerMove(1, true);
         UIManager.Instance.InGameUI.HideSpellButtons();
+    }
+
+    public void SetLevelInfo(int levelID, List<Contract> selectedContracts)
+    {
+        currentLevel = levelID - 1;
+        Debug.Log(currentLevel);
+        this.selectedContracts = selectedContracts;
     }
 }

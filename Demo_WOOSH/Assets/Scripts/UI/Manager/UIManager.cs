@@ -21,6 +21,8 @@ public class UIManager
 
     public InGameUIManager InGameUI { get { return (InGameUIManager)uiManagers.Get(UberManager.GameStates.InGame); } }
     public PostGameUIManager PostGameUI { get { return (PostGameUIManager)uiManagers.Get(UberManager.GameStates.PostGame); } }
+    public LevelSelectUIManager LevelSelectUI { get { return (LevelSelectUIManager)uiManagers.Get(UberManager.GameStates.LevelSelection); } }
+    public PreGameUIManager PreGameUI { get { return (PreGameUIManager)uiManagers.Get(UberManager.GameStates.PreGame); } }
 
     private Dictionary<UberManager.GameStates, SubUIManager> uiManagers = new Dictionary<UberManager.GameStates, SubUIManager>();
 
@@ -28,6 +30,8 @@ public class UIManager
     {
         uiManagers.Add(UberManager.GameStates.InGame, new InGameUIManager());
         uiManagers.Add(UberManager.GameStates.PostGame, new PostGameUIManager());
+        uiManagers.Add(UberManager.GameStates.LevelSelection, new LevelSelectUIManager());
+        uiManagers.Add(UberManager.GameStates.PreGame, new PreGameUIManager());
     }
 
     public void RestartUI()
