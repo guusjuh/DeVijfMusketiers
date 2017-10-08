@@ -34,35 +34,23 @@ public class PostGameUIManager : SubUIManager
                 buttonParent.transform);
         backButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(175.0f, 0.0f);
         //TODO: change text tó 'back to levelselection' as soon as that state exists
-        backButton.GetComponentInChildren<Text>().text = "Replay level";
+        backButton.GetComponentInChildren<Text>().text = "Back to level select";
         backButton.GetComponent<Button>().onClick.AddListener(BackToWorld);
-
-        nextButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/Button"), Vector3.zero, Quaternion.identity,
-                buttonParent.transform);
-        nextButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(-175.0f, 0.0f);
-        nextButton.GetComponentInChildren<Text>().text = "Next level";
-
-        //TODO: actually check if the next level button should be deactivated
-        //TODO: button script that handles active state 
-        nextButton.GetComponent<Button>().interactable = false;
     }
 
     protected override void Restart()
     {
-        postGameInfoPanel.Initialize();
-
-        //TODO: actually check if the next level button should be deactivated
-        //TODO: button script that handles active state 
-        nextButton.GetComponent<Button>().interactable = false;
+        postGameInfoPanel.Restart();
     }
 
     public override void Clear()
     {
+        postGameInfoPanel.Clear();
         base.Clear();
     }
 
     public void BackToWorld()
     {
-        UberManager.Instance.GotoState(UberManager.GameStates.InGame);
+        UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
     }
 }

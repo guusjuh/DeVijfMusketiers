@@ -27,10 +27,15 @@ public class UberManager : MonoBehaviour {
     }
 
     private Dictionary<GameStates, StateManager> stateManagers = new Dictionary<GameStates, StateManager>();
+
     public GameManager GameManager { get { return (GameManager)stateManagers.Get(GameStates.InGame); } }
+    public PreGameManager PreGameManager { get { return (PreGameManager)stateManagers.Get(GameStates.PreGame); } }
 
     [SerializeField] private ContentManager contentManager = new ContentManager();
     public ContentManager ContentManager { get { return contentManager; } }
+
+    [SerializeField] private ContractManager contractManager = new ContractManager();
+    public ContractManager ContractManager { get { return contractManager; } }
 
     private InputManager inputManager = new InputManager();
     public InputManager InputManager { get { return inputManager; } }
@@ -56,8 +61,10 @@ public class UberManager : MonoBehaviour {
 
         stateManagers.Add(GameStates.InGame, new GameManager());
         stateManagers.Add(GameStates.PostGame, new PostGameManager());
+        stateManagers.Add(GameStates.LevelSelection, new LevelSelectionManager());
+        stateManagers.Add(GameStates.PreGame, new PreGameManager());
 
-        state = GameStates.InGame;
+        state = GameStates.LevelSelection;
         stateManagers.Get(state).Start();
     }
 

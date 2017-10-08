@@ -201,7 +201,9 @@ public class LevelManager
     private void SpawnLevel()
     {
         // spawn nodes
-        List<SpawnNode> spawnNodes = ContentManager.Instance.LevelDataContainer.LevelData[0].spawnNodes;
+        List<SpawnNode> spawnNodes = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].spawnNodes;
+
+        int humansInstantiated = 0;
 
         foreach (SpawnNode s in spawnNodes)
         {
@@ -220,9 +222,11 @@ public class LevelManager
                     break;
                 case TileManager.ContentType.Human:
                     humans.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Humans[0], spawnPosition, Quaternion.identity)
+                        GameObject.Instantiate(ContentManager.Instance.Human, spawnPosition, Quaternion.identity)
                             .GetComponent<Human>());
                     humans.Last().Initialize(s.position);
+                    humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+                    humansInstantiated++;
                     break;
                 case TileManager.ContentType.Shrine:
                     shrines.Add(
@@ -241,7 +245,7 @@ public class LevelManager
         }
 
         // spawn goo
-        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.LevelDataContainer.LevelData[0].gooStartPos).Content.SetTileType(TileManager.TileType.Goo);
+        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPos).Content.SetTileType(TileManager.TileType.Goo);
     }
 
     //TODO: refactor!

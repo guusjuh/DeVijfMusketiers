@@ -12,6 +12,18 @@ public class Human : MovableObject {
     private int currInvisiblePoints;
     public bool Inivisible { get { return invisible;} }
 
+    private Contract contractRef;
+
+    public Contract ContractRef
+    {
+        get { return contractRef; }
+        set
+        {
+            contractRef = value;
+            sprRender.sprite = contractRef.InWorld;
+        }
+    }
+
     private SpriteRenderer sprRender;
 
     public override void Initialize(Coordinate startPos)
@@ -65,6 +77,8 @@ public class Human : MovableObject {
     public override bool Hit()
     {
         canBeTargeted = false;
+
+        contractRef.Die();
 
         GameManager.Instance.LevelManager.RemoveHuman(this, true);
 

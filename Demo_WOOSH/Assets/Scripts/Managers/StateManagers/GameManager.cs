@@ -30,6 +30,10 @@ public class GameManager : StateManager {
     private LevelManager levelManager = new LevelManager();
     public LevelManager LevelManager { get { return levelManager; } }
 
+    //TODO: make possible to work for ubermanager
+    private CameraManager cameraManager;
+    public CameraManager CameraManager { get { return cameraManager; } }
+
     private TileManager tileManager = new TileManager();
     public TileManager TileManager { get { return tileManager; } }
 
@@ -37,6 +41,9 @@ public class GameManager : StateManager {
 
     private int currentLevel = 0;
     public int CurrentLevel { get { return currentLevel; } }
+
+    private List<Contract> selectedContracts;
+    public List<Contract> SelectedContracts { get { return selectedContracts; } }
 
     //TODO
     // 1st contenttype becomes content (THIS spefic boss)
@@ -51,6 +58,8 @@ public class GameManager : StateManager {
         tileManager.Initialize();
         UIManager.Instance.RestartUI();//InGameUI.Start();
         levelManager.Initialize();
+        cameraManager = Camera.main.gameObject.AddComponent<CameraManager>();
+        cameraManager.Initialize();
 
         gameOn = true;
         won = false;
@@ -61,6 +70,7 @@ public class GameManager : StateManager {
         tileManager.Restart();
         UIManager.Instance.RestartUI();//InGameUI.Start();
         levelManager.Restart();
+        cameraManager.Initialize();
 
         gameOn = true;
         won = false;
@@ -108,6 +118,7 @@ public class GameManager : StateManager {
         if (!gameOn) return;
 
         UberManager.Instance.InputManager.CatchInput();
+        cameraManager.UpdatePosition();
         levelManager.Update();
     }
 
@@ -115,5 +126,13 @@ public class GameManager : StateManager {
     {
         levelManager.EndPlayerMove(1, true);
         UIManager.Instance.InGameUI.HideSpellButtons();
+        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+    }
+
+    public void SetLevelInfo(int levelID, List<Contract> selectedContracts)
+    {
+        currentLevel = levelID - 1;
+        this.selectedContracts = selectedContracts;
+        Debug.Log(this.selectedContracts.Count);
     }
 }

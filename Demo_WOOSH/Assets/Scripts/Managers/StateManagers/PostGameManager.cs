@@ -21,8 +21,5 @@ public class PostGameManager : StateManager
 
     }
 
-    public override void Update()
-    {
-
-    }
+    public override void Update() { }
 }
