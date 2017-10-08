@@ -12,7 +12,7 @@ public class Enemy : WorldObject {
     protected bool hasSpecial = true;
     public bool HasSpecial { get { return hasSpecial; } }
 
-    private int spawnCooldown = 0;
+    protected int spawnCooldown = 0;
     public int SpawnCooldown { get { return spawnCooldown; } }
     private int totalSpawnCooldown = 3;
 
@@ -371,7 +371,7 @@ public class Enemy : WorldObject {
         }
     }
 
-    private void SetUIInfo()
+    protected void SetUIInfo()
     {
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(currentActionPoints <= 0 ? null : this);
     }
