@@ -9,6 +9,8 @@ public class Sketta : Enemy {
 
     public override void Initialize(Coordinate startPos)
     {
+        this.startHealth = 100;
+
         Shield.SetActive(false);
 
         base.Initialize(startPos);

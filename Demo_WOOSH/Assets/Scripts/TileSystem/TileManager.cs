@@ -267,7 +267,7 @@ public class TileManager
                 return Mathf.Infinity;
         }
 
-        float cost = endTile.EnterCost();
+        float cost = nextTile.EnterCost();
 
         return cost;
     }

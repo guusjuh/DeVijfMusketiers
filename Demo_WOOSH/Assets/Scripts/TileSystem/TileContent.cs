@@ -74,15 +74,13 @@ public class TileContent
     {
         int cost = 1;
 
-        for (int i = 0; i < contentTypes.Count; i++)
+        //TODO: do after foods
+        if (contentTypes.Contains(TileManager.ContentType.Barrel) ||
+                contentTypes.Contains(TileManager.ContentType.Human))
         {
-            if (contentTypes[i] == TileManager.ContentType.Human || contentTypes[i] == TileManager.ContentType.Barrel)
-            {
-                cost++;
-            }
+            cost++;
         }
-
-        //TODO: add all costs
+        
         return cost;
     }
 
