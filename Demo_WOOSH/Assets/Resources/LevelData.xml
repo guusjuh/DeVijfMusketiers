@@ -164,7 +164,7 @@
           <type>WalkingMonster</type>
           <position>
             <x>1</x>
-            <y>10</y>
+            <y>11</y>
           </position>
         </SpawnNode>
         <SpawnNode>
