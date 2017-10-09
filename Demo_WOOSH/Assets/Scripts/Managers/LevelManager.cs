@@ -111,10 +111,10 @@ public class LevelManager
         // start players turn
         player.StartPlayerTurn(extraPoints);
 
+        UIManager.Instance.InGameUI.BeginPlayerTurn();
+
         // do we have to start goo spawning?
         yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
-
-        UIManager.Instance.InGameUI.BeginPlayerTurn();
 
         GameManager.Instance.CameraManager.UnlockAxis();
 

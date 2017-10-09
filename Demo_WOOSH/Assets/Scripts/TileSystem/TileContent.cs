@@ -74,9 +74,9 @@ public class TileContent
     {
         int cost = 1;
 
-        //TODO: do after foods
         if (contentTypes.Contains(TileManager.ContentType.Barrel) ||
-                contentTypes.Contains(TileManager.ContentType.Human))
+                contentTypes.Contains(TileManager.ContentType.Human) ||
+                contentTypes.Contains(TileManager.ContentType.Shrine))
         {
             cost++;
         }

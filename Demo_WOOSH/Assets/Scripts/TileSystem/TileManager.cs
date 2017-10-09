@@ -253,8 +253,8 @@ public class TileManager
 
     public float CostToEnterTile(TileNode nextTile, ContentType type)
     {
-        if (!UnitCanEnterTile(nextTile.GridPosition, type))
-            return nextTile.EnterCost() + 1; 
+        //if (!UnitCanEnterTile(nextTile.GridPosition, type))
+        //    return nextTile.EnterCost() + 1; 
 
         return nextTile.EnterCost();
     }
@@ -480,7 +480,7 @@ public class TileManager
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
         {
-            if (n.Content.CompletelyEmpty() || n.Content.ContentTypes.Contains(ContentType.WalkingMonster))
+            if (n.Content.ContentTypes.Count == 0 || n.Content.ContentTypes.Contains(ContentType.WalkingMonster) || n.Content.ContentTypes.Contains(ContentType.BrokenBarrel))
             {
                 n.HighlightTile(true, PATHCOLOR);
             }
@@ -490,13 +490,13 @@ public class TileManager
             }
         });
 
-        patternDirections.HandleAction(p =>
+        /*patternDirections.HandleAction(p =>
         {
             if (GetNodeReference(gridPos + p) != null)
             {
                 GetNodeReference(gridPos + p).HighlightTile(true, ATTACKCOLOR);
             }
-        });
+        });*/
     }
 
     private void RecursiveTileFinder(TileNode thisNode, int actionPoints, Coordinate startPos)

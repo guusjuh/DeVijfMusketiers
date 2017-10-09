@@ -77,13 +77,6 @@
           </position>
         </SpawnNode>
         <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>4</x>
-            <y>5</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
           <type>Barrel</type>
           <position>
             <x>3</x>
