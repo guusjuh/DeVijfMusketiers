@@ -79,30 +79,32 @@ public class Contract
         health--;
     }
 
-    public void EndLevel()
+    public bool EndLevel()
     {
         if (diedLastLevel)
         {
             diedLastLevel = false;
-            Debug.Log("died this level");
             //TODO: animation for losing heart
 
             if (health <= 0)
             {
                 BreakContract();
+                return false;
             }
         }
         else
         {
             //TODO: animation for walking to next level
             currentLevel++;
-            Debug.Log("survived this level");
 
             if (currentLevel >= ContentManager.Instance.LevelDataContainer.LevelData.Count)
             {
                 BreakContract();
+                return false;
             }
         }
+
+        return true;
     }
 
     public void BreakContract()

@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 50742518889680662}
   - component: {fileID: 114229803956367330}
   m_Layer: 8
-  m_Name: 02Sketta
+  m_Name: 03Sketta
   m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

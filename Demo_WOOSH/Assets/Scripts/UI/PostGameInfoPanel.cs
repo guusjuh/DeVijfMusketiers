@@ -53,6 +53,12 @@ public class PostGameInfoPanel : MonoBehaviour
             p.Value.Clear();
         }
 
-        GameManager.Instance.SelectedContracts.HandleAction(c => c.EndLevel());
+        for (int i = 0; i < GameManager.Instance.SelectedContracts.Count; i++)
+        {
+            if (!GameManager.Instance.SelectedContracts[i].EndLevel())
+            {
+                i--;
+            }
+        }
     }
 }

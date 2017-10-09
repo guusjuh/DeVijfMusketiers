@@ -13,6 +13,8 @@ public class Sketta : Enemy {
 
         Shield.SetActive(false);
 
+        totalActionPoints++;
+
         base.Initialize(startPos);
     }
 
