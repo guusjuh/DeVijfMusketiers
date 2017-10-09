@@ -133,6 +133,8 @@ public class TileManager
 
     public void ClearGrid()
     {
+        HidePossibleRoads();
+
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
@@ -488,7 +490,13 @@ public class TileManager
             }
         });
 
-        patternDirections.HandleAction(p => GetNodeReference(gridPos + p).HighlightTile(true, ATTACKCOLOR));
+        patternDirections.HandleAction(p =>
+        {
+            if (GetNodeReference(gridPos + p) != null)
+            {
+                GetNodeReference(gridPos + p).HighlightTile(true, ATTACKCOLOR);
+            }
+        });
     }
 
     private void RecursiveTileFinder(TileNode thisNode, int actionPoints, Coordinate startPos)

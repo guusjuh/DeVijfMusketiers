@@ -382,7 +382,7 @@ public class Enemy : WorldObject {
 
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
-        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, GetAttackPattern(), currentActionPoints);
+        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, GetAttackPattern(), totalActionPoints);
     }
 
     protected virtual List<Coordinate> GetAttackPattern()

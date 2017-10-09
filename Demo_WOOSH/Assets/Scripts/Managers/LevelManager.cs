@@ -131,6 +131,7 @@ public class LevelManager
                 enemies.HandleAction(e => e.UpdateTarget());
 
                 playersTurn = false;
+                GameManager.Instance.TileManager.HidePossibleRoads();
 
                 UIManager.Instance.InGameUI.EndPlayerTurn();
                 UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
