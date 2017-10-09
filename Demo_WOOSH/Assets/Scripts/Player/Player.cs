@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework.Constraints;
-using UnityEngine;
-
-public class Player {
+﻿public class Player {
     private int totalActionPoints = 3;       // total points
     private int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
