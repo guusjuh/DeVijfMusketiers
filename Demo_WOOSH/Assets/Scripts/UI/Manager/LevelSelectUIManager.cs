@@ -79,7 +79,8 @@ public class LevelSelectUIManager : SubUIManager
 
     public void GenerateNewContract()
     {
-        if (UberManager.Instance.ContractManager.AmountOfContracts() >= 6) return;
+        //all contracts in level one
+        if (UberManager.Instance.ContractManager.ContractsInLevel(0).Count >= 6) return;
 
         UberManager.Instance.ContractManager.GenerateRandomContract();
 

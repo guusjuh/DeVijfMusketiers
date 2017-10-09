@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,39 +17,58 @@ public class InputManager
     private bool stillTouching = false;
 
     public void CatchInput() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(LEFT))
+        {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
 
-            pointerData.position = Input.mousePosition; // use the position from controller as start of raycast instead of mousePosition.
+            pointerData.position = Input.mousePosition;
+                // use the position from controller as start of raycast instead of mousePosition.
 
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
 
-            if(results.Count <= 0)
+            if (results.Count <= 0)
             {
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+                //gather all hits, instead of one
+                RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition),
+                    Vector2.zero);
+                List<WorldObject> worldObjects = new List<WorldObject>();
 
-                if (hit.collider != null)
+                for (int i = 0; i < hits.Length; i++)
                 {
-                    if (hit.transform.gameObject.GetComponent<WorldObject>() != null)
+                    if (hits[i].transform.gameObject.GetComponent<WorldObject>() != null)
                     {
-                        UIManager.Instance.InGameUI.ActivatePushButtons(false);
-                        hit.transform.gameObject.GetComponent<WorldObject>().Click();
+                        worldObjects.Add(hits[i].transform.gameObject.GetComponent<WorldObject>());
                     }
                 }
-                else
-                {
-                    UIManager.Instance.InGameUI.HideSpellButtons();
-                    UIManager.Instance.InGameUI.ActivatePushButtons(false);
-                    UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
-                    if (!stillTouching)
+                for (int i = 0; i < worldObjects.Count; i++)
+                {
+                    if (worldObjects[i].Type != TileManager.ContentType.BrokenBarrel)
                     {
-                        stillTouching = true;
-                        previousPosition = Input.mousePosition;
+                        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                        hits[i].transform.gameObject.GetComponent<WorldObject>().Click();
+                        break;
                     }
+                    else
+                    {
+                        if (worldObjects.Count > 1)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                            hits[i].transform.gameObject.GetComponent<WorldObject>().Click();
+                            break;
+                        }
+                    }
+                }
+                if (worldObjects.Count <= 0)
+                {
+                    NoRaycastHit();
                 }
             }
         }
@@ -76,6 +96,19 @@ public class InputManager
             {
                 dragVelocity = Vector2.zero;
             }
+        }
+    }
+
+    private void NoRaycastHit()
+    {
+        UIManager.Instance.InGameUI.HideSpellButtons();
+        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
+
+        if (!stillTouching)
+        {
+            stillTouching = true;
+            previousPosition = Input.mousePosition;
         }
     }
 }
