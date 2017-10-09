@@ -480,7 +480,8 @@ public class TileManager
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
         {
-            if (n.Content.ContentTypes.Count == 0 || n.Content.ContentTypes.Contains(ContentType.WalkingMonster) || n.Content.ContentTypes.Contains(ContentType.BrokenBarrel))
+            if (n.Content.ContentTypes.Count == 0 || n.Content.ContentTypes.Contains(ContentType.WalkingMonster) 
+            || n.Content.ContentTypes.Contains(ContentType.BrokenBarrel) || n.Content.ContentTypes.Contains(ContentType.InivisbleHuman))
             {
                 n.HighlightTile(true, PATHCOLOR);
             }
@@ -490,13 +491,13 @@ public class TileManager
             }
         });
 
-        /*patternDirections.HandleAction(p =>
+        patternDirections.HandleAction(p =>
         {
             if (GetNodeReference(gridPos + p) != null)
             {
                 GetNodeReference(gridPos + p).HighlightTile(true, ATTACKCOLOR);
             }
-        });*/
+        });
     }
 
     private void RecursiveTileFinder(TileNode thisNode, int actionPoints, Coordinate startPos)

@@ -22,11 +22,37 @@ public class LevelSelectParent : MonoBehaviour
         gridParent = transform.Find("GridParent").GetComponent<GridLayoutGroup>();
 
         BuildGrid();
+        CheckActiveForButton();
     }
 
     public void Restart()
     {
         BuildGrid();
+        CheckActiveForButton();
+    }
+
+    public void CheckActiveForButton()
+    {
+        // check for being able to play this level:
+        // if the next level has too many humans, they cant travel to it
+
+        // if there is a next level
+        // check for the amount of humans in the next level plus the humans traveling from this level
+        // being smaller than 7
+        if (levelID < ContentManager.Instance.LevelDataContainer.LevelData.Count &&
+            ContentManager.Instance.LevelDataContainer.LevelData[levelID - 1].minAmountOfHumans + UberManager.Instance.ContractManager.AmountOfContracts(levelID) > 6)
+        {
+            levelSelectButton.GetComponent<Button>().interactable = false;
+        }
+        else if (UberManager.Instance.ContractManager.AmountOfContracts(levelID - 1) <
+                 ContentManager.Instance.LevelDataContainer.LevelData[levelID - 1].minAmountOfHumans)
+        {
+            levelSelectButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            levelSelectButton.GetComponent<Button>().interactable = true;
+        }
     }
 
     public void Clear()

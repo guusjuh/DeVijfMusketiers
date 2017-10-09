@@ -86,5 +86,7 @@ public class LevelSelectUIManager : SubUIManager
 
         // update grid level 1
         levelSelectParents[0].AddHuman();
+
+        levelSelectParents.HandleAction(l => l.CheckActiveForButton());
     }
 }
