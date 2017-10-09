@@ -15,9 +15,7 @@ public class AttackButton : SpellButton
 
     public override void CastSpell()
     {
-        if (!target.GetComponent<Enemy>().Hit(GameManager.Instance.LevelManager.Player.Damage))
-        {
-            base.CastSpell();
-        }
+        target.GetComponent<Enemy>().Hit(GameManager.Instance.LevelManager.Player.Damage);
+        base.CastSpell();
     }
 }

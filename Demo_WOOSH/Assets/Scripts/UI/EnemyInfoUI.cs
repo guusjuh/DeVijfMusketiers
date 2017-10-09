@@ -79,14 +79,14 @@ public class EnemyInfoUI : MonoBehaviour
         healthBar.SetHealthbar(selectedEnemy.HealthPercentage);
         SetAPText(selectedEnemy.CurrentActionPoints);
 
-        if (selectedEnemy.HasSpecial)
-        {
-            SetCooldownText(selectedEnemy.SpawnCooldown);
-        }
-        else
-        {
+        //if (selectedEnemy.HasSpecial)
+        //{
+        //    SetCooldownText(selectedEnemy.SpawnCooldown);
+        //}
+        //else
+        //{
             ActivateSpecialSpell(false);
-        }
+        //}
     }
 
     //TODO: has to animate!

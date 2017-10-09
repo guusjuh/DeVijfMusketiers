@@ -70,6 +70,20 @@
           </position>
         </SpawnNode>
         <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>1</x>
+            <y>8</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>4</x>
+            <y>5</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
           <type>Barrel</type>
           <position>
             <x>3</x>
@@ -151,6 +165,27 @@
           <position>
             <x>2</x>
             <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>1</x>
+            <y>10</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>4</x>
+            <y>8</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>7</x>
+            <y>4</y>
           </position>
         </SpawnNode>
         <SpawnNode>
@@ -475,6 +510,39 @@
             <y>3</y>
           </position>
         </SpawnNode>
+        
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>4</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>6</x>
+            <y>8</y>
+          </position>
+        </SpawnNode>
+          
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>6</x>
+            <y>11</y>
+          </position>
+        </SpawnNode>
+        
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>8</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+          
         <SpawnNode>
           <type>Barrel</type>
           <position>

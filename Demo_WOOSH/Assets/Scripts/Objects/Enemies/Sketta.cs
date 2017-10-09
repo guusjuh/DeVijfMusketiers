@@ -9,8 +9,6 @@ public class Sketta : Enemy {
 
     public override void Initialize(Coordinate startPos)
     {
-        //set boss specific health
-        this.startHealth = 130;
         Shield.SetActive(false);
 
         base.Initialize(startPos);

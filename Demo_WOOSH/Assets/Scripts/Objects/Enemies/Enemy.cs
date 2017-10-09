@@ -76,6 +76,8 @@ public class Enemy : WorldObject
 
         if (health <= 0)
         {
+            GameManager.Instance.TileManager.HidePossibleRoads();
+            UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
             GameManager.Instance.LevelManager.RemoveEnemy(this, true);
             return true;
         }

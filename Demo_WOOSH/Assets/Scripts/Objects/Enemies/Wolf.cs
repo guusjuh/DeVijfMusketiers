@@ -10,6 +10,8 @@ public class Wolf : Enemy
         this.startHealth = 30;
         this.totalActionPoints = 2;
 
+        this.hasSpecial = false;
+
         base.Initialize(startPos);
     }
 }
