@@ -40,4 +40,9 @@ public struct Coordinate
     {
         return c1.x != c2.x || c1.y != c2.y ? true : false;
     }
+
+    public int ManhattanDistance(Coordinate other)
+    {
+        return Mathf.Abs((this.x - other.x)) + Mathf.Abs((this.y - other.y));
+    }
 }

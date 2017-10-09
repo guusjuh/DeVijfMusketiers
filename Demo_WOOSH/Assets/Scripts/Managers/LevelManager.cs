@@ -98,9 +98,6 @@ public class LevelManager
         // increase amnt of turns
         amountOfTurns++;
 
-        // do we have to start goo spawning?
-        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
-
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
@@ -113,6 +110,9 @@ public class LevelManager
 
         // start players turn
         player.StartPlayerTurn(extraPoints);
+
+        // do we have to start goo spawning?
+        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
 
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
@@ -131,6 +131,7 @@ public class LevelManager
                 enemies.HandleAction(e => e.UpdateTarget());
 
                 playersTurn = false;
+                GameManager.Instance.TileManager.HidePossibleRoads();
 
                 UIManager.Instance.InGameUI.EndPlayerTurn();
                 UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
@@ -156,10 +157,13 @@ public class LevelManager
     private IEnumerator SpawnGoo()
     {
         List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
-        int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
-        TileNode chosenGoo = possGooNodes[rnd];
+        for (int i = 0; i < 8; i++)
+        {
+            int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
+            TileNode chosenGoo = possGooNodes[rnd];
 
-        chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+            chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+        }
 
         yield return null;
     }
@@ -242,7 +246,7 @@ public class LevelManager
                 case TileManager.ContentType.WalkingMonster:
                     //TODO: difference between monsters 
                     enemies.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Bosses[0], spawnPosition, Quaternion.identity)
+                        GameObject.Instantiate(ContentManager.Instance.Bosses[2], spawnPosition, Quaternion.identity)
                             .GetComponent<Enemy>());
                     enemies.Last().Initialize(s.position);
                     break;
