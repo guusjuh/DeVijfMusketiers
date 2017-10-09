@@ -170,13 +170,6 @@
         <SpawnNode>
           <type>WalkingMonster</type>
           <position>
-            <x>4</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
             <x>7</x>
             <y>4</y>
           </position>
