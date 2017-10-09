@@ -49,6 +49,8 @@ public class InputManager
                     if (worldObjects[i].Type != TileManager.ContentType.BrokenBarrel)
                     {
                         UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                        GameManager.Instance.TileManager.HidePossibleRoads();
+
                         hits[i].transform.gameObject.GetComponent<WorldObject>().Click();
                         break;
                     }
@@ -61,6 +63,8 @@ public class InputManager
                         else
                         {
                             UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                            GameManager.Instance.TileManager.HidePossibleRoads();
+
                             hits[i].transform.gameObject.GetComponent<WorldObject>().Click();
                             break;
                         }
@@ -104,6 +108,7 @@ public class InputManager
         UIManager.Instance.InGameUI.HideSpellButtons();
         UIManager.Instance.InGameUI.ActivatePushButtons(false);
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
+        GameManager.Instance.TileManager.HidePossibleRoads();
 
         if (!stillTouching)
         {

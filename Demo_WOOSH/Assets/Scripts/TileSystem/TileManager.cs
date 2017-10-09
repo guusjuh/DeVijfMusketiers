@@ -44,6 +44,10 @@ public class TileManager
             /*left down*/ new Coordinate(-1, 0),
         };
 
+    private static Color PATHCOLOR = Color.white;//new Color(1.0f, 0.95f, 0.6f, 1.0f);
+    private static Color ATTACKCOLOR = new Color(0.99f, 0.02f, 0.02f, 1.0f);
+    private static Color TARGETCOLOR = new Color(0.99f, 0.5f, 0.02f, 1.0f);
+
     public Coordinate[] Directions(Coordinate from)
     {
         if (from.x % 2 == 0)
@@ -85,6 +89,8 @@ public class TileManager
     /// </summary>
     private float hexagonHeight = .433f;
     private float HexagonHeight { get { return hexagonHeight * hexagonScale; } }
+
+    private List<TileNode> highlightedNodes;
 
     /// <summary>
     /// Initialize the gridsystem
@@ -241,6 +247,14 @@ public class TileManager
         currentPath.Reverse();
 
         return currentPath;
+    }
+
+    public float CostToEnterTile(TileNode nextTile, ContentType type)
+    {
+        if (!UnitCanEnterTile(nextTile.GridPosition, type))
+            return nextTile.EnterCost() + 1; 
+
+        return nextTile.EnterCost();
     }
 
     public float CostToEnterTile(TileNode nextTile, TileNode endTile, ContentType type)
@@ -449,5 +463,65 @@ public class TileManager
         }
 
         return possGooNodes;
+    }
+
+    public void ShowPossibleRoads(Coordinate gridPos, List<Coordinate> patternDirections, int actionPoints)
+    {
+        highlightedNodes = new List<TileNode>();
+
+        // add yourself
+        TileNode hisNode = GetNodeReference(gridPos);
+        highlightedNodes.Add(hisNode);
+
+        RecursiveTileFinder(hisNode, actionPoints, gridPos);
+
+        // highlight all found buttons
+        highlightedNodes.HandleAction(n =>
+        {
+            if (n.Content.CompletelyEmpty() || n.Content.ContentTypes.Contains(ContentType.WalkingMonster))
+            {
+                n.HighlightTile(true, PATHCOLOR);
+            }
+            else
+            {
+                n.HighlightTile(true, TARGETCOLOR);
+            }
+        });
+
+        patternDirections.HandleAction(p => GetNodeReference(gridPos + p).HighlightTile(true, ATTACKCOLOR));
+    }
+
+    private void RecursiveTileFinder(TileNode thisNode, int actionPoints, Coordinate startPos)
+    {
+        //TODO: remove actionpoints
+        if (actionPoints >= -1)
+        {
+            highlightedNodes.Add(thisNode);
+
+            if (actionPoints > 0)
+            {
+                for (int i = 0; i < thisNode.NeightBours.Count; i++)
+                {
+                    float lastDist = thisNode.GridPosition.ManhattanDistance(startPos);
+                    float currDist = thisNode.NeightBours[i].GridPosition.ManhattanDistance(startPos);
+
+                    if (currDist >= lastDist)
+                    {
+                        //TODO: this should be a more generic monster type
+                        RecursiveTileFinder(thisNode.NeightBours[i], actionPoints - (int)CostToEnterTile(thisNode.NeightBours[i], ContentType.WalkingMonster), startPos);
+                    }
+                }
+            }
+        }
+    }
+
+    public void HidePossibleRoads()
+    {
+        if (highlightedNodes != null && highlightedNodes.Count != 0)
+        {
+            highlightedNodes.HandleAction(n => n.HighlightTile(false));
+            highlightedNodes.Clear();
+            highlightedNodes = null;
+        }
     }
 }

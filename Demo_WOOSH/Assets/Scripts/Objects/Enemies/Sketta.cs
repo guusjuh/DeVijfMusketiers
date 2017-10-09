@@ -37,4 +37,5 @@ public class Sketta : Enemy {
 
         yield break;
     }
+
 }

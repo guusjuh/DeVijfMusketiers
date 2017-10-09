@@ -72,8 +72,18 @@ public class TileContent
 
     public int EnterCost()
     {
+        int cost = 1;
+
+        for (int i = 0; i < contentTypes.Count; i++)
+        {
+            if (contentTypes[i] == TileManager.ContentType.Human || contentTypes[i] == TileManager.ContentType.Barrel)
+            {
+                cost++;
+            }
+        }
+
         //TODO: add all costs
-        return 1;
+        return cost;
     }
 
     public bool CanEnter(bool flying = false)
