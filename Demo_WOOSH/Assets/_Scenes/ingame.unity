@@ -793,6 +793,7 @@ MonoBehaviour:
           y: 6
         minAmountOfHumans: 2
         maxAmountOfHumans: 2
+        bossID: 0
       - id: 1
         rows: 9
         columns: 11
@@ -862,6 +863,7 @@ MonoBehaviour:
           y: 2
         minAmountOfHumans: 3
         maxAmountOfHumans: 3
+        bossID: 1
       - id: 2
         rows: 13
         columns: 16
@@ -1075,6 +1077,7 @@ MonoBehaviour:
           y: 4
         minAmountOfHumans: 4
         maxAmountOfHumans: 4
+        bossID: 2
   contractManager:
     contracts:
     - id: 0

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <LevelDataContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <LevelData>
     <LevelData>
@@ -132,6 +132,7 @@
       </gooStartPos>
       <minAmountOfHumans>2</minAmountOfHumans>
       <maxAmountOfHumans>2</maxAmountOfHumans>
+      <bossID>0</bossID>
     </LevelData>
     <LevelData>
       <id>1</id>
@@ -250,6 +251,7 @@
       </gooStartPos>
       <minAmountOfHumans>3</minAmountOfHumans>
       <maxAmountOfHumans>3</maxAmountOfHumans>
+      <bossID>1</bossID>
     </LevelData>
     <LevelData>
       <id>2</id>
@@ -620,6 +622,7 @@
       </gooStartPos>
       <minAmountOfHumans>4</minAmountOfHumans>
       <maxAmountOfHumans>4</maxAmountOfHumans>
+      <bossID>2</bossID>
     </LevelData>
   </LevelData>
 </LevelDataContainer>

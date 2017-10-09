@@ -91,7 +91,7 @@ public class ContentManager {
 
     public void SaveAllInformation()
     {
-        FileStream fs = new FileStream(Application.streamingAssetsPath + "/LevelData.xml", FileMode.OpenOrCreate);
+        FileStream fs = new FileStream("Assets/Resources/LevelData.xml", FileMode.OpenOrCreate);
 
         XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
 

@@ -143,19 +143,19 @@ public class LevelManager
 
     private IEnumerator CheckForGooSpawning()
     {
-        if (amountOfTurns == 4)
+        if (amountOfTurns == 2)
         {
             yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.WarningText());
         }
 
-        if (amountOfTurns > 4)
+        if (amountOfTurns > 2)
         {
             yield return UberManager.Instance.StartCoroutine(SpawnGoo());
         }
     }
     private IEnumerator SpawnGoo()
     {
-        for (int i = 0; i < amountOfTurns - 4; i++)
+        for (int i = 0; i < amountOfTurns - 2; i++)
         {
             List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
             int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
@@ -212,6 +212,7 @@ public class LevelManager
         List<SpawnNode> spawnNodes = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].spawnNodes;
 
         int humansInstantiated = 0;
+        bool bossSpawned = false;
 
         foreach (SpawnNode s in spawnNodes)
         {
@@ -243,10 +244,22 @@ public class LevelManager
                     shrines.Last().Initialize(s.position);
                     break;
                 case TileManager.ContentType.WalkingMonster:
-                    //TODO: difference between monsters 
-                    enemies.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Bosses[0], spawnPosition, Quaternion.identity)
-                            .GetComponent<Enemy>());
+                    if (!bossSpawned)
+                    {
+                        enemies.Add(
+                            GameObject.Instantiate(
+                                    ContentManager.Instance.Bosses[
+                                        ContentManager.Instance.LevelDataContainer.LevelData[
+                                            GameManager.Instance.CurrentLevel].bossID], spawnPosition,
+                                    Quaternion.identity)
+                                .GetComponent<Enemy>());
+                        bossSpawned = true;
+                    }
+                    else
+                    {
+                        enemies.Add(GameObject.Instantiate(ContentManager.Instance.Minions[0], spawnPosition, Quaternion.identity).GetComponent<Enemy>());
+                    }
+                    
                     enemies.Last().Initialize(s.position);
                     break;
             }
