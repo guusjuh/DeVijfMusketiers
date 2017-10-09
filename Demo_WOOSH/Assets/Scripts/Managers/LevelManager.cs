@@ -246,7 +246,7 @@ public class LevelManager
                 case TileManager.ContentType.WalkingMonster:
                     //TODO: difference between monsters 
                     enemies.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Bosses[2], spawnPosition, Quaternion.identity)
+                        GameObject.Instantiate(ContentManager.Instance.Bosses[0], spawnPosition, Quaternion.identity)
                             .GetComponent<Enemy>());
                     enemies.Last().Initialize(s.position);
                     break;

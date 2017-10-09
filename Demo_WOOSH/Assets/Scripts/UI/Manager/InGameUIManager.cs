@@ -49,15 +49,15 @@ public class InGameUIManager : SubUIManager {
         playerActionPoints.Initialize();
 
         playerTurnBanner = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/YourTurn"), Vector3.zero, Quaternion.identity, anchorCenter.transform);
-        playerTurnBanner.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+        playerTurnBanner.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 500);
         playerTurnBanner.SetActive(false);
 
         enemyTurnBanner = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/OthersTurn"), Vector3.zero, Quaternion.identity, anchorCenter.transform);
-        enemyTurnBanner.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+        enemyTurnBanner.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 500);
         enemyTurnBanner.SetActive(false);
 
         warningText = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/WarningText"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponentInChildren<Text>();
-        warningText.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+        warningText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 500);
         warningText.gameObject.SetActive(false);
 
         spellButtons = new Dictionary<GameManager.SpellType, SpellButton>();

@@ -6,6 +6,7 @@ public class Dodin : Enemy
 {
     private int freeAPCooldownTotal = 3;
     private int freeAPCooldown = 0;
+
     public GameObject FireBall;
 
     public override void Initialize(Coordinate startPos)
@@ -15,6 +16,8 @@ public class Dodin : Enemy
 
         //diables the fireball
         FireBall.SetActive(false);
+
+        freeAPCooldown = freeAPCooldownTotal;
 
         base.Initialize(startPos);
     }
@@ -63,7 +66,6 @@ public class Dodin : Enemy
 
                 freeAPCooldown = freeAPCooldownTotal;
             }
-            freeAPCooldown--;
             Walk(direction);
         }
 
@@ -117,5 +119,12 @@ public class Dodin : Enemy
         }
 
         return returnNeighbours;
+    }
+
+    public override void EndTurn()
+    {
+        freeAPCooldown--;
+
+        base.EndTurn();
     }
 }

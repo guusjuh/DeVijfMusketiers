@@ -5,7 +5,7 @@
 
     private int invisibleCooldown = 0;
     //public int InvisibleCooldown { get { return invisibleCooldown; } }
-    private const int invisibleCooldownTotal = 2;
+    private const int invisibleCooldownTotal = 3;
     
     private int repairCooldown = 0;
     //public int RepairCooldown { get { return repairCooldown; } }

@@ -60,3 +60,6 @@ TagManager:
   - name: Unit
     uniqueID: 2380569133
     locked: 0
+  - name: Equipment
+    uniqueID: 2866300877
+    locked: 0
