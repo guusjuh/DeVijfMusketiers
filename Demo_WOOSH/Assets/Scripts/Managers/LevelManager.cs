@@ -156,13 +156,16 @@ public class LevelManager
 
     private IEnumerator SpawnGoo()
     {
-        List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < amountOfTurns - 4; i++)
         {
-            int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
-            TileNode chosenGoo = possGooNodes[rnd];
+            List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
+            for (int j = 0; j < 8; j++)
+            {
+                int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
+                TileNode chosenGoo = possGooNodes[rnd];
 
-            chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+                chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+            }
         }
 
         yield return null;
