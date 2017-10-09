@@ -153,12 +153,11 @@ public class LevelManager
             yield return UberManager.Instance.StartCoroutine(SpawnGoo());
         }
     }
-
     private IEnumerator SpawnGoo()
     {
-        List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < amountOfTurns - 4; i++)
         {
+            List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
             int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
             TileNode chosenGoo = possGooNodes[rnd];
 

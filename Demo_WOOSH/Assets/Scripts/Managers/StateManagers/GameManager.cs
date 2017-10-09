@@ -133,6 +133,5 @@ public class GameManager : StateManager {
     {
         currentLevel = levelID - 1;
         this.selectedContracts = selectedContracts;
-        Debug.Log(this.selectedContracts.Count);
     }
 }
