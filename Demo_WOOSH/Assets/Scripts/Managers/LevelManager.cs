@@ -162,6 +162,8 @@ public class LevelManager
             TileNode chosenGoo = possGooNodes[rnd];
 
             chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+
+            if (!GameManager.Instance.GameOn) break;
         }
 
         yield return null;
