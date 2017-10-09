@@ -80,7 +80,9 @@ public class ContentManager {
     private void ReadLevelData()
     {
         XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
-        TextReader textReader = new StreamReader(Application.streamingAssetsPath + "/LevelData.xml");
+        string path = "LevelData";
+        TextAsset file = Resources.Load(path) as TextAsset;
+        TextReader textReader = new System.IO.StringReader(file.text);
 
         levelDataContainer = (LevelDataContainer)serializer.Deserialize(textReader);
 
