@@ -7,7 +7,7 @@ public class RepairButton : SpellButton
     public override void Initialize()
     {
         base.Initialize();
-        cost = 1;
+        cost = 2;
         type = GameManager.SpellType.Repair;
     }
 

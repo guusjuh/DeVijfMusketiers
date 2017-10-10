@@ -7,7 +7,7 @@ public class InvisibleButton : SpellButton
     public override void Initialize()
     {
         base.Initialize();
-        cost = 2;
+        cost = 4;
         type = GameManager.SpellType.Invisible;
 
     }

@@ -1,5 +1,5 @@
 ﻿public class Player {
-    private int totalActionPoints = 3;       // total points
+    private int totalActionPoints = 6;       // total points
     private int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
