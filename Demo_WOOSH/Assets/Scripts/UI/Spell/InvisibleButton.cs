@@ -9,7 +9,7 @@ public class InvisibleButton : SpellButton
         base.Initialize();
         cost = 4;
         type = GameManager.SpellType.Invisible;
-
+        SpawnAP(cost);
     }
 
     public override void CastSpell()

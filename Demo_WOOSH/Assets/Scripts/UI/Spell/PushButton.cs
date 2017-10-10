@@ -9,7 +9,7 @@ public class PushButton : SpellButton
         base.Initialize();
         cost = 0;
         type = GameManager.SpellType.Push;
-
+        SpawnAP(1);
     }
 
     public override void CastSpell()

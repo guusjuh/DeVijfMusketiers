@@ -9,6 +9,7 @@ public class RepairButton : SpellButton
         base.Initialize();
         cost = 2;
         type = GameManager.SpellType.Repair;
+        SpawnAP(cost);
     }
 
     public override void CastSpell()

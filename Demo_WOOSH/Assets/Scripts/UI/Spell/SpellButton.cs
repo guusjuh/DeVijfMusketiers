@@ -9,12 +9,16 @@ public class SpellButton : MonoBehaviour
     protected WorldObject target;
     protected int cost;
 
-    protected GameObject apIndicator;
+    protected List<GameObject> apIndicator;
     protected GameObject disabledObject;
     protected Text cooldownText;
     protected GameManager.SpellType type;
 
     protected bool active = true;
+
+    private const float RADIUS = 90f;
+    public GameObject APPoint;
+
     public bool Active
     {
         get { return active; }
@@ -32,7 +36,8 @@ public class SpellButton : MonoBehaviour
 
         disabledObject = transform.Find("Disabled").gameObject;
         cooldownText = transform.Find("Text").GetComponent<Text>();
-        apIndicator = transform.Find("APIndicator").gameObject;
+        apIndicator = new List<GameObject>();
+        //apIndicator = transform.Find("APIndicator").gameObject;
     }
 
     public virtual void CastSpell()
@@ -69,14 +74,37 @@ public class SpellButton : MonoBehaviour
         {
             if (disabledObject.activeInHierarchy) disabledObject.SetActive(false);
             if (cooldownText.gameObject.activeInHierarchy) cooldownText.gameObject.SetActive(false);
-            if (!apIndicator.gameObject.activeInHierarchy) apIndicator.gameObject.SetActive(true);
+            foreach (var indicator in apIndicator)
+            {
+                if (!indicator.gameObject.activeInHierarchy) indicator.gameObject.SetActive(true);
+            }
         }
         else
         {
             if (!disabledObject.activeInHierarchy) disabledObject.SetActive(true);
             if (!cooldownText.gameObject.activeInHierarchy) cooldownText.gameObject.SetActive(true);
-            if (apIndicator.gameObject.activeInHierarchy) apIndicator.gameObject.SetActive(false);
+            foreach (var indicator in apIndicator)
+            {
+                if (indicator.gameObject.activeInHierarchy) indicator.gameObject.SetActive(false);
+            }
             cooldownText.text = "" + value;
+        }
+    }
+
+    public void SpawnAP(int amount)
+    {
+        Vector2 canvasPos = new Vector2(0, 0);
+
+        float divider = amount > 1 ? (float)amount - 1.0f : (float)amount;
+        float partialCircle = (amount - 1) / 4.0f * 0.4f;
+        float offSetCircle = (1.0f - partialCircle) / 2.0f;
+
+        for (int i = 0; i < amount; i++)
+        {
+
+            Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI),
+                -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI));
+            apIndicator.Add(Instantiate(APPoint, -pos, Quaternion.identity, this.transform));
         }
     }
 }

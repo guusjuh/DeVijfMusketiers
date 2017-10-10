@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class AttackButton : SpellButton
 {
+
     public override void Initialize()
     {
         base.Initialize();
-        cost = 2;
+        cost = 4;
         type = GameManager.SpellType.Attack;
-
+        SpawnAP(cost);
     }
 
     public override void CastSpell()
