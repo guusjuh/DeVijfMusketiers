@@ -86,7 +86,7 @@ public class CameraManager : MonoBehaviour
         transform.position = new Vector3(position.x, position.y, transform.position.z);
     }
 
-    private void MoveCamera(Vector2 desiredVelocity)
+    public void MoveCamera(Vector2 desiredVelocity)
     {
         Vector2 velocity = Vector2.zero;
         if (bordersMin == Vector2.zero && bordersMax == Vector2.zero)
