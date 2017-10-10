@@ -101,26 +101,6 @@ public class Dodin : Enemy
         TargetReached();
     }
 
-    protected override List<Coordinate> GetAttackPattern()
-    {
-        List<Coordinate> neighbours = new List<Coordinate>(GameManager.Instance.TileManager.Directions(gridPosition));
-        List<Coordinate> returnNeighbours = new List<Coordinate>(GameManager.Instance.TileManager.Directions(gridPosition));
-
-        for (int i = 0; i < neighbours.Count; i++)
-        {
-            Coordinate coord = neighbours[i] + gridPosition;
-
-            for (int j = 0; j < GameManager.Instance.TileManager.Directions(coord).Length; j++)
-            {
-                Coordinate currentCoord = coord + GameManager.Instance.TileManager.Directions(coord)[j];
-                if (!neighbours.Contains(GameManager.Instance.TileManager.Directions(coord)[j] + neighbours[i]) && currentCoord != gridPosition)
-                    returnNeighbours.Add(GameManager.Instance.TileManager.Directions(coord)[j] + neighbours[i]);
-            }
-        }
-
-        return returnNeighbours;
-    }
-
     public override void EndTurn()
     {
         freeAPCooldown--;

@@ -45,8 +45,7 @@ public class TileManager
         };
 
     private static Color PATHCOLOR = Color.white;//new Color(1.0f, 0.95f, 0.6f, 1.0f);
-    private static Color ATTACKCOLOR = new Color(0.99f, 0.02f, 0.02f, 1.0f);
-    private static Color TARGETCOLOR = new Color(0.99f, 0.5f, 0.02f, 1.0f);
+    private static Color TARGETCOLOR = new Color(0.99f, 0.02f, 0.02f, 1.0f);
 
     public Coordinate[] Directions(Coordinate from)
     {
@@ -467,7 +466,7 @@ public class TileManager
         return possGooNodes;
     }
 
-    public void ShowPossibleRoads(Coordinate gridPos, List<Coordinate> patternDirections, int actionPoints)
+    public void ShowPossibleRoads(Coordinate gridPos, int actionPoints)
     {
         highlightedNodes = new List<TileNode>();
 
@@ -488,14 +487,6 @@ public class TileManager
             else
             {
                 n.HighlightTile(true, TARGETCOLOR);
-            }
-        });
-
-        patternDirections.HandleAction(p =>
-        {
-            if (GetNodeReference(gridPos + p) != null)
-            {
-                GetNodeReference(gridPos + p).HighlightTile(true, ATTACKCOLOR);
             }
         });
     }
