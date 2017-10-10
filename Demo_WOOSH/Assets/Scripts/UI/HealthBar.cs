@@ -23,8 +23,11 @@ public class HealthBar : MonoBehaviour {
     // Sets health immediately (when other enemy clicked) 
     public void SetHealthbar(Enemy enemy)
     {
-        transformForeground.offsetMax = -new Vector2((maxFromRight / 100) * (100 - enemy.HealthPercentage), 0);
-        text.text = "" + enemy.Health + "/" + enemy.StartHealth;
+        if (enemy != null)
+        {
+            transformForeground.offsetMax = -new Vector2((maxFromRight / 100) * (100 - enemy.HealthPercentage), 0);
+            text.text = "" + enemy.Health + "/" + enemy.StartHealth;
+        }
     }
 
     // Adjusts and animates healthbar (enemy taking dmg while being selected)

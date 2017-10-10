@@ -117,8 +117,6 @@ public class Enemy : WorldObject
 
     public virtual void StartTurn()
     {
-        currentActionPoints = totalActionPoints;
-
         if (spawnCooldown > 0)
         {
             spawnCooldown--;
@@ -129,7 +127,7 @@ public class Enemy : WorldObject
 
     public virtual void EndTurn()
     {
-
+        currentActionPoints = totalActionPoints;
     }
 
     public virtual void EnemyMove()
