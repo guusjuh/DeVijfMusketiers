@@ -31,6 +31,7 @@ public class LevelManager
 
     private float turnDelay = 0.8f;
     private float moveDelay = 1f;
+    private float gooDelay = 0.5f;
 
     public void Initialize()
     {
@@ -98,6 +99,9 @@ public class LevelManager
         // increase amnt of turns
         amountOfTurns++;
 
+        // do we have to start goo spawning?
+        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
+
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
@@ -112,9 +116,6 @@ public class LevelManager
         player.StartPlayerTurn(extraPoints);
 
         UIManager.Instance.InGameUI.BeginPlayerTurn();
-
-        // do we have to start goo spawning?
-        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
 
         GameManager.Instance.CameraManager.UnlockAxis();
 
@@ -160,6 +161,9 @@ public class LevelManager
             List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
             int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
             TileNode chosenGoo = possGooNodes[rnd];
+
+            GameManager.Instance.CameraManager.LockTarget(chosenGoo.Hexagon.transform);
+            yield return new WaitForSeconds(gooDelay);
 
             chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
 
