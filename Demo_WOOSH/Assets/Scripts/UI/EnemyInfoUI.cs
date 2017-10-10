@@ -29,7 +29,7 @@ public class EnemyInfoUI : MonoBehaviour
 
     public void Restart()
     {
-        healthBar.SetHealthbar(100);
+        healthBar.SetHealthbar(null);
     }
 
     public void Clear()
@@ -76,7 +76,7 @@ public class EnemyInfoUI : MonoBehaviour
 
     private void SetValues()
     {
-        healthBar.SetHealthbar(selectedEnemy.HealthPercentage);
+        healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
 
         //if (selectedEnemy.HasSpecial)
@@ -92,7 +92,7 @@ public class EnemyInfoUI : MonoBehaviour
     //TODO: has to animate!
     private void UpdateValues()
     {
-        healthBar.SetHealthbar(selectedEnemy.HealthPercentage);
+        healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
 
         if (selectedEnemy.HasSpecial)

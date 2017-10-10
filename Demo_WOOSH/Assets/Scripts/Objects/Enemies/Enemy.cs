@@ -18,6 +18,7 @@ public class Enemy : WorldObject
     private int totalSpawnCooldown = 3;
 
     protected float startHealth = 10;
+    public float StartHealth { get { return startHealth; } }
     protected float health;
     public float Health { get { return health; } }
     public float HealthPercentage { get { return (health / startHealth) * 100; } }

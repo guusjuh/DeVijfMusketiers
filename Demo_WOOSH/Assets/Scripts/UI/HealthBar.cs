@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour {
 
     private RectTransform transformForeground;
+    private Text text;
     private float minFromRight;
     private float maxFromRight;
     private float height;
@@ -12,15 +14,17 @@ public class HealthBar : MonoBehaviour {
     public void Initialize()
     {
         transformForeground = transform.Find("Foreground").GetComponent<RectTransform>();
+        text = transform.Find("Text").GetComponent<Text>();
         minFromRight = 0;
         maxFromRight = transform.GetComponent<RectTransform>().sizeDelta.x;
         height = transform.GetComponent<RectTransform>().sizeDelta.y;
     }
 
     // Sets health immediately (when other enemy clicked) 
-    public void SetHealthbar(float percentage)
+    public void SetHealthbar(Enemy enemy)
     {
-        transformForeground.offsetMax = -new Vector2((maxFromRight / 100) * (100 - percentage), 0);
+        transformForeground.offsetMax = -new Vector2((maxFromRight / 100) * (100 - enemy.HealthPercentage), 0);
+        text.text = "" + enemy.Health + "/" + enemy.StartHealth;
     }
 
     // Adjusts and animates healthbar (enemy taking dmg while being selected)
