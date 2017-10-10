@@ -23,6 +23,11 @@ public class TileContent
         return contentTypes.Count == 0 && tileType != TileManager.TileType.Goo;
     }
 
+    public bool WalkAble()
+    {
+        return (contentTypes.Count == 0 && tileType != TileManager.TileType.Goo) || (contentTypes.Count == 1 && contentTypes[0] == TileManager.ContentType.BrokenBarrel && tileType != TileManager.TileType.Goo);
+    }
+
     public void SetTileType(TileManager.TileType type)
     {
         // maybe this check isn't needed in the future,

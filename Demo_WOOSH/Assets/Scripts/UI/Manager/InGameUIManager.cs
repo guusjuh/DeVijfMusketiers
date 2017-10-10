@@ -140,7 +140,7 @@ public class InGameUIManager : SubUIManager {
             {
                 if (GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition) != null)
                 {
-                    if (GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition).Content.CompletelyEmpty())
+                    if (GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition).Content.WalkAble())
                     {
                         tempButtons.Add(surroundingPushButtons[i]);
                     }
