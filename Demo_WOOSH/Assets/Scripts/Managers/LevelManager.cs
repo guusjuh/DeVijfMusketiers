@@ -23,6 +23,7 @@ public class LevelManager
     private bool playersTurn = false;
     private bool othersTurn = false;
     private int amountOfTurns = 0;
+    private int extraPoints;
 
     public bool PlayersTurn
     {
@@ -101,14 +102,15 @@ public class LevelManager
 
         // do we have to start goo spawning?
         yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
-        //TODO: stop coroutine when goo kills the last human
+        //stop coroutine when goo kills the last human
+        if (!GameManager.Instance.GameOn) yield return null;
 
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
         // count extra actionpoints
         shrines.HandleAction(s => s.CheckForActive());
-        int extraPoints = 0;
+        extraPoints = 0;
         for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
         
         humans.HandleAction(h => h.DecreaseInvisiblePoints());
@@ -122,6 +124,21 @@ public class LevelManager
 
         playersTurn = true;
         othersTurn = false;
+    }
+
+    public void CheckForExtraAP()
+    {
+        shrines.HandleAction(s => s.CheckForActive());
+        int extraPoints = 0;
+        for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
+        
+        //check for increase in points
+        int diff = extraPoints - this.extraPoints;
+        if (diff > 0)
+        {
+            player.IncreaseActionPoints(diff);
+            this.extraPoints = extraPoints;
+        }
     }
 
     public void EndPlayerMove(int cost = 1, bool endTurn = false)

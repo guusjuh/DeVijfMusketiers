@@ -66,4 +66,9 @@
                 return -1;
         }
     }
+
+    public void IncreaseActionPoints(int addAP)
+    {
+        currentActionPoints += addAP;
+    }
 }

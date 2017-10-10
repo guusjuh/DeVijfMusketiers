@@ -17,7 +17,7 @@ public class InputManager
     private bool stillTouching = false;
 
     public void CatchInput() {
-        if (Input.GetMouseButtonDown(LEFT))
+        if (Input.GetMouseButtonUp(LEFT))
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
 
@@ -70,10 +70,6 @@ public class InputManager
                         }
                     }
                 }
-                if (worldObjects.Count <= 0)
-                {
-                    NoRaycastHit();
-                }
             }
         }
         if (Input.GetMouseButton(LEFT))
@@ -87,6 +83,10 @@ public class InputManager
                     Debug.LogWarning("InputManager: too high dragvelocity");
                 }
                 previousPosition = Input.mousePosition;
+            }
+            else
+            {
+                NoRaycastHit();
             }
         }
 

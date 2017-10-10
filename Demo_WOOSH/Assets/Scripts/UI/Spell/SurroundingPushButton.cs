@@ -38,6 +38,7 @@ public class SurroundingPushButton : MonoBehaviour
     public void PushSource()
     {
         source.Push(relativePosition);
+        GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(1);
     }
 }
