@@ -101,6 +101,7 @@ public class LevelManager
 
         // do we have to start goo spawning?
         yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
+        //TODO: stop coroutine when goo kills the last human
 
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));

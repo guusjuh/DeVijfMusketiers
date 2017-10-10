@@ -458,7 +458,14 @@ public class TileManager
                 }
                 else
                 {
-                    possGooNodes.Add(GetNodeReference(currPos));
+                    for (int k = 0; k < Directions(currPos).Length; k++)
+                    {
+                        Coordinate neighbourPos = Directions(currPos)[k] + currPos;
+                        if (gooNodes.Contains(GetNodeReference(neighbourPos)))
+                        {
+                            possGooNodes.Add(GetNodeReference(currPos));
+                        }
+                    }
                 }
             }
         }
