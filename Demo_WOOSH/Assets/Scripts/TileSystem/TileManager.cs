@@ -458,6 +458,7 @@ public class TileManager
                 }
                 else
                 {
+                    //check all neighbours and add this positions for each neighbor which is a goo tile.
                     for (int k = 0; k < Directions(currPos).Length; k++)
                     {
                         Coordinate neighbourPos = Directions(currPos)[k] + currPos;

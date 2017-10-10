@@ -17,7 +17,6 @@ public class SpellButton : MonoBehaviour
     protected bool active = true;
 
     private const float RADIUS = 90f;
-    public GameObject APPoint;
 
     public bool Active
     {
@@ -103,7 +102,9 @@ public class SpellButton : MonoBehaviour
         {
 
             Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI),
-                -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI));
+                -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI)); 
+
+            GameObject APPoint = Resources.Load<GameObject>("Prefabs/UI/SpellButton/APIndicator");
             apIndicator.Add(Instantiate(APPoint, -pos, Quaternion.identity, this.transform));
         }
     }

@@ -105,15 +105,15 @@ public class LevelManager
         //stop coroutine when goo kills the last human
         if (!GameManager.Instance.GameOn) yield return null;
 
-        // show banner
-        yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
-
         // count extra actionpoints
         shrines.HandleAction(s => s.CheckForActive());
         extraPoints = 0;
         for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
         
         humans.HandleAction(h => h.DecreaseInvisiblePoints());
+
+        // show banner
+        yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
         // start players turn
         player.StartPlayerTurn(extraPoints);
@@ -147,17 +147,15 @@ public class LevelManager
         {
             if (GameManager.Instance.GameOn)
             {
-                enemies.HandleAction(e => e.UpdateTarget());
-
                 playersTurn = false;
                 GameManager.Instance.TileManager.HidePossibleRoads();
+
+                enemies.HandleAction(e => e.UpdateTarget());
 
                 UIManager.Instance.InGameUI.EndPlayerTurn();
                 UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
             }
         }
-
-        //apText.text = currentActionPoints + "";
     }
 
     private IEnumerator CheckForGooSpawning()
