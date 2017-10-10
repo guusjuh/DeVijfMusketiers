@@ -9,7 +9,7 @@ public class AttackButton : SpellButton
     public override void Initialize()
     {
         base.Initialize();
-        cost = 4;
+        cost = 2;
         type = GameManager.SpellType.Attack;
         SpawnAP(cost);
     }
