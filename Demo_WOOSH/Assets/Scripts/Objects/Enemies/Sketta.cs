@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Sketta : Enemy {
-    private float blockChange = 0.333333f;
+    private float blockChange = 0.2f;
     public GameObject Shield;
     private float shieldActiveTime;
 
     public override void Initialize(Coordinate startPos)
     {
-        this.startHealth = 100;
+        this.startHealth = 130;
 
         Shield.SetActive(false);
 
