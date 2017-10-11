@@ -9,7 +9,7 @@ public class Contract
     [SerializeField] private int id;
     public int ID { get { return id; } }
 
-    private ContentManager.HumanTypes type;
+    [SerializeField] private ContentManager.HumanTypes type;
     public ContentManager.HumanTypes Type { get { return type; } }
 
     [SerializeField] private int reputation;
@@ -49,18 +49,18 @@ public class Contract
                 reputation = 1;
                 totalHealth = 5;
                 break;
-            case ContentManager.HumanTypes.Ok:
-                reputation = 2;
-                totalHealth = 4;
-                break;
+            //case ContentManager.HumanTypes.Ok:
+            //reputation = 2;
+            //totalHealth = 4;
+            //break;
             case ContentManager.HumanTypes.Normal:
                 reputation = 3;
                 totalHealth = 4;
                 break;
-            case ContentManager.HumanTypes.Good:
-                reputation = 4;
-                totalHealth = 3;
-                break;
+            //case ContentManager.HumanTypes.Good:
+            //reputation = 4;
+            //totalHealth = 3;
+            //break;
             case ContentManager.HumanTypes.Fabulous:
                 reputation = 5;
                 totalHealth = 2;
@@ -78,6 +78,8 @@ public class Contract
     public void Initialize()
     {
         health = totalHealth;
+
+        rewards = ContentManager.Instance.GetHumanRewards(type);
     }
 
     public void SetActive(bool on)//, int level = 0)
@@ -99,8 +101,11 @@ public class Contract
             diedLastLevel = false;
             //TODO: animation for losing heart
 
+            UberManager.Instance.PlayerData.AdjustReputation(rewards.NegativeRepPerLevel);
+
             if (health <= 0)
             {
+                UberManager.Instance.PlayerData.AdjustReputation(rewards.NegativeRepCompleted);
                 BreakContract();
                 return false;
             }
@@ -110,8 +115,12 @@ public class Contract
             //TODO: animation for walking to next level
             currentLevel++;
 
+            UberManager.Instance.PlayerData.AdjustReputation(rewards.PositiveRepPerLevel);
+
             if (currentLevel >= ContentManager.Instance.LevelDataContainer.LevelData.Count)
             {
+                UberManager.Instance.PlayerData.AdjustReputation(rewards.PositiveRepCompleted);
+
                 BreakContract();
                 return false;
             }

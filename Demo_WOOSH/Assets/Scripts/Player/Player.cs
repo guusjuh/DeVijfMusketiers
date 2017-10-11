@@ -11,7 +11,7 @@
     //public int RepairCooldown { get { return repairCooldown; } }
     private const int repairCooldownTotal = 1;
 
-    private int damage = 10;
+    private int damage = 75;
 
     public int Damage{ get { return damage; } }
 

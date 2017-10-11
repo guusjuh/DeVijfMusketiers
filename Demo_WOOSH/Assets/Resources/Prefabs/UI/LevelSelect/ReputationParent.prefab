@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224459570975686900}
   - component: {fileID: 114914227907551774}
+  - component: {fileID: 114463168923776162}
   m_Layer: 5
   m_Name: ReputationParent
   m_TagString: Untagged
@@ -166,6 +167,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114463168923776162
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721505586236090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d3b82d3faf5014d92321579a7269fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114628941031262596
 MonoBehaviour:
   m_ObjectHideFlags: 1

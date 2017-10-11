@@ -45,6 +45,10 @@ public class UberManager : MonoBehaviour {
     private UIManager uiManager = new UIManager();
     public UIManager UiManager { get { return uiManager; } }
 
+    //TODO: r/w from/to XML file
+    private PlayerData playerData = new PlayerData();
+    public PlayerData PlayerData { get { return playerData; } }
+
     private GameStates prevState;
     private GameStates state;
     public GameStates PrevGameState { get { return prevState; } }

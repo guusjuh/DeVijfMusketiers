@@ -5,10 +5,16 @@ using UnityEngine;
 public class Rewards
 {
     private float positiveRepPerLevel;
+    public float PositiveRepPerLevel { get { return positiveRepPerLevel; } }
+
     private float negativeRepPerLevel;
+    public float NegativeRepPerLevel { get { return negativeRepPerLevel; } }
    
     private float positiveRepCompleted;
+    public float PositiveRepCompleted { get { return positiveRepCompleted; } }
+
     private float negativeRepCompleted;
+    public float NegativeRepCompleted { get { return negativeRepCompleted; } }
 
     public Rewards(float positiveRepPerLevel, float negativeRepPerLevel,
         float positiveRepCompleted, float negativeRepCompleted)
