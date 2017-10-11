@@ -28,6 +28,9 @@ public class Contract
     private bool diedLastLevel = false;
     public bool Died { get { return diedLastLevel;} }
 
+    private Rewards rewards;
+    public Rewards Rewards { get { return rewards; } }
+
     [SerializeField] private Sprite inWorld;
     [SerializeField] private Sprite portrait;
     public Sprite InWorld { get { return inWorld; } }
@@ -42,17 +45,25 @@ public class Contract
 
         switch (type)
         {
-            case ContentManager.HumanTypes.Normal:
+            case ContentManager.HumanTypes.Bad:
                 reputation = 1;
                 totalHealth = 5;
                 break;
             case ContentManager.HumanTypes.Ok:
+                reputation = 2;
+                totalHealth = 4;
+                break;
+            case ContentManager.HumanTypes.Normal:
                 reputation = 3;
                 totalHealth = 4;
                 break;
             case ContentManager.HumanTypes.Good:
-                reputation = 5;
+                reputation = 4;
                 totalHealth = 3;
+                break;
+            case ContentManager.HumanTypes.Fabulous:
+                reputation = 5;
+                totalHealth = 2;
                 break;
         }
 
@@ -60,6 +71,8 @@ public class Contract
 
         inWorld = ContentManager.Instance.GetHumanSprites(type)[0];
         portrait = ContentManager.Instance.GetHumanSprites(type)[1];
+
+        rewards = ContentManager.Instance.GetHumanRewards(type);
     }
 
     public void Initialize()

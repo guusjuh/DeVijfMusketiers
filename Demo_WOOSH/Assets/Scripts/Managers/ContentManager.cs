@@ -31,6 +31,7 @@ public class ContentManager {
     private List<Sprite> WorldHumans { get; set; }
     private List<Sprite> PortraitHumans { get; set; }
     private Dictionary<HumanTypes, List<Sprite>> HumanSprites { get; set; }
+    private Dictionary<HumanTypes, Rewards> HumanRewards { get; set; }
 
     //TODO: at later moment, maybe different human prefabs needed for the different behaviors!
     public GameObject Human { get; private set; }
@@ -57,6 +58,13 @@ public class ContentManager {
             HumanSprites.Get((HumanTypes)i).Add(PortraitHumans[i]);
         }
 
+        HumanRewards = new Dictionary<HumanTypes, Rewards>();
+        HumanRewards.Add(HumanTypes.Bad, new Rewards(2.5f, 2.5f, 5.0f, 5.0f));
+        HumanRewards.Add(HumanTypes.Ok, new Rewards(5.0f, 5.0f, 7.5f, 10.0f));
+        HumanRewards.Add(HumanTypes.Normal, new Rewards(10.0f, 10.0f, 15.0f, 17.5f));
+        HumanRewards.Add(HumanTypes.Good, new Rewards(15.0f, 15.0f, 20.0f, 25.0f));
+        HumanRewards.Add(HumanTypes.Fabulous, new Rewards(20.0f, 20.0f, 30.0f, 40.0f));
+
         Human = Resources.Load<GameObject>("Prefabs/Humans/Human");
 
         Bosses = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Creatures"));
@@ -67,14 +75,21 @@ public class ContentManager {
 
     public enum HumanTypes
     {
-        Normal,
-        Ok, 
-        Good
+        Bad,
+        Ok,
+        Normal, 
+        Good,
+        Fabulous
     }
 
     public List<Sprite> GetHumanSprites(HumanTypes type)
     {
         return HumanSprites.Get(type);
+    }
+
+    public Rewards GetHumanRewards(HumanTypes type)
+    {
+        return HumanRewards.Get(type);
     }
 
     private void ReadLevelData()
