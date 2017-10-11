@@ -126,6 +126,7 @@ d5cf84f72be3bd9bce013d2af941f530 Assembly-CSharp.dll:.CameraManager
 4516523e209bfc2a0f0019fd649152a0 Assembly-CSharp.dll:.Dodin
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Enemy
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Human
+32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LevelSelectButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MovableObject
 663576a56d2d11d2ef0a59afa898a2ab Assembly-CSharp.dll:.Sketta

@@ -173,7 +173,11 @@ public class InGameUIManager : SubUIManager {
 
     public IEnumerator StartTurn(bool player)
     {
-        if (player) playerTurnBanner.SetActive(true);
+        if (player)
+        {
+            playerTurnBanner.SetActive(true);
+            playerTurnBanner.GetComponent<YourTurn>().UpdateTurn();
+        }
         else enemyTurnBanner.SetActive(true);
 
         yield return new WaitForSeconds(1.2f);

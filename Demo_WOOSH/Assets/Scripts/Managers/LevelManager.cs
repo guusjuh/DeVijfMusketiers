@@ -23,6 +23,7 @@ public class LevelManager
     private bool playersTurn = false;
     private bool othersTurn = false;
     private int amountOfTurns = 0;
+    public int AmountOfTurns { get { return amountOfTurns; } }
     private int extraPoints;
 
     public bool PlayersTurn
