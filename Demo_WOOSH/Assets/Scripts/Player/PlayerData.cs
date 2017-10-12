@@ -9,14 +9,14 @@ public class PlayerData {
     //public List<Contract> ContractsRef { get { return contractsRef; } }
 
     // Reputation
-    [SerializeField] private float reputation = 1;
+    [SerializeField] private float reputation = 100;
 
     public int Reputation
     {
         get
         {
             int rep = (int)Mathf.Floor(reputation / 100.0f);
-            return rep < 1 ? 1 : rep;
+            return rep;
         }
     }
 

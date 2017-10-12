@@ -49,18 +49,18 @@ public class Contract
                 reputation = 1;
                 totalHealth = 5;
                 break;
-            //case ContentManager.HumanTypes.Ok:
-            //reputation = 2;
-            //totalHealth = 4;
-            //break;
+            case ContentManager.HumanTypes.Ok:
+                reputation = 2;
+                totalHealth = 4;
+                break;
             case ContentManager.HumanTypes.Normal:
                 reputation = 3;
                 totalHealth = 4;
                 break;
-            //case ContentManager.HumanTypes.Good:
-            //reputation = 4;
-            //totalHealth = 3;
-            //break;
+            case ContentManager.HumanTypes.Good:
+                reputation = 4;
+                totalHealth = 3;
+                break;
             case ContentManager.HumanTypes.Fabulous:
                 reputation = 5;
                 totalHealth = 2;
