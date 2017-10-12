@@ -35,9 +35,6 @@ public class Barrel : MovableObject
 
         normalSpr = sprRender.sprite;
         destoryedSpr = Resources.Load<Sprite>("Sprites/World/brokenbarrel");
-
-        possibleSpellTypes.Add(GameManager.SpellType.Repair);
-        possibleSpellTypes.Add(GameManager.SpellType.Push);
     }
 
     public override void Clear()

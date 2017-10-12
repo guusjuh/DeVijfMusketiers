@@ -62,30 +62,8 @@ public class InGameUIManager : SubUIManager {
 
         spellButtons = new Dictionary<GameManager.SpellType, SpellButton>();
         spellButtons.Add(GameManager.SpellType.Attack, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/AttackButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
-        spellButtons.Add(GameManager.SpellType.Invisible, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/InvisibleButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
-        spellButtons.Add(GameManager.SpellType.Push, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/PushButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
-        spellButtons.Add(GameManager.SpellType.Repair, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/RepairButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
         spellButtons.Get(GameManager.SpellType.Attack).Initialize();
-        spellButtons.Get(GameManager.SpellType.Invisible).Initialize();
-        spellButtons.Get(GameManager.SpellType.Push).Initialize();
-        spellButtons.Get(GameManager.SpellType.Repair).Initialize();
         spellButtons.Get(GameManager.SpellType.Attack).gameObject.SetActive(false);
-        spellButtons.Get(GameManager.SpellType.Invisible).gameObject.SetActive(false);
-        spellButtons.Get(GameManager.SpellType.Push).gameObject.SetActive(false);
-        spellButtons.Get(GameManager.SpellType.Repair).gameObject.SetActive(false);
-
-        surroundingPushButtons = new List<SurroundingPushButton>();
-        Coordinate direction = new Coordinate(0, 0);
-
-        for (int i = 0; i < 6; i++)
-        {
-            surroundingPushButtons.Add(
-                GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/SurroundingPushButton"), Vector3.zero, Quaternion.identity, AnchorCenter)
-                .GetComponent<SurroundingPushButton>());
-
-            surroundingPushButtons[i].Deactivate();
-            surroundingPushButtons[i].Initialize(new Coordinate(0, 0), direction);
-        }
     }
 
     protected override void Restart()

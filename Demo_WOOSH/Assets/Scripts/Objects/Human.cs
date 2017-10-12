@@ -34,9 +34,6 @@ public class Human : MovableObject {
         sprRender = GetComponent<SpriteRenderer>();
         type = TileManager.ContentType.Human;
         normalColor = sprRender.color;
-        
-        possibleSpellTypes.Add(GameManager.SpellType.Invisible);
-        possibleSpellTypes.Add(GameManager.SpellType.Push);
     }
 
     public override void Clear()

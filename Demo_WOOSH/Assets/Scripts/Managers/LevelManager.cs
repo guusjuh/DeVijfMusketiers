@@ -30,8 +30,8 @@ public class LevelManager
         get { return playersTurn; }
     }
 
-    private float turnDelay = 0.8f;
-    private float moveDelay = 1f;
+    private float turnDelay = 0.5f;
+    private float moveDelay = 0.5f;
     private float gooDelay = 0.5f;
 
     public void Initialize()
