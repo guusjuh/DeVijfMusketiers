@@ -307,7 +307,7 @@ public class Enemy : WorldObject
             prevTarget = target;
 
             //generate path to chosen target
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, TileManager.ContentType.WalkingMonster);
+            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, type);
 
             // if no path was found
             if (currentPath == null)
@@ -318,7 +318,7 @@ public class Enemy : WorldObject
                     // generate and check path for each target
                     for (int i = 0; i < possibleTargets.Count; i++)
                     {
-                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, possibleTargets[i].GridPosition, TileManager.ContentType.WalkingMonster);
+                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, possibleTargets[i].GridPosition, type);
                         
                         // if we found a valid path, return
                         if (currentPath != null)
@@ -345,15 +345,15 @@ public class Enemy : WorldObject
     public bool CheckTargetForSuperSafe()
     {
         if (currentPath == null || target == null || prevTarget == null)
-        {
+        {/*
             if (currentPath == null && target == null && prevTarget == null)
-            {
+            {*/
                 currentActionPoints = 0;
                 Debug.Log("skipped a move: no target or route found");
                 return false;
-            }
+            /*}
             Debug.LogError("Wubba lubba dup dup");
-            return false;
+            return false;*/
         }
         return true;
     }
@@ -369,7 +369,7 @@ public class Enemy : WorldObject
         }
         else
         {
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, TileManager.ContentType.WalkingMonster);
+            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, type);
         }
     }
 

@@ -104,6 +104,9 @@ public class GameManager : StateManager {
         List<TileManager.ContentType> bossList = new List<TileManager.ContentType>();
         bossList.Add(TileManager.ContentType.Barrel);
         bossList.Add(TileManager.ContentType.BrokenBarrel);
+
+        typesToEnter.Add(TileManager.ContentType.FlyingMonster, bossList);
+
         bossList.Add(TileManager.ContentType.FlyingMonster);
 
         typesToEnter.Add(TileManager.ContentType.WalkingMonster, bossList);

@@ -20,12 +20,12 @@ public class TileContent
 
     public bool CompletelyEmpty()
     {
-        return contentTypes.Count == 0 && tileType != TileManager.TileType.Goo;
+        return contentTypes.Count == 0 && tileType != TileManager.TileType.Gap;
     }
 
     public bool WalkAble()
     {
-        return (contentTypes.Count == 0 && tileType != TileManager.TileType.Goo) || (contentTypes.Count == 1 && contentTypes[0] == TileManager.ContentType.BrokenBarrel && tileType != TileManager.TileType.Goo);
+        return (contentTypes.Count == 0 && tileType != TileManager.TileType.Gap) || (contentTypes.Count == 1 && contentTypes[0] == TileManager.ContentType.BrokenBarrel && tileType != TileManager.TileType.Gap);
     }
 
     public void SetTileType(TileManager.TileType type)
@@ -33,18 +33,18 @@ public class TileContent
         // maybe this check isn't needed in the future,
         // but for now, you cannot change back from goo
 
-        if (tileType == TileManager.TileType.Goo)
+        if (tileType == TileManager.TileType.Gap)
             return;
         else
         {
             tileType = type;
-            if (tileType == TileManager.TileType.Goo) refNode.MakeGoo();
+            if (tileType == TileManager.TileType.Gap) refNode.MakeGap();
 
             // kill all on this tile!
             if (contentTypes.Contains(TileManager.ContentType.Barrel) ||
                 contentTypes.Contains(TileManager.ContentType.BrokenBarrel))
             {
-                GameManager.Instance.LevelManager.Barrels.Find(go => go.GridPosition == refNode.GridPosition).RemoveByGoo();
+                GameManager.Instance.LevelManager.Barrels.Find(go => go.GridPosition == refNode.GridPosition).RemoveByGap();
             }
             else if (contentTypes.Contains(TileManager.ContentType.Human) ||
                 contentTypes.Contains(TileManager.ContentType.InivisbleHuman))

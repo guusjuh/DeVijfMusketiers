@@ -49,7 +49,7 @@ public class Barrel : MovableObject
         return true;
     }
 
-    public void RemoveByGoo()
+    public void RemoveByGap()
     {
         Destroyed = true;
         GameManager.Instance.LevelManager.RemoveBarrel(this);

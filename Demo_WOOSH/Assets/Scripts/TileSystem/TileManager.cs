@@ -7,7 +7,7 @@ public class TileManager
     public enum TileType
     {
         Normal = 0,
-        Goo,
+        Gap,
     }
 
     public enum ContentType
@@ -287,6 +287,11 @@ public class TileManager
 
         List<ContentType> typesToEnter = GameManager.Instance.TypesToEnter.Get(type);
 
+        if (grid[pos.x, pos.y].Content.TileType == TileType.Gap && type == ContentType.WalkingMonster)
+        {
+            return false;
+        }
+
         for (int j = 0; j < grid[pos.x, pos.y].Content.ContentTypes.Count; j++)
         {
             if (!typesToEnter.Contains(grid[pos.x, pos.y].Content.ContentTypes[j]))
@@ -426,33 +431,34 @@ public class TileManager
         return null;
     }
 
-    private List<TileNode> GetNodeWithGooReferences()
+    private List<TileNode> GetNodeWithGapReferences()
     {
-        List<TileNode> gooNodes = new List<TileNode>();
+        List<TileNode> gapNodes = new List<TileNode>();
 
         foreach (TileNode t in grid)
         {
-            if(t.Content.TileType == TileType.Goo)
-                gooNodes.Add(t);
+            if (t.Content.TileType == TileType.Gap)
+                gapNodes.Add(t);
         }
 
-        return gooNodes;
+        return gapNodes;
     }
 
-    public List<TileNode> GetPossibleGooNodeReferences()
+    public List<TileNode> GetPossibleGapNodeReferences()
     {
-        List<TileNode> gooNodes = GetNodeWithGooReferences();
-        List<TileNode> possGooNodes = new List<TileNode>();
+        List<TileNode> gapNodes = GetNodeWithGapReferences();
+        List<TileNode> possGapNodes = new List<TileNode>();
 
-        for (int i = 0; i < gooNodes.Count; i++)
+        for (int i = 0; i < gapNodes.Count; i++)
         {
-            for (int j = 0; j < Directions(gooNodes[i].GridPosition).Length; j++)
+            for (int j = 0; j < Directions(gapNodes[i].GridPosition).Length; j++)
             {
-                Coordinate currPos = gooNodes[i].GridPosition + Directions(gooNodes[i].GridPosition)[j];
+                Coordinate currPos = gapNodes[i].GridPosition + Directions(gapNodes[i].GridPosition)[j];
 
-                if (gooNodes.Contains(GetNodeReference(currPos)) ||
+                if (gapNodes.Contains(GetNodeReference(currPos)) ||
                     currPos.x < 0 || currPos.x >= rows ||
-                    currPos.y < 0 || currPos.y >= columns)
+                    currPos.y < 0 || currPos.y >= columns ||
+                    GetNodeReference(currPos).Content.ContentTypes.Contains(ContentType.WalkingMonster))
                 {
                     continue;
                 }
@@ -462,16 +468,16 @@ public class TileManager
                     for (int k = 0; k < Directions(currPos).Length; k++)
                     {
                         Coordinate neighbourPos = Directions(currPos)[k] + currPos;
-                        if (gooNodes.Contains(GetNodeReference(neighbourPos)))
+                        if (gapNodes.Contains(GetNodeReference(neighbourPos)))
                         {
-                            possGooNodes.Add(GetNodeReference(currPos));
+                            possGapNodes.Add(GetNodeReference(currPos));
                         }
                     }
                 }
             }
         }
 
-        return possGooNodes;
+        return possGapNodes;
     }
 
     public void ShowPossibleRoads(Coordinate gridPos, int actionPoints)

@@ -33,7 +33,7 @@ public class LevelManager
 
     private float turnDelay = 0.5f;
     private float moveDelay = 0.5f;
-    private float gooDelay = 0.5f;
+    private float gapDelay = 0.5f;
 
     public void Initialize()
     {
@@ -102,7 +102,7 @@ public class LevelManager
         amountOfTurns++;
 
         // do we have to start goo spawning?
-        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
+        yield return UberManager.Instance.StartCoroutine(CheckForGapSpawning());
         //stop coroutine when goo kills the last human
         if (!GameManager.Instance.GameOn) yield return null;
 
@@ -159,7 +159,7 @@ public class LevelManager
         }
     }
 
-    private IEnumerator CheckForGooSpawning()
+    private IEnumerator CheckForGapSpawning()
     {
         if (amountOfTurns == 2)
         {
@@ -168,21 +168,21 @@ public class LevelManager
 
         if (amountOfTurns > 2)
         {
-            yield return UberManager.Instance.StartCoroutine(SpawnGoo());
+            yield return UberManager.Instance.StartCoroutine(SpawnGap());
         }
     }
-    private IEnumerator SpawnGoo()
+    private IEnumerator SpawnGap()
     {
         for (int i = 0; i < amountOfTurns - 2; i++)
         {
-            List<TileNode> possGooNodes = GameManager.Instance.TileManager.GetPossibleGooNodeReferences();
-            int rnd = UnityEngine.Random.Range(0, possGooNodes.Count);
-            TileNode chosenGoo = possGooNodes[rnd];
+            List<TileNode> possGapNodes = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
+            int rnd = UnityEngine.Random.Range(0, possGapNodes.Count);
+            TileNode chosenGap = possGapNodes[rnd];
 
-            GameManager.Instance.CameraManager.LockTarget(chosenGoo.Hexagon.transform);
-            yield return new WaitForSeconds(gooDelay);
+            GameManager.Instance.CameraManager.LockTarget(chosenGap.Hexagon.transform);
+            yield return new WaitForSeconds(gapDelay);
 
-            chosenGoo.Content.SetTileType(TileManager.TileType.Goo);
+            chosenGap.Content.SetTileType(TileManager.TileType.Gap);
 
             if (!GameManager.Instance.GameOn) break;
         }
@@ -289,7 +289,7 @@ public class LevelManager
         }
 
         // spawn goo
-        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPos).Content.SetTileType(TileManager.TileType.Goo);
+        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPos).Content.SetTileType(TileManager.TileType.Gap);
     }
 
     //TODO: refactor!

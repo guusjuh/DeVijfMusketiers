@@ -140,8 +140,8 @@ public class TileNode {
         if (on) highlight.color = color;
     }
 
-    public void MakeGoo()
+    public void MakeGap()
     {
-        hexagon.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.0f, 1.0f);
+        hexagon.GetComponent<SpriteRenderer>().color = new Color(0.0f, 0.0f, 0.0f);
     }
 }

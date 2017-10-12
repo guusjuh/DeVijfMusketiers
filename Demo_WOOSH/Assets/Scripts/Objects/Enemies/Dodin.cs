@@ -20,6 +20,8 @@ public class Dodin : Enemy
         freeAPCooldown = freeAPCooldownTotal;
 
         base.Initialize(startPos);
+
+        type = TileManager.ContentType.FlyingMonster;
     }
 
     public override bool CheckForSpell()

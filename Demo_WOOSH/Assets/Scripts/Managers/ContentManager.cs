@@ -26,7 +26,7 @@ public class ContentManager {
 
     public GameObject Barrel { get; private set; }
     public GameObject Shrine { get; private set; }
-    public GameObject Goo { get; private set; }
+    public GameObject Gap { get; private set; }
 
     private List<Sprite> WorldHumans { get; set; }
     private List<Sprite> PortraitHumans { get; set; }
@@ -45,7 +45,7 @@ public class ContentManager {
     {
         Barrel = Resources.Load<GameObject>("Prefabs/Barrel");
         Shrine = Resources.Load<GameObject>("Prefabs/Shrine");
-        Goo = Resources.Load<GameObject>("Prefabs/Hole");
+        Gap = Resources.Load<GameObject>("Prefabs/Hole");
 
         WorldHumans = new List<Sprite>(Resources.LoadAll<Sprite>("Sprites/Humans"));
         PortraitHumans = new List<Sprite>(Resources.LoadAll<Sprite>("Sprites/UI/HumanIcons"));
