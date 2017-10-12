@@ -46,7 +46,7 @@ public class ContractManager {
     public Contract GenerateRandomContract()
     {
         int id = AmountOfContracts();
-        ContentManager.HumanTypes type = (ContentManager.HumanTypes)UnityEngine.Random.Range(0, Enum.GetNames(typeof(ContentManager.HumanTypes)).Length);//UberManager.Instance.PlayerData.Reputation);
+        ContentManager.HumanTypes type = (ContentManager.HumanTypes)UnityEngine.Random.Range(0, UberManager.Instance.PlayerData.Reputation);
 
         Contract newContract = new Contract(id, type);
 
