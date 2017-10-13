@@ -7,8 +7,7 @@ public class CameraManager : MonoBehaviour
 {
     private const int X_AXIS = 0, Y_AXIS = 1;
     private bool[] lockedAxis = { false, false };
-    public Transform target;
-    public Vector2 dragVel;
+    private Transform target;
 
     [SerializeField]
     private float speedScalar = 0.001f;
@@ -26,6 +25,8 @@ public class CameraManager : MonoBehaviour
     private Vector2 curViewportMax;
 
     private Rect viewportRect;
+
+    private int minSize, maxSize;
 
     //clamps camera between minimum (in world position) and maximum (in world position).
     public void SetBorderRange(Vector2 min, Vector2 max)
@@ -71,6 +72,10 @@ public class CameraManager : MonoBehaviour
         transform.Translate(translation);
     }
 
+    private void SetMinMaxSizes()
+    {
+        //TODO: calculate min and max for the level?
+    }
 
     public void Initialize()
     {
@@ -83,6 +88,8 @@ public class CameraManager : MonoBehaviour
         speedScalar = Camera.main.orthographicSize * 0.001f;
 
         SetBorderRange(min, max);
+
+        SetMinMaxSizes();
 
         Vector2 position = bordersMin + ((bordersMax - bordersMin) * 0.5f);
         transform.position = new Vector3(position.x, position.y, transform.position.z);
@@ -157,7 +164,6 @@ public class CameraManager : MonoBehaviour
         {
             target = null;
             UnlockAxis();
-            dragVel = UberManager.Instance.InputManager.DragVelocity;
             MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
             return;
         }

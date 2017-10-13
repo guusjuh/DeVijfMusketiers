@@ -14,9 +14,15 @@ public class InputManager
     private Vector2 dragVelocity;
     public Vector2 DragVelocity { get { return dragVelocity; } }
 
+    private float zoomVelocity;
+    public float ZoomVelocity { get { return zoomVelocity; } }
+
     private bool stillTouching = false;
 
-    public void CatchInput() {
+    public void CatchInput()
+    {
+        zoomVelocity = Input.GetAxis("Mouse ScrollWheel");
+
         if (Input.GetMouseButtonDown(LEFT))
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
