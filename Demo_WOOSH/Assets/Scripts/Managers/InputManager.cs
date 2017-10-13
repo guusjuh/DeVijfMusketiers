@@ -8,6 +8,16 @@ using UnityEngine.UI;
 
 public class InputManager
 {
+    private static InputManager instance = null;
+    public static InputManager Instance
+    {
+        get
+        {
+            if (instance == null) instance = UberManager.Instance.InputManager;
+            return instance;
+        }
+    }
+
     private const int LEFT = 0;
     private Vector2 previousPosition;
 

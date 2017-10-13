@@ -114,7 +114,7 @@ public class GameManager : StateManager {
     {
         if (!gameOn) return;
 
-        UberManager.Instance.InputManager.CatchInput();
+        InputManager.Instance.CatchInput();
         cameraManager.UpdatePosition();
         levelManager.Update();
     }

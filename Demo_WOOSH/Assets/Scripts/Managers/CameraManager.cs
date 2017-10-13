@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    private Camera camRef;
+
     private const int X_AXIS = 0, Y_AXIS = 1;
     private bool[] lockedAxis = { false, false };
     private Transform target;
@@ -26,8 +28,10 @@ public class CameraManager : MonoBehaviour
 
     private Rect viewportRect;
 
-    private int minSize, maxSize;
-
+    private const float minSize = 3.0f, maxSize = 7.5f;
+    private const float zoomSpeed = 3.0f;
+    private float currentSize;
+    
     //clamps camera between minimum (in world position) and maximum (in world position).
     public void SetBorderRange(Vector2 min, Vector2 max)
     {
@@ -72,13 +76,10 @@ public class CameraManager : MonoBehaviour
         transform.Translate(translation);
     }
 
-    private void SetMinMaxSizes()
-    {
-        //TODO: calculate min and max for the level?
-    }
-
     public void Initialize()
     {
+        camRef = GetComponent<Camera>();
+
         UnlockAxis();
 
         viewportRect = Camera.main.pixelRect;
@@ -89,7 +90,7 @@ public class CameraManager : MonoBehaviour
 
         SetBorderRange(min, max);
 
-        SetMinMaxSizes();
+        currentSize = camRef.orthographicSize;
 
         Vector2 position = bordersMin + ((bordersMax - bordersMin) * 0.5f);
         transform.position = new Vector3(position.x, position.y, transform.position.z);
@@ -160,12 +161,16 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     public void UpdatePosition()
     {
-        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 10)
+        if (InputManager.Instance.DragVelocity.magnitude > 10)
         {
             target = null;
             UnlockAxis();
-            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
+            MoveCamera(-InputManager.Instance.DragVelocity * speedScalar, true);
             return;
+        }
+        else if (Mathf.Abs(InputManager.Instance.ZoomVelocity) > 0.01f)
+        {
+            Zoom(-InputManager.Instance.ZoomVelocity);
         }
 
         // locked means either 
@@ -188,5 +193,16 @@ public class CameraManager : MonoBehaviour
             // implement drag movement
             MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
         }*/
+    }
+
+    private void Zoom(float zoom)
+    {
+        // adjust currentsize based on zoom
+        currentSize += zoom * zoomSpeed;
+
+        // clamp the currentsize
+        currentSize = Mathf.Clamp(currentSize, minSize, maxSize);
+
+        camRef.orthographicSize = currentSize;
     }
 }
