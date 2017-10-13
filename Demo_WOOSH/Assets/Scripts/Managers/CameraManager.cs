@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -86,7 +87,7 @@ public class CameraManager : MonoBehaviour
         transform.position = new Vector3(position.x, position.y, transform.position.z);
     }
 
-    public void MoveCamera(Vector2 desiredVelocity)
+    public void MoveCamera(Vector2 desiredVelocity, bool instant)
     {
         Vector2 velocity = Vector2.zero;
         if (bordersMin == Vector2.zero && bordersMax == Vector2.zero)
@@ -144,27 +145,41 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        transform.Translate(velocity);
+        if(instant) transform.Translate(velocity);
+        else transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime * 1; 
     }
 
     // Update is called once per frame
     public void UpdatePosition()
     {
+        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 50)
+        {
+            target = null;
+            UnlockAxis();
+
+            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
+            return;
+        }
+
+        // locked means either 
+        // enemy turn OR 
+        // having a target OR 
+        // too big for the level
         if (lockedAxis[X_AXIS] && lockedAxis[Y_AXIS])
         {
+            // we have a target, go follow it
             if (target != null)
             {
-                MoveCamera(new Vector3(target.position.x, target.position.y, transform.position.z) - transform.position);
+                // keep moving
+                Vector3 toPosition = new Vector3(target.position.x, target.position.y, transform.position.z) -
+                                     transform.position;
+                MoveCamera(toPosition, false);
             }
         }
-        else
+        /*else
         {
-            if (target != null)
-            {
-                target = null;
-            }
-            //implement drag movement
-            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar);
-        }
+            // implement drag movement
+            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
+        }*/
     }
 }
