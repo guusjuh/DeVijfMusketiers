@@ -72,6 +72,7 @@ public class InputManager
                 }
                 if(worldObjects.Count <= 0){
                     NoRaycastHit();
+
                 }
             }
         }

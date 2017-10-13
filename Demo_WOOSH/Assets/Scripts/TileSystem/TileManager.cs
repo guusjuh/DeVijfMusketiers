@@ -8,6 +8,7 @@ public class TileManager
     {
         Normal = 0,
         Goo,
+        Glyph,
     }
 
     public enum ContentType

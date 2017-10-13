@@ -2,10 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
+using System.Xml.Schema;
 using UnityEngine;
 
 public class Enemy : WorldObject
 {
+    //spell effects:
+    protected bool slowed = false;
+    protected int slowCount = 0; // for how many turns am I still slowed
+    public bool Slowed { get { return slowed; } }
+    protected bool burning = false;
+    public bool Burning { get { return burning; } }
+    protected int burnDamage;
+    protected int burnModifier = 0;
+    protected int burnCount = 0;
+
+    protected int calculatedTotalAP = 0; // used to temporarily remove or add action points (for example slowed)
+
     protected int totalActionPoints = 3;       // total points
     protected int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
@@ -49,10 +62,13 @@ public class Enemy : WorldObject
         // bit optimized cuz no division
         inverseMoveTime = 1f / moveTime;
 
-        currentActionPoints = totalActionPoints;
+        calculatedTotalAP = totalActionPoints;
+        currentActionPoints = calculatedTotalAP;
         health = startHealth;
 
         possibleSpellTypes.Add(GameManager.SpellType.Attack);
+        possibleSpellTypes.Add(GameManager.SpellType.FrostBite);
+        possibleSpellTypes.Add(GameManager.SpellType.Fireball);
 
         type = TileManager.ContentType.WalkingMonster;
 
@@ -115,6 +131,36 @@ public class Enemy : WorldObject
         return false;
     }
 
+    public void Slow(int turns)
+    {
+        if (!slowed)
+        {
+            slowCount = turns;
+            slowed = true;
+            calculatedTotalAP--;
+            currentActionPoints = calculatedTotalAP;
+        }
+        else
+        {
+            slowCount += turns;
+        }
+        SetUIInfo();
+    }
+
+    public void Burn(int turns, int burnDamage)
+    {
+        this.burnDamage = burnDamage + burnModifier;
+        if (burnCount > 0)
+        {
+            burnCount += turns;
+        }
+        else
+        {
+            burnCount = turns;
+            burning = true;
+        }
+    }
+
     public virtual void StartTurn()
     {
         if (spawnCooldown > 0)
@@ -127,7 +173,32 @@ public class Enemy : WorldObject
 
     public virtual void EndTurn()
     {
-        currentActionPoints = totalActionPoints;
+        if (slowCount > 0)
+        {
+            slowCount--;
+            if (slowCount == 0)
+            {
+                slowed = true;
+                //TODO: account for possible other slow effects
+                calculatedTotalAP = totalActionPoints;
+            }
+        }
+
+        if (burnCount > 0)
+        {
+            if (burning)
+            {
+                Hit(burnDamage);
+            }
+
+            burnCount--;
+            if (burnCount == 0)
+            {
+                burning = false;
+            }
+        }
+
+        currentActionPoints = calculatedTotalAP;
     }
 
     public virtual void EnemyMove()
@@ -384,6 +455,6 @@ public class Enemy : WorldObject
 
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
-        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, totalActionPoints);
+        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, calculatedTotalAP);
     }
 }

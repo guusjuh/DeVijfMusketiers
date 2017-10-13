@@ -7,7 +7,10 @@ using UnityEngine;
 public class GameManager : StateManager {
     public enum SpellType
     {
-        Attack = 0
+        Attack = 0,
+        FrostBite,
+        Fireball,
+        Teleport
     }
 
     // singleton

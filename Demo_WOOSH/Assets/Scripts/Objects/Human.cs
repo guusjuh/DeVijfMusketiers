@@ -34,6 +34,8 @@ public class Human : MovableObject {
         sprRender = GetComponent<SpriteRenderer>();
         type = TileManager.ContentType.Human;
         normalColor = sprRender.color;
+
+        possibleSpellTypes.Add(GameManager.SpellType.Teleport);
     }
 
     public override void Clear()
@@ -50,6 +52,17 @@ public class Human : MovableObject {
         GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
         type = TileManager.ContentType.InivisbleHuman;
         gameObject.layer = 0;
+    }
+
+    public void ActivateTeleportButtons()
+    {
+        //TODO: activate buttons for each tile on the grid except for mine
+    }
+
+    public void Teleport(Coordinate newPosition)
+    {
+        //TODO: move human in grid
+        //move human for realsies
     }
 
     public void DecreaseInvisiblePoints()

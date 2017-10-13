@@ -64,6 +64,14 @@ public class InGameUIManager : SubUIManager {
         spellButtons.Add(GameManager.SpellType.Attack, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/AttackButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
         spellButtons.Get(GameManager.SpellType.Attack).Initialize();
         spellButtons.Get(GameManager.SpellType.Attack).gameObject.SetActive(false);
+
+        spellButtons.Add(GameManager.SpellType.FrostBite, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/FrostBiteButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
+        spellButtons.Get(GameManager.SpellType.FrostBite).Initialize();
+        spellButtons.Get(GameManager.SpellType.FrostBite).gameObject.SetActive(false);
+
+        spellButtons.Add(GameManager.SpellType.Fireball, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/FireballButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
+        spellButtons.Get(GameManager.SpellType.Fireball).Initialize();
+        spellButtons.Get(GameManager.SpellType.Fireball).gameObject.SetActive(false);
     }
 
     protected override void Restart()
@@ -93,6 +101,27 @@ public class InGameUIManager : SubUIManager {
 
     public void ActivatePushButtons(bool on, MovableObject target = null)
     {
+        //fill all possible surrounding TELEPORT buttons beforehand (each possible tile)
+        //TODO: highlight all tiles
+        for (int i = 0; i < surroundingPushButtons.Count; i++)
+        {
+            if (target != null && surroundingPushButtons[i].GridPosition != target.GridPosition)
+            {
+                bool walkable = GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition) != null &&
+                    GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition)
+                                                    .Content.WalkAble();
+                if (walkable)
+                {
+
+                }
+
+            } else if (target == null)
+            {
+                
+            }
+            //of waar iets staat
+        }
+        
         if (on)
         {
             // set the button positions 

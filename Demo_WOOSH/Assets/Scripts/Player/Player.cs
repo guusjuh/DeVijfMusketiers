@@ -3,10 +3,6 @@
     private int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
-    private int damage = 10;
-
-    public int Damage{ get { return damage; } }
-
     public void Initialize()
     {
     }
@@ -34,6 +30,8 @@
         {
             case GameManager.SpellType.Attack:
                 return 0;
+            case GameManager.SpellType.FrostBite:
+                return 3;
         }
 
         return 0;
