@@ -126,7 +126,7 @@ public class GameManager : StateManager {
     {
         levelManager.EndPlayerMove(1, true);
         UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
     }
 
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)

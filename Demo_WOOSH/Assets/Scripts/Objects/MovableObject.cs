@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class MovableObject : EnemyTarget {
 
-    public void Push(Coordinate dirToGo)
+    public void Teleport(Coordinate newPos)
     {
-        GameManager.Instance.TileManager.MoveObject(gridPosition, gridPosition + dirToGo, type);
+        GameManager.Instance.TileManager.MoveObject(gridPosition, newPos, type);
 
-        gridPosition += dirToGo;
+        gridPosition = newPos;
         Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
 
-        UIManager.Instance.InGameUI.ActivatePushButtons(false, this);
+        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
 
         transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
     }

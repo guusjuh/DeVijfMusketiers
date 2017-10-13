@@ -21,7 +21,7 @@ public struct Coordinate
         this.y = (int) vec.y;
     }
 
-    public static Coordinate empty { get { return new Coordinate(-1,-1);} }
+    public static Coordinate zero { get { return new Coordinate(0,0);} }
 
     public static Coordinate operator +(Coordinate c1, Coordinate c2)
     {

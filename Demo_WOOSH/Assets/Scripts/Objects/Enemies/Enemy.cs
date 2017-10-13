@@ -139,6 +139,8 @@ public class Enemy : WorldObject
             slowed = true;
             calculatedTotalAP--;
             currentActionPoints = calculatedTotalAP;
+            GameManager.Instance.TileManager.HidePossibleRoads();
+            GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, calculatedTotalAP);
         }
         else
         {

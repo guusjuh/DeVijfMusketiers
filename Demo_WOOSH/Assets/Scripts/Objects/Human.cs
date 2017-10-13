@@ -57,12 +57,7 @@ public class Human : MovableObject {
     public void ActivateTeleportButtons()
     {
         //TODO: activate buttons for each tile on the grid except for mine
-    }
-
-    public void Teleport(Coordinate newPosition)
-    {
-        //TODO: move human in grid
-        //move human for realsies
+        UberManager.Instance.UiManager.InGameUI.ActivateTeleportButtons(true, this);
     }
 
     public void DecreaseInvisiblePoints()

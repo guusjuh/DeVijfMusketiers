@@ -22,7 +22,7 @@ public class InGameUIManager : SubUIManager {
 
     private Dictionary<GameManager.SpellType, SpellButton> spellButtons;
 
-    private List<SurroundingPushButton> surroundingPushButtons;
+    private List<SurroundingPushButton> surroundingPushButtons = new List<SurroundingPushButton>();
 
     private Text warningText;
 
@@ -72,6 +72,12 @@ public class InGameUIManager : SubUIManager {
         spellButtons.Add(GameManager.SpellType.Fireball, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/FireballButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
         spellButtons.Get(GameManager.SpellType.Fireball).Initialize();
         spellButtons.Get(GameManager.SpellType.Fireball).gameObject.SetActive(false);
+
+        spellButtons.Add(GameManager.SpellType.Teleport, GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/TeleportButton"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponent<SpellButton>());
+        spellButtons.Get(GameManager.SpellType.Teleport).Initialize();
+        spellButtons.Get(GameManager.SpellType.Teleport).gameObject.SetActive(false);
+
+        InitializeTeleportButtons();
     }
 
     protected override void Restart()
@@ -94,72 +100,54 @@ public class InGameUIManager : SubUIManager {
 
         // hide spell buttons 
         HideSpellButtons();
-        ActivatePushButtons(false);
+        ActivateTeleportButtons(false);
 
         base.Clear();
     }
 
-    public void ActivatePushButtons(bool on, MovableObject target = null)
+    public void InitializeTeleportButtons()
+    {
+        TileNode[,] grid = GameManager.Instance.TileManager.Grid;
+
+        for (int x = 0; x < grid.GetLength(0); x++)
+        {
+            for (int y = 0; y < grid.GetLength(1); y++)
+            {
+                Coordinate gridPos = new Coordinate(x,y);
+                GameObject temp = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/SurroundingPushButton"),Vector3.zero, Quaternion.identity, AnchorCenter);
+                surroundingPushButtons.Add(temp.GetComponent<SurroundingPushButton>());
+
+                surroundingPushButtons.Last().Deactivate();
+                surroundingPushButtons.Last().Initialize(gridPos);
+            }
+        }
+    }
+
+    public void ActivateTeleportButtons(bool on, MovableObject target = null)
     {
         //fill all possible surrounding TELEPORT buttons beforehand (each possible tile)
         //TODO: highlight all tiles
+        List<SurroundingPushButton> tempButtons = new List<SurroundingPushButton>();
         for (int i = 0; i < surroundingPushButtons.Count; i++)
         {
-            if (target != null && surroundingPushButtons[i].GridPosition != target.GridPosition)
+            if (!on)
+            {
+                //dehighlight button
+                tempButtons.Add(surroundingPushButtons[i]);
+
+            } else if (target != null && surroundingPushButtons[i].GridPosition != target.GridPosition)
             {
                 bool walkable = GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition) != null &&
                     GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition)
                                                     .Content.WalkAble();
                 if (walkable)
                 {
-
-                }
-
-            } else if (target == null)
-            {
-                
-            }
-            //of waar iets staat
-        }
-        
-        if (on)
-        {
-            // set the button positions 
-            Coordinate direction = new Coordinate(0, 0);
-            for (int i = 0; i < surroundingPushButtons.Count; i++)
-            {
-                direction = GameManager.Instance.TileManager.Directions(target.GridPosition)[i];
-
-                Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition + direction);
-                surroundingPushButtons[i].GetComponent<RectTransform>().anchoredPosition =
-                    WorldToCanvas(worldPos);
-
-                surroundingPushButtons[i].GetComponent<RectTransform>().anchoredPosition =
-                    WorldToCanvas(worldPos);
-
-                surroundingPushButtons[i].Initialize(target.GridPosition + direction, direction);
-            }
-
-            // search relevant buttons and activate
-            List<SurroundingPushButton> tempButtons = new List<SurroundingPushButton>();
-
-            for (int i = 0; i < surroundingPushButtons.Count; i++)
-            {
-                if (GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition) != null)
-                {
-                    if (GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition).Content.WalkAble())
-                    {
-                        tempButtons.Add(surroundingPushButtons[i]);
-                    }
+                    tempButtons.Add(surroundingPushButtons[i]);
                 }
             }
-
-            tempButtons.HandleAction(b => b.Activate(target));
         }
-        else
-        {
-            surroundingPushButtons.HandleAction(b => b.Deactivate());
-        }
+        if (on) tempButtons.HandleAction(b => b.Activate(target));
+        else surroundingPushButtons.HandleAction(b => b.Deactivate());
     }
 
     public void BeginPlayerTurn()

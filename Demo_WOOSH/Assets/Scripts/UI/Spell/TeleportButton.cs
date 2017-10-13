@@ -8,14 +8,14 @@ public class TeleportButton : SpellButton
     public override void Initialize()
     {
         base.Initialize();
-        cost = 4;
+        cost = 0;
         type = GameManager.SpellType.Teleport;
-        SpawnAP(cost);
+        SpawnAP(4);
     }
 
     public override void CastSpell()
     {
-        target.GetComponent<Enemy>().Hit(spellDamage);
+        target.GetComponent<Human>().ActivateTeleportButtons();
         base.CastSpell();
     }
 }
