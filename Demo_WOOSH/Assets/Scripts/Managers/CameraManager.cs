@@ -7,7 +7,8 @@ public class CameraManager : MonoBehaviour
 {
     private const int X_AXIS = 0, Y_AXIS = 1;
     private bool[] lockedAxis = { false, false };
-    private Transform target;
+    public Transform target;
+    public Vector2 dragVel;
 
     [SerializeField]
     private float speedScalar = 0.001f;
@@ -146,17 +147,17 @@ public class CameraManager : MonoBehaviour
         }
 
         if(instant) transform.Translate(velocity);
-        else transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime * 1; 
+        else transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime * 10; 
     }
 
     // Update is called once per frame
     public void UpdatePosition()
     {
-        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 50)
+        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 10)
         {
             target = null;
             UnlockAxis();
-
+            dragVel = UberManager.Instance.InputManager.DragVelocity;
             MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
             return;
         }

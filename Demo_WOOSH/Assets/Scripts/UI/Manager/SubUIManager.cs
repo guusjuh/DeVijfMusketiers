@@ -22,13 +22,11 @@ public class SubUIManager
         canvas.gameObject.SetActive(true);
     }
 
-    protected virtual void Initialize()
-    {
-    }
+    protected virtual void Initialize() { }
 
-    protected virtual void Restart()
-    {
-    }
+    protected virtual void Restart() { }
+
+    public virtual void Update() { }
 
     public virtual void Clear()
     {
