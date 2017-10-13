@@ -13,6 +13,8 @@ public class Enemy : WorldObject
     protected bool hasSpecial = true;
     public bool HasSpecial { get { return hasSpecial; } }
 
+    protected int viewDistance = 1;
+
     protected int spawnCooldown = 0;
     public int SpawnCooldown { get { return spawnCooldown; } }
     private int totalSpawnCooldown = 3;
@@ -56,6 +58,7 @@ public class Enemy : WorldObject
 
         type = TileManager.ContentType.WalkingMonster;
 
+        viewDistance = 3;
         //SetUIInfo();
     }
 
@@ -268,7 +271,7 @@ public class Enemy : WorldObject
     {
         // no target find a new one
         // dont get barrels!
-        List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
+        Dictionary<EnemyTarget, int> possibleTargets = new Dictionary<EnemyTarget, int>();
         List<EnemyTarget> damagables = new List<EnemyTarget>();
 
         damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
@@ -280,10 +283,16 @@ public class Enemy : WorldObject
             // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
             if (!damagables[i].CanBeTargeted ||
                 (damagables[i].Type == TileManager.ContentType.InivisbleHuman ||
-                (damagables[i].Type == TileManager.ContentType.Shrine && !damagables[i].GetComponent<Shrine>().Active)))
+                 (damagables[i].Type == TileManager.ContentType.Shrine)))           //shrines aren't damagable currently
                     continue;
 
-            possibleTargets.Add(damagables[i]);
+            //calculate probability 
+            // humans   = 100 * reputation + ProbBasedOnDist()
+            //TODO: these values should be contained in some manager class (for refactor)
+            int probability = (100 * damagables[i].GetComponent<Human>().ContractRef.Reputation)
+                                + GameManager.Instance.TileManager.ProbablitityBasedOnDistance(viewDistance, this.gridPosition, damagables[i].GridPosition);
+
+            possibleTargets.Add(damagables[i], probability);
         }
 
         // first call to SelectTarget prevTarget is null
@@ -298,13 +307,28 @@ public class Enemy : WorldObject
             target = null;
             prevTarget = null;
             currentPath = null;
-        }
+        }            
+        // select a target
         else
         {
-            // select a target
-            int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
-            target = possibleTargets[selection];
-            prevTarget = target;
+            // sum all probabilities 
+            int summedProbability = 0;
+            foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets) summedProbability += entry.Value;
+
+            // perform a random roll to find a random humantype
+            int counter = 0;
+            int randomRoll = (int)UnityEngine.Random.Range(0, summedProbability);
+
+            // find the human type matching the random roll
+            foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets)
+            {
+                counter += entry.Value;
+                if (randomRoll < counter)
+                {
+                    target = entry.Key;
+                    prevTarget = target;
+                }
+            }
 
             //generate path to chosen target
             currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, TileManager.ContentType.WalkingMonster);
@@ -316,14 +340,14 @@ public class Enemy : WorldObject
                 if (possibleTargets.Count > 1)
                 {
                     // generate and check path for each target
-                    for (int i = 0; i < possibleTargets.Count; i++)
+                    foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets)
                     {
-                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, possibleTargets[i].GridPosition, TileManager.ContentType.WalkingMonster);
+                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, entry.Key.GridPosition, TileManager.ContentType.WalkingMonster);
                         
                         // if we found a valid path, return
                         if (currentPath != null)
                         {
-                            target = possibleTargets[i].GetComponent<EnemyTarget>();
+                            target = entry.Key.GetComponent<EnemyTarget>();
                             prevTarget = target;
                             return;
                         }
