@@ -539,18 +539,12 @@ public class TileManager
         }
     }
 
-    public int ProbablitityBasedOnDistance(int viewDist, Coordinate thisPos, Coordinate otherPos)
+    public bool InRange(int viewDist, WorldObject obj1, WorldObject obj2)
     {
         // calculate distance
-        int distance = thisPos.ManhattanDistance(otherPos);
+        int distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
 
-        if (distance < viewDist)
-        {
-            return 1 * probabilityModifier;
-        }
-        else
-        {
-            return 0;
-        }
+        if (distance < viewDist) return true;
+        else return false;
     }
 }

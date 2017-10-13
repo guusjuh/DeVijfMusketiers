@@ -287,10 +287,8 @@ public class Enemy : WorldObject
                     continue;
 
             //calculate probability 
-            // humans   = 100 * reputation + ProbBasedOnDist()
-            //TODO: these values should be contained in some manager class (for refactor)
-            int probability = (100 * damagables[i].GetComponent<Human>().ContractRef.Reputation)
-                                + GameManager.Instance.TileManager.ProbablitityBasedOnDistance(viewDistance, this.gridPosition, damagables[i].GridPosition);
+            // humans   = 100 * reputation
+            int probability = (100 * damagables[i].GetComponent<Human>().ContractRef.Reputation);
 
             possibleTargets.Add(damagables[i], probability);
         }
@@ -327,6 +325,7 @@ public class Enemy : WorldObject
                 {
                     target = entry.Key;
                     prevTarget = target;
+                    break;
                 }
             }
 
@@ -366,6 +365,40 @@ public class Enemy : WorldObject
         }
     }
 
+    public EnemyTarget SelectTargetViewDist()
+    {
+        //TODO: find close by target
+        List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
+        List<EnemyTarget> damagables = new List<EnemyTarget>();
+
+        damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
+
+        //add all possible targets to possible target list
+        for (int i = 0; i < damagables.Count; i++)
+        {
+            // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
+            if (!damagables[i].CanBeTargeted ||
+                (damagables[i].Type == TileManager.ContentType.InivisbleHuman))
+                continue;
+
+            // dont add targets that arnt in view dist
+            if(!GameManager.Instance.TileManager.InRange(viewDistance, this, damagables[i])) 
+                continue;
+
+            possibleTargets.Add(damagables[i]);
+        }
+
+        // no one in range
+        if (possibleTargets.Count <= 0)
+        {
+            Debug.Log("No targets in range");
+            return null;
+        }
+
+        //select target in range
+        return possibleTargets[UnityEngine.Random.Range(0, possibleTargets.Count)];      
+    }
+
     public bool CheckTargetForSuperSafe()
     {
         if (currentPath == null || target == null || prevTarget == null)
@@ -384,17 +417,40 @@ public class Enemy : WorldObject
 
     public void UpdateTarget()
     {
-        //TODO: somehow the target can be zero at this point, but it really shouldn't! find out how!
-        
-        // is my target a human? than i have to check if he's not invisible
+        // **** NEW IMPLEMENTATION: check for someone being in my viewdistance, 
+        // if, select one of them as my target
+        // else, old implementation
+        EnemyTarget targetNearby = SelectTargetViewDist();
+
+        // if there was a target nearby, set it to the current target
+        if (targetNearby != null) {
+            target = targetNearby;
+            prevTarget = target;
+        }    
+
+        // do I have a target at all?
+        // is my target (possibly a new nearby target) a human? than i have to check if he's not invisible
         if (target == null || target.Type == TileManager.ContentType.InivisbleHuman)
-        {
-            SelectTarget();
-        }
+            SelectTarget(); // select a new target
         else
         {
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, TileManager.ContentType.WalkingMonster);
+            // update the current path to the original OR nearby target
+            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition,
+                            target.GridPosition,
+                            TileManager.ContentType.WalkingMonster);
+
+            // if there is no possible route to our target right now, select a new target. 
+            // if there are no other possiblities, the enemy will skip a turn.
+            if (currentPath == null) SelectTarget();
         }
+
+        // **** OLD IMPLEMENTATION: only if my target is gone or invisible, select a new target, else only update the path
+        // is my target a human? than i have to check if he's not invisibleW
+    }
+
+    public bool TargetNearby()
+    {
+        return false;
     }
 
     protected void SetUIInfo()
