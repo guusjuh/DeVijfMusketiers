@@ -8,7 +8,7 @@ public class FireballButton : SpellButton
     public override void Initialize()
     {
         base.Initialize();
-        cost = 4;
+        cost = 2;
         duration = 2;
         type = GameManager.SpellType.Fireball;
         spellDamage = 20;
@@ -16,10 +16,9 @@ public class FireballButton : SpellButton
         SpawnAP(cost);
     }
 
-    public override void CastSpell()
+    public override void ApplyEffect()
     {
         target.GetComponent<Enemy>().Burn(duration, fireDamage);
         target.GetComponent<Enemy>().Hit(spellDamage);
-        base.CastSpell();
     }
 }

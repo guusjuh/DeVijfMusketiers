@@ -9,15 +9,14 @@ public class AttackButton : SpellButton
     public override void Initialize()
     {
         base.Initialize();
-        cost = 2;
+        cost = 1;
         type = GameManager.SpellType.Attack;
         spellDamage = 10;
         SpawnAP(cost);
     }
 
-    public override void CastSpell()
+    public override void ApplyEffect()
     {
         target.GetComponent<Enemy>().Hit(spellDamage);
-        base.CastSpell();
     }
 }

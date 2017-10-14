@@ -53,9 +53,13 @@ public class Enemy : WorldObject
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
 
+    public bool Dead { get; private set; }
+
     public override void Initialize(Coordinate startPos)
     {
         base.Initialize(startPos);
+
+        Dead = false;
 
         // obtain components
         blockingLayer = LayerMask.GetMask("BlockingLayer");
@@ -96,6 +100,7 @@ public class Enemy : WorldObject
 
         if (health <= 0)
         {
+            Dead = true;
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
             GameManager.Instance.LevelManager.RemoveEnemy(this, true);

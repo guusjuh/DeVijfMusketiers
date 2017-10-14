@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TeleportButton : SpellButton
 {
-    private int secondCost = 4;
+    private int secondCost = 2;
 
     public override void Initialize()
     {
@@ -14,12 +14,16 @@ public class TeleportButton : SpellButton
         SpawnAP(secondCost);
     }
 
-    public override void CastSpell()
+    public override IEnumerator CastSpell()
     {
+        yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
+                GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
+
         target.GetComponent<Human>().ActivateTeleportButtons();
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
-        //base.CastSpell();
+
+        yield return null;
     }
 
     public override void Activate(WorldObject target)

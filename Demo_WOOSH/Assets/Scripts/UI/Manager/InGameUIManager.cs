@@ -32,6 +32,8 @@ public class InGameUIManager : SubUIManager {
 
     private const float RADIUS = 200f;
 
+    private SpellVisual spellVisual;
+
     protected override void Initialize()
     {
         canvas = GameObject.FindGameObjectWithTag("InGameCanvas").GetComponent<Canvas>();
@@ -82,6 +84,12 @@ public class InGameUIManager : SubUIManager {
         spellButtons.Get(GameManager.SpellType.Teleport).gameObject.SetActive(false);
 
         InitializeTeleportButtons();
+
+        spellVisual =
+            GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellVisual/SpellInGame"), Vector3.zero,
+                Quaternion.identity, anchorCenter.transform).GetComponent<SpellVisual>();
+
+        spellVisual.Initialize();
     }
 
     protected override void Restart()
@@ -251,5 +259,12 @@ public class InGameUIManager : SubUIManager {
         {
             pair.Value.gameObject.SetActive(false);
         }
+    }
+
+    public IEnumerator CastSpell(GameManager.SpellType type, Vector2 worldPos)
+    {
+        yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, worldPos));
+
+        spellVisual.gameObject.SetActive(false);
     }
 }

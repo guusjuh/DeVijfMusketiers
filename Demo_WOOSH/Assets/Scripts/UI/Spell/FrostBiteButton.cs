@@ -9,7 +9,7 @@ public class FrostBiteButton : SpellButton
     {
         //TODO: cooldown = 3
         base.Initialize();
-        cost = 2;
+        cost = 1;
         hitchance = 0.3f;
         spellDamage = 5;
         duration = 2;
@@ -17,7 +17,7 @@ public class FrostBiteButton : SpellButton
         SpawnAP(cost);
     }
 
-    public override void CastSpell()
+    public override void ApplyEffect()
     {
         float chance = Random.Range(0.0f, 1.0f);
         if (chance < hitchance)
@@ -25,7 +25,5 @@ public class FrostBiteButton : SpellButton
             target.GetComponent<Enemy>().Hit(spellDamage);
         }
         target.GetComponent<Enemy>().Slow(duration);
-        
-        base.CastSpell();
     }
 }

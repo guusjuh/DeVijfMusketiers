@@ -236,7 +236,7 @@ public class LevelManager
 
             GameManager.Instance.CameraManager.LockTarget(e.transform);
 
-            while (e.CurrentActionPoints > 0)
+            while (e.CurrentActionPoints > 0 && !e.Dead)
             {
                 // make creature move
                 e.EnemyMove();
@@ -249,7 +249,7 @@ public class LevelManager
 
             if (!GameManager.Instance.GameOn) break;
 
-            e.EndTurn();
+            if(!e.Dead) e.EndTurn();
         }
 
         // switch turns

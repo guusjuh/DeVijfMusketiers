@@ -45,11 +45,28 @@ public class SpellButton : MonoBehaviour
         //apIndicator = transform.Find("APIndicator").gameObject;
     }
 
-    public virtual void CastSpell()
+    public void Click()
     {
+        StartCoroutine(CastSpell());
+    }
+
+    public virtual IEnumerator CastSpell()
+    {
+        yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
+                GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
+
+        ApplyEffect();
+
         GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
+
+        yield return null;
+    }
+
+    public virtual void ApplyEffect()
+    {
+        
     }
 
     public virtual void Activate(WorldObject target)
