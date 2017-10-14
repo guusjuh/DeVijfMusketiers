@@ -13,7 +13,7 @@ public class FrostBiteButton : SpellButton
         hitchance = 0.3f;
         spellDamage = 5;
         duration = 2;
-        type = GameManager.SpellType.Attack;
+        type = GameManager.SpellType.FrostBite;
         SpawnAP(cost);
     }
 

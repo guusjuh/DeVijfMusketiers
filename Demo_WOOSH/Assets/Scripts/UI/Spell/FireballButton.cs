@@ -10,7 +10,7 @@ public class FireballButton : SpellButton
         base.Initialize();
         cost = 4;
         duration = 2;
-        type = GameManager.SpellType.Attack;
+        type = GameManager.SpellType.Fireball;
         spellDamage = 20;
         fireDamage = 5;
         SpawnAP(cost);

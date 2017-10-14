@@ -41,5 +41,6 @@ public class SurroundingPushButton : MonoBehaviour
         source.Teleport(gridPosition);
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(4);
+        GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
     }
 }

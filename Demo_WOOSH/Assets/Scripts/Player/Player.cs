@@ -1,10 +1,29 @@
-﻿public class Player {
+﻿using System;
+using System.Collections.Generic;
+
+public class Player
+{
     private int totalActionPoints = 6;       // total points
     private int currentActionPoints;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
+    private Dictionary<GameManager.SpellType, int> totalCooldown;
+    private Dictionary<GameManager.SpellType, int> currentCooldown;
+    public Dictionary<GameManager.SpellType, int> CurrentCooldown { get { return currentCooldown; } }
+
     public void Initialize()
     {
+        totalCooldown = new Dictionary<GameManager.SpellType, int>();
+        totalCooldown.Add(GameManager.SpellType.Attack, 0);
+        totalCooldown.Add(GameManager.SpellType.Fireball, 1);
+        totalCooldown.Add(GameManager.SpellType.FrostBite, 3);
+        totalCooldown.Add(GameManager.SpellType.Teleport, 3);
+
+        currentCooldown = new Dictionary<GameManager.SpellType, int>();
+        currentCooldown.Add(GameManager.SpellType.Attack, 0);
+        currentCooldown.Add(GameManager.SpellType.Fireball, 0);
+        currentCooldown.Add(GameManager.SpellType.FrostBite, 0);
+        currentCooldown.Add(GameManager.SpellType.Teleport, 0);
     }
 
     public void StartPlayerTurn(int extraAP = 0)
@@ -19,22 +38,34 @@
 
         if (currentActionPoints <= 0)
         {
+            for (int i = 0; i < Enum.GetNames(typeof(GameManager.SpellType)).Length; i++)
+            {
+                if (!currentCooldown.ContainsKey((GameManager.SpellType)i)) continue;
+                if (currentCooldown[(GameManager.SpellType)i] <= 0) continue;
+
+                currentCooldown[(GameManager.SpellType)i]--;
+            }
+
             return true;
         }
+
         return false;
+    }
+
+    public void SetCooldown(GameManager.SpellType type)
+    {
+        if (!currentCooldown.ContainsKey(type)) return;
+
+        currentCooldown[type] = totalCooldown.Get(type);
+
+        int hoi = 666;
     }
 
     public int GetCurrentCooldown(GameManager.SpellType type)
     {
-        switch (type)
-        {
-            case GameManager.SpellType.Attack:
-                return 0;
-            case GameManager.SpellType.FrostBite:
-                return 3;
-        }
+        if (!currentCooldown.ContainsKey(type)) return 0;
 
-        return 0;
+        return currentCooldown.Get(type);
     }
 
     public void IncreaseActionPoints(int addAP)

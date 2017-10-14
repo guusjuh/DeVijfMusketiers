@@ -47,6 +47,7 @@ public class SpellButton : MonoBehaviour
 
     public virtual void CastSpell()
     {
+        GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
     }
