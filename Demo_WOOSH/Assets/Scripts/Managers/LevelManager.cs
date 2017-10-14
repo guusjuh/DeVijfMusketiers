@@ -20,8 +20,10 @@ public class LevelManager
     private Player player;
     public Player Player { get { return player; } }
 
+    //TODO: implement hooman & goo turns
     private bool playersTurn = false;
     private bool othersTurn = false;
+
     private int amountOfTurns = 0;
     public int AmountOfTurns { get { return amountOfTurns; } }
     private int extraPoints;
@@ -61,6 +63,7 @@ public class LevelManager
         // start with player turn
         playersTurn = true;
         othersTurn = false;
+
         UberManager.Instance.StartCoroutine(BeginPlayerTurn());
     }
 
@@ -98,11 +101,15 @@ public class LevelManager
 
     public IEnumerator BeginPlayerTurn()
     {
+        // do we have to start goo spawning?
+        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
+
+        // make hoomans move
+        yield return UberManager.Instance.StartCoroutine(CheckForHumanWalking());
+
         // increase amnt of turns
         amountOfTurns++;
 
-        // do we have to start goo spawning?
-        yield return UberManager.Instance.StartCoroutine(CheckForGooSpawning());
         //stop coroutine when goo kills the last human
         if (!GameManager.Instance.GameOn) yield return null;
 
@@ -157,6 +164,24 @@ public class LevelManager
                 UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
             }
         }
+    }
+
+    private IEnumerator CheckForHumanWalking()
+    {
+        //dont walk the very first turn
+        if (amountOfTurns == 0) yield break;
+
+        // check all humans
+        for (int i = 0; i < humans.Count; i++)
+        {
+            // check for being in panic mode
+            if (humans[i].InPanic)
+            {
+                yield return UberManager.Instance.StartCoroutine(humans[i].Flee());
+            }
+        }
+
+        yield return null;
     }
 
     private IEnumerator CheckForGooSpawning()

@@ -26,6 +26,31 @@ public class Human : MovableObject {
 
     private SpriteRenderer sprRender;
 
+    private bool inPanic;
+    private const int viewDistance = 4;
+
+    public bool InPanic
+    {
+        get
+        {
+            CheckInPanic();
+            return inPanic;
+        }
+    }
+
+    private void CheckInPanic()
+    {
+        //TODO: implement
+        inPanic = true;
+    }
+
+    public IEnumerator Flee()
+    {
+        Debug.Log("Fleeing!");
+
+        yield return null;
+    }
+
     public override void Initialize(Coordinate startPos)
     {
         base.Initialize(startPos);
