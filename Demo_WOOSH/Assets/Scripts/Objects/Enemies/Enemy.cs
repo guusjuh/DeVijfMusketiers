@@ -13,9 +13,10 @@ public class Enemy : WorldObject
     protected bool hasSpecial = true;
     public bool HasSpecial { get { return hasSpecial; } }
 
-    protected int spawnCooldown = 0;
-    public int SpawnCooldown { get { return spawnCooldown; } }
-    private int totalSpawnCooldown = 3;
+    protected int specialCost = 3;
+    protected int specialCooldown = 0;
+    public int SpecialCooldown { get { return specialCooldown; } }
+    protected int totalSpecialCooldown = 3;
 
     protected float startHealth = 10;
     public float StartHealth { get { return startHealth; } }
@@ -117,9 +118,9 @@ public class Enemy : WorldObject
 
     public virtual void StartTurn()
     {
-        if (spawnCooldown > 0)
+        if (specialCooldown > 0)
         {
-            spawnCooldown--;
+            specialCooldown--;
         }
 
         SetUIInfo();

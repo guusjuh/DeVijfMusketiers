@@ -488,7 +488,7 @@ public class TileManager
         TileNode hisNode = GetNodeReference(gridPos);
         highlightedNodes.Add(hisNode);
 
-        RecursiveTileFinder(hisNode, actionPoints, gridPos);
+        RecursiveTileFinder(highlightedNodes, hisNode, actionPoints, gridPos);
 
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
@@ -505,14 +505,32 @@ public class TileManager
         });
     }
 
-    private void RecursiveTileFinder(TileNode thisNode, int actionPoints, Coordinate startPos)
+    // assumed this is always called AFTER ShowPossibleRoads, no new list need to be set and the tiles can just be added to the highlighted
+    public void ShowExtraTargetForSpecial(Coordinate gridPos, int maxDistance)
+    {
+        List<TileNode> nodes = new List<TileNode>();
+        TileNode hisNode = GetNodeReference(gridPos);
+        RecursiveTileFinder(nodes, hisNode, maxDistance, gridPos);
+
+        // highlight all found humans
+        nodes.HandleAction(n =>
+        {
+            if (n.Content.ContentTypes.Contains(ContentType.Human))
+            {
+                highlightedNodes.Add(n);
+                n.HighlightTile(true, TARGETCOLOR);
+            }
+        });
+    }
+
+    private void RecursiveTileFinder(List<TileNode> nodes, TileNode thisNode, int distance, Coordinate startPos, bool usingCost = true)
     {
         //TODO: remove actionpoints
-        if (actionPoints >= -1)
+        if (distance >= -1)
         {
-            highlightedNodes.Add(thisNode);
+            nodes.Add(thisNode);
 
-            if (actionPoints > 0)
+            if (distance > 0)
             {
                 for (int i = 0; i < thisNode.NeightBours.Count; i++)
                 {
@@ -522,7 +540,10 @@ public class TileManager
                     if (currDist >= lastDist)
                     {
                         //TODO: this should be a more generic monster type
-                        RecursiveTileFinder(thisNode.NeightBours[i], actionPoints - (int)CostToEnterTile(thisNode.NeightBours[i], ContentType.WalkingMonster), startPos);
+                        RecursiveTileFinder(nodes, 
+                                            thisNode.NeightBours[i],
+                                            distance - (usingCost ? (int)CostToEnterTile(thisNode.NeightBours[i], ContentType.WalkingMonster) : 1), 
+                                            startPos);
                     }
                 }
             }
