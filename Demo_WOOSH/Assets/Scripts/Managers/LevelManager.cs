@@ -173,12 +173,9 @@ public class LevelManager
 
         foreach (Human h in humans)
         {
-            //h.StartTurn();
-
-            GameManager.Instance.CameraManager.LockTarget(h.transform);
-
             // only handle a turn for the human if he is panicking
             if (h.InPanic) {
+                GameManager.Instance.CameraManager.LockTarget(h.transform);
 
                 // make the human flee as long as he cant
                 while (h.CurrentFleePoints > 0) {
@@ -186,8 +183,6 @@ public class LevelManager
                     yield return new WaitForSeconds(moveDelay);
                 }
             }
-
-            //h.EndTurn();
         }
 
         yield return null;
