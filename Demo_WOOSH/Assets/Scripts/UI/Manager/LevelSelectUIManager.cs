@@ -7,8 +7,10 @@ public class LevelSelectUIManager : SubUIManager
 {
     private RectTransform anchorCenter;
     private RectTransform anchorBottomRight;
+    private RectTransform anchorTopMid;
 
     private GameObject levelSelectPanel;
+    private ReputationUIManager reputationParent;
 
     private GameObject levelSelectParentPrefab;
     private List<LevelSelectParent> levelSelectParents;
@@ -20,10 +22,14 @@ public class LevelSelectUIManager : SubUIManager
         canvas = GameObject.FindGameObjectWithTag("LevelSelectCanvas").GetComponent<Canvas>();
         anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
         anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
+        anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
 
-        levelSelectPanel = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/LevelSelectPanel"), Vector3.zero, Quaternion.identity,
-                anchorCenter.transform);
+        levelSelectPanel = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/LevelSelectPanel"), Vector3.zero, Quaternion.identity, anchorCenter.transform);
         levelSelectPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+        reputationParent = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/ReputationParent"), Vector3.zero, Quaternion.identity, anchorTopMid.transform).GetComponent<ReputationUIManager>();
+        reputationParent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-20, -20);
+        reputationParent.Initialize();
 
         levelSelectParentPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelSelect/LevelParent");
 
@@ -51,6 +57,7 @@ public class LevelSelectUIManager : SubUIManager
     protected override void Restart()
     {
         levelSelectParents.HandleAction(l => l.Restart());
+        reputationParent.SetStars();
     }
 
     public override void Clear()
