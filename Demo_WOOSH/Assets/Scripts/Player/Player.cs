@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Player
 {
     private int totalActionPoints = 3;       // total points
-    private int currentActionPoints;        // points left this turn
+    private int currentActionPoints = 0;        // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
     private Dictionary<GameManager.SpellType, int> totalCooldown;

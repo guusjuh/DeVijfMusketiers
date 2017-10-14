@@ -31,6 +31,7 @@ public class SpellButton : MonoBehaviour
         {
             if (active == value) return;
             active = value;
+            disabledObject.SetActive(!value);
             button.interactable = active;
         }
     }
@@ -95,7 +96,7 @@ public class SpellButton : MonoBehaviour
     {
         if (value <= 0)
         {
-            if (disabledObject.activeInHierarchy) disabledObject.SetActive(false);
+            //if (disabledObject.activeInHierarchy) disabledObject.SetActive(false);
             if (cooldownText.gameObject.activeInHierarchy) cooldownText.gameObject.SetActive(false);
             foreach (var indicator in apIndicator)
             {
@@ -104,7 +105,7 @@ public class SpellButton : MonoBehaviour
         }
         else
         {
-            if (!disabledObject.activeInHierarchy) disabledObject.SetActive(true);
+           // if (!disabledObject.activeInHierarchy) disabledObject.SetActive(true);
             if (!cooldownText.gameObject.activeInHierarchy) cooldownText.gameObject.SetActive(true);
             foreach (var indicator in apIndicator)
             {

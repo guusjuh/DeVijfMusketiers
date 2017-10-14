@@ -524,7 +524,7 @@ public class TileManager
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
         {
-            if (n.Content.ContentTypes.Count == 0 || n.Content.ContentTypes.Contains(ContentType.WalkingMonster) 
+            if (n.Content.ContentTypes.Count == 0 || n.Content.ContentTypes.Contains(ContentType.WalkingMonster) || n.Content.ContentTypes.Contains(ContentType.WalkingMonster)
             || n.Content.ContentTypes.Contains(ContentType.BrokenBarrel) || n.Content.ContentTypes.Contains(ContentType.InivisbleHuman))
             {
                 n.HighlightTile(true, PATHCOLOR);

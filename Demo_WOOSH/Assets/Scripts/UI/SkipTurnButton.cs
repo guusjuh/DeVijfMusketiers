@@ -7,7 +7,7 @@ public class SkipTurnButton : MonoBehaviour
 {
     private Button button;
 
-    private bool active = true;
+    private bool active = false;
     public bool Active
     {
         get { return active; }
@@ -24,5 +24,7 @@ public class SkipTurnButton : MonoBehaviour
         transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(10.0f, 10.0f, 0.0f);
         button = GetComponent<Button>();
         button.onClick.AddListener(GameManager.Instance.SkipPlayerTurn);
+        active = false;
+        button.interactable = active;
     }
 }

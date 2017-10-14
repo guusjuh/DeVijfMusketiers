@@ -110,12 +110,10 @@ public class Dodin : Enemy
         TargetReached();
     }
 
-
-    public override void Click()
+    public override void ShowPossibleRoads()
     {
-        base.Click();
+        base.ShowPossibleRoads();
 
-        GameManager.Instance.TileManager.ShowExtraTargetForSpecial(gridPosition, specialMaxDistance);
-
+        if (specialCooldown <= 0 && calculatedTotalAP >= specialCost) GameManager.Instance.TileManager.ShowExtraTargetForSpecial(gridPosition, specialMaxDistance);
     }
 }

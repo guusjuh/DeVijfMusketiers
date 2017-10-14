@@ -28,6 +28,9 @@ public class LevelManager
     public int AmountOfTurns { get { return amountOfTurns; } }
     private int extraPoints;
 
+    private bool init = false;
+    public bool Initialized { get { return init; } }
+
     public bool PlayersTurn
     {
         get { return playersTurn; }
@@ -40,6 +43,7 @@ public class LevelManager
     public void Initialize()
     {
         SetUpLevel();
+        init = true;
     }
 
     public void Restart()
@@ -92,6 +96,8 @@ public class LevelManager
 
     public void Update()
     {
+        enemies.HandleAction(e => e.ShowStatusEffects());
+
         if (playersTurn || othersTurn)
             return;
 
@@ -104,16 +110,17 @@ public class LevelManager
         // do we have to start goo spawning?
         yield return UberManager.Instance.StartCoroutine(CheckForGapSpawning());
 
+        //stop coroutine when goo kills the last human
+        if (!GameManager.Instance.GameOn) yield break;
+
         // make hoomans move
         yield return UberManager.Instance.StartCoroutine(CheckForHumanWalking());
 
         // increase amnt of turns
         amountOfTurns++;
 
-        // do we have to start goo spawning?
-        yield return UberManager.Instance.StartCoroutine(CheckForGapSpawning());
         //stop coroutine when goo kills the last human
-        if (!GameManager.Instance.GameOn) yield return null;
+        if (!GameManager.Instance.GameOn) yield break;
 
         // count extra actionpoints
         shrines.HandleAction(s => s.CheckForActive());
@@ -238,23 +245,23 @@ public class LevelManager
 
             while (e.CurrentActionPoints > 0 && !e.Dead)
             {
+                if (!GameManager.Instance.GameOn) yield break;
+
                 // make creature move
                 e.EnemyMove();
-
-                if (!GameManager.Instance.GameOn) break;
 
                 // delay
                 yield return new WaitForSeconds(moveDelay);
             }
 
-            if (!GameManager.Instance.GameOn) break;
+            if (!GameManager.Instance.GameOn) yield break;
 
             if(!e.Dead) e.EndTurn();
         }
 
         // switch turns
 
-        if (!GameManager.Instance.GameOn) yield return null;
+        if (!GameManager.Instance.GameOn) yield break;
         else yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
 
         //yield return new WaitForSeconds(turnDelay);

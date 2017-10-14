@@ -50,6 +50,9 @@ public class Enemy : WorldObject
     protected EnemyTarget prevTarget;
     protected List<TileNode> currentPath = null;
 
+    private GameObject burnedIcon;
+    private GameObject frozenIcon;
+
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
 
@@ -60,6 +63,14 @@ public class Enemy : WorldObject
         base.Initialize(startPos);
 
         Dead = false;
+
+        burnedIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/BurnedIcon"),
+            Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
+        burnedIcon.SetActive(false);
+
+        frozenIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/FrozenIcon"),
+            Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
+        frozenIcon.SetActive(false);
 
         // obtain components
         blockingLayer = LayerMask.GetMask("BlockingLayer");
@@ -139,6 +150,12 @@ public class Enemy : WorldObject
         return false;
     }
 
+    public virtual void ShowPossibleRoads()
+    {
+        GameManager.Instance.TileManager.HidePossibleRoads();
+        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, calculatedTotalAP);
+    }
+
     public void Slow(int turns)
     {
         if (!slowed)
@@ -147,13 +164,14 @@ public class Enemy : WorldObject
             slowed = true;
             calculatedTotalAP--;
             currentActionPoints = calculatedTotalAP;
-            GameManager.Instance.TileManager.HidePossibleRoads();
-            GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, calculatedTotalAP);
+            ShowPossibleRoads();
         }
         else
         {
             slowCount += turns;
         }
+
+        ShowStatusEffects();
         SetUIInfo();
     }
 
@@ -168,6 +186,39 @@ public class Enemy : WorldObject
         {
             burnCount = turns;
             burning = true;
+        }
+
+        ShowStatusEffects();
+    }
+
+    public void ShowStatusEffects()
+    {
+        if (burnCount > 0 && slowed)
+        {
+            burnedIcon.SetActive(true);
+            frozenIcon.SetActive(true);
+            Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(GridPosition));
+            frozenIcon.GetComponent<RectTransform>().anchoredPosition = canvasPos - new Vector2(25.0f, 40.0f);
+
+            canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(GridPosition));
+            burnedIcon.GetComponent<RectTransform>().anchoredPosition = canvasPos - new Vector2(-25.0f, 40.0f);
+        }
+        else if (burnCount > 0)
+        {
+            burnedIcon.SetActive(true);
+            Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(GridPosition));
+            burnedIcon.GetComponent<RectTransform>().anchoredPosition = canvasPos - new Vector2(0, 40.0f);
+        }
+        else if (slowed)
+        {
+            frozenIcon.SetActive(true);
+            Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(GridPosition));
+            frozenIcon.GetComponent<RectTransform>().anchoredPosition = canvasPos - new Vector2(0, 40.0f);
+        }
+        else
+        {
+            burnedIcon.SetActive(false);
+            frozenIcon.SetActive(false);
         }
     }
 
@@ -188,7 +239,7 @@ public class Enemy : WorldObject
             slowCount--;
             if (slowCount == 0)
             {
-                slowed = true;
+                slowed = false;
                 //TODO: account for possible other slow effects
                 calculatedTotalAP = totalActionPoints;
             }
@@ -209,6 +260,8 @@ public class Enemy : WorldObject
         }
 
         currentActionPoints = calculatedTotalAP;
+
+        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
     }
 
     public virtual void EnemyMove()
@@ -339,7 +392,7 @@ public class Enemy : WorldObject
 
             //Recalculate the remaining distance after moving.
             sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-
+            
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
@@ -540,6 +593,7 @@ public class Enemy : WorldObject
 
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
-        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, calculatedTotalAP);
+
+        ShowPossibleRoads();
     }
 }
