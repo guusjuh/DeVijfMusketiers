@@ -93,7 +93,18 @@ public class TileManager
     private float hexagonHeight = .433f;
     private float HexagonHeight { get { return hexagonHeight * hexagonScale; } }
 
-    private float FromTileToTile { get { return (HexagonHeight * 2); } }
+    public float FromTileToTile { get { return (HexagonHeight * 2); } }
+
+    public float FromTileToTileInCanvasSpace
+    {
+        get
+        {
+            Vector2 thisPos = UIManager.Instance.InGameUI.WorldToCanvas(GetWorldPosition(grid[0, 0].GridPosition));
+            Vector2 otherPos = UIManager.Instance.InGameUI.WorldToCanvas(GetWorldPosition(grid[1, 0].GridPosition));
+
+            return (thisPos - otherPos).magnitude;
+        }
+    }
 
     private List<TileNode> highlightedNodes;
 

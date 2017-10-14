@@ -18,14 +18,26 @@ public class SurroundingPushButton : MonoBehaviour
         rect = GetComponent<RectTransform>();
     }
 
-    public void Activate(MovableObject source)
+    public void Activate(WorldObject source)
     {
-        this.source = source;
+        this.source = (MovableObject)source;
         GameManager.Instance.TileManager.GetNodeReference(gridPosition).HighlightTile(true, Color.green);
+
+        SetPosition();
+
+        gameObject.SetActive(true);
+    }
+
+    public void SetPosition()
+    {
         Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
         GetComponent<RectTransform>().anchoredPosition = UberManager.Instance.UiManager.InGameUI.WorldToCanvas(worldPos);
 
-        gameObject.SetActive(true);
+        float sideLength = GameManager.Instance.TileManager.FromTileToTileInCanvasSpace * 0.8f;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(sideLength, sideLength);
+
+        // GetComponent<RectTransform>().sizeDelta = new Vector2(UberManager.Instance.GameManager.CameraManager.InvCurrentSize * 55.5f,
+        //                                                      UberManager.Instance.GameManager.CameraManager.InvCurrentSize * 55.5f);
     }
 
     public void Deactivate()

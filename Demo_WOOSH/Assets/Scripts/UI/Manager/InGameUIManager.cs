@@ -143,41 +143,32 @@ public class InGameUIManager : SubUIManager {
     public void ActivateTeleportButtons(bool on, MovableObject target = null)
     {
         //fill all possible surrounding TELEPORT buttons beforehand (each possible tile)
-        //TODO: highlight all tiles
         List<SurroundingPushButton> tempButtons = new List<SurroundingPushButton>();
-        for (int i = 0; i < surroundingPushButtons.Count; i++)
-        {
-            if (!on)
-            {
-                //dehighlight button
+        for (int i = 0; i < surroundingPushButtons.Count; i++) {
+            if (!on) {
                 tempButtons.Add(surroundingPushButtons[i]);
+            }
+            else if (target != null && surroundingPushButtons[i].GridPosition != target.GridPosition) {
 
-            } else if (target != null && surroundingPushButtons[i].GridPosition != target.GridPosition)
-            {
                 bool walkable = GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition) != null &&
                     GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition)
                                                     .Content.WalkAble();
-                if (walkable)
-                {
+
+                if (walkable) {
                     tempButtons.Add(surroundingPushButtons[i]);
                 }
             }
         }
         if (on) tempButtons.HandleAction(b => b.Activate(target));
         else surroundingPushButtons.HandleAction(b => b.Deactivate());
+
+        this.target = target;
+        pushButtonsOn = on;
     }
 
     private void SetPushButtonPositions()
     {
-        Coordinate direction = new Coordinate(0, 0);
-        Vector3 worldPos = new Vector3();
-        for (int i = 0; i < surroundingPushButtons.Count; i++)
-        {
-            direction = GameManager.Instance.TileManager.Directions(target.GridPosition)[i];
-            worldPos = GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition + direction);
-
-            surroundingPushButtons[i].SetPosition(worldPos);
-        }
+        surroundingPushButtons.HandleAction(b => b.SetPosition());
     }
 
     public void BeginPlayerTurn()

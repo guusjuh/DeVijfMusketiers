@@ -29,9 +29,13 @@ public class CameraManager : MonoBehaviour
     private Rect viewportRect;
 
     private const float minSize = 3.0f, maxSize = 7.5f;
-    private const float zoomSpeed = 0.3f;
+    private float zoomSpeed = 0.3f;
+
     private float currentSize;
-    
+    public float CurrentSize { get { return currentSize; } }
+
+    public float InvCurrentSize { get { return (maxSize - currentSize) + 1; } }
+
     //clamps camera between minimum (in world position) and maximum (in world position).
     public void SetBorderRange(Vector2 min, Vector2 max)
     {
@@ -78,6 +82,15 @@ public class CameraManager : MonoBehaviour
 
     public void Initialize()
     {
+        if (Application.isEditor)
+        {
+            zoomSpeed = 3.0f;
+        }
+        else if(Application.platform == RuntimePlatform.Android)
+        {
+            zoomSpeed = 0.2f;
+        }
+
         camRef = GetComponent<Camera>();
 
         UnlockAxis();
