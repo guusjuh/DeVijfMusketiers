@@ -821,6 +821,10 @@ MonoBehaviour:
           position:
             x: 6
             y: 5
+        - type: 0
+          position:
+            x: 4
+            y: 3
         gooStartPos:
           x: 0
           y: 6

@@ -21,6 +21,7 @@ public class Dodin : Enemy
         //disables the fireball
         fireBall = transform.Find("FireBall").gameObject;
         fireBall.SetActive(false);
+        viewDistance = 4;
 
         this.hasSpecial = true;
 

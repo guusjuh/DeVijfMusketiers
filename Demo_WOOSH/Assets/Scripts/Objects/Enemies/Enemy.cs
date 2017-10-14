@@ -15,6 +15,8 @@ public class Enemy : WorldObject
 
     protected int specialCost = 3;
     protected int specialCooldown = 0;
+    protected int viewDistance = 1;
+
     public int SpecialCooldown { get { return specialCooldown; } }
     protected int totalSpecialCooldown = 3;
 
@@ -269,7 +271,7 @@ public class Enemy : WorldObject
     {
         // no target find a new one
         // dont get barrels!
-        List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
+        Dictionary<EnemyTarget, int> possibleTargets = new Dictionary<EnemyTarget, int>();
         List<EnemyTarget> damagables = new List<EnemyTarget>();
 
         damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
@@ -281,10 +283,14 @@ public class Enemy : WorldObject
             // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
             if (!damagables[i].CanBeTargeted ||
                 (damagables[i].Type == TileManager.ContentType.InivisbleHuman ||
-                (damagables[i].Type == TileManager.ContentType.Shrine && !damagables[i].GetComponent<Shrine>().Active)))
+                 (damagables[i].Type == TileManager.ContentType.Shrine)))           //shrines aren't damagable currently
                     continue;
 
-            possibleTargets.Add(damagables[i]);
+            //calculate probability 
+            // humans   = 100 * reputation
+            int probability = (100 * damagables[i].GetComponent<Human>().ContractRef.Reputation);
+
+            possibleTargets.Add(damagables[i], probability);
         }
 
         // first call to SelectTarget prevTarget is null
@@ -299,13 +305,29 @@ public class Enemy : WorldObject
             target = null;
             prevTarget = null;
             currentPath = null;
-        }
+        }            
+        // select a target
         else
         {
-            // select a target
-            int selection = UnityEngine.Random.Range(0, possibleTargets.Count);
-            target = possibleTargets[selection];
-            prevTarget = target;
+            // sum all probabilities 
+            int summedProbability = 0;
+            foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets) summedProbability += entry.Value;
+
+            // perform a random roll to find a random humantype
+            int counter = 0;
+            int randomRoll = (int)UnityEngine.Random.Range(0, summedProbability);
+
+            // find the human type matching the random roll
+            foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets)
+            {
+                counter += entry.Value;
+                if (randomRoll < counter)
+                {
+                    target = entry.Key;
+                    prevTarget = target;
+                    break;
+                }
+            }
 
             //generate path to chosen target
             currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, type);
@@ -317,14 +339,14 @@ public class Enemy : WorldObject
                 if (possibleTargets.Count > 1)
                 {
                     // generate and check path for each target
-                    for (int i = 0; i < possibleTargets.Count; i++)
+                    foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets)
                     {
-                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, possibleTargets[i].GridPosition, type);
+                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, entry.Key.GridPosition, type);
                         
                         // if we found a valid path, return
                         if (currentPath != null)
                         {
-                            target = possibleTargets[i].GetComponent<EnemyTarget>();
+                            target = entry.Key.GetComponent<EnemyTarget>();
                             prevTarget = target;
                             return;
                         }
@@ -333,7 +355,6 @@ public class Enemy : WorldObject
                 // no other possible targets, skip turn
                 else
                 {
-                    Debug.Log("No routes to targets");
                     target = null;
                     prevTarget = null;
                     currentPath = null;
@@ -341,6 +362,39 @@ public class Enemy : WorldObject
                 }
             }
         }
+    }
+
+    public EnemyTarget SelectTargetViewDist()
+    {
+        //TODO: find close by target
+        List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
+        List<EnemyTarget> damagables = new List<EnemyTarget>();
+
+        damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
+
+        //add all possible targets to possible target list
+        for (int i = 0; i < damagables.Count; i++)
+        {
+            // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
+            if (!damagables[i].CanBeTargeted ||
+                (damagables[i].Type == TileManager.ContentType.InivisbleHuman))
+                continue;
+
+            // dont add targets that arnt in view dist
+            if(!GameManager.Instance.TileManager.InRange(viewDistance, this, damagables[i])) 
+                continue;
+
+            possibleTargets.Add(damagables[i]);
+        }
+
+        // no one in range
+        if (possibleTargets.Count <= 0)
+        {
+            return null;
+        }
+
+        //select target in range
+        return possibleTargets[UnityEngine.Random.Range(0, possibleTargets.Count)];      
     }
 
     public bool CheckTargetForSuperSafe()
@@ -361,17 +415,40 @@ public class Enemy : WorldObject
 
     public void UpdateTarget()
     {
-        //TODO: somehow the target can be zero at this point, but it really shouldn't! find out how!
-        
-        // is my target a human? than i have to check if he's not invisible
+        // **** NEW IMPLEMENTATION: check for someone being in my viewdistance, 
+        // if, select one of them as my target
+        // else, old implementation
+        EnemyTarget targetNearby = SelectTargetViewDist();
+
+        // if there was a target nearby, set it to the current target
+        if (targetNearby != null) {
+            target = targetNearby;
+            prevTarget = target;
+        }    
+
+        // do I have a target at all?
+        // is my target (possibly a new nearby target) a human? than i have to check if he's not invisible
         if (target == null || target.Type == TileManager.ContentType.InivisbleHuman)
-        {
-            SelectTarget();
-        }
+            SelectTarget(); // select a new target
         else
         {
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, type);
+            // update the current path to the original OR nearby target
+            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition,
+                            target.GridPosition,
+                            TileManager.ContentType.WalkingMonster);
+
+            // if there is no possible route to our target right now, select a new target. 
+            // if there are no other possiblities, the enemy will skip a turn.
+            if (currentPath == null) SelectTarget();
         }
+
+        // **** OLD IMPLEMENTATION: only if my target is gone or invisible, select a new target, else only update the path
+        // is my target a human? than i have to check if he's not invisibleW
+    }
+
+    public bool TargetNearby()
+    {
+        return false;
     }
 
     protected void SetUIInfo()
