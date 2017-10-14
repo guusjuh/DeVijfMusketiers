@@ -20,8 +20,10 @@ public class LevelManager
     private Player player;
     public Player Player { get { return player; } }
 
+    //TODO: implement hooman & goo turns
     private bool playersTurn = false;
     private bool othersTurn = false;
+
     private int amountOfTurns = 0;
     public int AmountOfTurns { get { return amountOfTurns; } }
     private int extraPoints;
@@ -61,6 +63,7 @@ public class LevelManager
         // start with player turn
         playersTurn = true;
         othersTurn = false;
+
         UberManager.Instance.StartCoroutine(BeginPlayerTurn());
     }
 
@@ -98,6 +101,12 @@ public class LevelManager
 
     public IEnumerator BeginPlayerTurn()
     {
+        // do we have to start goo spawning?
+        yield return UberManager.Instance.StartCoroutine(CheckForGapSpawning());
+
+        // make hoomans move
+        yield return UberManager.Instance.StartCoroutine(CheckForHumanWalking());
+
         // increase amnt of turns
         amountOfTurns++;
 
@@ -111,7 +120,7 @@ public class LevelManager
         extraPoints = 0;
         for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
         
-        humans.HandleAction(h => h.DecreaseInvisiblePoints());
+        humans.HandleAction(h => h.StartTurn());
 
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
@@ -157,6 +166,28 @@ public class LevelManager
                 UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
             }
         }
+    }
+
+    private IEnumerator CheckForHumanWalking()
+    {
+        //dont walk the very first turn
+        if (amountOfTurns == 0) yield break;
+
+        foreach (Human h in humans)
+        {
+            // only handle a turn for the human if he is panicking
+            if (h.InPanic) {
+                GameManager.Instance.CameraManager.LockTarget(h.transform);
+
+                // make the human flee as long as he cant
+                while (h.CurrentFleePoints > 0) {
+                    yield return UberManager.Instance.StartCoroutine(h.Flee());
+                    yield return new WaitForSeconds(moveDelay);
+                }
+            }
+        }
+
+        yield return null;
     }
 
     private IEnumerator CheckForGapSpawning()

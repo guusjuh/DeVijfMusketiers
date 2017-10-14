@@ -70,6 +70,9 @@ public class TileManager
     private TileNode[,] grid;
     public TileNode[,] Grid { get { return grid; } }
 
+    private TileNode[] corners;
+    public TileNode[] Corners { get { return corners; } }
+
     // Parent gameobject to make the hierarchy look cleaner. 
     private GameObject gridParent;
 
@@ -105,6 +108,14 @@ public class TileManager
         maximumDist = new Coordinate(0, 0).ManhattanDistance(
                 new Coordinate(GameManager.Instance.TileManager.Rows,
                                 GameManager.Instance.TileManager.Columns));
+
+        corners = new TileNode[4]
+        {
+            GetNodeReference(new Coordinate(     0,         0)),
+            GetNodeReference(new Coordinate(rows-1, columns-1)),
+            GetNodeReference(new Coordinate(rows-1,         0)),
+            GetNodeReference(new Coordinate(     0, columns-1))
+        };
     }
 
     public void Restart()
@@ -437,7 +448,7 @@ public class TileManager
         return null;
     }
 
-    private List<TileNode> GetNodeWithGapReferences()
+    public List<TileNode> GetNodeWithGapReferences()
     {
         List<TileNode> gapNodes = new List<TileNode>();
 
@@ -570,6 +581,15 @@ public class TileManager
     {
         // calculate distance
         float distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
+
+        if (distance <= viewDist) return true;
+        else return false;
+    }
+
+    public bool InRange(int viewDist, Coordinate coord1, Coordinate coord2)
+    {
+        // calculate distance
+        float distance = coord1.ManhattanDistance(coord2);
 
         if (distance <= viewDist) return true;
         else return false;
