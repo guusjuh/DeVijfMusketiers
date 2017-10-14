@@ -43,4 +43,9 @@ public class UIManager
     {
         uiManagers.Get(UberManager.Instance.GameState).Clear();
     }
+
+    public void UpdateUI()
+    {
+        uiManagers.Get(UberManager.Instance.GameState).Update();
+    }
 }

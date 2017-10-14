@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    private Camera camRef;
+
     private const int X_AXIS = 0, Y_AXIS = 1;
     private bool[] lockedAxis = { false, false };
     private Transform target;
@@ -25,6 +28,10 @@ public class CameraManager : MonoBehaviour
 
     private Rect viewportRect;
 
+    private const float minSize = 3.0f, maxSize = 7.5f;
+    private const float zoomSpeed = 0.3f;
+    private float currentSize;
+    
     //clamps camera between minimum (in world position) and maximum (in world position).
     public void SetBorderRange(Vector2 min, Vector2 max)
     {
@@ -69,9 +76,10 @@ public class CameraManager : MonoBehaviour
         transform.Translate(translation);
     }
 
-
     public void Initialize()
     {
+        camRef = GetComponent<Camera>();
+
         UnlockAxis();
 
         viewportRect = Camera.main.pixelRect;
@@ -82,11 +90,13 @@ public class CameraManager : MonoBehaviour
 
         SetBorderRange(min, max);
 
+        currentSize = camRef.orthographicSize;
+
         Vector2 position = bordersMin + ((bordersMax - bordersMin) * 0.5f);
         transform.position = new Vector3(position.x, position.y, transform.position.z);
     }
 
-    public void MoveCamera(Vector2 desiredVelocity)
+    public void MoveCamera(Vector2 desiredVelocity, bool instant)
     {
         Vector2 velocity = Vector2.zero;
         if (bordersMin == Vector2.zero && bordersMax == Vector2.zero)
@@ -144,27 +154,55 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        transform.Translate(velocity);
+        if(instant) transform.Translate(velocity);
+        else transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime * 10; 
     }
 
     // Update is called once per frame
     public void UpdatePosition()
     {
+        if (InputManager.Instance.DragVelocity.magnitude > 10)
+        {
+            target = null;
+            UnlockAxis();
+            MoveCamera(-InputManager.Instance.DragVelocity * speedScalar, true);
+            return;
+        }
+        else if (Mathf.Abs(InputManager.Instance.ZoomVelocity) > 0.01f)
+        {
+            Zoom(-InputManager.Instance.ZoomVelocity);
+        }
+
+        // locked means either 
+        // enemy turn OR 
+        // having a target OR 
+        // too big for the level
         if (lockedAxis[X_AXIS] && lockedAxis[Y_AXIS])
         {
+            // we have a target, go follow it
             if (target != null)
             {
-                MoveCamera(new Vector3(target.position.x, target.position.y, transform.position.z) - transform.position);
+                // keep moving
+                Vector3 toPosition = new Vector3(target.position.x, target.position.y, transform.position.z) -
+                                     transform.position;
+                MoveCamera(toPosition, false);
             }
         }
-        else
+        /*else
         {
-            if (target != null)
-            {
-                target = null;
-            }
-            //implement drag movement
-            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar);
-        }
+            // implement drag movement
+            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
+        }*/
+    }
+
+    private void Zoom(float zoom)
+    {
+        // adjust currentsize based on zoom
+        currentSize += zoom * zoomSpeed;
+
+        // clamp the currentsize
+        currentSize = Mathf.Clamp(currentSize, minSize, maxSize);
+
+        camRef.orthographicSize = currentSize;
     }
 }

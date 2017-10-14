@@ -78,6 +78,7 @@ public class UberManager : MonoBehaviour {
     public void Update()
     {
         stateManagers.Get(state).Update();
+        uiManager.UpdateUI();
     }
 
     public void GotoState(GameStates nextState)

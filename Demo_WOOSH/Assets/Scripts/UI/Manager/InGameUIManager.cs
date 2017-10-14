@@ -20,9 +20,13 @@ public class InGameUIManager : SubUIManager {
     private PlayerActionPointsUI playerActionPoints;
     public PlayerActionPointsUI PlayerActionPoints { get { return playerActionPoints; } }
 
+    private WorldObject target = null;
+
     private Dictionary<GameManager.SpellType, SpellButton> spellButtons;
+    private bool spellButtonsOn = false;
 
     private List<SurroundingPushButton> surroundingPushButtons;
+    private bool pushButtonsOn = false;
 
     private Text warningText;
 
@@ -91,8 +95,24 @@ public class InGameUIManager : SubUIManager {
         base.Clear();
     }
 
+    public override void Update()
+    {
+        // update button positions every frame
+        if (spellButtonsOn)
+        {
+            SetSpellButtonPositions();
+        }
+        else if (pushButtonsOn)
+        {
+            SetPushButtonPositions();
+        }
+    }
+
     public void ActivatePushButtons(bool on, MovableObject target = null)
     {
+        this.target = target;
+        pushButtonsOn = on;
+
         if (on)
         {
             // set the button positions 
@@ -100,16 +120,10 @@ public class InGameUIManager : SubUIManager {
             for (int i = 0; i < surroundingPushButtons.Count; i++)
             {
                 direction = GameManager.Instance.TileManager.Directions(target.GridPosition)[i];
-
-                Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition + direction);
-                surroundingPushButtons[i].GetComponent<RectTransform>().anchoredPosition =
-                    WorldToCanvas(worldPos);
-
-                surroundingPushButtons[i].GetComponent<RectTransform>().anchoredPosition =
-                    WorldToCanvas(worldPos);
-
-                surroundingPushButtons[i].Initialize(target.GridPosition + direction, direction);
+                surroundingPushButtons.HandleAction(s => s.Initialize(target.GridPosition + direction, direction));
             }
+
+            SetPushButtonPositions();
 
             // search relevant buttons and activate
             List<SurroundingPushButton> tempButtons = new List<SurroundingPushButton>();
@@ -130,6 +144,19 @@ public class InGameUIManager : SubUIManager {
         else
         {
             surroundingPushButtons.HandleAction(b => b.Deactivate());
+        }
+    }
+
+    private void SetPushButtonPositions()
+    {
+        Coordinate direction = new Coordinate(0, 0);
+        Vector3 worldPos = new Vector3();
+        for (int i = 0; i < surroundingPushButtons.Count; i++)
+        {
+            direction = GameManager.Instance.TileManager.Directions(target.GridPosition)[i];
+            worldPos = GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition + direction);
+
+            surroundingPushButtons[i].SetPosition(worldPos);
         }
     }
 
@@ -173,29 +200,42 @@ public class InGameUIManager : SubUIManager {
         warningText.gameObject.SetActive(false);
     }
 
-    public void ShowSpellButtons(Vector2 position, List<GameManager.SpellType> spellTypes, WorldObject target)
+    public void ShowSpellButtons(WorldObject target)
     {
         HideSpellButtons();
 
-        Vector2 canvasPos = WorldToCanvas(position);
+        this.target = target;
+        spellButtonsOn = true;
 
-        float divider = spellTypes.Count > 1 ? (float)spellTypes.Count - 1.0f : (float)spellTypes.Count;
-        float partialCircle = (spellTypes.Count - 1) / 4.0f * 0.9f;
+        for (int i = 0; i < this.target.PossibleSpellTypes.Count; i++)
+        {
+            spellButtons.Get(this.target.PossibleSpellTypes[i]).gameObject.SetActive(true);
+            spellButtons.Get(this.target.PossibleSpellTypes[i]).Activate(target);
+        }
+
+        SetSpellButtonPositions();
+    }
+
+    private void SetSpellButtonPositions()
+    {
+        Vector2 canvasPos = WorldToCanvas(target.transform.position);
+
+        float divider = target.PossibleSpellTypes.Count > 1 ? (float)target.PossibleSpellTypes.Count - 1.0f : (float)target.PossibleSpellTypes.Count;
+        float partialCircle = (target.PossibleSpellTypes.Count - 1) / 4.0f * 0.9f;
         float offSetCircle = (1.0f - partialCircle) / 2.0f;
 
-        for (int i = 0; i < spellTypes.Count; i++)
-        {
-            spellButtons.Get(spellTypes[i]).gameObject.SetActive(true);
-            spellButtons.Get(spellTypes[i]).Activate(target);
-
+        for (int i = 0; i < target.PossibleSpellTypes.Count; i++)
+        { 
             Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI),
                 -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI));
-            spellButtons.Get(spellTypes[i]).GetComponent<RectTransform>().anchoredPosition = canvasPos - pos;
+            spellButtons.Get(target.PossibleSpellTypes[i]).GetComponent<RectTransform>().anchoredPosition = canvasPos - pos;
         }
     }
 
     public void HideSpellButtons()
     {
+        spellButtonsOn = false;
+
         foreach (var pair in spellButtons)
         {
             pair.Value.gameObject.SetActive(false);

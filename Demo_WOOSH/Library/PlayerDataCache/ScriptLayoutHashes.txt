@@ -112,7 +112,6 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 3f32f08a64daf40b09ed864d96fe3840 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.InvisibleButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Wolf
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
@@ -120,13 +119,10 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Barrel
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PushButton
 d5cf84f72be3bd9bce013d2af941f530 Assembly-CSharp.dll:.CameraManager
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RepairButton
 4516523e209bfc2a0f0019fd649152a0 Assembly-CSharp.dll:.Dodin
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Enemy
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Human
-32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LevelSelectButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MovableObject
 663576a56d2d11d2ef0a59afa898a2ab Assembly-CSharp.dll:.Sketta
@@ -162,4 +158,5 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.WorldObject
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackToLevelSelectButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SkipTurnButton
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.YourTurn
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ActiveContract

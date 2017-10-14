@@ -11,6 +11,7 @@ public class WorldObject : MonoBehaviour
     public Coordinate GridPosition { get { return gridPosition; } }
 
     protected List<GameManager.SpellType> possibleSpellTypes;
+    public List<GameManager.SpellType> PossibleSpellTypes { get { return possibleSpellTypes; } }
 
     public virtual void Initialize(Coordinate startPos)
     {
@@ -25,10 +26,10 @@ public class WorldObject : MonoBehaviour
         //TODO: shouldn't only be walking monster but hey
         if (type != TileManager.ContentType.WalkingMonster) UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
+        GameManager.Instance.CameraManager.LockTarget(this.transform);
+        //GameManager.Instance.CameraManager.MoveCamera(new Vector3(transform.position.x, transform.position.y, GameManager.Instance.CameraManager.transform.position.z) - GameManager.Instance.CameraManager.transform.position);
 
-        GameManager.Instance.CameraManager.MoveCamera(new Vector3(transform.position.x, transform.position.y, GameManager.Instance.CameraManager.transform.position.z) - GameManager.Instance.CameraManager.transform.position);
-
-        UIManager.Instance.InGameUI.ShowSpellButtons(transform.position, possibleSpellTypes, this);
+        UIManager.Instance.InGameUI.ShowSpellButtons(this);
     }
 
     //TODO: should be moved to an objectpool
