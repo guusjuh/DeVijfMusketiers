@@ -8,6 +8,7 @@ public class Arnest : Enemy
     {
         //set boss specific health
         this.startHealth = 100;
+        viewDistance = 3;
 
         base.Initialize(startPos);
     }

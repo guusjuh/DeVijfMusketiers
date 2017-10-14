@@ -11,6 +11,7 @@ public class Wolf : Enemy
         this.totalActionPoints = 2;
 
         this.hasSpecial = false;
+        viewDistance = 3;
 
         base.Initialize(startPos);
     }

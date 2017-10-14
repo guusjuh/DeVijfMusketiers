@@ -16,6 +16,7 @@ public class Dodin : Enemy
 
         //diables the fireball
         FireBall.SetActive(false);
+        viewDistance = 4;
 
         freeAPCooldown = freeAPCooldownTotal;
 

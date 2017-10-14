@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: a solid method to find the difference between two coordinates (not in worldspace, but coordinatespace)
 [Serializable]
 public struct Coordinate
 {
@@ -41,8 +42,16 @@ public struct Coordinate
         return c1.x != c2.x || c1.y != c2.y ? true : false;
     }
 
-    public int ManhattanDistance(Coordinate other)
+    public int ManhattanDistanceOld(Coordinate other)
     {
         return Mathf.Abs((this.x - other.x)) + Mathf.Abs((this.y - other.y));
+    }
+
+    public float ManhattanDistance(Coordinate other)
+    {
+        Vector2 thisPos = GameManager.Instance.TileManager.GetWorldPosition(this);
+        Vector2 otherPos = GameManager.Instance.TileManager.GetWorldPosition(other);
+
+        return Mathf.Abs((thisPos.x - otherPos.x)) + Mathf.Abs((thisPos.y - otherPos.y));
     }
 }

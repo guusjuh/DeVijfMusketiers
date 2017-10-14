@@ -58,7 +58,6 @@ public class Enemy : WorldObject
 
         type = TileManager.ContentType.WalkingMonster;
 
-        viewDistance = 3;
         //SetUIInfo();
     }
 
@@ -355,7 +354,6 @@ public class Enemy : WorldObject
                 // no other possible targets, skip turn
                 else
                 {
-                    Debug.Log("No routes to targets");
                     target = null;
                     prevTarget = null;
                     currentPath = null;
@@ -391,7 +389,6 @@ public class Enemy : WorldObject
         // no one in range
         if (possibleTargets.Count <= 0)
         {
-            Debug.Log("No targets in range");
             return null;
         }
 

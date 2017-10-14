@@ -91,7 +91,7 @@ public class TileManager
 
     private List<TileNode> highlightedNodes;
 
-    private int maximumDist;                    //for reference: lvl 1 = 18
+    private float maximumDist;                    //for reference: lvl 1 = 18
     private int probabilityModifier = 500;
 
     /// <summary>
@@ -542,9 +542,9 @@ public class TileManager
     public bool InRange(int viewDist, WorldObject obj1, WorldObject obj2)
     {
         // calculate distance
-        int distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
+        float distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
 
-        if (distance < viewDist) return true;
+        if (distance <= viewDist) return true;
         else return false;
     }
 }
