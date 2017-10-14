@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Dodin : Enemy
 {
-    private int freeAPCooldownTotal = 3;
-    private int freeAPCooldown = 0;
+    private GameObject fireBall;
 
-    public GameObject FireBall;
+    private const int specialMaxDistance = 6;
 
     public override void Initialize(Coordinate startPos)
     {
         //set boss specific health
         this.startHealth = 100;
 
-        //diables the fireball
-        FireBall.SetActive(false);
+        //disables the fireball
+        fireBall = transform.Find("FireBall").gameObject;
+        fireBall.SetActive(false);
 
-        freeAPCooldown = freeAPCooldownTotal;
+        this.hasSpecial = true;
 
         base.Initialize(startPos);
     }
@@ -25,11 +25,18 @@ public class Dodin : Enemy
     public override bool CheckForSpell()
     {
         // target reached
-        if (currentPath.Count <= 3 && currentActionPoints >= 3)
-        {
-            currentActionPoints -= 3;
-            FireBall.transform.localPosition = Vector3.zero;
+        bool closeEnough = currentPath.Count <= specialMaxDistance;
+        bool enoughAP = currentActionPoints >= specialCost;
+        bool onCooldown = specialCooldown > 0;
 
+        if (closeEnough && enoughAP && !onCooldown)
+        {
+            currentActionPoints -= specialCost;
+            specialCooldown = totalSpecialCooldown;
+            UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
+
+            fireBall.transform.localPosition = Vector3.zero;
+            
             StartCoroutine(ShootFireBall(GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
             return true;
         }
@@ -58,25 +65,19 @@ public class Dodin : Enemy
         // else: move
         else
         {
-            //check if free movement is off cooldown
-            if (freeAPCooldown <= 0)
-            {
-                //gives an ap for free move
-                currentActionPoints++;
 
-                freeAPCooldown = freeAPCooldownTotal;
-            }
             Walk(direction);
         }
 
         EndMove();
     }
 
+    //TODO: why isn't there a fireball script??
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator ShootFireBall(Vector3 end)
     {
-        FireBall.SetActive(true);
-        Rigidbody2D ball = FireBall.GetComponent<Rigidbody2D>();
+        fireBall.SetActive(true);
+        Rigidbody2D ball = fireBall.GetComponent<Rigidbody2D>();
 
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
@@ -97,14 +98,8 @@ public class Dodin : Enemy
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
-        FireBall.SetActive(false);
+        fireBall.SetActive(false);
         TargetReached();
     }
 
-    public override void EndTurn()
-    {
-        freeAPCooldown--;
-
-        base.EndTurn();
-    }
 }

@@ -79,14 +79,15 @@ public class EnemyInfoUI : MonoBehaviour
         healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
 
-        //if (selectedEnemy.HasSpecial)
-        //{
-        //    SetCooldownText(selectedEnemy.SpawnCooldown);
-        //}
-        //else
-        //{
+        if (selectedEnemy.HasSpecial)
+        {
+            ActivateSpecialSpell(true);
+            SetCooldownText(selectedEnemy.SpecialCooldown);
+        }
+        else
+        {
             ActivateSpecialSpell(false);
-        //}
+        }
     }
 
     //TODO: has to animate!
@@ -97,7 +98,7 @@ public class EnemyInfoUI : MonoBehaviour
 
         if (selectedEnemy.HasSpecial)
         {
-            SetCooldownText(selectedEnemy.SpawnCooldown);
+            SetCooldownText(selectedEnemy.SpecialCooldown);
         }
     }
 
