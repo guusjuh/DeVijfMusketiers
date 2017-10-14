@@ -118,7 +118,7 @@ public class LevelManager
         extraPoints = 0;
         for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
         
-        humans.HandleAction(h => h.DecreaseInvisiblePoints());
+        humans.HandleAction(h => h.StartTurn());
 
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
@@ -171,14 +171,23 @@ public class LevelManager
         //dont walk the very first turn
         if (amountOfTurns == 0) yield break;
 
-        // check all humans
-        for (int i = 0; i < humans.Count; i++)
+        foreach (Human h in humans)
         {
-            // check for being in panic mode
-            if (humans[i].InPanic)
-            {
-                yield return UberManager.Instance.StartCoroutine(humans[i].Flee());
+            //h.StartTurn();
+
+            GameManager.Instance.CameraManager.LockTarget(h.transform);
+
+            // only handle a turn for the human if he is panicking
+            if (h.InPanic) {
+
+                // make the human flee as long as he cant
+                while (h.CurrentFleePoints > 0) {
+                    yield return UberManager.Instance.StartCoroutine(h.Flee());
+                    yield return new WaitForSeconds(moveDelay);
+                }
             }
+
+            //h.EndTurn();
         }
 
         yield return null;

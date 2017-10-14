@@ -13,23 +13,15 @@ public class Human : MovableObject {
     private int currInvisiblePoints;
     public bool Inivisible { get { return invisible;} }
 
-    private Contract contractRef;
+    private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
+    private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
+    private float inverseMoveTime;          //Used to make movement more efficient.
 
-    public Contract ContractRef
-    {
-        get { return contractRef; }
-        set
-        {
-            contractRef = value;
-            sprRender.sprite = contractRef.InWorld;
-        }
-    }
-
-    private SpriteRenderer sprRender;
-
+    private int totalFleePoints = 2;
+    private int currentFleePoints;
+    public int CurrentFleePoints { get {return currentFleePoints; } }
     private bool inPanic;
-    private int viewDistance = 3;
-
+    private int viewDistance = 4;
     public bool InPanic
     {
         get
@@ -55,8 +47,24 @@ public class Human : MovableObject {
         }
     }
 
+    private Contract contractRef;
+
+    public Contract ContractRef
+    {
+        get { return contractRef; }
+        set
+        {
+            contractRef = value;
+            sprRender.sprite = contractRef.InWorld;
+        }
+    }
+
+    private SpriteRenderer sprRender;
+
     public IEnumerator Flee()
     {
+        currentFleePoints--;
+
         // if you want humans to run further, more possible node should be obtained from TileManager
         // since I can only flee one step, find the best neighbour to flee to
 
@@ -94,7 +102,7 @@ public class Human : MovableObject {
             // 3. not directly next to a hole
             // find all holes in view distance
             List<TileNode> closeHoles = GameManager.Instance.TileManager.GetNodeWithGooReferences().FindAll(
-                n => GameManager.Instance.TileManager.InRange(viewDistance, this.GridPosition, n.GridPosition));
+                n => GameManager.Instance.TileManager.InRange(viewDistance/2, this.GridPosition, n.GridPosition));
 
             // check for the distance being smaller (just like with enemies)
             for (int j = 0; j < closeHoles.Count; j++)
@@ -114,21 +122,62 @@ public class Human : MovableObject {
             NOT_THIS_NEIGHBOUR: continue;
         }
 
-        //TODO: pick a random flee node an run towards it
-        Debug.Log(fleeNodes.Count);
-        fleeNodes.HandleAction(n => n.HighlightTile(true, Color.magenta));
+        // if there is just no better tile to run to, just stay here
+        if(fleeNodes.Count <= 0) yield break;
+
+        //pick a random flee node 
+        TileNode chosenNode = fleeNodes[UnityEngine.Random.Range(0, fleeNodes.Count)];
+
+        //move to the chosen node
+        GameManager.Instance.TileManager.MoveObject(gridPosition, chosenNode.GridPosition, type);
+        gridPosition = chosenNode.GridPosition;
+
+        yield return StartCoroutine(SmoothMovement(GameManager.Instance.TileManager.GetWorldPosition(chosenNode.GridPosition)));
+
+        //Debug.Log(fleeNodes.Count);
+        //fleeNodes.HandleAction(n => n.HighlightTile(true, Color.magenta));
 
         yield return null;
+    }
+
+    // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
+    protected IEnumerator SmoothMovement(Vector3 end)
+    {
+        //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
+        //Square magnitude is used instead of magnitude because it's computationally cheaper.
+        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+
+        //While that distance is greater than a very small amount (Epsilon, almost zero):
+        while (sqrRemainingDistance > float.Epsilon)
+        {
+            //Find a new position proportionally closer to the end, based on the moveTime
+            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+
+            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
+            rb2D.MovePosition(newPostion);
+
+            //Recalculate the remaining distance after moving.
+            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+
+            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
+            yield return null;
+        }
     }
 
     public override void Initialize(Coordinate startPos)
     {
         base.Initialize(startPos);
 
+        type = TileManager.ContentType.Human;
+
+        inverseMoveTime = 1f / moveTime;
+        rb2D = GetComponent<Rigidbody2D>();
+
         invisible = false;
         sprRender = GetComponent<SpriteRenderer>();
-        type = TileManager.ContentType.Human;
         normalColor = sprRender.color;
+
+        currentFleePoints = totalFleePoints;
     }
 
     public override void Clear()
@@ -175,5 +224,11 @@ public class Human : MovableObject {
         GameManager.Instance.LevelManager.RemoveHuman(this, true);
 
         return true;
+    }
+
+    public void StartTurn()
+    {
+        currentFleePoints = totalFleePoints;
+        DecreaseInvisiblePoints();
     }
 }
