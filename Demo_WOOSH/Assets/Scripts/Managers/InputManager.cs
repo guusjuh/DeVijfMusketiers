@@ -27,11 +27,34 @@ public class InputManager
     private float zoomVelocity;
     public float ZoomVelocity { get { return zoomVelocity; } }
 
+    // vars for pinch code
+
+
     private bool stillTouching = false;
 
     public void CatchInput()
     {
         zoomVelocity = Input.GetAxis("Mouse ScrollWheel");
+
+        if (Input.touchCount == 2)
+        {
+            // obtain touches
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            // calculate position touches last frame
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            // store the difference between the positions of this and last frame
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            // calculate the difference between the touches
+            float deltaMagnitudeDiff = touchDeltaMag - prevTouchDeltaMag;
+
+            zoomVelocity = Mathf.Clamp(deltaMagnitudeDiff, -1.0f, 1.0f);
+        }
 
         if (Input.GetMouseButtonDown(LEFT))
         {

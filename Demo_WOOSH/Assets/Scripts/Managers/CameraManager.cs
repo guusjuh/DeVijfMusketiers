@@ -29,7 +29,7 @@ public class CameraManager : MonoBehaviour
     private Rect viewportRect;
 
     private const float minSize = 3.0f, maxSize = 7.5f;
-    private const float zoomSpeed = 3.0f;
+    private const float zoomSpeed = 0.3f;
     private float currentSize;
     
     //clamps camera between minimum (in world position) and maximum (in world position).
