@@ -6,6 +6,11 @@ public class Dodin : Enemy
 {
     private GameObject fireBall;
 
+    //TODO: refactor while improveming enemies
+    // not all specials are actually an attack, some are like spawns
+    // so not all have this distance and 
+    // not all have to show extra tiles while showing highlighted tiles
+    // goodluck with your SOR goestav :P
     private const int specialMaxDistance = 6;
 
     public override void Initialize(Coordinate startPos)
@@ -102,4 +107,12 @@ public class Dodin : Enemy
         TargetReached();
     }
 
+
+    public override void Click()
+    {
+        base.Click();
+
+        GameManager.Instance.TileManager.ShowExtraTargetForSpecial(gridPosition, specialMaxDistance);
+
+    }
 }
