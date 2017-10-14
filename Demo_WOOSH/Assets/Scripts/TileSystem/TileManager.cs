@@ -93,6 +93,8 @@ public class TileManager
     private float hexagonHeight = .433f;
     private float HexagonHeight { get { return hexagonHeight * hexagonScale; } }
 
+    private float FromTileToTile { get { return (HexagonHeight * 2); } }
+
     private List<TileNode> highlightedNodes;
 
     private float maximumDist;                    //for reference: lvl 1 = 18
@@ -583,7 +585,7 @@ public class TileManager
         // calculate distance
         float distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
 
-        if (distance <= viewDist) return true;
+        if (distance <= (viewDist * FromTileToTile)) return true;
         else return false;
     }
 
@@ -592,7 +594,7 @@ public class TileManager
         // calculate distance
         float distance = coord1.ManhattanDistance(coord2);
 
-        if (distance <= viewDist) return true;
+        if (distance <= (viewDist * FromTileToTile)) return true;
         else return false;
     }
 }
