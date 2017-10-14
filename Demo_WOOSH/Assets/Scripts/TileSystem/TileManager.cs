@@ -91,14 +91,20 @@ public class TileManager
 
     private List<TileNode> highlightedNodes;
 
+    private int maximumDist;                    //for reference: lvl 1 = 18
+    private int probabilityModifier = 500;
+
     /// <summary>
     /// Initialize the gridsystem
     /// </summary>
     public void Initialize()
     {
         gridParent = new GameObject("Grid Parent");
-
         SetUpGrid();
+
+        maximumDist = new Coordinate(0, 0).ManhattanDistance(
+                new Coordinate(GameManager.Instance.TileManager.Rows,
+                                GameManager.Instance.TileManager.Columns));
     }
 
     public void Restart()
@@ -531,5 +537,14 @@ public class TileManager
             highlightedNodes.Clear();
             highlightedNodes = null;
         }
+    }
+
+    public bool InRange(int viewDist, WorldObject obj1, WorldObject obj2)
+    {
+        // calculate distance
+        int distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
+
+        if (distance < viewDist) return true;
+        else return false;
     }
 }
