@@ -8,14 +8,12 @@ public class SurroundingPushButton : MonoBehaviour
     private MovableObject source;
     private Coordinate gridPosition;
     public Coordinate GridPosition { get { return gridPosition;} }
-    private Coordinate relativePosition;
 
     private RectTransform rect;
+    public void Initialize(Coordinate gridPosition)
 
-    public void Initialize(Coordinate gridPosition, Coordinate relativePosition)
     {
         this.gridPosition = gridPosition;
-        this.relativePosition = relativePosition;
 
         rect = GetComponent<RectTransform>();
     }
@@ -24,6 +22,8 @@ public class SurroundingPushButton : MonoBehaviour
     {
         this.source = source;
         GameManager.Instance.TileManager.GetNodeReference(gridPosition).HighlightTile(true, Color.green);
+        Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
+        GetComponent<RectTransform>().anchoredPosition = UberManager.Instance.UiManager.InGameUI.WorldToCanvas(worldPos);
 
         gameObject.SetActive(true);
     }
@@ -39,11 +39,13 @@ public class SurroundingPushButton : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void PushSource()
+    public void TeleportSource()
     {
-        source.Push(relativePosition);
+        //TODO convert into teleport
+        source.Teleport(gridPosition);
         GameManager.Instance.LevelManager.CheckForExtraAP();
-        GameManager.Instance.LevelManager.EndPlayerMove(1);
+        GameManager.Instance.LevelManager.EndPlayerMove(4);
+        GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
     }
 
     public void SetPosition(Vector3 worldPos)

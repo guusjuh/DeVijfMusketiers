@@ -8,6 +8,7 @@ public class TileManager
     {
         Normal = 0,
         Gap,
+        Glyph,
     }
 
     public enum ContentType

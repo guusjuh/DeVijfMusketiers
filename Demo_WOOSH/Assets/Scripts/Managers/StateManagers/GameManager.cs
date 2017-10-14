@@ -7,7 +7,10 @@ using UnityEngine;
 public class GameManager : StateManager {
     public enum SpellType
     {
-        Attack = 0
+        Attack = 0,
+        FrostBite,
+        Fireball,
+        Teleport
     }
 
     // singleton
@@ -126,7 +129,7 @@ public class GameManager : StateManager {
     {
         levelManager.EndPlayerMove(1, true);
         UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
     }
 
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)

@@ -178,6 +178,7 @@ public class Human : MovableObject {
         normalColor = sprRender.color;
 
         currentFleePoints = totalFleePoints;
+        possibleSpellTypes.Add(GameManager.SpellType.Teleport);
     }
 
     public override void Clear()
@@ -194,6 +195,12 @@ public class Human : MovableObject {
         GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
         type = TileManager.ContentType.InivisbleHuman;
         gameObject.layer = 0;
+    }
+
+    public void ActivateTeleportButtons()
+    {
+        //TODO: activate buttons for each tile on the grid except for mine
+        UberManager.Instance.UiManager.InGameUI.ActivateTeleportButtons(true, this);
     }
 
     public void DecreaseInvisiblePoints()

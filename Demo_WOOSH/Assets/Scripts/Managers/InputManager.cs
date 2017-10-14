@@ -87,7 +87,7 @@ public class InputManager
                 {
                     if (worldObjects[i].Type != TileManager.ContentType.BrokenBarrel)
                     {
-                        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
                         GameManager.Instance.TileManager.HidePossibleRoads();
 
                         hits[i].transform.gameObject.GetComponent<WorldObject>().Click();
@@ -101,7 +101,7 @@ public class InputManager
                         }
                         else
                         {
-                            UIManager.Instance.InGameUI.ActivatePushButtons(false);
+                            UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
                             GameManager.Instance.TileManager.HidePossibleRoads();
 
                             hits[i].transform.gameObject.GetComponent<WorldObject>().Click();
@@ -111,6 +111,7 @@ public class InputManager
                 }
                 if(worldObjects.Count <= 0){
                     NoRaycastHit();
+
                 }
             }
         }
@@ -144,7 +145,7 @@ public class InputManager
     private void NoRaycastHit()
     {
         UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivatePushButtons(false);
+        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
         GameManager.Instance.TileManager.HidePossibleRoads();
 

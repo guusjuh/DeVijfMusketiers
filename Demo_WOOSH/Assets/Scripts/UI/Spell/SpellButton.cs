@@ -5,6 +5,12 @@ using UnityEngine.UI;
 
 public class SpellButton : MonoBehaviour
 {
+    //TODO: move that shit to spell class
+    protected float hitchance = 1.0f; //normalized value, 1.0f = 100%
+    protected int spellDamage = 0;
+    protected int fireDamage = 0;
+    protected int duration = 0;//how long does the effect of the spell last
+
     protected Button button;
     protected WorldObject target;
     protected int cost;
@@ -41,6 +47,7 @@ public class SpellButton : MonoBehaviour
 
     public virtual void CastSpell()
     {
+        GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
     }
