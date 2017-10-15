@@ -11,7 +11,7 @@ public class Dodin : Enemy
     // so not all have this distance and 
     // not all have to show extra tiles while showing highlighted tiles
     // goodluck with your SOR goestav :P
-    private const int specialMaxDistance = 6;
+    private const int specialMaxDistance = 4;
 
     public override void Initialize(Coordinate startPos)
     {

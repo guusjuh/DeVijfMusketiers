@@ -114,6 +114,7 @@ public class LevelManager
         if (!GameManager.Instance.GameOn) yield break;
 
         // make hoomans move
+        humans.HandleAction(h => h.StartTurn());
         yield return UberManager.Instance.StartCoroutine(CheckForHumanWalking());
 
         // increase amnt of turns
@@ -127,8 +128,6 @@ public class LevelManager
         extraPoints = 0;
         for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
         
-        humans.HandleAction(h => h.StartTurn());
-
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
@@ -242,10 +241,8 @@ public class LevelManager
 
             GameManager.Instance.CameraManager.LockTarget(enemies[i].transform);
 
-            while (!enemies[i].Dead && enemies[i].CurrentActionPoints > 0)
+            while (GameManager.Instance.GameOn && !enemies[i].Dead && enemies[i].CurrentActionPoints > 0)
             {
-                if (!GameManager.Instance.GameOn) yield break;
-
                 // make creature move
                 enemies[i].EnemyMove();
 
@@ -253,10 +250,14 @@ public class LevelManager
                 yield return new WaitForSeconds(moveDelay);
             }
 
+            // need to check for the enemy having killed everything
             if (!GameManager.Instance.GameOn) yield break;
 
             if (!enemies[i].Dead) enemies[i].EndTurn();
             else i--;
+
+            // need to check for the last enemy died from status effect
+            if (!GameManager.Instance.GameOn) yield break;
         }
 
         // switch turns

@@ -45,6 +45,8 @@ public class Human : MovableObject {
                 return;
             }
         }
+
+        inPanic = false;
     }
 
     private Contract contractRef;
@@ -235,6 +237,7 @@ public class Human : MovableObject {
 
     public void StartTurn()
     {
+        CheckInPanic();
         currentFleePoints = totalFleePoints;
         DecreaseInvisiblePoints();
     }

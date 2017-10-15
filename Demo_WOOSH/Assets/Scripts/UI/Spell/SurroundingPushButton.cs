@@ -51,6 +51,13 @@ public class SurroundingPushButton : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void Destory()
+    {
+        source = null;
+        rect = null;
+        GameObject.Destroy(this.gameObject);
+    }
+
     public void TeleportSource()
     {
         //TODO convert into teleport

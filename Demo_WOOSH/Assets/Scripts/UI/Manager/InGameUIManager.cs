@@ -98,6 +98,11 @@ public class InGameUIManager : SubUIManager {
     protected override void Restart()
     {
         enemyInfoUI.Restart();
+
+        pushButtonsOn = false;
+        surroundingPushButtons = new List<SurroundingPushButton>();
+        InitializeTeleportButtons();
+
         skipTurnButton.gameObject.SetActive(true);
         playerActionPoints.gameObject.SetActive(true);
     }
@@ -117,7 +122,10 @@ public class InGameUIManager : SubUIManager {
 
         // hide spell buttons 
         HideSpellButtons();
-        ActivateTeleportButtons(false);
+        //ActivateTeleportButtons(false);
+        surroundingPushButtons.HandleAction(b => b.Destory());
+        surroundingPushButtons.Clear();
+        surroundingPushButtons = null;
 
         base.Clear();
     }
