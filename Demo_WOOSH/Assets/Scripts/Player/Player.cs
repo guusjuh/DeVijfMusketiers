@@ -17,7 +17,7 @@ public class Player
         totalCooldown.Add(GameManager.SpellType.Attack, 0);
         totalCooldown.Add(GameManager.SpellType.Fireball, 1);
         totalCooldown.Add(GameManager.SpellType.FrostBite, 3);
-        totalCooldown.Add(GameManager.SpellType.Teleport, 3);
+        totalCooldown.Add(GameManager.SpellType.Teleport, 2);
 
         currentCooldown = new Dictionary<GameManager.SpellType, int>();
         currentCooldown.Add(GameManager.SpellType.Attack, 0);

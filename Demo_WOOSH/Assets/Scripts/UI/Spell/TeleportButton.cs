@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TeleportButton : SpellButton
 {
-    private int secondCost = 2;
+    private int secondCost = 3;
 
     public override void Initialize()
     {

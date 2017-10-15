@@ -542,7 +542,7 @@ public class TileManager
     {
         List<TileNode> nodes = new List<TileNode>();
         TileNode hisNode = GetNodeReference(gridPos);
-        RecursiveTileFinder(nodes, hisNode, maxDistance, gridPos);
+        RecursiveTileFinder(nodes, hisNode, maxDistance, gridPos, false);
 
         // highlight all found humans
         nodes.HandleAction(n =>

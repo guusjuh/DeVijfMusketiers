@@ -254,7 +254,7 @@ public class LevelManager
             if (!GameManager.Instance.GameOn) yield break;
 
             if (!enemies[i].Dead) enemies[i].EndTurn();
-            else i--;
+            //else i--;
 
             // need to check for the last enemy died from status effect
             if (!GameManager.Instance.GameOn) yield break;

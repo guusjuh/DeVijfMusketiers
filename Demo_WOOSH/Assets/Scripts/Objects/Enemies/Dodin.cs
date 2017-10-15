@@ -11,7 +11,7 @@ public class Dodin : Enemy
     // so not all have this distance and 
     // not all have to show extra tiles while showing highlighted tiles
     // goodluck with your SOR goestav :P
-    private const int specialMaxDistance = 4;
+    private const int specialMaxDistance = 3;
 
     public override void Initialize(Coordinate startPos)
     {
@@ -33,7 +33,7 @@ public class Dodin : Enemy
     public override bool CheckForSpell()
     {
         // target reached
-        bool closeEnough = currentPath.Count <= specialMaxDistance;
+        bool closeEnough = (this.gridPosition.ManhattanDistance(target.GridPosition)) <= specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;
         bool enoughAP = currentActionPoints >= specialCost;
         bool onCooldown = specialCooldown > 0;
 
