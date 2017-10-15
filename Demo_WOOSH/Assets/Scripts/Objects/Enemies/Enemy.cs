@@ -213,12 +213,16 @@ public class Enemy : WorldObject
         }
         else if (burnCount > 0)
         {
+            frozenIcon.SetActive(false);
+
             burnedIcon.SetActive(true);
             Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(GridPosition));
             burnedIcon.GetComponent<RectTransform>().anchoredPosition = canvasPos - new Vector2(0, 40.0f);
         }
         else if (slowed)
         {
+            burnedIcon.SetActive(false);
+
             frozenIcon.SetActive(true);
             Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(GridPosition));
             frozenIcon.GetComponent<RectTransform>().anchoredPosition = canvasPos - new Vector2(0, 40.0f);
