@@ -242,7 +242,7 @@ public class LevelManager
 
             GameManager.Instance.CameraManager.LockTarget(enemies[i].transform);
 
-            while (enemies[i].CurrentActionPoints > 0 && !enemies[i].Dead)
+            while (!enemies[i].Dead && enemies[i].CurrentActionPoints > 0)
             {
                 if (!GameManager.Instance.GameOn) yield break;
 
