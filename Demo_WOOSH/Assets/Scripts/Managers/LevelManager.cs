@@ -65,10 +65,10 @@ public class LevelManager
         SpawnLevel();
 
         // start with player turn
-        playersTurn = true;
+        playersTurn = false;
         othersTurn = false;
 
-        UberManager.Instance.StartCoroutine(BeginPlayerTurn());
+        //UberManager.Instance.StartCoroutine(BeginPlayerTurn());
     }
 
     public void Clear()
