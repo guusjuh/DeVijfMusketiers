@@ -177,7 +177,7 @@ public class LevelManager
     private IEnumerator CheckForHumanWalking()
     {
         //dont walk the very first turn
-        if (amountOfTurns == 0) yield break;
+        //if (amountOfTurns == 0) yield break;
 
         foreach (Human h in humans)
         {
