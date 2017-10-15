@@ -66,7 +66,12 @@ public class InputManager
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
 
-            if (results.Count <= 0)
+            // if no ui objects are hit
+            // or if the ui objects were tagged as status icon
+            bool noUIClicked = results.Count <= 0;
+            bool onlyStatusIconClicked = (results.Count > 0 &&
+                                          results.FindAll(r => r.gameObject.transform.tag == "StatusIcon").Count != 0);
+            if (noUIClicked || onlyStatusIconClicked)
             {
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 

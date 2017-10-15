@@ -11,6 +11,7 @@ TagManager:
   - InGameCanvas
   - LevelSelectCanvas
   - PreGameCanvas
+  - StatusIcon
   layers:
   - Default
   - TransparentFX
