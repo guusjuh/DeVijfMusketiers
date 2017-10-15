@@ -329,7 +329,8 @@ public class LevelManager
         }
 
         // spawn goo
-        GameManager.Instance.TileManager.GetNodeReference(ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPos).Content.SetTileType(TileManager.TileType.Gap);
+        List<Coordinate> gooPosses = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPosses;
+        gooPosses.HandleAction(g => GameManager.Instance.TileManager.GetNodeReference(g).Content.SetTileType(TileManager.TileType.Gap));
     }
 
     //TODO: refactor!

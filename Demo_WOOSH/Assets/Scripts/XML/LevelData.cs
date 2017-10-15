@@ -10,7 +10,7 @@ public class LevelData
     [SerializeField] public int rows;
     [SerializeField] public int columns;
     [SerializeField] public List<SpawnNode> spawnNodes;
-    [SerializeField] public Coordinate gooStartPos;
+    [SerializeField] public List<Coordinate> gooStartPosses;
     [SerializeField] public int minAmountOfHumans;
     [SerializeField] public int maxAmountOfHumans;
     [SerializeField] public int bossID;
