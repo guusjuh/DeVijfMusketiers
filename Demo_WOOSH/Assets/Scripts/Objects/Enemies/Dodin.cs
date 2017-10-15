@@ -25,10 +25,9 @@ public class Dodin : Enemy
         viewDistance = 4;
 
         this.hasSpecial = true;
+        type = TileManager.ContentType.FlyingMonster;
 
         base.Initialize(startPos);
-
-        type = TileManager.ContentType.FlyingMonster;
     }
 
     public override bool CheckForSpell()
@@ -64,7 +63,7 @@ public class Dodin : Enemy
         RaycastHit2D hit;
 
         Coordinate direction = currentPath[1].GridPosition - gridPosition;
-
+        TileManager tilemanreg = GameManager.Instance.TileManager;
         // can I move? 
         bool canMove = CanMove(direction, out hit);
 

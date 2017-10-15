@@ -306,6 +306,7 @@ public class LevelManager
                     shrines.Last().Initialize(s.position);
                     break;
                 case TileManager.ContentType.WalkingMonster:
+                case TileManager.ContentType.FlyingMonster:
                     if (!bossSpawned)
                     {
                         enemies.Add(

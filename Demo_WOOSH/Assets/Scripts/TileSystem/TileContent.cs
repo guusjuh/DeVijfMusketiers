@@ -25,7 +25,8 @@ public class TileContent
 
     public bool WalkAble()
     {
-        return (contentTypes.Count == 0 && tileType != TileManager.TileType.Gap) || (contentTypes.Count == 1 && contentTypes[0] == TileManager.ContentType.BrokenBarrel && tileType != TileManager.TileType.Gap);
+        return (contentTypes.Count == 0 && tileType != TileManager.TileType.Gap) || 
+            (contentTypes.Count == 1 && contentTypes[0] == TileManager.ContentType.BrokenBarrel && tileType != TileManager.TileType.Gap);
     }
 
     public void SetTileType(TileManager.TileType type)
