@@ -188,40 +188,10 @@ public class Human : MovableObject {
         GameManager.Instance.LevelManager.RemoveHuman(this);
     }
 
-    public void MakeInvisible()
-    {
-        GetComponent<SpriteRenderer>().color = shieldColor;
-        invisible = true;
-        currInvisiblePoints = totalInvisiblePoints;
-
-        GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
-        type = TileManager.ContentType.InivisbleHuman;
-        gameObject.layer = 0;
-    }
-
     public void ActivateTeleportButtons()
     {
         //TODO: activate buttons for each tile on the grid except for mine
         UberManager.Instance.UiManager.InGameUI.ActivateTeleportButtons(true, this);
-    }
-
-    public void DecreaseInvisiblePoints()
-    {
-        if (invisible)
-        {
-            currInvisiblePoints--;
-
-            //TODO: shield color change
-
-            if (currInvisiblePoints <= 0)
-            {
-                sprRender.color = normalColor;
-                invisible = false;
-                GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
-                type = TileManager.ContentType.Human;
-                gameObject.layer = 8;
-            }
-        }
     }
 
     public override bool Hit()
@@ -239,6 +209,5 @@ public class Human : MovableObject {
     {
         CheckInPanic();
         currentFleePoints = totalFleePoints;
-        DecreaseInvisiblePoints();
     }
 }

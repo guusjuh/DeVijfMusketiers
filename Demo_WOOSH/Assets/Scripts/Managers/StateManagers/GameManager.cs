@@ -110,7 +110,7 @@ public class GameManager : StateManager {
 
         typesToEnter.Add(TileManager.ContentType.FlyingMonster, bossList);
 
-        bossList.Add(TileManager.ContentType.FlyingMonster);
+        //bossList.Add(TileManager.ContentType.FlyingMonster);
 
         typesToEnter.Add(TileManager.ContentType.WalkingMonster, bossList);
     }

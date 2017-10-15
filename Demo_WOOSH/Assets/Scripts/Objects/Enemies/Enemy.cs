@@ -538,7 +538,12 @@ public class Enemy : WorldObject
             return null;
         }
 
-        //select target in range
+        // select target in range
+        // if our current target is in the possibilities, stay on him
+        if (possibleTargets.Contains(target))
+        {
+            return target;
+        }
         return possibleTargets[UnityEngine.Random.Range(0, possibleTargets.Count)];      
     }
 
@@ -580,7 +585,7 @@ public class Enemy : WorldObject
             // update the current path to the original OR nearby target
             currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition,
                             target.GridPosition,
-                            TileManager.ContentType.WalkingMonster);
+                            type);
 
             // if there is no possible route to our target right now, select a new target. 
             // if there are no other possiblities, the enemy will skip a turn.

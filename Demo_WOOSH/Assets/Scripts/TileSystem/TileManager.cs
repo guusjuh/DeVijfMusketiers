@@ -318,7 +318,8 @@ public class TileManager
 
         List<ContentType> typesToEnter = GameManager.Instance.TypesToEnter.Get(type);
 
-        if (grid[pos.x, pos.y].Content.TileType == TileType.Gap && type == ContentType.WalkingMonster)
+        if (grid[pos.x, pos.y].Content.TileType == TileType.Gap 
+            && (type == ContentType.WalkingMonster))
         {
             return false;
         }
