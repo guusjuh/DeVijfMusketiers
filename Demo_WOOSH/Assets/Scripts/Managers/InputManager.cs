@@ -57,8 +57,7 @@ public class InputManager
 
             zoomVelocity = Mathf.Clamp(deltaMagnitudeDiff, -1.0f, 1.0f);
         }
-
-        if (Input.GetMouseButtonDown(LEFT))
+        else if (Input.GetMouseButtonDown(LEFT))
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current);
 

@@ -1,141 +1,134 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <LevelDataContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <LevelData>
-    <LevelData>
+   <LevelData>
       <id>0</id>
-      <rows>7</rows>
-      <columns>11</columns>
+      <rows>9</rows>
+      <columns>12</columns>
       <spawnNodes>
         <SpawnNode>
           <type>Human</type>
           <position>
             <x>1</x>
+            <y>2</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Human</type>
+          <position>
+            <x>6</x>
+            <y>4</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>6</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>3</x>
+            <y>5</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>0</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>1</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>2</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>4</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>6</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>7</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
             <y>1</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>1</x>
+            <x>6</x>
             <y>2</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>3</x>
-            <y>5</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>1</x>
-            <y>6</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>2</x>
+            <x>7</x>
             <y>2</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>2</x>
+            <x>8</x>
             <y>3</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>2</x>
-            <y>5</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Shrine</type>
           <position>
-            <x>3</x>
-            <y>2</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>3</x>
-            <y>3</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>1</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>3</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>3</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>4</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>4</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>5</x>
-            <y>5</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>5</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Shrine</type>
-          <position>
-            <x>6</x>
-            <y>6</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>6</x>
-            <y>7</y>
+            <x>7</x>
+            <y>0</y>
           </position>
         </SpawnNode>
       </spawnNodes>
       <gooStartPos>
-        <x>6</x>
-        <y>1</y>
+        <x>4</x>
+        <y>10</y>
       </gooStartPos>
       <minAmountOfHumans>2</minAmountOfHumans>
       <maxAmountOfHumans>2</maxAmountOfHumans>
@@ -147,16 +140,37 @@
       <columns>12</columns>
       <spawnNodes>
         <SpawnNode>
-          <type>Shrine</type>
+          <type>Human</type>
           <position>
-            <x>2</x>
-            <y>5</y>
+            <x>1</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Human</type>
+          <position>
+            <x>7</x>
+            <y>10</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Human</type>
+          <position>
+            <x>3</x>
+            <y>4</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>WalkingMonster</type>
           <position>
-            <x>2</x>
+            <x>7</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>7</x>
             <y>6</y>
           </position>
         </SpawnNode>
@@ -164,161 +178,21 @@
           <type>WalkingMonster</type>
           <position>
             <x>1</x>
-            <y>11</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>7</x>
-            <y>4</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>2</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>2</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>3</x>
-            <y>2</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>3</x>
-            <y>3</y>
+            <y>1</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
             <x>4</x>
-            <y>3</y>
+            <y>0</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
             <x>4</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>4</x>
-            <y>10</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>5</x>
-            <y>10</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>6</x>
-            <y>7</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>6</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>7</x>
-            <y>6</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>7</x>
-            <y>7</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Shrine</type>
-          <position>
-            <x>7</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-      </spawnNodes>
-      <gooStartPos>
-        <x>8</x>
-        <y>3</y>
-      </gooStartPos>
-      <minAmountOfHumans>3</minAmountOfHumans>
-      <maxAmountOfHumans>3</maxAmountOfHumans>
-      <bossID>1</bossID>
-    </LevelData>
-    <LevelData>
-      <id>2</id>
-      <rows>13</rows>
-      <columns>17</columns>
-      <spawnNodes>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>1</x>
-            <y>2</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>1</x>
-            <y>7</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>1</x>
-            <y>13</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>2</x>
-            <y>4</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>2</x>
-            <y>14</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Human</type>
-          <position>
-            <x>2</x>
-            <y>15</y>
+            <y>1</y>
           </position>
         </SpawnNode>
         <SpawnNode>
@@ -338,64 +212,43 @@
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>3</x>
-            <y>6</y>
+            <x>2</x>
+            <y>3</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>3</x>
-            <y>8</y>
+            <x>1</x>
+            <y>3</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>3</x>
-            <y>11</y>
+            <x>1</x>
+            <y>4</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>3</x>
-            <y>14</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>4</x>
+            <x>1</x>
             <y>5</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>4</x>
-            <y>7</y>
+            <x>5</x>
+            <y>3</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
             <x>4</x>
-            <y>11</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>4</x>
-            <y>12</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>4</x>
-            <y>15</y>
+            <y>3</y>
           </position>
         </SpawnNode>
         <SpawnNode>
@@ -406,276 +259,383 @@
           </position>
         </SpawnNode>
         <SpawnNode>
-          <type>Shrine</type>
+          <type>Barrel</type>
           <position>
             <x>5</x>
-            <y>11</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Shrine</type>
-          <position>
-            <x>6</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>7</x>
-            <y>3</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>7</x>
-            <y>4</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>7</x>
             <y>5</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>7</x>
-            <y>6</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>7</x>
+            <x>0</x>
             <y>7</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>8</x>
-            <y>3</y>
+            <x>1</x>
+            <y>7</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>8</x>
+            <x>2</x>
             <y>8</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>8</x>
-            <y>12</y>
+            <x>3</x>
+            <y>8</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>8</x>
-            <y>13</y>
+            <x>3</x>
+            <y>9</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
-          <position>
-            <x>9</x>
-            <y>2</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>9</x>
-            <y>3</y>
-          </position>
-        </SpawnNode>
-        
-        <SpawnNode>
-          <type>WalkingMonster</type>
           <position>
             <x>4</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-        
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>6</x>
-            <y>7</y>
-          </position>
-        </SpawnNode>
-          
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>6</x>
             <y>11</y>
           </position>
         </SpawnNode>
-        
-        <SpawnNode>
-          <type>WalkingMonster</type>
-          <position>
-            <x>8</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-          
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>9</x>
-            <y>5</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>9</x>
-            <y>6</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>9</x>
-            <y>8</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>9</x>
-            <y>9</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>9</x>
+            <x>5</x>
             <y>10</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>9</x>
-            <y>11</y>
+            <x>6</x>
+            <y>10</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>9</x>
-            <y>13</y>
+            <x>7</x>
+            <y>9</y>
           </position>
         </SpawnNode>
         <SpawnNode>
-          <type>Barrel</type>
+          <type>Shrine</type>
           <position>
-            <x>10</x>
-            <y>3</y>
+            <x>1</x>
+            <y>0</y>
           </position>
         </SpawnNode>
+      </spawnNodes>
+      <gooStartPos>
+        <x>7</x>
+        <y>0</y>
+      </gooStartPos>
+      <minAmountOfHumans>3</minAmountOfHumans>
+      <maxAmountOfHumans>3</maxAmountOfHumans>
+      <bossID>1</bossID>
+    </LevelData>
+    <LevelData>
+      <id>2</id>
+      <rows>9</rows>
+      <columns>12</columns>
+      <spawnNodes>
         <SpawnNode>
-          <type>Barrel</type>
+          <type>Human</type>
           <position>
-            <x>10</x>
-            <y>4</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>10</x>
-            <y>5</y>
-          </position>
-        </SpawnNode>
-        <SpawnNode>
-          <type>Barrel</type>
-          <position>
-            <x>10</x>
-            <y>7</y>
+            <x>2</x>
+            <y>10</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Human</type>
           <position>
-            <x>10</x>
-            <y>13</y>
+            <x>6</x>
+            <y>10</y>
           </position>
         </SpawnNode>
         <SpawnNode>
-          <type>Barrel</type>
+          <type>Human</type>
           <position>
-            <x>10</x>
-            <y>14</y>
+            <x>4</x>
+            <y>11</y>
           </position>
         </SpawnNode>
         <SpawnNode>
-          <type>Barrel</type>
+          <type>WalkingMonster</type>
           <position>
-            <x>11</x>
+            <x>4</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>2</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>6</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>WalkingMonster</type>
+          <position>
+            <x>4</x>
             <y>7</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>11</x>
-            <y>8</y>
+            <x>3</x>
+            <y>0</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>11</x>
-            <y>9</y>
+            <x>3</x>
+            <y>1</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>11</x>
+            <x>4</x>
+            <y>2</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
             <y>10</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>11</x>
+            <x>4</x>
+            <y>10</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
             <y>11</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>11</x>
-            <y>12</y>
+            <x>5</x>
+            <y>10</y>
           </position>
         </SpawnNode>
         <SpawnNode>
           <type>Barrel</type>
           <position>
-            <x>11</x>
-            <y>13</y>
+            <x>1</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>1</x>
+            <y>2</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>2</x>
+            <y>3</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>3</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>4</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>5</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>7</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>3</x>
+            <y>8</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>3</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>4</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>5</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>6</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>7</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>5</x>
+            <y>8</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>6</x>
+            <y>3</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>7</x>
+            <y>2</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>7</x>
+            <y>1</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>1</x>
+            <y>10</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>1</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>2</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>6</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>7</x>
+            <y>10</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Barrel</type>
+          <position>
+            <x>7</x>
+            <y>9</y>
+          </position>
+        </SpawnNode>
+        <SpawnNode>
+          <type>Shrine</type>
+          <position>
+            <x>4</x>
+            <y>6</y>
           </position>
         </SpawnNode>
       </spawnNodes>
       <gooStartPos>
-        <x>9</x>
-        <y>4</y>
+        <x>4</x>
+        <y>0</y>
       </gooStartPos>
-      <minAmountOfHumans>4</minAmountOfHumans>
-      <maxAmountOfHumans>4</maxAmountOfHumans>
+      <minAmountOfHumans>3</minAmountOfHumans>
+      <maxAmountOfHumans>3</maxAmountOfHumans>
       <bossID>2</bossID>
     </LevelData>
   </LevelData>

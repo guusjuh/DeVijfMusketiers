@@ -28,7 +28,7 @@ public class CameraManager : MonoBehaviour
 
     private Rect viewportRect;
 
-    private const float minSize = 3.0f, maxSize = 7.5f;
+    private const float minSize = 3.0f, maxSize = 8.0f;
     private float zoomSpeed = 0.3f;
 
     private float currentSize;
@@ -88,7 +88,7 @@ public class CameraManager : MonoBehaviour
         }
         else if(Application.platform == RuntimePlatform.Android)
         {
-            zoomSpeed = 0.2f;
+            zoomSpeed = 0.1f;
         }
 
         camRef = GetComponent<Camera>();
