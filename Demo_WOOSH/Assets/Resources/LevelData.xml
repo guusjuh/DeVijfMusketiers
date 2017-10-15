@@ -272,7 +272,7 @@
       </gooStartPos>
       <minAmountOfHumans>3</minAmountOfHumans>
       <maxAmountOfHumans>3</maxAmountOfHumans>
-      <bossID>2</bossID>
+      <bossID>1</bossID>
     </LevelData>
     <LevelData>
       <id>2</id>

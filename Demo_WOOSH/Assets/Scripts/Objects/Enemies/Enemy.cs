@@ -95,6 +95,7 @@ public class Enemy : WorldObject
 
     public override void Clear()
     {
+        DestroyStatusIcons();
         GameManager.Instance.LevelManager.RemoveEnemy(this);
     }
 
@@ -114,11 +115,18 @@ public class Enemy : WorldObject
             Dead = true;
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
+            DestroyStatusIcons();
             GameManager.Instance.LevelManager.RemoveEnemy(this, true);
             return true;
         }
 
         return false;
+    }
+
+    private void DestroyStatusIcons()
+    {
+        Destroy(burnedIcon);
+        Destroy(frozenIcon);
     }
 
     protected IEnumerator HitVisual()
