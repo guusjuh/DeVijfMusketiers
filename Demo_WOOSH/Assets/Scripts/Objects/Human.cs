@@ -92,8 +92,8 @@ public class Human : MovableObject {
             float neighbourDist = 0;
             for (int j = 0; j < closeEnemies.Count; j++)
             {
-                currentDist = gridPosition.ManhattanDistance(closeEnemies[j].GridPosition);
-                neighbourDist = neighbours[i].GridPosition.ManhattanDistance(closeEnemies[j].GridPosition);
+                currentDist = gridPosition.EuclideanDistance(closeEnemies[j].GridPosition);
+                neighbourDist = neighbours[i].GridPosition.EuclideanDistance(closeEnemies[j].GridPosition);
 
                 if (neighbourDist <= currentDist)
                 {
@@ -109,8 +109,8 @@ public class Human : MovableObject {
             // check for the distance being smaller (just like with enemies)
             for (int j = 0; j < closeHoles.Count; j++)
             {
-                currentDist = gridPosition.ManhattanDistance(closeHoles[j].GridPosition);
-                neighbourDist = neighbours[i].GridPosition.ManhattanDistance(closeHoles[j].GridPosition);
+                currentDist = gridPosition.EuclideanDistance(closeHoles[j].GridPosition);
+                neighbourDist = neighbours[i].GridPosition.EuclideanDistance(closeHoles[j].GridPosition);
 
                 if (neighbourDist < currentDist)
                 {

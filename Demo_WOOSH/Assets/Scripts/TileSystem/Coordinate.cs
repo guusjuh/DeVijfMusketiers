@@ -44,16 +44,12 @@ public struct Coordinate
         return c1.x != c2.x || c1.y != c2.y ? true : false;
     }
 
-    public int ManhattanDistanceOld(Coordinate other)
-    {
-        return Mathf.Abs((this.x - other.x)) + Mathf.Abs((this.y - other.y));
-    }
-
-    public float ManhattanDistance(Coordinate other)
+    public float EuclideanDistance(Coordinate other)
     {
         Vector2 thisPos = GameManager.Instance.TileManager.GetWorldPosition(this);
         Vector2 otherPos = GameManager.Instance.TileManager.GetWorldPosition(other);
 
-        return Mathf.Abs((thisPos.x - otherPos.x)) + Mathf.Abs((thisPos.y - otherPos.y));
+        return Vector2.Distance(otherPos, thisPos);
+            //Mathf.Abs((thisPos.x - otherPos.x)) + Mathf.Abs((thisPos.y - otherPos.y));
     }
 }

@@ -91,7 +91,7 @@ public class TileManager
     /// Hexagon depth.
     /// </summary>
     private float hexagonHeight = .433f;
-    private float HexagonHeight { get { return hexagonHeight * hexagonScale; } }
+    public float HexagonHeight { get { return hexagonHeight * hexagonScale; } }
 
     public float FromTileToTile { get { return (HexagonHeight * 2); } }
 
@@ -119,7 +119,7 @@ public class TileManager
         gridParent = new GameObject("Grid Parent");
         SetUpGrid();
 
-        maximumDist = new Coordinate(0, 0).ManhattanDistance(
+        maximumDist = new Coordinate(0, 0).EuclideanDistance(
                 new Coordinate(GameManager.Instance.TileManager.Rows,
                                 GameManager.Instance.TileManager.Columns));
 
@@ -518,7 +518,6 @@ public class TileManager
 
         // add yourself
         TileNode hisNode = GetNodeReference(gridPos);
-        highlightedNodes.Add(hisNode);
 
         RecursiveTileFinder(highlightedNodes, hisNode, actionPoints, gridPos);
 
@@ -566,8 +565,8 @@ public class TileManager
             {
                 for (int i = 0; i < thisNode.NeightBours.Count; i++)
                 {
-                    float lastDist = thisNode.GridPosition.ManhattanDistance(startPos);
-                    float currDist = thisNode.NeightBours[i].GridPosition.ManhattanDistance(startPos);
+                    float lastDist = thisNode.GridPosition.EuclideanDistance(startPos);
+                    float currDist = thisNode.NeightBours[i].GridPosition.EuclideanDistance(startPos);
 
                     if (currDist >= lastDist)
                     {
@@ -575,7 +574,8 @@ public class TileManager
                         RecursiveTileFinder(nodes, 
                                             thisNode.NeightBours[i],
                                             distance - (usingCost ? (int)CostToEnterTile(thisNode.NeightBours[i], ContentType.WalkingMonster) : 1), 
-                                            startPos);
+                                            startPos, 
+                                            usingCost);
                     }
                 }
             }
@@ -595,7 +595,7 @@ public class TileManager
     public bool InRange(int viewDist, WorldObject obj1, WorldObject obj2)
     {
         // calculate distance
-        float distance = obj1.GridPosition.ManhattanDistance(obj2.GridPosition);
+        float distance = obj1.GridPosition.EuclideanDistance(obj2.GridPosition);
 
         if (distance <= (viewDist * FromTileToTile)) return true;
         else return false;
@@ -604,7 +604,7 @@ public class TileManager
     public bool InRange(int viewDist, Coordinate coord1, Coordinate coord2)
     {
         // calculate distance
-        float distance = coord1.ManhattanDistance(coord2);
+        float distance = coord1.EuclideanDistance(coord2);
 
         if (distance <= (viewDist * FromTileToTile)) return true;
         else return false;

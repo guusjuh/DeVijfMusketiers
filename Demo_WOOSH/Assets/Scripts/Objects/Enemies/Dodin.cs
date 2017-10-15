@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,7 +34,9 @@ public class Dodin : Enemy
     public override bool CheckForSpell()
     {
         // target reached
-        bool closeEnough = (this.gridPosition.ManhattanDistance(target.GridPosition)) <= specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;
+        float distance = (this.gridPosition.EuclideanDistance(target.GridPosition));
+        float maxDistance = specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;// + (GameManager.Instance.TileManager.HexagonHeight * (Mathf.Abs(gridPosition.x % 2))); ;
+        bool closeEnough = distance - maxDistance <= 0.01f;
         bool enoughAP = currentActionPoints >= specialCost;
         bool onCooldown = specialCooldown > 0;
 
