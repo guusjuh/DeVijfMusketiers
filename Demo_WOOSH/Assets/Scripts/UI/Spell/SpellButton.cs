@@ -49,6 +49,8 @@ public class SpellButton : MonoBehaviour
     public void Click()
     {
         StartCoroutine(CastSpell());
+
+        UIManager.Instance.InGameUI.CastingSpell = true;
     }
 
     public virtual IEnumerator CastSpell()
@@ -60,6 +62,9 @@ public class SpellButton : MonoBehaviour
 
         GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
+
+        UIManager.Instance.InGameUI.CastingSpell = false;
+
         UIManager.Instance.InGameUI.HideSpellButtons();
 
         yield return null;

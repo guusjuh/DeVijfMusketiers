@@ -34,6 +34,9 @@ public class InGameUIManager : SubUIManager {
 
     private SpellVisual spellVisual;
 
+    private bool castingSpell = false;
+    public bool CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
+
     protected override void Initialize()
     {
         canvas = GameObject.FindGameObjectWithTag("InGameCanvas").GetComponent<Canvas>();
@@ -101,6 +104,8 @@ public class InGameUIManager : SubUIManager {
 
     public override void Clear()
     {
+        CastingSpell = false;
+
         // you knwo the banners are off
 
         // let enemy info ui clear itself

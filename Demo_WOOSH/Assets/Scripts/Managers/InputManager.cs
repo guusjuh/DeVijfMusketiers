@@ -114,7 +114,7 @@ public class InputManager
                         }
                     }
                 }
-                if(worldObjects.Count <= 0){
+                if(worldObjects.Count <= 0 && !UIManager.Instance.InGameUI.CastingSpell){
                     NoRaycastHit();
 
                 }
