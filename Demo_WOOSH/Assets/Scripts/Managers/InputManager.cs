@@ -36,6 +36,8 @@ public class InputManager
     {
         zoomVelocity = Input.GetAxis("Mouse ScrollWheel");
 
+        if (UIManager.Instance.InGameUI.CastingSpell) return;
+
         if (Input.touchCount == 2)
         {
             // obtain touches
@@ -114,7 +116,7 @@ public class InputManager
                         }
                     }
                 }
-                if(worldObjects.Count <= 0 && !UIManager.Instance.InGameUI.CastingSpell){
+                if(worldObjects.Count <= 0){
                     NoRaycastHit();
                 }
             }

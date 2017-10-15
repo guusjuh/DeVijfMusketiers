@@ -20,6 +20,8 @@ public class TeleportButton : SpellButton
                 GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
 
         target.GetComponent<Human>().ActivateTeleportButtons();
+        UIManager.Instance.InGameUI.CastingSpell = false;
+
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
 
