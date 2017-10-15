@@ -12,8 +12,8 @@ public class SpellVisual : MonoBehaviour
     private const float MIN_SIZE = 10.0f;
 
     // per second
-    private float shrinkSpeed = 2000.0f;
-    private float rotationSpeed = 90.0f;
+    private float shrinkSpeed = 3500.0f;
+    private float rotationSpeed = 270.0f;
 
     private Dictionary<GameManager.SpellType, Color> colors;
     private GameManager.SpellType type;
