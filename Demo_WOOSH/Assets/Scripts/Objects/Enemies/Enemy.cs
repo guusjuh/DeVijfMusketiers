@@ -67,10 +67,12 @@ public class Enemy : WorldObject
         burnedIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/BurnedIcon"),
             Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
         burnedIcon.SetActive(false);
+        burnedIcon.transform.SetAsFirstSibling();
 
         frozenIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/FrozenIcon"),
             Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
         frozenIcon.SetActive(false);
+        frozenIcon.transform.SetAsFirstSibling();
 
         // obtain components
         blockingLayer = LayerMask.GetMask("BlockingLayer");
