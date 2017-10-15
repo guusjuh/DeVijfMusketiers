@@ -67,9 +67,6 @@ public class Human : MovableObject {
     {
         currentFleePoints--;
 
-        // if you want humans to run further, more possible node should be obtained from TileManager
-        // since I can only flee one step, find the best neighbour to flee to
-
         List<TileNode> neighbours = GameManager.Instance.TileManager.GetNodeReference(gridPosition).NeightBours;
         List<TileNode> fleeNodes = new List<TileNode>();
 
@@ -95,7 +92,7 @@ public class Human : MovableObject {
                 currentDist = gridPosition.EuclideanDistance(closeEnemies[j].GridPosition);
                 neighbourDist = neighbours[i].GridPosition.EuclideanDistance(closeEnemies[j].GridPosition);
 
-                if (neighbourDist <= currentDist)
+                if (neighbourDist < currentDist)
                 {
                     goto NOT_THIS_NEIGHBOUR;
                 }
@@ -104,7 +101,7 @@ public class Human : MovableObject {
             // 3. not directly next to a hole
             // find all holes in view distance
             List<TileNode> closeHoles = GameManager.Instance.TileManager.GetNodeWithGapReferences().FindAll(
-                n => GameManager.Instance.TileManager.InRange(viewDistance/2, this.GridPosition, n.GridPosition));
+                n => GameManager.Instance.TileManager.InRange((int)Mathf.Floor(viewDistance/2.0f), this.GridPosition, n.GridPosition));
 
             // check for the distance being smaller (just like with enemies)
             for (int j = 0; j < closeHoles.Count; j++)
