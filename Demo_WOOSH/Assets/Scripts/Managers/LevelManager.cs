@@ -237,18 +237,17 @@ public class LevelManager
         // wait for turn delay
         yield return new WaitForSeconds(turnDelay);
 
-        foreach (Enemy e in enemies)
-        {
-            e.StartTurn();
+        for (int i = 0; i < enemies.Count; i++) {
+            enemies[i].StartTurn();
 
-            GameManager.Instance.CameraManager.LockTarget(e.transform);
+            GameManager.Instance.CameraManager.LockTarget(enemies[i].transform);
 
-            while (e.CurrentActionPoints > 0 && !e.Dead)
+            while (enemies[i].CurrentActionPoints > 0 && !enemies[i].Dead)
             {
                 if (!GameManager.Instance.GameOn) yield break;
 
                 // make creature move
-                e.EnemyMove();
+                enemies[i].EnemyMove();
 
                 // delay
                 yield return new WaitForSeconds(moveDelay);
@@ -256,7 +255,8 @@ public class LevelManager
 
             if (!GameManager.Instance.GameOn) yield break;
 
-            if(!e.Dead) e.EndTurn();
+            if (!enemies[i].Dead) enemies[i].EndTurn();
+            else i--;
         }
 
         // switch turns
