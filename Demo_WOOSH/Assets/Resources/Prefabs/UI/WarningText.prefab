@@ -61,7 +61,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Goo spreading in 1 turn!
+  m_Text: The world will break down 1 turn!
 --- !u!114 &114438438512048906
 MonoBehaviour:
   m_ObjectHideFlags: 1
