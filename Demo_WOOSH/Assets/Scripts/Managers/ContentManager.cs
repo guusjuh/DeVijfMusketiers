@@ -15,10 +15,8 @@ public struct SpawnNode
 [Serializable]
 public class ContentManager {
     private static ContentManager instance = null;
-    public static ContentManager Instance
-    {
-        get
-        {
+    public static ContentManager Instance {
+        get {
             if (instance == null) instance = UberManager.Instance.ContentManager;
             return instance;
         }

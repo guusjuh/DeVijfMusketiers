@@ -10,7 +10,7 @@ public class LevelSelectButton : MonoBehaviour
     public void Initialize(int id)
     {
         levelID = id;
-        GetComponentInChildren<Text>().text = "" + id;
+        GetComponentInChildren<Text>().text = "" + (levelID + 1);
     }
 
     public void OnClick()

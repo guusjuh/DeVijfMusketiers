@@ -4,22 +4,18 @@ using UnityEngine;
 
 public class PreGameManager : StateManager
 {
-    //TODO: selected level should start at 0
-    private int selectedLevel = 1;
+    private int selectedLevel = 0;
     public int SelectedLevel { get { return selectedLevel; } set { selectedLevel = value; } }
 
-    protected override void Initialize()
-    {
+    protected override void Initialize() {
         UIManager.Instance.RestartUI();
     }
 
-    protected override void Restart()
-    {
+    protected override void Restart() {
         UIManager.Instance.RestartUI();
     }
 
-    public override void Clear()
-    {
+    public override void Clear() {
         UIManager.Instance.ClearUI();
     }
 

@@ -174,16 +174,16 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     public void UpdatePosition()
     {
-        if (InputManager.Instance.DragVelocity.magnitude > 10)
+        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 10)
         {
             target = null;
             UnlockAxis();
-            MoveCamera(-InputManager.Instance.DragVelocity * speedScalar, true);
+            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
             return;
         }
-        else if (Mathf.Abs(InputManager.Instance.ZoomVelocity) > 0.01f)
+        else if (Mathf.Abs(UberManager.Instance.InputManager.ZoomVelocity) > 0.01f)
         {
-            Zoom(-InputManager.Instance.ZoomVelocity);
+            Zoom(-UberManager.Instance.InputManager.ZoomVelocity);
         }
 
         // locked means either 

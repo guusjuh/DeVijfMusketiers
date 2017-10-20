@@ -8,47 +8,39 @@ using UnityEngine;
 public class ContractManager {
     [SerializeField] private List<Contract> contracts = new List<Contract>();
 
-    public void Initialize()
-    {
+    public void Initialize() {
         contracts.HandleAction(c => c.Initialize());
     }
 
-    public void AddContract(Contract contract)
-    {
+    public void AddContract(Contract contract) {
         contracts.Add(contract);
     }
 
-    public void RemoveContract(Contract contract)
-    {
+    public void RemoveContract(Contract contract) {
         contracts.Remove(contract);
     }
 
-    public Contract GetContractReference(int id)
-    {
+    public Contract GetContractReference(int id) {
         return contracts.Find(c => c.ID == id);
     }
 
-    public int AmountOfContracts()
-    {
+    public int AmountOfContracts() {
         return contracts.Count;
     }
 
-    public int AmountOfContracts(int level)
-    {
+    public int AmountOfContracts(int level) {
         return contracts.FindAll(c => c.CurrentLevel == level).Count;
     }
 
-    public List<Contract> ContractsInLevel(int level)
-    {
+    public List<Contract> ContractsInLevel(int level) {
         return contracts.FindAll(c => c.CurrentLevel == level);
     }
 
-    public Contract GenerateRandomContract()
-    {
+    public Contract GenerateRandomContract() {
         int id = AmountOfContracts();
      
         // get random type   
-        ContentManager.HumanTypes type = GetRandomHumanType();//(ContentManager.HumanTypes)UnityEngine.Random.Range(0, UberManager.Instance.PlayerData.Reputation + 1);
+        ContentManager.HumanTypes type = GetRandomHumanType();
 
         Contract newContract = new Contract(id, type);
 
@@ -60,8 +52,7 @@ public class ContractManager {
     /// Returns a random human type based on the current player reputation.
     /// </summary>
     /// <returns></returns>
-    private ContentManager.HumanTypes GetRandomHumanType()
-    {
+    private ContentManager.HumanTypes GetRandomHumanType() {
         Dictionary<ContentManager.HumanTypes, int> possibleTypes = new Dictionary<ContentManager.HumanTypes, int>();
         int maxReputation = UberManager.Instance.PlayerData.Reputation + 1;
         

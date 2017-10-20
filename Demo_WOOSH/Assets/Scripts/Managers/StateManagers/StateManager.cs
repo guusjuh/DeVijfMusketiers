@@ -6,15 +6,12 @@ public abstract class StateManager
 {
     private bool first = true;
 
-    public void Start()
-    {
-        if (first)
-        {
+    public void Start() {
+        if (first) {
             Initialize();
             first = false;
         }
-        else
-        {
+        else {
             Restart();
         }
     }

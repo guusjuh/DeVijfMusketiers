@@ -1,15 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+
 #if UNITY_EDITOR  
 using UnityEditor;
 #endif
-using UnityEngine;
 
+public class UberManager : MonoBehaviour { 
 
-public class UberManager : MonoBehaviour {
-
-    public enum GameStates
-    {
+    public enum GameStates {
         LevelSelection = 0,
         Hub,
         PreGame,
@@ -19,19 +18,23 @@ public class UberManager : MonoBehaviour {
 
     // singleton
     private static UberManager instance = null;
-    public static UberManager Instance
-    {
-        get
-        {
+    public static UberManager Instance {
+        get {
             if (instance == null) instance = FindObjectOfType(typeof(UberManager)) as UberManager;
             return instance;
         }
     }
 
     private Dictionary<GameStates, StateManager> stateManagers = new Dictionary<GameStates, StateManager>();
-
-    public GameManager GameManager { get { return (GameManager)stateManagers.Get(GameStates.InGame); } }
+    public LevelSelectionManager LevelSelectionManager { get { return (LevelSelectionManager)stateManagers.Get(GameStates.LevelSelection); } }
     public PreGameManager PreGameManager { get { return (PreGameManager)stateManagers.Get(GameStates.PreGame); } }
+    public GameManager GameManager { get { return (GameManager)stateManagers.Get(GameStates.InGame); } }
+    public PostGameManager PostGameManager { get { return (PostGameManager)stateManagers.Get(GameStates.PostGame); } }
+
+    private GameStates prevState;
+    private GameStates state;
+    public GameStates PrevGameState { get { return prevState; } }
+    public GameStates GameState { get { return state; } }
 
     [SerializeField] private ContentManager contentManager = new ContentManager();
     public ContentManager ContentManager { get { return contentManager; } }
@@ -45,14 +48,9 @@ public class UberManager : MonoBehaviour {
     private UIManager uiManager = new UIManager();
     public UIManager UiManager { get { return uiManager; } }
 
-    //TODO: r/w from/to XML file
+   //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
     public PlayerData PlayerData { get { return playerData; } }
-
-    private GameStates prevState;
-    private GameStates state;
-    public GameStates PrevGameState { get { return prevState; } }
-    public GameStates GameState { get { return state; } }
 
     private bool doingSetup = true;
 

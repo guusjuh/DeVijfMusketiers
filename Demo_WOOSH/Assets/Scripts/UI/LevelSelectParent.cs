@@ -39,13 +39,13 @@ public class LevelSelectParent : MonoBehaviour
         // if there is a next level
         // check for the amount of humans in the next level plus the humans traveling from this level
         // being smaller than 7
-        if (levelID < ContentManager.Instance.LevelDataContainer.LevelData.Count &&
-            ContentManager.Instance.LevelDataContainer.LevelData[levelID - 1].minAmountOfHumans + UberManager.Instance.ContractManager.AmountOfContracts(levelID) > 6)
+        if (levelID <= ContentManager.Instance.LevelDataContainer.LevelData.Count &&
+            ContentManager.Instance.LevelDataContainer.LevelData[levelID].minAmountOfHumans + UberManager.Instance.ContractManager.AmountOfContracts(levelID) > 6)
         {
             levelSelectButton.GetComponent<Button>().interactable = false;
         }
-        else if (UberManager.Instance.ContractManager.AmountOfContracts(levelID - 1) <
-                 ContentManager.Instance.LevelDataContainer.LevelData[levelID - 1].minAmountOfHumans)
+        else if (UberManager.Instance.ContractManager.AmountOfContracts(levelID) <
+                 ContentManager.Instance.LevelDataContainer.LevelData[levelID].minAmountOfHumans)
         {
             levelSelectButton.GetComponent<Button>().interactable = false;
         }
@@ -66,17 +66,17 @@ public class LevelSelectParent : MonoBehaviour
     {
         contractIndicators = new List<ContractIndicator>();
 
-        for (int i = 0; i < UberManager.Instance.ContractManager.AmountOfContracts(levelID - 1); i++)
+        for (int i = 0; i < UberManager.Instance.ContractManager.AmountOfContracts(levelID); i++)
         {
             contractIndicators.Add(GameObject.Instantiate(contractIndicatorPrefab, Vector3.zero, Quaternion.identity, gridParent.transform).GetComponent<ContractIndicator>());
-            contractIndicators.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(levelID - 1)[i]);
+            contractIndicators.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(levelID)[i]);
         }
     }
 
     public void AddHuman()
     {
         contractIndicators.Add(GameObject.Instantiate(contractIndicatorPrefab, Vector3.zero, Quaternion.identity, gridParent.transform).GetComponent<ContractIndicator>());
-        contractIndicators.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(levelID - 1).Last());
+        contractIndicators.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(levelID).Last());
     }
 }
 

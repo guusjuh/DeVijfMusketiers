@@ -37,8 +37,8 @@ public class LevelSelectUIManager : SubUIManager
         int counter = 0;
         levelSelectParents.HandleAction(l =>
             {
-                counter++;
                 l.Initialize(counter);
+                counter++;
             }
         );
 

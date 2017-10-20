@@ -120,7 +120,7 @@ public class GameManager : StateManager {
     {
         if (!gameOn) return;
 
-        InputManager.Instance.CatchInput();
+        UberManager.Instance.InputManager.CatchInput();
         cameraManager.UpdatePosition();
         levelManager.Update();
     }
@@ -134,7 +134,7 @@ public class GameManager : StateManager {
 
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)
     {
-        currentLevel = levelID - 1;
+        currentLevel = levelID;
         this.selectedContracts = selectedContracts;
     }
 }
