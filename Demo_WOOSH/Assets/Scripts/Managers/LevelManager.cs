@@ -30,6 +30,8 @@ public class LevelManager
     private bool init = false;
     public bool Initialized { get { return init; } }
 
+    int humansInstantiated = 0;
+
     public bool PlayersTurn
     {
         get { return playersTurn; }
@@ -52,6 +54,8 @@ public class LevelManager
 
     private void SetUpLevel()
     {
+        humansInstantiated = 0;
+
         humans = new List<Human>();
         barrels = new List<Barrel>();
         shrines = new List<Shrine>();
@@ -272,8 +276,7 @@ public class LevelManager
         // spawn nodes
         List<SpawnNode> spawnNodes = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].spawnNodes;
 
-        int humansInstantiated = 0;
-        bool bossSpawned = false;
+
 
         foreach (SpawnNode s in spawnNodes)
         {
@@ -293,52 +296,59 @@ public class LevelManager
 
         switch (s.type)
         {
-            //TODO: after content manager is refactored.
-        }
+            case TileManager.ContentType.Boss:
+                bool secIsBoss = s.secType == ContentManager.SecContentType.Arnest ||
+                                 s.secType == ContentManager.SecContentType.Dodin ||
+                                 s.secType == ContentManager.SecContentType.Sketta; 
+                if (!secIsBoss) break;
 
+                int index = 0;
+                switch (s.secType)
+                {
+                    case ContentManager.SecContentType.Arnest:
+                        index = 1;
+                        break;
+                    case ContentManager.SecContentType.Dodin:
+                        index = 0;
+                        break;
+                    case ContentManager.SecContentType.Sketta:
+                        index = 2;
+                        break;
+                }
 
+                enemies.Add(GameObject.Instantiate(ContentManager.Instance.Bosses[index], 
+                                                   spawnPosition, 
+                                                   Quaternion.identity).GetComponent<Enemy>());
 
-        /*case TileManager.ContentType.Barrel:
-            barrels.Add(
-                GameObject.Instantiate(ContentManager.Instance.Barrel, spawnPosition, Quaternion.identity)
-                    .GetComponent<Barrel>());
-            barrels.Last().Initialize(s.position);
-            break;
-        case TileManager.ContentType.Human:
-            humans.Add(
-                GameObject.Instantiate(ContentManager.Instance.Human, spawnPosition, Quaternion.identity)
-                    .GetComponent<Human>());
-            humans.Last().Initialize(s.position);
-            humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
-            humansInstantiated++;
-            break;
-        case TileManager.ContentType.Shrine:
-            shrines.Add(
-                GameObject.Instantiate(ContentManager.Instance.Shrine, spawnPosition, Quaternion.identity)
-                    .GetComponent<Shrine>());
-            shrines.Last().Initialize(s.position);
-            break;
-        case TileManager.ContentType.WalkingMonster:
-        case TileManager.ContentType.FlyingMonster:
-            if (!bossSpawned)
-            {
-                enemies.Add(
-                    GameObject.Instantiate(
-                            ContentManager.Instance.Bosses[
-                                ContentManager.Instance.LevelDataContainer.LevelData[
-                                    GameManager.Instance.CurrentLevel].bossID], spawnPosition,
-                            Quaternion.identity)
-                        .GetComponent<Enemy>());
-                bossSpawned = true;
-            }
-            else
-            {
+                break;
+            case TileManager.ContentType.Minion:
                 enemies.Add(GameObject.Instantiate(ContentManager.Instance.Minions[0], spawnPosition, Quaternion.identity).GetComponent<Enemy>());
-            }
+                break;
+            case TileManager.ContentType.Environment:
+                bool secIsEnvironment = s.secType == ContentManager.SecContentType.Barrel ||
+                                        s.secType == ContentManager.SecContentType.Shrine;
+                if (!secIsEnvironment) break;
+                switch (s.secType)
+                {
+                    case ContentManager.SecContentType.Barrel:
+                        barrels.Add(GameObject.Instantiate(ContentManager.Instance.Barrel, spawnPosition, Quaternion.identity).GetComponent<Barrel>());
+                        barrels.Last().Initialize(s.position);
+                        break;
+                    case ContentManager.SecContentType.Shrine:
+                        shrines.Add(GameObject.Instantiate(ContentManager.Instance.Shrine, spawnPosition, Quaternion.identity).GetComponent<Shrine>());
+                        shrines.Last().Initialize(s.position);
+                        break;
+                }
 
-            enemies.Last().Initialize(s.position);
-            break;
-    }*/
+                break;
+            case TileManager.ContentType.Human:
+                if (s.secType != ContentManager.SecContentType.Human) break;
+                humans.Add(GameObject.Instantiate(ContentManager.Instance.Human, spawnPosition, Quaternion.identity).GetComponent<Human>());
+                humans.Last().Initialize(s.position);
+                humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+                humansInstantiated++;
+                break;
+        }
 
         return new WorldObject();
     }
