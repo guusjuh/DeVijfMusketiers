@@ -6,7 +6,7 @@ public class MovableObject : EnemyTarget {
 
     public void Teleport(Coordinate newPos)
     {
-        GameManager.Instance.TileManager.MoveObject(gridPosition, newPos, type);
+        GameManager.Instance.TileManager.MoveObject(gridPosition, newPos, this);
 
         gridPosition = newPos;
         Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
@@ -30,5 +30,4 @@ public class MovableObject : EnemyTarget {
         }
         return false;
     }
-
 }

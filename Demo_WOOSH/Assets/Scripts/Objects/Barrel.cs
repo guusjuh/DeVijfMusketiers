@@ -17,10 +17,8 @@ public class Barrel : MovableObject
         {
             destroyed = value;
             canBeTargeted = !destroyed;
-            GameManager.Instance.TileManager.SwitchStateTile(type, gridPosition);
-            type = destroyed ? TileManager.ContentType.BrokenBarrel : TileManager.ContentType.Barrel;
 
-            GetComponent<SpriteRenderer>().sprite = destroyed ? destoryedSpr : normalSpr;
+            sprRender.sprite = destroyed ? destoryedSpr : normalSpr;
             if (destroyed) gameObject.layer = 0;
             else gameObject.layer = 8;
         }
@@ -31,7 +29,7 @@ public class Barrel : MovableObject
         base.Initialize(startPos);
 
         sprRender = GetComponent<SpriteRenderer>();
-        type = TileManager.ContentType.Barrel;
+        type = TileManager.ContentType.Environment;
 
         normalSpr = sprRender.sprite;
         destoryedSpr = Resources.Load<Sprite>("Sprites/World/brokenbarrel");
@@ -39,19 +37,20 @@ public class Barrel : MovableObject
 
     public override void Clear()
     {
-        GameManager.Instance.LevelManager.RemoveBarrel(this);
+        GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
     public override bool Hit()
     {
         Destroyed = true;
-        //GameManager.Instance.LevelManager.RemoveBarrel(this);
         return true;
     }
 
     public void RemoveByGap()
     {
         Destroyed = true;
-        GameManager.Instance.LevelManager.RemoveBarrel(this);
+        GameManager.Instance.LevelManager.RemoveObject(this);
     }
+
+    public override bool IsBarrel() { return true; }
 }

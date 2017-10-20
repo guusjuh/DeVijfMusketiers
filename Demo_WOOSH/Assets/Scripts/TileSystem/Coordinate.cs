@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: a solid method to find the difference between two coordinates (not in worldspace, but coordinatespace)
 [Serializable]
 public struct Coordinate
 {
@@ -50,6 +49,5 @@ public struct Coordinate
         Vector2 otherPos = GameManager.Instance.TileManager.GetWorldPosition(other);
 
         return Vector2.Distance(otherPos, thisPos);
-            //Mathf.Abs((thisPos.x - otherPos.x)) + Mathf.Abs((thisPos.y - otherPos.y));
     }
 }

@@ -6,17 +6,16 @@ using UnityEngine.UI;
 
 public class PostGameInfoPanel : MonoBehaviour
 {
-    private Text statusText;
-
-    private const string WIN_STRING = "Level completed!";
-    private const string LOSE_STRING = "Defeated...";
-
-    private enum HumanPostGameStatus
-    {
+    private enum HumanPostGameStatus {
         MoveOn = 0,
         Stay,
         BrokeContract
     }
+
+    private Text statusText;
+
+    private const string WIN_STRING = "Level completed!";
+    private const string LOSE_STRING = "Defeated...";
 
     private Dictionary<HumanPostGameStatus, PostGameInfo> postGameInfo;
 

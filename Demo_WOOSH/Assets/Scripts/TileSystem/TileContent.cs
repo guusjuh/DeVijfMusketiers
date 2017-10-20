@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class TileContent
@@ -8,8 +9,8 @@ public class TileContent
     private TileManager.TileType tileType = TileManager.TileType.Normal;
     public TileManager.TileType TileType { get { return tileType; } }
 
-    private List<TileManager.ContentType> contentTypes = new List<TileManager.ContentType>();
-    public List<TileManager.ContentType> ContentTypes { get { return contentTypes; } }
+    private List<WorldObject> contentTypes = new List<WorldObject>();
+    public List<WorldObject> ContentTypes { get { return contentTypes; } }
 
     private TileNode refNode;
 
@@ -18,15 +19,54 @@ public class TileContent
         this.refNode = refNode;
     }
 
+    public bool ContainsHuman()
+    {
+        return contentTypes.Find(c => c.IsHuman()) != null;
+    }
+
+    public bool ContainsMonster()
+    {
+        return contentTypes.Find(c => c.IsMonster()) != null;
+    }
+
+    public bool ContainsWalkingMonster()
+    {
+        return contentTypes.Find(c => c.IsMonster() && c.IsWalking()) != null;
+    }
+
+    public bool ContainsFlyingMonster()
+    {
+        return contentTypes.Find(c => c.IsMonster() && c.IsFlying()) != null;
+    }
+
+    public bool ContainsShrine()
+    {
+        return contentTypes.Find(c => c.IsShrine()) != null;
+    }
+
+    public bool ContainsBarrel()
+    {
+        return contentTypes.Find(c => c.IsBarrel()) != null;
+    }
+
+    public bool ContainsBrokenBarrel()
+    {
+        return contentTypes.Find(c => c.IsBarrel() && c.GetComponent<Barrel>().Destroyed) != null;
+    }
+
     public bool CompletelyEmpty()
     {
-        return contentTypes.Count == 0 && tileType != TileManager.TileType.Gap;
+        return contentTypes.Count == 0 && tileType != TileManager.TileType.Dangerous;
     }
 
     public bool WalkAble()
     {
-        return (contentTypes.Count == 0 && tileType != TileManager.TileType.Gap) || 
-            (contentTypes.Count == 1 && contentTypes[0] == TileManager.ContentType.BrokenBarrel && tileType != TileManager.TileType.Gap);
+        bool containsBrokenBarrel = contentTypes.Count == 1 &&
+                                    contentTypes[0].IsBarrel() &&
+                                    contentTypes[0].GetComponent<Barrel>().Destroyed &&
+                                    tileType != TileManager.TileType.Dangerous;
+
+        return CompletelyEmpty() || containsBrokenBarrel;
     }
 
     public void SetTileType(TileManager.TileType type)
@@ -34,25 +74,23 @@ public class TileContent
         // maybe this check isn't needed in the future,
         // but for now, you cannot change back from goo
 
-        if (tileType == TileManager.TileType.Gap)
+        if (tileType == TileManager.TileType.Dangerous)
             return;
         else
         {
             tileType = type;
-            if (tileType == TileManager.TileType.Gap) refNode.MakeGap();
+            if (tileType == TileManager.TileType.Dangerous) refNode.MakeGap();
 
             // kill all on this tile!
-            if (contentTypes.Contains(TileManager.ContentType.Barrel) ||
-                contentTypes.Contains(TileManager.ContentType.BrokenBarrel))
+            if (contentTypes.Find(c => c.IsBarrel()))
             {
                 GameManager.Instance.LevelManager.Barrels.Find(go => go.GridPosition == refNode.GridPosition).RemoveByGap();
             }
-            else if (contentTypes.Contains(TileManager.ContentType.Human) ||
-                contentTypes.Contains(TileManager.ContentType.InivisbleHuman))
+            else if (contentTypes.Find(c => c.IsHuman()))
             {
                 GameManager.Instance.LevelManager.Humans.Find(go => go.GridPosition == refNode.GridPosition).Hit();
             }
-            else if (contentTypes.Contains(TileManager.ContentType.Shrine))
+            else if(contentTypes.Find(c => c.IsShrine()))
             {
                 GameManager.Instance.LevelManager.Shrines.Find(go => go.GridPosition == refNode.GridPosition).Hit();
             }
@@ -60,40 +98,27 @@ public class TileContent
         
     }
 
-    public void AddContent(TileManager.ContentType type)
+    public void AddContent(WorldObject worldObject)
     {
-        contentTypes.Add(type);
+        contentTypes.Add(worldObject);
     }
 
-    public void RemoveContent(TileManager.ContentType type)
+    public void RemoveContent(WorldObject worldObject)
     {
-        contentTypes.Remove(type);
-    }
-
-    public void ReplaceContent(TileManager.ContentType oldType, TileManager.ContentType newType)
-    {
-        RemoveContent(oldType);
-        AddContent(newType);
+        contentTypes.Remove(worldObject);
     }
 
     public int EnterCost()
     {
         int cost = 1;
 
-        if (contentTypes.Contains(TileManager.ContentType.Barrel) ||
-                contentTypes.Contains(TileManager.ContentType.Human) ||
-                contentTypes.Contains(TileManager.ContentType.Shrine))
+        if (contentTypes.Find(c => c.IsBarrel()) ||
+            contentTypes.Find(c => c.IsShrine()) ||
+            contentTypes.Find(c => c.IsHuman()))
         {
             cost++;
         }
         
         return cost;
     }
-
-    public bool CanEnter(bool flying = false)
-    {
-        //TODO: loop through content and decide Y/N
-        return true;
-    }
-
 }

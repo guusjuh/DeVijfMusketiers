@@ -7,20 +7,22 @@ using UnityEngine;
 
 public class Enemy : WorldObject
 {
-    //spell effects:
+    // spell effects
     protected bool slowed = false;
     protected int slowCount = 0; // for how many turns am I still slowed
     public bool Slowed { get { return slowed; } }
+    private GameObject frozenIcon;
+
     protected bool burning = false;
     public bool Burning { get { return burning; } }
     protected int burnDamage;
     protected int burnModifier = 0;
     protected int burnCount = 0;
-
-    protected int calculatedTotalAP = 0; // used to temporarily remove or add action points (for example slowed)
-
-    protected int totalActionPoints = 3;       // total points
-    protected int currentActionPoints;        // points left this turn
+    private GameObject burnedIcon;
+    
+    protected int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
+    protected int totalActionPoints = 3;        // total points
+    protected int currentActionPoints;          // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
     protected bool hasSpecial = true;
@@ -28,10 +30,10 @@ public class Enemy : WorldObject
 
     protected int specialCost = 3;
     protected int specialCooldown = 0;
-    protected int viewDistance = 1;
-
-    public int SpecialCooldown { get { return specialCooldown; } }
     protected int totalSpecialCooldown = 3;
+    public int SpecialCooldown { get { return specialCooldown; } }
+
+    protected int viewDistance = 1;
 
     protected float startHealth = 10;
     public float StartHealth { get { return startHealth; } }
@@ -50,13 +52,13 @@ public class Enemy : WorldObject
     protected EnemyTarget prevTarget;
     protected List<TileNode> currentPath = null;
 
-    private GameObject burnedIcon;
-    private GameObject frozenIcon;
-
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
 
     public bool Dead { get; private set; }
+
+    private bool canFly = false;
+    public bool CanFly { get { return canFly; } }
 
     public override void Initialize(Coordinate startPos)
     {
@@ -89,16 +91,12 @@ public class Enemy : WorldObject
         possibleSpellTypes.Add(GameManager.SpellType.Attack);
         possibleSpellTypes.Add(GameManager.SpellType.FrostBite);
         possibleSpellTypes.Add(GameManager.SpellType.Fireball);
-
-        type = TileManager.ContentType.WalkingMonster;
-
-        //SetUIInfo();
     }
 
     public override void Clear()
     {
         DestroyStatusIcons();
-        GameManager.Instance.LevelManager.RemoveEnemy(this);
+        GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
     protected virtual void Attack(EnemyTarget other)
@@ -110,6 +108,7 @@ public class Enemy : WorldObject
     public virtual bool Hit(int dmg)
     {
         health -= dmg;
+        StartCoroutine(HitVisual());
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
         if (health <= 0)
@@ -118,17 +117,11 @@ public class Enemy : WorldObject
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
             DestroyStatusIcons();
-            GameManager.Instance.LevelManager.RemoveEnemy(this, true);
+            GameManager.Instance.LevelManager.RemoveObject(this, true);
             return true;
         }
 
         return false;
-    }
-
-    private void DestroyStatusIcons()
-    {
-        Destroy(burnedIcon);
-        Destroy(frozenIcon);
     }
 
     protected IEnumerator HitVisual()
@@ -140,6 +133,12 @@ public class Enemy : WorldObject
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
 
         yield break;
+    }
+
+    private void DestroyStatusIcons()
+    {
+        Destroy(burnedIcon);
+        Destroy(frozenIcon);
     }
 
     public bool CheckTarget()
@@ -163,7 +162,7 @@ public class Enemy : WorldObject
     public virtual void ShowPossibleRoads()
     {
         GameManager.Instance.TileManager.HidePossibleRoads();
-        GameManager.Instance.TileManager.ShowPossibleRoads(gridPosition, calculatedTotalAP);
+        GameManager.Instance.TileManager.ShowPossibleRoads(this, gridPosition, calculatedTotalAP);
     }
 
     public void Slow(int turns)
@@ -248,6 +247,16 @@ public class Enemy : WorldObject
 
     public virtual void EndTurn()
     {
+        HandleSlow();
+        HandleBurn();
+
+        currentActionPoints = calculatedTotalAP;
+
+        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
+    }
+
+    private void HandleSlow()
+    {
         if (slowCount > 0)
         {
             slowCount--;
@@ -258,7 +267,10 @@ public class Enemy : WorldObject
                 calculatedTotalAP = totalActionPoints;
             }
         }
+    }
 
+    private void HandleBurn()
+    {
         if (burnCount > 0)
         {
             if (burning)
@@ -272,10 +284,6 @@ public class Enemy : WorldObject
                 burning = false;
             }
         }
-
-        currentActionPoints = calculatedTotalAP;
-
-        UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
     }
 
     public virtual void EnemyMove()
@@ -335,7 +343,7 @@ public class Enemy : WorldObject
     protected virtual void Walk(Coordinate direction)
     {
         // update pos in tile map
-        GameManager.Instance.TileManager.MoveObject(gridPosition, gridPosition + direction, type);
+        GameManager.Instance.TileManager.MoveObject(gridPosition, gridPosition + direction, this);
 
         // update x and y
         gridPosition += direction;
@@ -426,9 +434,7 @@ public class Enemy : WorldObject
         for (int i = 0; i < damagables.Count; i++)
         {
             // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
-            if (!damagables[i].CanBeTargeted ||
-                (damagables[i].Type == TileManager.ContentType.InivisbleHuman ||
-                 (damagables[i].Type == TileManager.ContentType.Shrine)))           //shrines aren't damagable currently
+            if (!damagables[i].CanBeTargeted || (damagables[i].IsShrine()))           //shrines aren't damagable currently
                     continue;
 
             //calculate probability 
@@ -475,7 +481,7 @@ public class Enemy : WorldObject
             }
 
             //generate path to chosen target
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, type);
+            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, this);
 
             // if no path was found
             if (currentPath == null)
@@ -486,7 +492,7 @@ public class Enemy : WorldObject
                     // generate and check path for each target
                     foreach (KeyValuePair<EnemyTarget, int> entry in possibleTargets)
                     {
-                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, entry.Key.GridPosition, type);
+                        currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, entry.Key.GridPosition, this);
                         
                         // if we found a valid path, return
                         if (currentPath != null)
@@ -511,7 +517,6 @@ public class Enemy : WorldObject
 
     public EnemyTarget SelectTargetViewDist()
     {
-        //TODO: find close by target
         List<EnemyTarget> possibleTargets = new List<EnemyTarget>();
         List<EnemyTarget> damagables = new List<EnemyTarget>();
 
@@ -521,8 +526,7 @@ public class Enemy : WorldObject
         for (int i = 0; i < damagables.Count; i++)
         {
             // dont add targets that cannot be targeted, are invisible (human), or are inactive (shrine)
-            if (!damagables[i].CanBeTargeted ||
-                (damagables[i].Type == TileManager.ContentType.InivisbleHuman))
+            if (!damagables[i].CanBeTargeted)
                 continue;
 
             // dont add targets that arnt in view dist
@@ -565,7 +569,6 @@ public class Enemy : WorldObject
 
     public void UpdateTarget()
     {
-        // **** NEW IMPLEMENTATION: check for someone being in my viewdistance, 
         // if, select one of them as my target
         // else, old implementation
         EnemyTarget targetNearby = SelectTargetViewDist();
@@ -577,23 +580,19 @@ public class Enemy : WorldObject
         }    
 
         // do I have a target at all?
-        // is my target (possibly a new nearby target) a human? than i have to check if he's not invisible
-        if (target == null || target.Type == TileManager.ContentType.InivisbleHuman)
+        if (target == null)
             SelectTarget(); // select a new target
         else
         {
             // update the current path to the original OR nearby target
             currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition,
                             target.GridPosition,
-                            type);
+                            this);
 
             // if there is no possible route to our target right now, select a new target. 
             // if there are no other possiblities, the enemy will skip a turn.
             if (currentPath == null) SelectTarget();
         }
-
-        // **** OLD IMPLEMENTATION: only if my target is gone or invisible, select a new target, else only update the path
-        // is my target a human? than i have to check if he's not invisibleW
     }
 
     public bool TargetNearby()

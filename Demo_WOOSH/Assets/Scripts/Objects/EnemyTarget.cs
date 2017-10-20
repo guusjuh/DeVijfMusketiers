@@ -22,7 +22,7 @@ public class EnemyTarget : WorldObject {
     public virtual void DeadByGap()
     {
         canBeTargeted = false;
-        GameManager.Instance.TileManager.RemoveObject(gridPosition, type);
+        GameManager.Instance.TileManager.RemoveObject(gridPosition, this);
         
         // in child: remove from lvlmanager 
     }

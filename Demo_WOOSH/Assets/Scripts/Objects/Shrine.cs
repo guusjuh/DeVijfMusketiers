@@ -24,12 +24,12 @@ public class Shrine : EnemyTarget
         base.Initialize(startPos);
 
         sprRender = GetComponent<SpriteRenderer>();
-        type = TileManager.ContentType.Shrine;
+        type = TileManager.ContentType.Environment;
     }
 
     public override void Clear()
     {
-        GameManager.Instance.LevelManager.RemoveShrine(this);
+        GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
     public override bool Hit()
@@ -39,7 +39,7 @@ public class Shrine : EnemyTarget
 
         sprRender.color = normalColor;
 
-        GameManager.Instance.LevelManager.RemoveShrine(this);
+        GameManager.Instance.LevelManager.RemoveObject(this);
 
         return true;
     }
@@ -66,4 +66,6 @@ public class Shrine : EnemyTarget
 
         Active = false;
     }
+
+    public override bool IsShrine() { return true; }
 }

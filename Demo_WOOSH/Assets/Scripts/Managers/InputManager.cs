@@ -97,7 +97,8 @@ public class InputManager
         {
             if (worldObjects.Count > 1)
             {
-                if (worldObjects[i].Type != TileManager.ContentType.BrokenBarrel)
+                if (!(worldObjects[i].IsBarrel() &&
+                    worldObjects[i].GetComponent<Barrel>().Destroyed))
                 {
                     HandleActionOnClickedObject(worldObjects[i]);
                     break;

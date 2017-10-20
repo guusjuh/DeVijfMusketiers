@@ -13,6 +13,10 @@ public class Wolf : Enemy
         this.hasSpecial = false;
         viewDistance = 3;
 
+        this.type = TileManager.ContentType.Minion;
+
         base.Initialize(startPos);
     }
+
+    public override bool IsWalking() { return true; }
 }

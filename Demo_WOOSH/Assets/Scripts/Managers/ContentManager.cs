@@ -4,22 +4,69 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Xml.Serialization;
+using UnityEditorInternal;
 
 [Serializable]
 public struct SpawnNode
 {
     public TileManager.ContentType type;
+    public ContentManager.SecContentType secType;
     public Coordinate position;
 }
 
 [Serializable]
 public class ContentManager {
+    public enum SecContentType
+    {
+        Human = 0,
+        Dodin,
+        Arnest,
+        Sketta,
+        Wolf,
+        Barrel,
+        Shrine
+    }
+
+    public enum HumanTypes {
+        Bad,
+        Ok,
+        Normal,
+        Good,
+        Fabulous
+    }
+
     private static ContentManager instance = null;
     public static ContentManager Instance {
         get {
             if (instance == null) instance = UberManager.Instance.ContentManager;
             return instance;
         }
+    }
+
+    static public bool IsValidSecType(TileManager.ContentType contentType, SecContentType secContentType)
+    {
+        switch (contentType)
+        {
+            case TileManager.ContentType.Human:
+                if (secContentType == SecContentType.Human) return true;
+                break;
+            case TileManager.ContentType.Boss:
+                if (secContentType == SecContentType.Arnest ||
+                    secContentType == SecContentType.Dodin ||
+                    secContentType == SecContentType.Sketta) return true;
+                break;
+            case TileManager.ContentType.Minion:
+                if (secContentType == SecContentType.Wolf) return true;
+                break;
+            case TileManager.ContentType.Environment:
+                if (secContentType == SecContentType.Barrel ||
+                    secContentType == SecContentType.Shrine) return true;
+                break;
+            default:
+                break;
+        }
+
+        return false;
     }
 
     public GameObject Barrel { get; private set; }
@@ -40,8 +87,7 @@ public class ContentManager {
     [SerializeField] private LevelDataContainer levelDataContainer = new LevelDataContainer();
     public LevelDataContainer LevelDataContainer { get { return levelDataContainer; } }
 
-    public void Initialize()
-    {
+    public void Initialize() {
         Barrel = Resources.Load<GameObject>("Prefabs/Barrel");
         Shrine = Resources.Load<GameObject>("Prefabs/Shrine");
         Gap = Resources.Load<GameObject>("Prefabs/Hole");
@@ -68,16 +114,7 @@ public class ContentManager {
         Bosses = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Creatures"));
         Minions = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Minions"));
 
-        ReadLevelData();
-    }
-
-    public enum HumanTypes
-    {
-        Bad,
-        Ok,
-        Normal, 
-        Good,
-        Fabulous
+        //ReadLevelData();
     }
 
     public List<Sprite> GetHumanSprites(HumanTypes type)

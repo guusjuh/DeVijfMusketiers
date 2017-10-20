@@ -25,7 +25,7 @@ public class Dodin : Enemy
         viewDistance = 4;
 
         this.hasSpecial = true;
-        type = TileManager.ContentType.FlyingMonster;
+        this.type = TileManager.ContentType.Boss;
 
         base.Initialize(startPos);
     }
@@ -34,7 +34,7 @@ public class Dodin : Enemy
     {
         // target reached
         float distance = (this.gridPosition.EuclideanDistance(target.GridPosition));
-        float maxDistance = specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;// + (GameManager.Instance.TileManager.HexagonHeight * (Mathf.Abs(gridPosition.x % 2))); ;
+        float maxDistance = specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;
         bool closeEnough = distance - maxDistance <= 0.01f;
         bool enoughAP = currentActionPoints >= specialCost;
         bool onCooldown = specialCooldown > 0;
@@ -69,15 +69,10 @@ public class Dodin : Enemy
 
         // either barrel on my way or target reached
         if (!canMove)
-        {
             CantMove(hit.transform);
-        }
         // else: move
         else
-        {
-
             Walk(direction);
-        }
 
         EndMove();
     }
@@ -92,7 +87,7 @@ public class Dodin : Enemy
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
         float sqrRemainingDistance = (ball.transform.position - end).sqrMagnitude;
-        //TODO: remove rounding error now resolved with a dirty fix.
+
         //While that distance is greater than a very small amount (Epsilon, almost zero):
         while (sqrRemainingDistance > 0.0001f)
         {
@@ -116,6 +111,11 @@ public class Dodin : Enemy
     {
         base.ShowPossibleRoads();
 
-        if (specialCooldown <= 0 && calculatedTotalAP >= specialCost) GameManager.Instance.TileManager.ShowExtraTargetForSpecial(gridPosition, specialMaxDistance);
+        if (specialCooldown <= 0 && calculatedTotalAP >= specialCost) GameManager.Instance.TileManager.ShowExtraTargetForSpecial(this, gridPosition, specialMaxDistance);
+    }
+
+    public override bool IsFlying()
+    {
+        return true;
     }
 }

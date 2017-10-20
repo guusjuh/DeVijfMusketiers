@@ -17,6 +17,8 @@ public class Sketta : Enemy {
         this.hasSpecial = false;
         viewDistance = 3;
 
+        this.type = TileManager.ContentType.Boss;
+
         base.Initialize(startPos);
     }
 
@@ -35,11 +37,12 @@ public class Sketta : Enemy {
     {
         Shield.SetActive(true);
 
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.5f);
 
         Shield.SetActive(false);
 
         yield break;
     }
 
+    public override bool IsWalking() { return true; }
 }

@@ -54,8 +54,7 @@ public class UberManager : MonoBehaviour {
 
     private bool doingSetup = true;
 
-    public void Awake()
-    {
+    public void Awake() {
         doingSetup = true;
 
         Application.targetFrameRate = 60;
@@ -73,14 +72,12 @@ public class UberManager : MonoBehaviour {
         stateManagers.Get(state).Start();
     }
 
-    public void Update()
-    {
+    public void Update() {
         stateManagers.Get(state).Update();
         uiManager.UpdateUI();
     }
 
-    public void GotoState(GameStates nextState)
-    {
+    public void GotoState(GameStates nextState) {
         stateManagers.Get(state).Clear();
         prevState = state;
         state = nextState;
@@ -91,14 +88,11 @@ public class UberManager : MonoBehaviour {
 #if UNITY_EDITOR  
 [CustomEditor(typeof(UberManager))]
 // ^ This is the script we are making a custom editor for.
-public class UberEditorScript : Editor
-{
-    public override void OnInspectorGUI()
-    {
+public class UberEditorScript : Editor {
+    public override void OnInspectorGUI() {
         DrawDefaultInspector();
 
-        if (GUILayout.Button("Save level data"))
-        {
+        if (GUILayout.Button("Save level data")) {
             ContentManager.Instance.SaveAllInformation();
             Debug.Log("Level Data saved");
         }

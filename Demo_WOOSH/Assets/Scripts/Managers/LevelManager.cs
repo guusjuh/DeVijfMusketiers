@@ -20,7 +20,6 @@ public class LevelManager
     private Player player;
     public Player Player { get { return player; } }
 
-    //TODO: implement hooman & goo turns
     private bool playersTurn = false;
     private bool othersTurn = false;
 
@@ -219,7 +218,7 @@ public class LevelManager
             GameManager.Instance.CameraManager.LockTarget(chosenGap.Hexagon.transform);
             yield return new WaitForSeconds(gapDelay);
 
-            chosenGap.Content.SetTileType(TileManager.TileType.Gap);
+            chosenGap.Content.SetTileType(TileManager.TileType.Dangerous);
 
             if (!GameManager.Instance.GameOn) break;
         }
@@ -278,106 +277,101 @@ public class LevelManager
 
         foreach (SpawnNode s in spawnNodes)
         {
-            Vector2 spawnPosition = GameManager.Instance.TileManager.GetWorldPosition(s.position);
-            GameManager.Instance.TileManager.SetObject(s.position, s.type);
+            WorldObject toBeSpawned = SpawnFromNode(s);
 
-            //TODO: need more specific type of content definition
-            // for example: content type for tiles and occupation, content for the actual prefab and different enemies and stuff
-            switch (s.type)
-            {
-                case TileManager.ContentType.Barrel:
-                    barrels.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Barrel, spawnPosition, Quaternion.identity)
-                            .GetComponent<Barrel>());
-                    barrels.Last().Initialize(s.position);
-                    break;
-                case TileManager.ContentType.Human:
-                    humans.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Human, spawnPosition, Quaternion.identity)
-                            .GetComponent<Human>());
-                    humans.Last().Initialize(s.position);
-                    humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
-                    humansInstantiated++;
-                    break;
-                case TileManager.ContentType.Shrine:
-                    shrines.Add(
-                        GameObject.Instantiate(ContentManager.Instance.Shrine, spawnPosition, Quaternion.identity)
-                            .GetComponent<Shrine>());
-                    shrines.Last().Initialize(s.position);
-                    break;
-                case TileManager.ContentType.WalkingMonster:
-                case TileManager.ContentType.FlyingMonster:
-                    if (!bossSpawned)
-                    {
-                        enemies.Add(
-                            GameObject.Instantiate(
-                                    ContentManager.Instance.Bosses[
-                                        ContentManager.Instance.LevelDataContainer.LevelData[
-                                            GameManager.Instance.CurrentLevel].bossID], spawnPosition,
-                                    Quaternion.identity)
-                                .GetComponent<Enemy>());
-                        bossSpawned = true;
-                    }
-                    else
-                    {
-                        enemies.Add(GameObject.Instantiate(ContentManager.Instance.Minions[0], spawnPosition, Quaternion.identity).GetComponent<Enemy>());
-                    }
-                    
-                    enemies.Last().Initialize(s.position);
-                    break;
-            }
+            GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
         }
 
         // spawn goo
         List<Coordinate> gooPosses = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPosses;
-        gooPosses.HandleAction(g => GameManager.Instance.TileManager.GetNodeReference(g).Content.SetTileType(TileManager.TileType.Gap));
+        gooPosses.HandleAction(g => GameManager.Instance.TileManager.GetNodeReference(g).Content.SetTileType(TileManager.TileType.Dangerous));
     }
 
-    //TODO: refactor!
-    public void RemoveHuman(Human toRemove, bool inGame = false)
+    private WorldObject SpawnFromNode(SpawnNode s)
     {
-        humans.Remove(toRemove);
+        Vector2 spawnPosition = GameManager.Instance.TileManager.GetWorldPosition(s.position);
 
-        Remove(toRemove);
-
-        if (inGame && humans.Count <= 0)
+        switch (s.type)
         {
-            //TODO: game over
-            Debug.Log("You lost!");
-            GameManager.Instance.GameOver();
+            //TODO: after content manager is refactored.
         }
 
-        shrines.HandleAction(s => s.CheckForActive());
+
+
+        /*case TileManager.ContentType.Barrel:
+            barrels.Add(
+                GameObject.Instantiate(ContentManager.Instance.Barrel, spawnPosition, Quaternion.identity)
+                    .GetComponent<Barrel>());
+            barrels.Last().Initialize(s.position);
+            break;
+        case TileManager.ContentType.Human:
+            humans.Add(
+                GameObject.Instantiate(ContentManager.Instance.Human, spawnPosition, Quaternion.identity)
+                    .GetComponent<Human>());
+            humans.Last().Initialize(s.position);
+            humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+            humansInstantiated++;
+            break;
+        case TileManager.ContentType.Shrine:
+            shrines.Add(
+                GameObject.Instantiate(ContentManager.Instance.Shrine, spawnPosition, Quaternion.identity)
+                    .GetComponent<Shrine>());
+            shrines.Last().Initialize(s.position);
+            break;
+        case TileManager.ContentType.WalkingMonster:
+        case TileManager.ContentType.FlyingMonster:
+            if (!bossSpawned)
+            {
+                enemies.Add(
+                    GameObject.Instantiate(
+                            ContentManager.Instance.Bosses[
+                                ContentManager.Instance.LevelDataContainer.LevelData[
+                                    GameManager.Instance.CurrentLevel].bossID], spawnPosition,
+                            Quaternion.identity)
+                        .GetComponent<Enemy>());
+                bossSpawned = true;
+            }
+            else
+            {
+                enemies.Add(GameObject.Instantiate(ContentManager.Instance.Minions[0], spawnPosition, Quaternion.identity).GetComponent<Enemy>());
+            }
+
+            enemies.Last().Initialize(s.position);
+            break;
+    }*/
+
+        return new WorldObject();
     }
 
-    public void RemoveShrine(Shrine toRemove)
-    {
-        shrines.Remove(toRemove);
-        Remove(toRemove);
-    }
 
-    public void RemoveBarrel(Barrel toRemove)
+    public void RemoveObject(WorldObject toRemove, bool inGame = false)
     {
-        barrels.Remove(toRemove);
-        Remove(toRemove);
-    }
-
-    public void RemoveEnemy(Enemy toRemove, bool inGame = false)
-    {
-        enemies.Remove(toRemove);
-        Remove(toRemove);
-
-        if (inGame && enemies.Count <= 0)
+        if (toRemove.IsBarrel())
         {
-            //TODO: win!
-            Debug.Log("You won!");
-            GameManager.Instance.GameOver();
+            barrels.Remove((Barrel) toRemove);
         }
+        else if (toRemove.IsHuman())
+        {
+            humans.Remove((Human)toRemove);
+            if (inGame && humans.Count <= 0) GameManager.Instance.GameOver();
+        }
+        else if (toRemove.IsMonster())
+        {
+            enemies.Remove((Enemy)toRemove);
+            if (inGame && enemies.Count <= 0) GameManager.Instance.GameOver();
+        }
+        else if (toRemove.IsShrine())
+        {
+            shrines.Remove((Shrine)toRemove);
+        }
+
+        // finalize object
+        Remove(toRemove);
     }
 
     private void Remove(WorldObject toRemove)
     {
-        GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove.Type);
+        GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
         GameObject.Destroy(toRemove.gameObject);
     }
 }

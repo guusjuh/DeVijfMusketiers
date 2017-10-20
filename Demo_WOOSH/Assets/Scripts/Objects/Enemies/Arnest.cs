@@ -11,16 +11,23 @@ public class Arnest : Enemy
         this.hasSpecial = false;
         viewDistance = 3;
 
+        this.type = TileManager.ContentType.Boss;
+
         base.Initialize(startPos);
     }
 
     protected override void Attack(EnemyTarget other)
     {
-        if (other.Type == TileManager.ContentType.Human || other.Type == TileManager.ContentType.Shrine)
+        if (other.IsHuman() || other.IsShrine())
         {
             totalActionPoints++;
         }
 
         base.Attack(other);
+    }
+
+    public override bool IsWalking()
+    {
+        return true;
     }
 }

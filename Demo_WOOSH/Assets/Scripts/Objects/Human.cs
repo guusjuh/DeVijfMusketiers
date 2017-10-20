@@ -4,24 +4,19 @@ using System.Linq;
 using UnityEngine;
 
 public class Human : MovableObject {
-
-    private Color shieldColor = new Color(0.0f, 0.0f, 0.5f, 0.5f);
-    private Color normalColor;
-
-    private bool invisible;
-    private static int totalInvisiblePoints = 2;
-    private int currInvisiblePoints;
-    public bool Inivisible { get { return invisible;} }
-
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
     private float inverseMoveTime;          //Used to make movement more efficient.
 
+    private SpriteRenderer sprRender;
+
     private int totalFleePoints = 2;
     private int currentFleePoints;
     public int CurrentFleePoints { get {return currentFleePoints; } }
-    private bool inPanic;
+
     private int viewDistance = 4;
+
+    private bool inPanic;
     public bool InPanic
     {
         get
@@ -29,6 +24,38 @@ public class Human : MovableObject {
             CheckInPanic();
             return inPanic;
         }
+    }
+
+    private Contract contractRef;
+    public Contract ContractRef
+    {
+        get { return contractRef; }
+        set
+        {
+            contractRef = value;
+            sprRender.sprite = contractRef.InWorld;
+        }
+    }
+
+    public override void Initialize(Coordinate startPos)
+    {
+        base.Initialize(startPos);
+
+        type = TileManager.ContentType.Human;
+
+        inverseMoveTime = 1f / moveTime;
+        rb2D = GetComponent<Rigidbody2D>();
+
+        sprRender = GetComponent<SpriteRenderer>();
+
+        currentFleePoints = totalFleePoints;
+        possibleSpellTypes.Add(GameManager.SpellType.Teleport);
+    }
+
+    public void StartTurn()
+    {
+        CheckInPanic();
+        currentFleePoints = totalFleePoints;
     }
 
     private void CheckInPanic()
@@ -48,20 +75,6 @@ public class Human : MovableObject {
 
         inPanic = false;
     }
-
-    private Contract contractRef;
-
-    public Contract ContractRef
-    {
-        get { return contractRef; }
-        set
-        {
-            contractRef = value;
-            sprRender.sprite = contractRef.InWorld;
-        }
-    }
-
-    private SpriteRenderer sprRender;
 
     public IEnumerator Flee()
     {
@@ -128,13 +141,10 @@ public class Human : MovableObject {
         TileNode chosenNode = fleeNodes[UnityEngine.Random.Range(0, fleeNodes.Count)];
 
         //move to the chosen node
-        GameManager.Instance.TileManager.MoveObject(gridPosition, chosenNode.GridPosition, type);
+        GameManager.Instance.TileManager.MoveObject(gridPosition, chosenNode.GridPosition, this);
         gridPosition = chosenNode.GridPosition;
 
         yield return StartCoroutine(SmoothMovement(GameManager.Instance.TileManager.GetWorldPosition(chosenNode.GridPosition)));
-
-        //Debug.Log(fleeNodes.Count);
-        //fleeNodes.HandleAction(n => n.HighlightTile(true, Color.magenta));
 
         yield return null;
     }
@@ -163,31 +173,13 @@ public class Human : MovableObject {
         }
     }
 
-    public override void Initialize(Coordinate startPos)
-    {
-        base.Initialize(startPos);
-
-        type = TileManager.ContentType.Human;
-
-        inverseMoveTime = 1f / moveTime;
-        rb2D = GetComponent<Rigidbody2D>();
-
-        invisible = false;
-        sprRender = GetComponent<SpriteRenderer>();
-        normalColor = sprRender.color;
-
-        currentFleePoints = totalFleePoints;
-        possibleSpellTypes.Add(GameManager.SpellType.Teleport);
-    }
-
     public override void Clear()
     {
-        GameManager.Instance.LevelManager.RemoveHuman(this);
+        GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
     public void ActivateTeleportButtons()
     {
-        //TODO: activate buttons for each tile on the grid except for mine
         UberManager.Instance.UiManager.InGameUI.ActivateTeleportButtons(true, this);
     }
 
@@ -197,14 +189,11 @@ public class Human : MovableObject {
 
         contractRef.Die();
 
-        GameManager.Instance.LevelManager.RemoveHuman(this, true);
+        GameManager.Instance.LevelManager.RemoveObject(this, true);
 
         return true;
     }
 
-    public void StartTurn()
-    {
-        CheckInPanic();
-        currentFleePoints = totalFleePoints;
-    }
+    public override bool IsHuman() { return true; }
+    public override bool IsWalking() { return true; }
 }

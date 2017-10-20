@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreGameManager : StateManager
-{
+public class PreGameManager : StateManager {
     private int selectedLevel = 0;
     public int SelectedLevel { get { return selectedLevel; } set { selectedLevel = value; } }
 

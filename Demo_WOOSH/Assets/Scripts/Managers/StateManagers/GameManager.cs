@@ -30,14 +30,11 @@ public class GameManager : StateManager {
     private LevelManager levelManager = new LevelManager();
     public LevelManager LevelManager { get { return levelManager; } }
 
-    //TODO: make possible to work for ubermanager
     private CameraManager cameraManager;
     public CameraManager CameraManager { get { return cameraManager; } }
 
     private TileManager tileManager = new TileManager();
     public TileManager TileManager { get { return tileManager; } }
-
-    //TODO: enum for layers!!
 
     private int currentLevel = 0;
     public int CurrentLevel { get { return currentLevel; } }
@@ -45,18 +42,10 @@ public class GameManager : StateManager {
     private List<Contract> selectedContracts;
     public List<Contract> SelectedContracts { get { return selectedContracts; } }
 
-    //TODO
-    // 1st contenttype becomes content (THIS spefic boss)
-    // 2nd contenttype stays the same
-    private Dictionary<TileManager.ContentType, List<TileManager.ContentType>> typesToEnter = new Dictionary<TileManager.ContentType, List<TileManager.ContentType>>();
-    public Dictionary<TileManager.ContentType, List<TileManager.ContentType>> TypesToEnter { get { return typesToEnter; } }
-
     protected override void Initialize()
     { 
-        SetTypesToEnter();
-
         tileManager.Initialize();
-        UIManager.Instance.RestartUI();//InGameUI.Start();
+        UIManager.Instance.RestartUI();
         levelManager.Initialize();
         cameraManager = Camera.main.gameObject.AddComponent<CameraManager>();
         cameraManager.Initialize();
@@ -68,7 +57,7 @@ public class GameManager : StateManager {
     protected override void Restart()
     {
         tileManager.Restart();
-        UIManager.Instance.RestartUI();//InGameUI.Start();
+        UIManager.Instance.RestartUI();
         levelManager.Restart();
         cameraManager.Initialize();
 
@@ -100,19 +89,6 @@ public class GameManager : StateManager {
 
         // Switch game state
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
-    }
-
-    private void SetTypesToEnter()
-    {
-        List<TileManager.ContentType> bossList = new List<TileManager.ContentType>();
-        bossList.Add(TileManager.ContentType.Barrel);
-        bossList.Add(TileManager.ContentType.BrokenBarrel);
-
-        typesToEnter.Add(TileManager.ContentType.FlyingMonster, bossList);
-
-        //bossList.Add(TileManager.ContentType.FlyingMonster);
-
-        typesToEnter.Add(TileManager.ContentType.WalkingMonster, bossList);
     }
 
     // update is called every frame

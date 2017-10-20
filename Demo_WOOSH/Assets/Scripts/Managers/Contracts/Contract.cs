@@ -14,6 +14,7 @@ public class Contract
 
     [SerializeField] private int reputation;
     public int Reputation { get { return reputation; } }
+
     [SerializeField] private int totalHealth;
     private int health;
     public int TotalHealth { get { return totalHealth; } }
@@ -36,7 +37,6 @@ public class Contract
     public Sprite InWorld { get { return inWorld; } }
     public Sprite Portrait { get { return portrait; } }
 
-    //TODO: buy sprites!
     public Contract(int id, ContentManager.HumanTypes type)
     {
         this.id = id;
@@ -82,10 +82,9 @@ public class Contract
         rewards = ContentManager.Instance.GetHumanRewards(type);
     }
 
-    public void SetActive(bool on)//, int level = 0)
+    public void SetActive(bool on)
     {
         activeInCurrentLevel = on;
-        //currentLevel = level;
     }
 
     public void Die()
@@ -99,6 +98,7 @@ public class Contract
         if (diedLastLevel)
         {
             diedLastLevel = false;
+
             //TODO: animation for losing heart
 
             UberManager.Instance.PlayerData.AdjustReputation(rewards.NegativeRepPerLevel);

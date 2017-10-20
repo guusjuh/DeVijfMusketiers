@@ -4,23 +4,20 @@ using UnityEngine;
 
 public class TileManager
 {
+    // the types of the actual tiles
     public enum TileType
     {
         Normal = 0,
-        Gap,
-        Glyph,
+        Dangerous,
     }
 
     public enum ContentType
     {
         Unknown = -1,
         Human = 0,
-        InivisbleHuman,
-        Barrel,
-        BrokenBarrel,
-        Shrine,
-        FlyingMonster,
-        WalkingMonster,
+        Boss,
+        Minion,
+        Environment,
     }
 
     private static Coordinate[] directionsEven = new Coordinate[] {
@@ -202,7 +199,7 @@ public class TileManager
     }
 
 
-    public List<TileNode> GeneratePathTo(Coordinate from, Coordinate to, ContentType type)
+    public List<TileNode> GeneratePathTo(Coordinate from, Coordinate to, WorldObject worldObject)
     {
         //if (!UnitCanEnterTile(toX, toY))
         //    return null;
@@ -250,7 +247,7 @@ public class TileManager
             foreach (TileNode v in u.NeightBours)
             {
                 //float alt = dist[u] + u.DistTo(v);
-                float alt = dist[u] + CostToEnterTile(v, target, type);
+                float alt = dist[u] + CostToEnterTile(v, target, worldObject);
 
                 if (alt < dist[v])
                 {
@@ -281,19 +278,16 @@ public class TileManager
         return currentPath;
     }
 
-    public float CostToEnterTile(TileNode nextTile, ContentType type)
+    public float CostToEnterTile(TileNode nextTile, WorldObject worldObject)
     {
-        //if (!UnitCanEnterTile(nextTile.GridPosition, type))
-        //    return nextTile.EnterCost() + 1; 
-
         return nextTile.EnterCost();
     }
 
-    public float CostToEnterTile(TileNode nextTile, TileNode endTile, ContentType type)
+    public float CostToEnterTile(TileNode nextTile, TileNode endTile, WorldObject worldObject)
     {
         if (new Vector2(endTile.GridPosition.x - nextTile.GridPosition.x, endTile.GridPosition.y - nextTile.GridPosition.y).magnitude > 0.1f)
         {
-            if (!UnitCanEnterTile(nextTile.GridPosition, type))
+            if (!UnitCanEnterTile(nextTile.GridPosition, worldObject))
                 return Mathf.Infinity;
         }
 
@@ -308,28 +302,25 @@ public class TileManager
     /// <param name="x">The x.</param>
     /// <param name="y">The y.</param>
     /// <returns></returns>
-    /// //TODO: implement flying behavior
-    public bool UnitCanEnterTile(Coordinate pos, ContentType type)
+    public bool UnitCanEnterTile(Coordinate pos, WorldObject worldObject)
     {
         if (pos.x < 0 || pos.x >= rows || pos.y < 0 || pos.y >= columns)
         {
             return false;
         }
 
-        List<ContentType> typesToEnter = GameManager.Instance.TypesToEnter.Get(type);
+        bool isWalkingMonster = worldObject.IsMonster() && worldObject.IsWalking();
 
-        if (grid[pos.x, pos.y].Content.TileType == TileType.Gap 
-            && (type == ContentType.WalkingMonster))
+        if (grid[pos.x, pos.y].Content.TileType == TileType.Dangerous && isWalkingMonster)
         {
             return false;
         }
 
-        for (int j = 0; j < grid[pos.x, pos.y].Content.ContentTypes.Count; j++)
+        bool canEnterBarrels = worldObject.IsMonster();
+        for (int i = 0; i < grid[pos.x, pos.y].Content.ContentTypes.Count; i++)
         {
-            if (!typesToEnter.Contains(grid[pos.x, pos.y].Content.ContentTypes[j]))
-            {
-                return false;
-            }
+            if (grid[pos.x, pos.y].Content.ContentTypes[i].IsBarrel() && canEnterBarrels) continue;
+            else return false;
         }
 
         return true;
@@ -340,44 +331,21 @@ public class TileManager
         grid[pos.x,pos.y].Content.SetTileType(type);
     }
 
-    public void SetObject(Coordinate pos, ContentType type)
+    public void SetObject(Coordinate pos, WorldObject worldObject)
     {
-        grid[pos.x, pos.y].Content.AddContent(type);
+        grid[pos.x, pos.y].Content.AddContent(worldObject);
     }
 
-    public void RemoveObject(Coordinate pos, ContentType type)
+    public void RemoveObject(Coordinate pos, WorldObject worldObject)
     {
-        grid[pos.x, pos.y].Content.RemoveContent(type);
+        grid[pos.x, pos.y].Content.RemoveContent(worldObject);
     }
 
-    public void MoveObject(Coordinate currPos, Coordinate nextPos, ContentType type)
+    public void MoveObject(Coordinate currPos, Coordinate nextPos, WorldObject worldObject)
     {
-        RemoveObject(currPos, type);
-        SetObject(nextPos, type);
+        RemoveObject(currPos, worldObject);
+        SetObject(nextPos, worldObject);
     }
-
-    public void SwitchStateTile(TileManager.ContentType type, Coordinate pos)
-    {
-        TileManager.ContentType newContentType = TileManager.ContentType.Unknown;
-        switch (type)
-        {
-            case ContentType.Barrel:
-                newContentType = ContentType.BrokenBarrel;
-                break;
-            case ContentType.BrokenBarrel:
-                newContentType = ContentType.Barrel;
-                break;
-            case ContentType.Human:
-                newContentType = ContentType.InivisbleHuman;
-                break;
-            case ContentType.InivisbleHuman:
-                newContentType = ContentType.Human;
-                break;
-        }
-
-        grid[pos.x, pos.y].Content.ReplaceContent(type, newContentType);
-    }
-
 
     /// <summary>
     /// Calculate world position from grid position.
@@ -469,7 +437,7 @@ public class TileManager
 
         foreach (TileNode t in grid)
         {
-            if (t.Content.TileType == TileType.Gap)
+            if (t.Content.TileType == TileType.Dangerous)
                 gapNodes.Add(t);
         }
 
@@ -490,7 +458,7 @@ public class TileManager
                 if (gapNodes.Contains(GetNodeReference(currPos)) ||
                     currPos.x < 0 || currPos.x >= rows ||
                     currPos.y < 0 || currPos.y >= columns ||
-                    GetNodeReference(currPos).Content.ContentTypes.Contains(ContentType.WalkingMonster))
+                    GetNodeReference(currPos).Content.ContainsMonster())
                 {
                     continue;
                 }
@@ -512,20 +480,19 @@ public class TileManager
         return possGapNodes;
     }
 
-    public void ShowPossibleRoads(Coordinate gridPos, int actionPoints)
+    public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
     {
         highlightedNodes = new List<TileNode>();
 
         // add yourself
         TileNode hisNode = GetNodeReference(gridPos);
 
-        RecursiveTileFinder(highlightedNodes, hisNode, actionPoints, gridPos);
+        RecursiveTileFinder(worldObject, highlightedNodes, hisNode, actionPoints, gridPos);
 
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
         {
-            if (n.Content.ContentTypes.Count == 0 || n.Content.ContentTypes.Contains(ContentType.WalkingMonster) || n.Content.ContentTypes.Contains(ContentType.WalkingMonster)
-            || n.Content.ContentTypes.Contains(ContentType.BrokenBarrel) || n.Content.ContentTypes.Contains(ContentType.InivisbleHuman))
+            if (n.Content.ContentTypes.Count == 0 || n.Content.ContainsWalkingMonster() || n.Content.ContainsBrokenBarrel())
             {
                 n.HighlightTile(true, PATHCOLOR);
             }
@@ -537,16 +504,16 @@ public class TileManager
     }
 
     // assumed this is always called AFTER ShowPossibleRoads, no new list need to be set and the tiles can just be added to the highlighted
-    public void ShowExtraTargetForSpecial(Coordinate gridPos, int maxDistance)
+    public void ShowExtraTargetForSpecial(WorldObject worldObject, Coordinate gridPos, int maxDistance)
     {
         List<TileNode> nodes = new List<TileNode>();
         TileNode hisNode = GetNodeReference(gridPos);
-        RecursiveTileFinder(nodes, hisNode, maxDistance, gridPos, false);
+        RecursiveTileFinder(worldObject, nodes, hisNode, maxDistance, gridPos, false);
 
         // highlight all found humans
         nodes.HandleAction(n =>
         {
-            if (n.Content.ContentTypes.Contains(ContentType.Human))
+            if (n.Content.ContainsHuman())
             {
                 highlightedNodes.Add(n);
                 n.HighlightTile(true, TARGETCOLOR);
@@ -554,9 +521,8 @@ public class TileManager
         });
     }
 
-    private void RecursiveTileFinder(List<TileNode> nodes, TileNode thisNode, int distance, Coordinate startPos, bool usingCost = true)
+    private void RecursiveTileFinder(WorldObject worldObject, List<TileNode> nodes, TileNode thisNode, int distance, Coordinate startPos, bool usingCost = true)
     {
-        //TODO: remove actionpoints
         if (distance >= -1)
         {
             nodes.Add(thisNode);
@@ -570,10 +536,10 @@ public class TileManager
 
                     if (currDist >= lastDist)
                     {
-                        //TODO: this should be a more generic monster type
-                        RecursiveTileFinder(nodes, 
+                        RecursiveTileFinder(worldObject, 
+                                            nodes, 
                                             thisNode.NeightBours[i],
-                                            distance - (usingCost ? (int)CostToEnterTile(thisNode.NeightBours[i], ContentType.WalkingMonster) : 1), 
+                                            distance - (usingCost ? (int)CostToEnterTile(thisNode.NeightBours[i], worldObject) : 1), 
                                             startPos, 
                                             usingCost);
                     }

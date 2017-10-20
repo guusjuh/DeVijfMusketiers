@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PostGameManager : StateManager
-{
+public class PostGameManager : StateManager {
     protected override void Initialize() {
         UIManager.Instance.RestartUI();
     }
