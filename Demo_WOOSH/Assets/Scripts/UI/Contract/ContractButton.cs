@@ -37,7 +37,7 @@ public class ContractButton : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
-            stars.Add(GameObject.Instantiate(starPrefab, Vector3.zero, Quaternion.identity, starGrid.transform));
+            stars.Add(UIManager.Instance.CreateUIElement(starPrefab, Vector2.zero, starGrid.transform));
         }
     }
 
@@ -47,7 +47,7 @@ public class ContractButton : MonoBehaviour
 
         for (int i = 0; i < totalAmount; i++)
         {
-            hearts.Add(GameObject.Instantiate(heartPrefab, Vector3.zero, Quaternion.identity, heartGrid.transform));
+            hearts.Add(UIManager.Instance.CreateUIElement(heartPrefab, Vector2.zero, heartGrid.transform));
 
             if (i >= currentAmount)
             {
@@ -56,7 +56,7 @@ public class ContractButton : MonoBehaviour
         }
     }
 
-    protected void ClearHeartsAndStart()
+    protected void ClearHeartsAndStars()
     {
         while (hearts.Count > 0)
         {
@@ -73,9 +73,7 @@ public class ContractButton : MonoBehaviour
 
     public virtual void Clear()
     {
-        //TODO: make contract ref aware of it being selected for the current level!
-        ClearHeartsAndStart();
-
+        ClearHeartsAndStars();
         Destroy(this.gameObject);
     }
 }

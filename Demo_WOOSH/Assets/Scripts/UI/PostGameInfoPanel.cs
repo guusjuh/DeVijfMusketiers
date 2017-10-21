@@ -9,13 +9,16 @@ public class PostGameInfoPanel : MonoBehaviour
     private enum HumanPostGameStatus {
         MoveOn = 0,
         Stay,
-        BrokeContract
+        Dead
     }
 
     private Text statusText;
-
     private const string WIN_STRING = "Level completed!";
     private const string LOSE_STRING = "Defeated...";
+
+    private const string WIN = " humans moved onto the next level";
+    private const string STAY = " humans stayed in this level";
+    private const string DEAD = " humans broke contract";
 
     private Dictionary<HumanPostGameStatus, PostGameInfo> postGameInfo;
 
@@ -28,14 +31,14 @@ public class PostGameInfoPanel : MonoBehaviour
         postGameInfo = new Dictionary<HumanPostGameStatus, PostGameInfo>();
         postGameInfo.Add(HumanPostGameStatus.MoveOn, transform.Find("Won").GetComponent<PostGameInfo>());
         postGameInfo.Add(HumanPostGameStatus.Stay, transform.Find("Stay").GetComponent<PostGameInfo>());
-        postGameInfo.Add(HumanPostGameStatus.BrokeContract, transform.Find("BrokeContract").GetComponent<PostGameInfo>());
+        postGameInfo.Add(HumanPostGameStatus.Dead, transform.Find("BrokeContract").GetComponent<PostGameInfo>());
 
         //TODO: this is ONLY for WIN in level 3!!! THIS IS VERY SPECIAL CASE and it should be replaced as soon as we know how finsihing a contract works!!!
         if (GameManager.Instance.CurrentLevel == 2) postGameInfo.Get(HumanPostGameStatus.MoveOn).SpecialInitialize(GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
-        else postGameInfo.Get(HumanPostGameStatus.MoveOn).Initialize(GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
+        else postGameInfo.Get(HumanPostGameStatus.MoveOn).Initialize(WIN, GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
 
-        postGameInfo.Get(HumanPostGameStatus.Stay).Initialize(GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health > 0));
-        postGameInfo.Get(HumanPostGameStatus.BrokeContract).Initialize(GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health <= 0));
+        postGameInfo.Get(HumanPostGameStatus.Stay).Initialize(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health > 0));
+        postGameInfo.Get(HumanPostGameStatus.Dead).Initialize(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health <= 0));
     }
 
     public void Restart()
@@ -44,10 +47,10 @@ public class PostGameInfoPanel : MonoBehaviour
 
         //TODO: this is ONLY for WIN in level 3!!! THIS IS VERY SPECIAL CASE and it should be replaced as soon as we know how finsihing a contract works!!!
         if (GameManager.Instance.CurrentLevel == 2) postGameInfo.Get(HumanPostGameStatus.MoveOn).SpecialInitialize(GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
-        else postGameInfo.Get(HumanPostGameStatus.MoveOn).Restart(GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
+        else postGameInfo.Get(HumanPostGameStatus.MoveOn).Restart(WIN, GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
 
-        postGameInfo.Get(HumanPostGameStatus.Stay).Restart(GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health > 0));
-        postGameInfo.Get(HumanPostGameStatus.BrokeContract).Restart(GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health <= 0));
+        postGameInfo.Get(HumanPostGameStatus.Stay).Restart(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health > 0));
+        postGameInfo.Get(HumanPostGameStatus.Dead).Restart(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health <= 0));
     }
 
     private void SetText()

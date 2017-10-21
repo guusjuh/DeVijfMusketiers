@@ -11,11 +11,9 @@ public class PostGameInfo : MonoBehaviour
     private GameObject contractIndicatorPrefab;
     private List<ContractIndicator> contractIndicators;
 
-    //TODO: should inherit and be const, for now do in inspector
-    [SerializeField] private string OFF_STRING;
-    [SerializeField] private string ON_STRING;
+    private static string NoString { get { return "No"; } }
 
-    public void Initialize(List<Contract> contracts = null)
+    public void Initialize(string textValue, List<Contract> contracts = null)
     {
         text = GetComponentInChildren<Text>();
         grid = GetComponentInChildren<GridLayoutGroup>();
@@ -25,11 +23,11 @@ public class PostGameInfo : MonoBehaviour
         if (contracts != null && contracts.Count != 0)
         {
             BuildGrid(contracts);
-            SetText(true, contracts.Count);
+            SetText(true, textValue, contracts.Count);
         }
         else
         {
-            SetText(false);
+            SetText(false, textValue);
         }
     }
 
@@ -47,16 +45,16 @@ public class PostGameInfo : MonoBehaviour
         text.text = contracts.Count + " humans finished their journey!";
     }
 
-    public void Restart(List<Contract> contracts = null)
+    public void Restart(string textValue, List<Contract> contracts = null)
     {
         if (contracts != null && contracts.Count != 0)
         {
             BuildGrid(contracts);
-            SetText(true, contracts.Count);
+            SetText(true, textValue, contracts.Count);
         }
         else
         {
-            SetText(false);
+            SetText(false, textValue);
         }
     }
 
@@ -70,12 +68,12 @@ public class PostGameInfo : MonoBehaviour
         }
     }
 
-    private void SetText(bool on, int amount = 0)
+    private void SetText(bool on, string value, int amount = 0)
     {
         if (on)
-            text.text = amount + ON_STRING;
+            text.text = amount + value;
         else
-            text.text = OFF_STRING;
+            text.text = NoString + value;
     }
 
     private void BuildGrid(List<Contract> contracts)
@@ -84,7 +82,7 @@ public class PostGameInfo : MonoBehaviour
 
         for (int i = 0; i < contracts.Count; i++)
         {
-            contractIndicators.Add(GameObject.Instantiate(contractIndicatorPrefab, Vector3.zero, Quaternion.identity, grid.transform).GetComponent<ContractIndicator>());
+            contractIndicators.Add(UIManager.Instance.CreateUIElement(contractIndicatorPrefab, Vector2.zero, grid.transform).GetComponent<ContractIndicator>());
             contractIndicators.Last().Initialize(contracts[i]);
         }
     }

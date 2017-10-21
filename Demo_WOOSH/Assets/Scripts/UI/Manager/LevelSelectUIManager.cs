@@ -24,11 +24,9 @@ public class LevelSelectUIManager : SubUIManager
         anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
         anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
 
-        levelSelectPanel = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/LevelSelectPanel"), Vector3.zero, Quaternion.identity, anchorCenter.transform);
-        levelSelectPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        levelSelectPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/LevelSelectPanel", Vector2.zero, anchorCenter.transform);
 
-        reputationParent = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/ReputationParent"), Vector3.zero, Quaternion.identity, anchorTopMid.transform).GetComponent<ReputationUIManager>();
-        reputationParent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-20, -20);
+        reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid.transform).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
 
         levelSelectParentPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelSelect/LevelParent");
@@ -42,14 +40,8 @@ public class LevelSelectUIManager : SubUIManager
             }
         );
 
-        GameObject buttonParent = GameObject.Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, anchorBottomRight);
-        buttonParent.AddComponent<RectTransform>();
-        buttonParent.GetComponent<RectTransform>().sizeDelta = new Vector2(600.0f, 100.0f);
-        buttonParent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-300.0f, 0.0f);
-
-        newHumanButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/Button"), Vector3.zero, Quaternion.identity,
-                buttonParent.transform);
-        newHumanButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(175.0f, 0.0f);
+        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-300.0f, 0.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
+        newHumanButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
         newHumanButton.GetComponentInChildren<Text>().text = "Get new contract";
         newHumanButton.GetComponent<Button>().onClick.AddListener(GenerateNewContract);
     }
@@ -75,12 +67,10 @@ public class LevelSelectUIManager : SubUIManager
         positions.Add(new Vector2(0, -600));
 
         levelSelectParents = new List<LevelSelectParent>();
-        //TODO: this may not be what we want in our final version
         //for now: these positions look good and there are always 3 visible levels
         for (int i = 0; i < 3; i++)
         {
-            levelSelectParents.Add(GameObject.Instantiate(levelSelectParentPrefab, Vector3.zero, Quaternion.identity, anchorCenter).GetComponent<LevelSelectParent>());
-            levelSelectParents[i].GetComponent<RectTransform>().anchoredPosition = positions[i];
+            levelSelectParents.Add(UIManager.Instance.CreateUIElement(levelSelectParentPrefab, positions[i], anchorCenter).GetComponent<LevelSelectParent>());
         }
     }
 

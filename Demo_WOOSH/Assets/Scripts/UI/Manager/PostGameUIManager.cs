@@ -20,20 +20,12 @@ public class PostGameUIManager : SubUIManager
         anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
         anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
 
-        postGameInfoPanel = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/PostGame/PostGameInfoPanel"), Vector3.zero, Quaternion.identity,
-                anchorCenter.transform).GetComponent<PostGameInfoPanel>();
-        postGameInfoPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
+        postGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PostGame/PostGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PostGameInfoPanel>();
         postGameInfoPanel.Initialize();
 
-        GameObject buttonParent = GameObject.Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, anchorBottomRight);
-        buttonParent.AddComponent<RectTransform>();
-        buttonParent.GetComponent<RectTransform>().sizeDelta = new Vector2(600.0f, 100.0f);
-        buttonParent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-300.0f, 0.0f);
+        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-300.0f, 0.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
 
-        backButton = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/Button"), Vector3.zero, Quaternion.identity,
-                buttonParent.transform);
-        backButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(175.0f, 0.0f);
-        //TODO: change text tó 'back to levelselection' as soon as that state exists
+        backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
         backButton.GetComponentInChildren<Text>().text = "Back to level select";
         backButton.GetComponent<Button>().onClick.AddListener(BackToWorld);
     }

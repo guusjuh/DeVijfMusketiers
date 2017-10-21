@@ -35,7 +35,6 @@ public class SubUIManager
 
     public Vector2 WorldToCanvas(Vector3 worldPosition)
     {
-        //TODO: lol we don't have a camera script or ref
         Camera camera = Camera.main;
 
         var viewportPos = camera.WorldToViewportPoint(worldPosition);

@@ -1,12 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.UI;
 
-//TODO: begin and end turn 
-//TODO: do a lot of stuff to its own script
-// skipturn button enable/disable
 public class UIManager
 {
     private static UIManager instance = null;
@@ -47,5 +42,51 @@ public class UIManager
     public void UpdateUI()
     {
         uiManagers.Get(UberManager.Instance.GameState).Update();
+    }
+
+    public GameObject CreateUIElement(String prefabPath, Vector2 position, Transform parent)
+    {
+        GameObject go = GameObject.Instantiate(Resources.Load<GameObject>(prefabPath), Vector3.zero, Quaternion.identity, parent);
+
+        if (CheckForRTError(go)) return null;
+
+        go.GetComponent<RectTransform>().anchoredPosition = position;
+
+        return go;
+    }
+
+    public GameObject CreateUIElement(GameObject prefab, Vector2 position, Transform parent)
+    {
+        GameObject go = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
+
+        if (CheckForRTError(go)) return null;
+
+        go.GetComponent<RectTransform>().anchoredPosition = position;
+
+        return go;
+    }
+
+    public GameObject CreateUIElement(Vector2 position, Vector2 sizeDelta, Transform parent)
+    {
+        GameObject go = GameObject.Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, parent);
+
+        go.AddComponent<RectTransform>();
+
+        go.GetComponent<RectTransform>().anchoredPosition = position;
+        go.GetComponent<RectTransform>().sizeDelta = sizeDelta;
+
+        return go;
+    }
+
+    private bool CheckForRTError(GameObject go)
+    {
+        if (go.GetComponent<RectTransform>() == null)
+        {
+            Debug.LogError("New UI object misses rect transform " + go.name);
+            GameObject.Destroy(go);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PreGameInfoPanel : MonoBehaviour
 {
+    private int levelID;
     private Text levelText;
     private const string LEVEL_TEXT = "Level ";
 
@@ -19,8 +20,10 @@ public class PreGameInfoPanel : MonoBehaviour
 
     public void Initialize()
     {
+        levelID = UberManager.Instance.PreGameManager.SelectedLevel;
+
         levelText = transform.Find("StatusText").GetComponent<Text>();
-        levelText.text = LEVEL_TEXT + (UberManager.Instance.PreGameManager.SelectedLevel + 1);
+        levelText.text = LEVEL_TEXT + (levelID + 1);
 
         gridContracts = transform.Find("GridContracts").GetComponent<GridLayoutGroup>();
         gridActiveContracts = transform.Find("GridActiveContracts").GetComponent<GridLayoutGroup>();
@@ -34,7 +37,7 @@ public class PreGameInfoPanel : MonoBehaviour
     public void Restart()
     {
         BuildGrids();
-        levelText.text = LEVEL_TEXT + (UberManager.Instance.PreGameManager.SelectedLevel + 1);
+        levelText.text = LEVEL_TEXT + (levelID + 1);
     }
 
     public void Clear()
@@ -53,23 +56,17 @@ public class PreGameInfoPanel : MonoBehaviour
         selectableContracts = new List<SelectableContract>();
         activeContracts = new List<ActiveContract>();
 
-        for (int i = 0; i < UberManager.Instance.ContractManager.AmountOfContracts(UberManager.Instance.PreGameManager.SelectedLevel); i++)
+        for (int i = 0; i < UberManager.Instance.ContractManager.AmountOfContracts(levelID); i++)
         {
-            selectableContracts.Add(GameObject.Instantiate(selectableContractPrefab, Vector3.zero, Quaternion.identity, gridContracts.transform).GetComponent<SelectableContract>());
-            selectableContracts.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(UberManager.Instance.PreGameManager.SelectedLevel)[i]);
+            selectableContracts.Add(UIManager.Instance.CreateUIElement(selectableContractPrefab, Vector2.zero, gridContracts.transform).GetComponent<SelectableContract>());
+            selectableContracts.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(levelID)[i]);
         }
 
-        for (int i = 0; i < ContentManager.Instance.LevelDataContainer.LevelData[UberManager.Instance.PreGameManager.SelectedLevel].minAmountOfHumans; i++)
+        for (int i = 0; i < ContentManager.Instance.LevelData(levelID).minAmountOfHumans; i++)
         {
-            activeContracts.Add(GameObject.Instantiate(activeContractPrefab, Vector3.zero, Quaternion.identity, gridActiveContracts.transform).GetComponent<ActiveContract>());
+            activeContracts.Add(UIManager.Instance.CreateUIElement(activeContractPrefab, Vector2.zero, gridActiveContracts.transform).GetComponent<ActiveContract>());
             activeContracts.Last().Initialize();
         }
-    }
-
-    public void AddToGrid(Contract contractRef)
-    {
-        selectableContracts.Add(GameObject.Instantiate(selectableContractPrefab, Vector3.zero, Quaternion.identity, gridContracts.transform).GetComponent<SelectableContract>());
-        selectableContracts.Last().Initialize(contractRef);
     }
 
     public bool AddToActive(Contract contractRef)
@@ -91,9 +88,8 @@ public class PreGameInfoPanel : MonoBehaviour
 
         reference.SetActive(true, contractRef);
 
-        if (GetSelectedContracts().Count >=
-            ContentManager.Instance.LevelDataContainer.LevelData[
-                UberManager.Instance.PreGameManager.SelectedLevel].minAmountOfHumans)
+        bool hasEnoughHoomans = GetSelectedContracts().Count >= ContentManager.Instance.LevelData(levelID).minAmountOfHumans;
+        if (hasEnoughHoomans)
         {
             UIManager.Instance.PreGameUI.CanStart(true);
         }
