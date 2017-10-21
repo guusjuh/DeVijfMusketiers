@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using System.Xml.Schema;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class Enemy : WorldObject
@@ -108,7 +109,6 @@ public class Enemy : WorldObject
     public virtual bool Hit(int dmg)
     {
         health -= dmg;
-        StartCoroutine(HitVisual());
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
         if (health <= 0)
@@ -120,6 +120,8 @@ public class Enemy : WorldObject
             GameManager.Instance.LevelManager.RemoveObject(this, true);
             return true;
         }
+
+        StartCoroutine(HitVisual());
 
         return false;
     }
@@ -202,6 +204,8 @@ public class Enemy : WorldObject
 
     public void ShowStatusEffects()
     {
+        if (Dead) return;
+
         if (burnCount > 0 && slowed)
         {
             burnedIcon.SetActive(true);
@@ -614,4 +618,6 @@ public class Enemy : WorldObject
 
         ShowPossibleRoads();
     }
+
+    public override bool IsMonster() { return true; }
 }
