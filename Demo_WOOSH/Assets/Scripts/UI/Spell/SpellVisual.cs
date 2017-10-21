@@ -16,7 +16,6 @@ public class SpellVisual : MonoBehaviour
     private float rotationSpeed = 270.0f;
 
     private Dictionary<GameManager.SpellType, Color> colors;
-    private GameManager.SpellType type;
 
     private Vector2 worldPos;
 
@@ -36,7 +35,6 @@ public class SpellVisual : MonoBehaviour
 
     public IEnumerator Activate(GameManager.SpellType type, Vector2 worldPos)
     {
-        this.type = type;
         this.worldPos = worldPos;
 
         rect.sizeDelta = new Vector2(MAX_SIZE, MAX_SIZE);

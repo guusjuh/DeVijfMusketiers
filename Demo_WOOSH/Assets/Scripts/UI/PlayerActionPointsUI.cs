@@ -11,8 +11,6 @@ public class PlayerActionPointsUI : MonoBehaviour {
 
     public void Initialize()
     {
-        transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(-10.0f, 10.0f, 0.0f);
-
         playerAPText = gameObject.GetComponentInChildren<Text>();
         playerAPBackground = gameObject.GetComponentInChildren<Image>();
         normalColorPlayerAP = playerAPBackground.color;

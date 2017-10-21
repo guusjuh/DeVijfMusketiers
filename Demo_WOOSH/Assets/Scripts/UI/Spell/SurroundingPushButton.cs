@@ -31,22 +31,20 @@ public class SurroundingPushButton : MonoBehaviour
     public void SetPosition()
     {
         Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
-        GetComponent<RectTransform>().anchoredPosition = UberManager.Instance.UiManager.InGameUI.WorldToCanvas(worldPos);
+        rect.anchoredPosition = UberManager.Instance.UiManager.InGameUI.WorldToCanvas(worldPos);
 
         float sideLength = GameManager.Instance.TileManager.FromTileToTileInCanvasSpace * 0.8f;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(sideLength, sideLength);
-
-        // GetComponent<RectTransform>().sizeDelta = new Vector2(UberManager.Instance.GameManager.CameraManager.InvCurrentSize * 55.5f,
-        //                                                      UberManager.Instance.GameManager.CameraManager.InvCurrentSize * 55.5f);
+        rect.sizeDelta = new Vector2(sideLength, sideLength);
     }
 
     public void Deactivate()
     {
         // currently, this button is a non relevant button!
-        if (GameManager.Instance.TileManager.GetNodeReference(gridPosition) == null) return;
+        TileNode node = GameManager.Instance.TileManager.GetNodeReference(gridPosition);
+        if (node == null) return;
 
         this.source = null;
-        GameManager.Instance.TileManager.GetNodeReference(gridPosition).HighlightTile(false);
+        node.HighlightTile(false);
 
         gameObject.SetActive(false);
     }
@@ -60,7 +58,6 @@ public class SurroundingPushButton : MonoBehaviour
 
     public void TeleportSource()
     {
-        //TODO convert into teleport
         source.Teleport(gridPosition);
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(3);

@@ -43,7 +43,6 @@ public class SpellButton : MonoBehaviour
         disabledObject = transform.Find("Disabled").gameObject;
         cooldownText = transform.Find("Text").GetComponent<Text>();
         apIndicator = new List<GameObject>();
-        //apIndicator = transform.Find("APIndicator").gameObject;
     }
 
     public void Click()
@@ -101,7 +100,6 @@ public class SpellButton : MonoBehaviour
     {
         if (value <= 0)
         {
-            //if (disabledObject.activeInHierarchy) disabledObject.SetActive(false);
             if (cooldownText.gameObject.activeInHierarchy) cooldownText.gameObject.SetActive(false);
             foreach (var indicator in apIndicator)
             {
@@ -110,7 +108,6 @@ public class SpellButton : MonoBehaviour
         }
         else
         {
-           // if (!disabledObject.activeInHierarchy) disabledObject.SetActive(true);
             if (!cooldownText.gameObject.activeInHierarchy) cooldownText.gameObject.SetActive(true);
             foreach (var indicator in apIndicator)
             {
@@ -122,20 +119,14 @@ public class SpellButton : MonoBehaviour
 
     public void SpawnAP(int amount)
     {
-        Vector2 canvasPos = new Vector2(0, 0);
-
         float divider = amount > 1 ? (float)amount - 1.0f : (float)amount;
         float partialCircle = (amount - 1) / 4.0f * 0.4f;
         float offSetCircle = (1.0f - partialCircle) / 2.0f;
 
         for (int i = 0; i < amount; i++)
         {
-
-            Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI),
-                -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI)); 
-
-            GameObject APPoint = Resources.Load<GameObject>("Prefabs/UI/SpellButton/APIndicator");
-            apIndicator.Add(Instantiate(APPoint, -pos, Quaternion.identity, this.transform));
+            apIndicator.Add(UIManager.Instance.CreateUIElement("Prefabs/UI/SpellButton/APIndicator", 
+                InGameUIManager.CalculatePointOnCircle(RADIUS, partialCircle, divider, offSetCircle, i), this.transform));
         }
     }
 }
