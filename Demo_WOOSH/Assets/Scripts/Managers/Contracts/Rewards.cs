@@ -1,19 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Rewards
 {
-    private float positiveRepPerLevel;
+    [SerializeField] private float positiveRepPerLevel;
     public float PositiveRepPerLevel { get { return positiveRepPerLevel; } }
 
-    private float negativeRepPerLevel;
+    [SerializeField] private float negativeRepPerLevel;
     public float NegativeRepPerLevel { get { return negativeRepPerLevel; } }
-   
-    private float positiveRepCompleted;
+
+    [SerializeField] private float positiveRepCompleted;
     public float PositiveRepCompleted { get { return positiveRepCompleted; } }
 
-    private float negativeRepCompleted;
+    [SerializeField] private float negativeRepCompleted;
     public float NegativeRepCompleted { get { return negativeRepCompleted; } }
 
     public Rewards(float positiveRepPerLevel, float negativeRepPerLevel,

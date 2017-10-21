@@ -101,13 +101,6 @@ public class GameManager : StateManager {
         levelManager.Update();
     }
 
-    public void SkipPlayerTurn()
-    {
-        levelManager.EndPlayerMove(1, true);
-        UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
-    }
-
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)
     {
         currentLevel = levelID;

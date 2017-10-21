@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class LevelManager
 {
+    private bool init = false;
+    public bool Initialized { get { return init; } }
+    int humansInstantiated = 0;
+
     private List<Human> humans;
     public List<Human> Humans { get { return humans; } }
 
@@ -22,24 +26,14 @@ public class LevelManager
 
     private bool playersTurn = false;
     private bool othersTurn = false;
+    public bool PlayersTurn { get { return playersTurn; } }
+    private int extraPoints;
 
     private int amountOfTurns = 0;
     public int AmountOfTurns { get { return amountOfTurns; } }
-    private int extraPoints;
 
-    private bool init = false;
-    public bool Initialized { get { return init; } }
-
-    int humansInstantiated = 0;
-
-    public bool PlayersTurn
-    {
-        get { return playersTurn; }
-    }
-
-    private float turnDelay = 0.5f;
-    private float moveDelay = 0.5f;
-    private float gapDelay = 0.5f;
+    private float delay = 0.5f;
+    private int startGapTurn = 2;
 
     public void Initialize()
     {
@@ -67,11 +61,9 @@ public class LevelManager
 
         SpawnLevel();
 
-        // start with player turn
+        // start with other turn
         playersTurn = false;
         othersTurn = false;
-
-        //UberManager.Instance.StartCoroutine(BeginPlayerTurn());
     }
 
     public void Clear()
@@ -108,34 +100,85 @@ public class LevelManager
         UberManager.Instance.StartCoroutine(HandleOtherTurn());
     }
 
+    // move creature
+    protected IEnumerator HandleOtherTurn()
+    {
+        othersTurn = true;
+
+        // wait for turn delay
+        yield return new WaitForSeconds(delay);
+
+        // handle each enemy
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].StartTurn();
+
+            bool canHandleTurn = !enemies[i].Dead && enemies[i].CurrentActionPoints > 0;
+
+            while (GameManager.Instance.GameOn && canHandleTurn)
+            {
+                enemies[i].EnemyMove();
+
+                yield return new WaitForSeconds(delay);
+
+                canHandleTurn = !enemies[i].Dead && enemies[i].CurrentActionPoints > 0;
+            }
+
+            // need to check for the enemy having killed everything
+            if (!GameManager.Instance.GameOn) yield break;
+
+            if (!enemies[i].Dead) enemies[i].EndTurn();
+
+            // need to check for the last enemy died from status effect
+            if (!GameManager.Instance.GameOn) yield break;
+        }
+
+        // switch turns
+        yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
+    }
+
+    private IEnumerator HandleHumanWalking()
+    {
+        foreach (Human h in humans)
+        {
+            // only handle a turn for the human if he is panicking
+            if (h.InPanic)
+            {
+                GameManager.Instance.CameraManager.LockTarget(h.transform);
+
+                // make the human flee as long as he cant
+                while (h.CurrentFleePoints > 0)
+                {
+                    yield return UberManager.Instance.StartCoroutine(h.Flee());
+                    yield return new WaitForSeconds(delay);
+                }
+            }
+        }
+
+        yield return null;
+    }
+
     public IEnumerator BeginPlayerTurn()
     {
         // do we have to start goo spawning?
-        yield return UberManager.Instance.StartCoroutine(CheckForGapSpawning());
+        yield return UberManager.Instance.StartCoroutine(HandleGapSpawning());
 
         //stop coroutine when goo kills the last human
         if (!GameManager.Instance.GameOn) yield break;
 
         // make hoomans move
         humans.HandleAction(h => h.StartTurn());
-        yield return UberManager.Instance.StartCoroutine(CheckForHumanWalking());
+        yield return UberManager.Instance.StartCoroutine(HandleHumanWalking());
 
         // increase amnt of turns
         amountOfTurns++;
 
-        //stop coroutine when goo kills the last human
-        if (!GameManager.Instance.GameOn) yield break;
-
-        // count extra actionpoints
-        shrines.HandleAction(s => s.CheckForActive());
-        extraPoints = 0;
-        for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
-        
         // show banner
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
         // start players turn
-        player.StartPlayerTurn(extraPoints);
+        player.StartPlayerTurn();
+        shrines.HandleAction(s => s.CheckForActive());
 
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
@@ -148,16 +191,6 @@ public class LevelManager
     public void CheckForExtraAP()
     {
         shrines.HandleAction(s => s.CheckForActive());
-        int extraPoints = 0;
-        for (int i = 0; i < shrines.Count; i++) extraPoints += shrines[i].Active ? 1 : 0;
-        
-        //check for increase in points
-        int diff = extraPoints - this.extraPoints;
-        if (diff > 0)
-        {
-            player.IncreaseActionPoints(diff);
-            this.extraPoints = extraPoints;
-        }
     }
 
     public void EndPlayerMove(int cost = 1, bool endTurn = false)
@@ -170,6 +203,7 @@ public class LevelManager
                 GameManager.Instance.TileManager.HidePossibleRoads();
 
                 enemies.HandleAction(e => e.UpdateTarget());
+                shrines.HandleAction(s => s.EndPlayerTurn());
 
                 UIManager.Instance.InGameUI.EndPlayerTurn();
                 UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
@@ -177,98 +211,37 @@ public class LevelManager
         }
     }
 
-    private IEnumerator CheckForHumanWalking()
+    public void SkipPlayerTurn()
     {
-        //dont walk the very first turn
-        //if (amountOfTurns == 0) yield break;
-
-        foreach (Human h in humans)
-        {
-            // only handle a turn for the human if he is panicking
-            if (h.InPanic) {
-                GameManager.Instance.CameraManager.LockTarget(h.transform);
-
-                // make the human flee as long as he cant
-                while (h.CurrentFleePoints > 0) {
-                    yield return UberManager.Instance.StartCoroutine(h.Flee());
-                    yield return new WaitForSeconds(moveDelay);
-                }
-            }
-        }
-
-        yield return null;
+        EndPlayerMove(1, true);
+        UIManager.Instance.InGameUI.HideSpellButtons();
+        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
     }
 
-    private IEnumerator CheckForGapSpawning()
+    private IEnumerator HandleGapSpawning()
     {
-        if (amountOfTurns == 2)
-        {
+        if (amountOfTurns == startGapTurn)
             yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.WarningText());
-        }
-
-        if (amountOfTurns > 2)
-        {
+        else if(amountOfTurns > startGapTurn)
             yield return UberManager.Instance.StartCoroutine(SpawnGap());
-        }
     }
+
     private IEnumerator SpawnGap()
     {
-        for (int i = 0; i < amountOfTurns - 2; i++)
+        for (int i = 0; i < amountOfTurns - startGapTurn; i++)
         {
-            List<TileNode> possGapNodes = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
-            int rnd = UnityEngine.Random.Range(0, possGapNodes.Count);
-            TileNode chosenGap = possGapNodes[rnd];
+            TileNode chosenGap = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
 
             GameManager.Instance.CameraManager.LockTarget(chosenGap.Hexagon.transform);
-            yield return new WaitForSeconds(gapDelay);
 
-            chosenGap.Content.SetTileType(TileManager.TileType.Dangerous);
+            yield return new WaitForSeconds(delay);
+
+            chosenGap.CreateHexagon(SecTileType.Gap);
 
             if (!GameManager.Instance.GameOn) break;
         }
 
         yield return null;
-    }
-
-    // move creature
-    protected IEnumerator HandleOtherTurn()
-    {
-        //Debug.Log("Handling creature turn");
-        othersTurn = true;
-
-        // wait for turn delay
-        yield return new WaitForSeconds(turnDelay);
-
-        for (int i = 0; i < enemies.Count; i++) {
-            enemies[i].StartTurn();
-
-            GameManager.Instance.CameraManager.LockTarget(enemies[i].transform);
-
-            while (GameManager.Instance.GameOn && !enemies[i].Dead && enemies[i].CurrentActionPoints > 0)
-            {
-                // make creature move
-                enemies[i].EnemyMove();
-
-                // delay
-                yield return new WaitForSeconds(moveDelay);
-            }
-
-            // need to check for the enemy having killed everything
-            if (!GameManager.Instance.GameOn) yield break;
-
-            if (!enemies[i].Dead) enemies[i].EndTurn();
-            //else i--;
-
-            // need to check for the last enemy died from status effect
-            if (!GameManager.Instance.GameOn) yield break;
-        }
-
-        // switch turns
-
-        if (!GameManager.Instance.GameOn) yield break;
-        else yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
-
-        //yield return new WaitForSeconds(turnDelay);
     }
 
     private void SpawnLevel()
@@ -278,11 +251,17 @@ public class LevelManager
 
         foreach (SpawnNode s in spawnNodes)
         {
+            if (!ContentManager.IsValidSecContentType(s.type, s.secType))
+            {
+                Debug.LogError("Sectype not supported for given type");
+                continue;
+            }
+
             WorldObject toBeSpawned = SpawnFromNode(s);
 
             if (toBeSpawned == null)
             {
-                Debug.LogError("Spawnnode not supported");
+                Debug.LogError("Prefab not found for this spawnnode");
                 continue;
             }
 
@@ -291,23 +270,23 @@ public class LevelManager
 
         // spawn goo
         List<Coordinate> gooPosses = ContentManager.Instance.LevelDataContainer.LevelData[GameManager.Instance.CurrentLevel].gooStartPosses;
-        gooPosses.HandleAction(g => GameManager.Instance.TileManager.GetNodeReference(g).Content.SetTileType(TileManager.TileType.Dangerous));
+        gooPosses.HandleAction(g => GameManager.Instance.TileManager.GetNodeReference(g).CreateHexagon(SecTileType.Gap));
     }
 
     private WorldObject SpawnFromNode(SpawnNode s)
     {
         switch (s.type)
         {
-            case TileManager.ContentType.Boss:
+            case ContentType.Boss:
                 return SpawnBoss(s);
 
-            case TileManager.ContentType.Minion:
+            case ContentType.Minion:
                 return SpawnMinion(s);
 
-            case TileManager.ContentType.Environment:
+            case ContentType.Environment:
                 return SpawnEnvironment(s);
 
-            case TileManager.ContentType.Human:
+            case ContentType.Human:
                 return SpawnHuman(s);
         }
 
@@ -316,9 +295,12 @@ public class LevelManager
 
     private WorldObject SpawnHuman(SpawnNode s)
     {
-        if (s.secType != ContentManager.SecContentType.Human) return null;
+        if (s.secType != SecContentType.Human) return null;
 
-        humans.Add(GameObject.Instantiate(ContentManager.Instance.Human, 
+        GameObject prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                                (ContentType.Human, SecContentType.Human)];
+
+        humans.Add(GameObject.Instantiate(prefab, 
                                           GameManager.Instance.TileManager.GetWorldPosition(s.position), 
                                           Quaternion.identity).GetComponent<Human>());
         humans.Last().Initialize(s.position);
@@ -330,21 +312,25 @@ public class LevelManager
      
     private WorldObject SpawnEnvironment(SpawnNode s)
     {
-        bool secIsEnvironment = s.secType == ContentManager.SecContentType.Barrel ||
-                        s.secType == ContentManager.SecContentType.Shrine;
-        if (!secIsEnvironment) return null;
+        GameObject prefab;
 
         switch (s.secType)
         {
-            case ContentManager.SecContentType.Barrel:
-                barrels.Add(GameObject.Instantiate(ContentManager.Instance.Barrel,
+            case SecContentType.Barrel:
+                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                               (ContentType.Environment, SecContentType.Barrel)];
+
+                barrels.Add(GameObject.Instantiate(prefab,
                                                    GameManager.Instance.TileManager.GetWorldPosition(s.position),
                                                    Quaternion.identity).GetComponent<Barrel>());
                 barrels.Last().Initialize(s.position);
                 return barrels.Last();
 
-            case ContentManager.SecContentType.Shrine:
-                shrines.Add(GameObject.Instantiate(ContentManager.Instance.Shrine, 
+            case SecContentType.Shrine:
+                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                               (ContentType.Environment, SecContentType.Shrine)];
+
+                shrines.Add(GameObject.Instantiate(prefab, 
                                                    GameManager.Instance.TileManager.GetWorldPosition(s.position), 
                                                    Quaternion.identity).GetComponent<Shrine>());
                 shrines.Last().Initialize(s.position);
@@ -356,10 +342,10 @@ public class LevelManager
 
     private WorldObject SpawnMinion(SpawnNode s)
     {
-        bool secIsMinion = s.secType == ContentManager.SecContentType.Wolf;
-        if (!secIsMinion) return null;
+        GameObject prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                               (ContentType.Minion, SecContentType.Wolf)];
 
-        enemies.Add(GameObject.Instantiate(ContentManager.Instance.Minions[0], 
+        enemies.Add(GameObject.Instantiate(prefab, 
                                            GameManager.Instance.TileManager.GetWorldPosition(s.position), 
                                            Quaternion.identity).GetComponent<Enemy>());
         enemies.Last().Initialize(s.position);
@@ -369,26 +355,25 @@ public class LevelManager
 
     private WorldObject SpawnBoss(SpawnNode s)
     {
-        bool secIsBoss = s.secType == ContentManager.SecContentType.Arnest ||
-                                s.secType == ContentManager.SecContentType.Dodin ||
-                                s.secType == ContentManager.SecContentType.Sketta;
-        if (!secIsBoss) return null;
+        GameObject prefab = null;
 
-        int index = 0;
         switch (s.secType)
         {
-            case ContentManager.SecContentType.Arnest:
-                index = 1;
+            case SecContentType.Arnest:
+                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                                (ContentType.Boss, SecContentType.Arnest)];
                 break;
-            case ContentManager.SecContentType.Dodin:
-                index = 0;
+            case SecContentType.Dodin:
+                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                                (ContentType.Boss, SecContentType.Dodin)];
                 break;
-            case ContentManager.SecContentType.Sketta:
-                index = 2;
+            case SecContentType.Sketta:
+                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                                (ContentType.Boss, SecContentType.Sketta)];
                 break;
         }
 
-        enemies.Add(GameObject.Instantiate(ContentManager.Instance.Bosses[index],
+        enemies.Add(GameObject.Instantiate(prefab,
                                            GameManager.Instance.TileManager.GetWorldPosition(s.position),
                                            Quaternion.identity).GetComponent<Enemy>());
         enemies.Last().Initialize(s.position);

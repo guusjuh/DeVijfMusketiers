@@ -57,8 +57,6 @@ public class Player
         if (!currentCooldown.ContainsKey(type)) return;
 
         currentCooldown[type] = totalCooldown.Get(type);
-
-        int hoi = 666;
     }
 
     public int GetCurrentCooldown(GameManager.SpellType type)
@@ -68,7 +66,7 @@ public class Player
         return currentCooldown.Get(type);
     }
 
-    public void IncreaseActionPoints(int addAP)
+    public void IncreaseActionPoints(int addAP = 1)
     {
         currentActionPoints += addAP;
     }

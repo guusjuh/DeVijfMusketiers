@@ -246,6 +246,7 @@ public class Enemy : WorldObject
             specialCooldown--;
         }
 
+        GameManager.Instance.CameraManager.LockTarget(this.transform);
         SetUIInfo();
     }
 

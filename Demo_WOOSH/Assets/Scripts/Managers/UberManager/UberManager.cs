@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,6 +82,30 @@ public class UberManager : MonoBehaviour {
         prevState = state;
         state = nextState;
         stateManagers.Get(state).Start();
+    }
+
+    public static T PerformRandomRoll<T>(Dictionary<T, int> possibilities) 
+    {
+        // sum all probabilities 
+        int summedProbability = 0;
+        foreach (KeyValuePair<T, int> entry in possibilities) summedProbability += entry.Value;
+
+        // perform a random roll to find a random humantype
+        int counter = 0;
+        int randomRoll = (int)UnityEngine.Random.Range(0, summedProbability);
+
+        // find the human type matching the random roll
+        foreach (KeyValuePair<T, int> entry in possibilities)
+        {
+            counter += entry.Value;
+            if (randomRoll < counter)
+            {
+                return entry.Key;
+            }
+        }
+
+        Debug.LogError("Random roll has failed.");
+        return default(T);
     }
 }
 

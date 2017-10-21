@@ -132,11 +132,9 @@ public class InGameUIManager : SubUIManager {
 
     public void InitializeTeleportButtons()
     {
-        TileNode[,] grid = GameManager.Instance.TileManager.Grid;
-
-        for (int x = 0; x < grid.GetLength(0); x++)
+        for (int x = 0; x < GameManager.Instance.TileManager.Rows; x++)
         {
-            for (int y = 0; y < grid.GetLength(1); y++)
+            for (int y = 0; y < GameManager.Instance.TileManager.Columns; y++)
             {
                 Coordinate gridPos = new Coordinate(x,y);
                 GameObject temp = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/SpellButton/SurroundingPushButton"),Vector3.zero, Quaternion.identity, AnchorCenter);
@@ -172,8 +170,7 @@ public class InGameUIManager : SubUIManager {
             else if (target != null && surroundingPushButtons[i].GridPosition != target.GridPosition) {
 
                 bool walkable = GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition) != null &&
-                    GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition)
-                                                    .Content.WalkAble();
+                    GameManager.Instance.TileManager.GetNodeReference(surroundingPushButtons[i].GridPosition).WalkAble();
 
                 if (walkable) {
                     tempButtons.Add(surroundingPushButtons[i]);

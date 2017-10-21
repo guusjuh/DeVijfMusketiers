@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class TileManager
 {
-    // the types of the actual tiles
-    public enum TileType
-    {
-        Normal = 0,
-        Dangerous,
-    }
-
-    public enum ContentType
-    {
-        Unknown = -1,
-        Human = 0,
-        Boss,
-        Minion,
-        Environment,
-    }
-
     private static Coordinate[] directionsEven = new Coordinate[] {
             /*right up*/ new Coordinate(1, 0),
             /*left up*/ new Coordinate(-1, 0),
@@ -42,9 +26,6 @@ public class TileManager
             /*left down*/ new Coordinate(-1, 0),
         };
 
-    private static Color PATHCOLOR = Color.white;//new Color(1.0f, 0.95f, 0.6f, 1.0f);
-    private static Color TARGETCOLOR = new Color(0.99f, 0.02f, 0.02f, 1.0f);
-
     public Coordinate[] Directions(Coordinate from)
     {
         if (from.x % 2 == 0)
@@ -57,39 +38,28 @@ public class TileManager
         }
     }
 
+    private static Color PATHCOLOR = Color.white;
+    private static Color TARGETCOLOR = new Color(0.99f, 0.02f, 0.02f, 1.0f);
+
     private int rows;
     private int columns;
     public int Rows { get { return rows; } }
     public int Columns { get { return columns; } }
 
-    /// <summary>
-    /// The grid information. 
-    /// </summary>
     private TileNode[,] grid;
-    public TileNode[,] Grid { get { return grid; } }
-
-    private TileNode[] corners;
-    public TileNode[] Corners { get { return corners; } }
-
-    // Parent gameobject to make the hierarchy look cleaner. 
     private GameObject gridParent;
+    private List<TileNode> highlightedNodes;
+
+    private Coordinate[] corners;
+    public Coordinate[] Corners { get { return corners; } }
 
     // Hexagon scale.
     private float hexagonScale = 1.2f;
     public float HexagonScale { get { return hexagonScale; } }
-
-    /// <summary>
-    /// Hexagon width.
-    /// </summary>
     private float hexagonWidth = .75f;
     public float HexagonWidth { get { return hexagonWidth * hexagonScale; } }
-
-    /// <summary>
-    /// Hexagon depth.
-    /// </summary>
     private float hexagonHeight = .433f;
     public float HexagonHeight { get { return hexagonHeight * hexagonScale; } }
-
     public float FromTileToTile { get { return (HexagonHeight * 2); } }
 
     public float FromTileToTileInCanvasSpace
@@ -103,11 +73,6 @@ public class TileManager
         }
     }
 
-    private List<TileNode> highlightedNodes;
-
-    private float maximumDist;                    //for reference: lvl 1 = 18
-    private int probabilityModifier = 500;
-
     /// <summary>
     /// Initialize the gridsystem
     /// </summary>
@@ -116,16 +81,13 @@ public class TileManager
         gridParent = new GameObject("Grid Parent");
         SetUpGrid();
 
-        maximumDist = new Coordinate(0, 0).EuclideanDistance(
-                new Coordinate(GameManager.Instance.TileManager.Rows,
-                                GameManager.Instance.TileManager.Columns));
-
-        corners = new TileNode[4]
+        //TODO: these don't seem to be right, but they really seem to be right?!
+        corners = new Coordinate[4]
         {
-            GetNodeReference(new Coordinate(     0,         0)),
-            GetNodeReference(new Coordinate(rows-1, columns-1)),
-            GetNodeReference(new Coordinate(rows-1,         0)),
-            GetNodeReference(new Coordinate(     0, columns-1))
+            new Coordinate(     0,         0),
+            new Coordinate(rows-1, columns-1),
+            new Coordinate(rows-1,         0),
+            new Coordinate(     0, columns-1)
         };
     }
 
@@ -178,6 +140,7 @@ public class TileManager
     /// </summary>
     /// <param name="sizeX">Amount of hexagon rows.</param>
     /// <param name="sizeY">Amount of hexagon columns.</param>
+    /// TODO:NOW sec type should be passed on
     private void CreateGrid(int sizeX, int sizeY)
     {
         for (int i = 0; i < sizeX; i++)
@@ -201,9 +164,6 @@ public class TileManager
 
     public List<TileNode> GeneratePathTo(Coordinate from, Coordinate to, WorldObject worldObject)
     {
-        //if (!UnitCanEnterTile(toX, toY))
-        //    return null;
-
         Dictionary<TileNode, float> dist = new Dictionary<TileNode, float>();
         Dictionary<TileNode, TileNode> prev = new Dictionary<TileNode, TileNode>();
 
@@ -238,9 +198,6 @@ public class TileManager
                 if (u == null || dist[possible] < dist[u])
                     u = possible;
             }
-
-            /*if (u == target)
-                break; //exit while loop if target is found*/
 
             unvisited.Remove(u);
 
@@ -311,38 +268,48 @@ public class TileManager
 
         bool isWalkingMonster = worldObject.IsMonster() && worldObject.IsWalking();
 
-        if (grid[pos.x, pos.y].Content.TileType == TileType.Dangerous && isWalkingMonster)
+        if (grid[pos.x, pos.y].GetType() == TileType.Dangerous && isWalkingMonster)
         {
             return false;
         }
 
         bool canEnterBarrels = worldObject.IsMonster();
-        for (int i = 0; i < grid[pos.x, pos.y].Content.ContentTypes.Count; i++)
+        for (int i = 0; i < grid[pos.x, pos.y].GetAmountOfContent(); i++)
         {
-            if (grid[pos.x, pos.y].Content.ContentTypes[i].IsBarrel() && canEnterBarrels) continue;
+            if (grid[pos.x, pos.y].GetContent()[i].IsBarrel() && canEnterBarrels) continue;
             else return false;
         }
 
         return true;
     }
 
-    public void SetTileType(TileManager.TileType type, Coordinate pos)
+    public void SetTileType(SecTileType type, Coordinate pos)
     {
-        grid[pos.x,pos.y].Content.SetTileType(type);
+        //TODO: maybe we need conditions and checks for this being valid
+        if (GetNodeReference(pos) == null) return;
+
+        grid[pos.x,pos.y].CreateHexagon(type);
     }
 
     public void SetObject(Coordinate pos, WorldObject worldObject)
     {
-        grid[pos.x, pos.y].Content.AddContent(worldObject);
+        if (GetNodeReference(pos) == null) return;
+
+        grid[pos.x, pos.y].AddContent(worldObject);
     }
 
     public void RemoveObject(Coordinate pos, WorldObject worldObject)
     {
-        grid[pos.x, pos.y].Content.RemoveContent(worldObject);
+        if (GetNodeReference(pos) == null) return;
+
+        grid[pos.x, pos.y].RemoveContent(worldObject);
     }
 
     public void MoveObject(Coordinate currPos, Coordinate nextPos, WorldObject worldObject)
     {
+        if (GetNodeReference(currPos) == null) return;
+        if (GetNodeReference(nextPos) == null) return;
+
         RemoveObject(currPos, worldObject);
         SetObject(nextPos, worldObject);
     }
@@ -437,18 +404,19 @@ public class TileManager
 
         foreach (TileNode t in grid)
         {
-            if (t.Content.TileType == TileType.Dangerous)
+            if (t.GetSecType() == SecTileType.Gap)
                 gapNodes.Add(t);
         }
 
         return gapNodes;
     }
 
-    public List<TileNode> GetPossibleGapNodeReferences()
+    public TileNode GetPossibleGapNodeReferences()
     {
         List<TileNode> gapNodes = GetNodeWithGapReferences();
-        List<TileNode> possGapNodes = new List<TileNode>();
+        Dictionary<TileNode, int> possGapNodes = new Dictionary<TileNode, int>();
 
+        // find and add all possible gap nodes
         for (int i = 0; i < gapNodes.Count; i++)
         {
             for (int j = 0; j < Directions(gapNodes[i].GridPosition).Length; j++)
@@ -458,26 +426,20 @@ public class TileManager
                 if (gapNodes.Contains(GetNodeReference(currPos)) ||
                     currPos.x < 0 || currPos.x >= rows ||
                     currPos.y < 0 || currPos.y >= columns ||
-                    GetNodeReference(currPos).Content.ContainsMonster())
+                    GetNodeReference(currPos).ContainsMonster())
                 {
                     continue;
                 }
                 else
                 {
-                    //check all neighbours and add this positions for each neighbor which is a goo tile.
-                    for (int k = 0; k < Directions(currPos).Length; k++)
-                    {
-                        Coordinate neighbourPos = Directions(currPos)[k] + currPos;
-                        if (gapNodes.Contains(GetNodeReference(neighbourPos)))
-                        {
-                            possGapNodes.Add(GetNodeReference(currPos));
-                        }
-                    }
+                    possGapNodes.Add(GetNodeReference(currPos), 
+                                     GetNodeReference(currPos).NeightBours.FindAll(
+                                         n => n.GetSecType() == SecTileType.Gap).Count);
                 }
             }
         }
 
-        return possGapNodes;
+        return UberManager.PerformRandomRoll<TileNode>(possGapNodes);
     }
 
     public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
@@ -492,7 +454,7 @@ public class TileManager
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
         {
-            if (n.Content.ContentTypes.Count == 0 || n.Content.ContainsWalkingMonster() || n.Content.ContainsBrokenBarrel())
+            if (n.GetContent().Count == 0 || n.ContainsWalkingMonster() || n.ContainsBrokenBarrel())
             {
                 n.HighlightTile(true, PATHCOLOR);
             }
@@ -513,7 +475,7 @@ public class TileManager
         // highlight all found humans
         nodes.HandleAction(n =>
         {
-            if (n.Content.ContainsHuman())
+            if (n.ContainsHuman())
             {
                 highlightedNodes.Add(n);
                 n.HighlightTile(true, TARGETCOLOR);

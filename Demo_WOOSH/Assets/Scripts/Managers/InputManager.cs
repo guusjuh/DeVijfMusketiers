@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Mime;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class InputManager
 {
@@ -24,15 +20,18 @@ public class InputManager
         if (UIManager.Instance.InGameUI.CastingSpell) return;
 
         if (CatchZoomInput()) return;
-        if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON)) {
-            if (!CatchUIClicks()) {
+        if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
+        {
+            if (!CatchUIClicks())
+            {
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 
                 List<WorldObject> worldObjects = ObtainClickedObjects();
 
                 HandleActionOnClickedObjects(worldObjects);
 
-                if (worldObjects.Count <= 0) {
+                if (worldObjects.Count <= 0)
+                {
                     StartDrag();
                 }
             }

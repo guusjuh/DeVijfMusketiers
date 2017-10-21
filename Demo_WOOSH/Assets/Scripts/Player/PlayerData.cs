@@ -27,8 +27,6 @@ public class PlayerData {
     {
         reputation += adjustment;
 
-        Debug.Log("current reputation: " + reputation);
-
         // check for updating the visuals.
     }
 }

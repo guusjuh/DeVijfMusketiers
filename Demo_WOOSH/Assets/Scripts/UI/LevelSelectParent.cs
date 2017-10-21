@@ -39,20 +39,17 @@ public class LevelSelectParent : MonoBehaviour
         // if there is a next level
         // check for the amount of humans in the next level plus the humans traveling from this level
         // being smaller than 7
-        if (levelID <= ContentManager.Instance.LevelDataContainer.LevelData.Count &&
-            ContentManager.Instance.LevelDataContainer.LevelData[levelID].minAmountOfHumans + UberManager.Instance.ContractManager.AmountOfContracts(levelID) > 6)
-        {
+        bool nextLevelExists = levelID < ContentManager.Instance.LevelDataContainer.LevelData.Count - 1;
+        bool spaceInNextLevel = ContentManager.Instance.LevelDataContainer.LevelData[levelID].minAmountOfHumans +
+                                UberManager.Instance.ContractManager.AmountOfContracts(levelID + 1) 
+                                <= 6;
+        bool hasEnoughHumans = UberManager.Instance.ContractManager.AmountOfContracts(levelID) <
+                               ContentManager.Instance.LevelDataContainer.LevelData[levelID].minAmountOfHumans;
+
+        if ((nextLevelExists && !spaceInNextLevel) || hasEnoughHumans) 
             levelSelectButton.GetComponent<Button>().interactable = false;
-        }
-        else if (UberManager.Instance.ContractManager.AmountOfContracts(levelID) <
-                 ContentManager.Instance.LevelDataContainer.LevelData[levelID].minAmountOfHumans)
-        {
-            levelSelectButton.GetComponent<Button>().interactable = false;
-        }
         else
-        {
             levelSelectButton.GetComponent<Button>().interactable = true;
-        }
     }
 
     public void Clear()

@@ -3,38 +3,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using UnityEditorInternal;
 
 [Serializable]
 public struct SpawnNode
 {
-    public TileManager.ContentType type;
-    public ContentManager.SecContentType secType;
+    public ContentType type;
+    public SecContentType secType;
     public Coordinate position;
+}
+
+public enum TileType
+{
+    Unknown = -1,
+    Normal = 0,
+    Dangerous,
+}
+
+public enum SecTileType
+{
+    Grass,
+    Dirt,
+    Gap,
+}
+
+public enum ContentType
+{
+    Unknown = -1,
+    Human = 0,
+    Boss,
+    Minion,
+    Environment,
+}
+
+public enum SecContentType
+{
+    Human = 0,
+    Dodin,
+    Arnest,
+    Sketta,
+    Wolf,
+    Barrel,
+    Shrine
+}
+
+public enum HumanTypes
+{
+    Bad,
+    Ok,
+    Normal,
+    Good,
+    Fabulous
 }
 
 [Serializable]
 public class ContentManager {
-    public enum SecContentType
-    {
-        Human = 0,
-        Dodin,
-        Arnest,
-        Sketta,
-        Wolf,
-        Barrel,
-        Shrine
-    }
-
-    public enum HumanTypes {
-        Bad,
-        Ok,
-        Normal,
-        Good,
-        Fabulous
-    }
-
     private static ContentManager instance = null;
     public static ContentManager Instance {
         get {
@@ -43,88 +68,138 @@ public class ContentManager {
         }
     }
 
-    static public bool IsValidSecType(TileManager.ContentType contentType, SecContentType secContentType)
-    {
-        switch (contentType)
-        {
-            case TileManager.ContentType.Human:
-                if (secContentType == SecContentType.Human) return true;
-                break;
-            case TileManager.ContentType.Boss:
-                if (secContentType == SecContentType.Arnest ||
-                    secContentType == SecContentType.Dodin ||
-                    secContentType == SecContentType.Sketta) return true;
-                break;
-            case TileManager.ContentType.Minion:
-                if (secContentType == SecContentType.Wolf) return true;
-                break;
-            case TileManager.ContentType.Environment:
-                if (secContentType == SecContentType.Barrel ||
-                    secContentType == SecContentType.Shrine) return true;
-                break;
-            default:
-                break;
-        }
+    private static Dictionary<ContentType, List<SecContentType>> validContentTypes;
+    private static Dictionary<TileType, List<SecTileType>> validTileTypes;
 
-        return false;
-    }
+    private Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> contentPrefabs = new Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject>();
+    public Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> ContentPrefabs { get { return contentPrefabs; } }
 
-    public GameObject Barrel { get; private set; }
-    public GameObject Shrine { get; private set; }
+    private Dictionary<KeyValuePair<TileType, SecTileType>, GameObject> tilePrefabs = new Dictionary<KeyValuePair<TileType, SecTileType>, GameObject>();
+    public Dictionary<KeyValuePair<TileType, SecTileType>, GameObject> TilePrefabs { get { return tilePrefabs; } }
+
+    //TODO: same as content but for tiles
     public GameObject Gap { get; private set; }
-
-    private List<Sprite> WorldHumans { get; set; }
-    private List<Sprite> PortraitHumans { get; set; }
-    private Dictionary<HumanTypes, List<Sprite>> HumanSprites { get; set; }
-    private Dictionary<HumanTypes, Rewards> HumanRewards { get; set; }
-
-    //TODO: at later moment, maybe different human prefabs needed for the different behaviors!
-    public GameObject Human { get; private set; }
-
-    public List<GameObject> Bosses { get; private set; }
-    public List<GameObject> Minions { get; private set; }
 
     [SerializeField] private LevelDataContainer levelDataContainer = new LevelDataContainer();
     public LevelDataContainer LevelDataContainer { get { return levelDataContainer; } }
 
     public void Initialize() {
-        Barrel = Resources.Load<GameObject>("Prefabs/Barrel");
-        Shrine = Resources.Load<GameObject>("Prefabs/Shrine");
         Gap = Resources.Load<GameObject>("Prefabs/Hole");
 
-        WorldHumans = new List<Sprite>(Resources.LoadAll<Sprite>("Sprites/Humans"));
-        PortraitHumans = new List<Sprite>(Resources.LoadAll<Sprite>("Sprites/UI/HumanIcons"));
-        HumanSprites = new Dictionary<HumanTypes, List<Sprite>>();
-        for (int i = 0; i < WorldHumans.Count; i++)
-        {
-            HumanSprites.Add((HumanTypes)i, new List<Sprite>());
-            HumanSprites.Get((HumanTypes)i).Add(WorldHumans[i]);
-            HumanSprites.Get((HumanTypes)i).Add(PortraitHumans[i]);
-        }
+        SetValidTypes();
 
-        HumanRewards = new Dictionary<HumanTypes, Rewards>();
-        HumanRewards.Add(HumanTypes.Bad, new Rewards(2.5f, -2.5f, 5.0f, -5.0f));
-        HumanRewards.Add(HumanTypes.Ok, new Rewards(5.0f, -5.0f, 7.5f, -10.0f));
-        HumanRewards.Add(HumanTypes.Normal, new Rewards(10.0f, -10.0f, 15.0f, -17.5f));
-        HumanRewards.Add(HumanTypes.Good, new Rewards(15.0f, -15.0f, 20.0f, -25.0f));
-        HumanRewards.Add(HumanTypes.Fabulous, new Rewards(20.0f, -20.0f, 30.0f, -40.0f));
+        LoadPrefabsForContentType("Prefabs/Bosses", ContentType.Boss);
+        LoadPrefabsForContentType("Prefabs/Minions", ContentType.Minion);
+        LoadPrefabsForContentType("Prefabs/Humans", ContentType.Human);
+        LoadPrefabsForContentType("Prefabs/Environment", ContentType.Environment);
 
-        Human = Resources.Load<GameObject>("Prefabs/Humans/Human");
-
-        Bosses = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Creatures"));
-        Minions = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Minions"));
+        LoadPrefabsForTileType("Prefabs/Tiles/Normal", TileType.Normal);
+        LoadPrefabsForTileType("Prefabs/Tiles/Dangerous", TileType.Dangerous);
 
         //ReadLevelData();
     }
 
-    public List<Sprite> GetHumanSprites(HumanTypes type)
+    private void LoadPrefabsForContentType(String toLoadString, ContentType type)
     {
-        return HumanSprites.Get(type);
+        List<GameObject> tempPrefabs = new List<GameObject>(Resources.LoadAll<GameObject>(toLoadString));
+        KeyValuePair<ContentType, SecContentType> tempKeyValuePair = new KeyValuePair<ContentType, SecContentType>();
+
+        for (int i = 0; i < tempPrefabs.Count; i++)
+        {
+            for (int j = 0; j < validContentTypes[type].Count; j++)
+            {
+                String name = tempPrefabs[i].name;
+                String enumName = validContentTypes[type][j].ToString();
+
+                if (name == enumName)
+                {
+                    tempKeyValuePair = new KeyValuePair<ContentType, SecContentType>(type, validContentTypes[type][j]);
+                    contentPrefabs.Add(tempKeyValuePair, tempPrefabs[i]);
+                }
+            }
+        }
     }
 
-    public Rewards GetHumanRewards(HumanTypes type)
+    private void LoadPrefabsForTileType(String toLoadString, TileType type)
     {
-        return HumanRewards.Get(type);
+        List<GameObject> tempPrefabs = new List<GameObject>(Resources.LoadAll<GameObject>(toLoadString));
+        KeyValuePair<TileType, SecTileType> tempKeyValuePair = new KeyValuePair<TileType, SecTileType>();
+
+        for (int i = 0; i < tempPrefabs.Count; i++)
+        {
+            for (int j = 0; j < validTileTypes[type].Count; j++)
+            {
+                String name = tempPrefabs[i].name;
+                String enumName = validTileTypes[type][j].ToString();
+
+                if (name == enumName)
+                {
+                    tempKeyValuePair = new KeyValuePair<TileType, SecTileType>(type, validTileTypes[type][j]);
+                    tilePrefabs.Add(tempKeyValuePair, tempPrefabs[i]);
+                }
+            }
+        }
+    }
+
+    private void SetValidTypes()
+    {
+        validContentTypes = new Dictionary<ContentType, List<SecContentType>>();
+
+        List<SecContentType> humans = new List<SecContentType>();
+        humans.Add(SecContentType.Human);
+        List<SecContentType> bosses = new List<SecContentType>();
+        bosses.Add(SecContentType.Dodin);
+        bosses.Add(SecContentType.Arnest);
+        bosses.Add(SecContentType.Sketta);
+        List<SecContentType> minions = new List<SecContentType>();
+        minions.Add(SecContentType.Wolf);
+        List<SecContentType> environmentals = new List<SecContentType>();
+        environmentals.Add(SecContentType.Barrel);
+        environmentals.Add(SecContentType.Shrine);
+
+        validContentTypes.Add(ContentType.Human, humans);
+        validContentTypes.Add(ContentType.Boss, bosses);
+        validContentTypes.Add(ContentType.Minion, minions);
+        validContentTypes.Add(ContentType.Environment, environmentals);
+
+        validTileTypes = new Dictionary<TileType, List<SecTileType>>();
+
+        List<SecTileType> normals = new List<SecTileType>();
+        normals.Add(SecTileType.Dirt);
+        normals.Add(SecTileType.Grass);
+        List<SecTileType> dangerZones = new List<SecTileType>();
+        dangerZones.Add(SecTileType.Gap);
+
+        validTileTypes.Add(TileType.Normal, normals);
+        validTileTypes.Add(TileType.Dangerous, dangerZones);
+    }
+
+    static public bool IsValidSecContentType(ContentType contentType, SecContentType secContentType)
+    {
+        return validContentTypes.ContainsKey(contentType) && validContentTypes[contentType].Contains(secContentType);
+    }
+
+    static public ContentType GetPrimaryFromSecContent(SecContentType secContentType)
+    {
+        ContentType type = validContentTypes.FirstOrDefault(v => v.Value.Contains(secContentType)).Key;
+
+        if(!IsValidSecContentType(type, secContentType)) return ContentType.Unknown;
+
+        return type;
+    }
+
+    static public bool IsValidSecTileType(TileType contentType, SecTileType secContentType)
+    {
+        return validTileTypes.ContainsKey(contentType) && validTileTypes[contentType].Contains(secContentType);
+    }
+
+    static public TileType GetPrimaryFromSecTile(SecTileType secContentType)
+    {
+        TileType type = validTileTypes.FirstOrDefault(v => v.Value.Contains(secContentType)).Key;
+
+        if (!IsValidSecTileType(type, secContentType)) return TileType.Unknown;
+
+        return type;
     }
 
     private void ReadLevelData()
