@@ -13,7 +13,7 @@ public class FireballButton : SpellButton
         type = GameManager.SpellType.Fireball;
         spellDamage = 20;
         fireDamage = 5;
-        SpawnAP(cost);
+        SpawnAP();
     }
 
     public override void ApplyEffect()

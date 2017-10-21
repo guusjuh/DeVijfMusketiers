@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [Serializable]
@@ -9,11 +10,15 @@ public class LevelData
     [SerializeField] public int id;
     [SerializeField] public int rows;
     [SerializeField] public int columns;
+    [SerializeField] public SecTileTypeRow[] grid;
     [SerializeField] public List<SpawnNode> spawnNodes;
-    [SerializeField] public List<Coordinate> gooStartPosses;
-    [SerializeField] public int minAmountOfHumans;
-    [SerializeField] public int maxAmountOfHumans;
-    [SerializeField] public int bossID;
+    public int amountOfHumans { get { return spawnNodes.FindAll(s => s.secType == SecContentType.Human).Count; } }
+}
+
+[Serializable]
+public class SecTileTypeRow
+{
+    [SerializeField] public SecTileType[] row;
 }
 
 [Serializable]

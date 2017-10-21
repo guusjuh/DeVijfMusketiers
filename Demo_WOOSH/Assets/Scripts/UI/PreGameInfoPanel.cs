@@ -62,7 +62,7 @@ public class PreGameInfoPanel : MonoBehaviour
             selectableContracts.Last().Initialize(UberManager.Instance.ContractManager.ContractsInLevel(levelID)[i]);
         }
 
-        for (int i = 0; i < ContentManager.Instance.LevelData(levelID).minAmountOfHumans; i++)
+        for (int i = 0; i < ContentManager.Instance.LevelData(levelID).amountOfHumans; i++)
         {
             activeContracts.Add(UIManager.Instance.CreateUIElement(activeContractPrefab, Vector2.zero, gridActiveContracts.transform).GetComponent<ActiveContract>());
             activeContracts.Last().Initialize();
@@ -88,7 +88,7 @@ public class PreGameInfoPanel : MonoBehaviour
 
         reference.SetActive(true, contractRef);
 
-        bool hasEnoughHoomans = GetSelectedContracts().Count >= ContentManager.Instance.LevelData(levelID).minAmountOfHumans;
+        bool hasEnoughHoomans = GetSelectedContracts().Count >= ContentManager.Instance.LevelData(levelID).amountOfHumans;
         if (hasEnoughHoomans)
         {
             UIManager.Instance.PreGameUI.CanStart(true);

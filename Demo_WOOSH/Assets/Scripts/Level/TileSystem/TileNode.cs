@@ -28,7 +28,7 @@ public class TileNode {
     /// </summary>
     /// <param name="gridPosition">The grid position.</param>
     /// <param name="worldPosition">The world position.</param>
-    public TileNode(Coordinate gridPosition, Vector3 worldPosition, SecTileType type = SecTileType.Dirt)
+    public TileNode(Coordinate gridPosition, Vector3 worldPosition, SecTileType type)
     {
         this.gridPosition = gridPosition;
         this.worldPosition = worldPosition;
@@ -39,7 +39,6 @@ public class TileNode {
 
         // Create a hexagon of the given type and store a reference.
         CreateHexagon(type);
-        highlight = hexagon.transform.Find("Highlight").GetComponent<SpriteRenderer>();
     }
 
     public void Clear()
@@ -72,6 +71,8 @@ public class TileNode {
 
         // Set the position.
         hexagon.transform.position = worldPosition;
+
+        highlight = hexagon.transform.Find("Highlight").GetComponent<SpriteRenderer>();
     }
 
     /// <summary>

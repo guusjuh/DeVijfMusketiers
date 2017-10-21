@@ -267,10 +267,6 @@ public class LevelManager
 
             GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
         }
-
-        // spawn goo
-        List<Coordinate> gooPosses = ContentManager.Instance.LevelData(GameManager.Instance.CurrentLevel).gooStartPosses;
-        gooPosses.HandleAction(g => GameManager.Instance.TileManager.GetNodeReference(g).CreateHexagon(SecTileType.Gap));
     }
 
     private WorldObject SpawnFromNode(SpawnNode s)

@@ -751,32 +751,25 @@ MonoBehaviour:
       levelData:
       - id: 0
         rows: 7
-        columns: 10
+        columns: 11
+        grid:
+        - row: 0100000001000000000000000000000000000000000000000000000002000000000000000000000000000000
+        - row: 0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000002000000000000000000000000000000000000000000000000000000000000000000000000000000
         spawnNodes:
-        - type: 1
-          secType: 1
+        - type: 0
+          secType: 0
           position:
             x: 1
             y: 1
         - type: 3
           secType: 5
           position:
-            x: 4
-            y: 8
-        - type: 3
-          secType: 5
-          position:
             x: 1
-            y: 2
-        - type: 3
-          secType: 5
-          position:
-            x: 2
-            y: 1
-        - type: 3
-          secType: 5
-          position:
-            x: 2
             y: 2
         - type: 3
           secType: 5
@@ -788,411 +781,280 @@ MonoBehaviour:
           position:
             x: 1
             y: 6
-        - type: 3
-          secType: 6
-          position:
-            x: 2
-            y: 5
         - type: 2
           secType: 4
           position:
-            x: 3
+            x: 1
             y: 8
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 2
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 3
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 7
         - type: 3
           secType: 6
           position:
             x: 3
+            y: 2
+        - type: 1
+          secType: 1
+          position:
+            x: 3
+            y: 4
+        - type: 3
+          secType: 5
+          position:
+            x: 3
+            y: 8
+        - type: 3
+          secType: 5
+          position:
+            x: 3
             y: 9
         - type: 3
           secType: 5
           position:
             x: 4
             y: 8
+        - type: 0
+          secType: 0
+          position:
+            x: 4
+            y: 9
+        - type: 3
+          secType: 5
+          position:
+            x: 5
+            y: 5
         - type: 3
           secType: 5
           position:
             x: 5
             y: 8
         - type: 3
-          secType: 5
+          secType: 6
           position:
-            x: 5
-            y: 5
+            x: 6
+            y: 6
         - type: 3
           secType: 5
           position:
             x: 6
-            y: 9
-        - type: 3
-          secType: 5
-          position:
-            x: 3
-            y: 3
-        - type: 3
-          secType: 5
-          position:
-            x: 3
-            y: 2
-        - type: 0
-          secType: 0
-          position:
-            x: 5
-            y: 5
-        - type: 0
-          secType: 0
-          position:
-            x: 4
-            y: 3
-        gooStartPosses: []
-        minAmountOfHumans: 2
-        maxAmountOfHumans: 2
-        bossID: 0
-      - id: 1
-        rows: 9
+            y: 7
+      - id: 0
+        rows: 7
         columns: 11
+        grid:
+        - row: 0100000001000000000000000000000000000000000000000000000002000000000000000000000000000000
+        - row: 0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000002000000000000000000000000000000000000000000000000000000000000000000000000000000
         spawnNodes:
         - type: 0
           secType: 0
           position:
-            x: 3
-            y: 2
-        - type: 0
-          secType: 0
-          position:
-            x: 2
-            y: 8
-        - type: 0
-          secType: 0
-          position:
-            x: 6
-            y: 6
-        - type: 6
-          secType: 0
-          position:
-            x: 2
-            y: 5
-        - type: 4
-          secType: 0
-          position:
-            x: 2
-            y: 4
-        - type: 4
-          secType: 0
-          position:
-            x: 7
-            y: 9
-        - type: 2
-          secType: 0
-          position:
-            x: 2
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 3
-            y: 3
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 2
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 8
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 9
-        - type: 2
-          secType: 0
-          position:
-            x: 5
-            y: 10
-        - type: 2
-          secType: 0
-          position:
-            x: 6
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 7
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 7
-            y: 6
-        gooStartPosses: []
-        minAmountOfHumans: 3
-        maxAmountOfHumans: 3
-        bossID: 1
-      - id: 2
-        rows: 13
-        columns: 16
-        spawnNodes:
-        - type: 2
-          secType: 0
-          position:
-            x: 3
+            x: 1
             y: 1
-        - type: 2
-          secType: 0
-          position:
-            x: 3
-            y: 2
-        - type: 2
-          secType: 0
-          position:
-            x: 2
-            y: 4
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 4
-        - type: 2
-          secType: 0
-          position:
-            x: 5
-            y: 4
-        - type: 2
-          secType: 0
-          position:
-            x: 3
-            y: 6
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 6
-        - type: 2
-          secType: 0
-          position:
-            x: 3
-            y: 8
-        - type: 2
-          secType: 0
-          position:
-            x: 3
-            y: 11
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 10
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 11
-        - type: 2
-          secType: 0
-          position:
-            x: 4
-            y: 14
-        - type: 2
-          secType: 0
-          position:
-            x: 3
-            y: 14
-        - type: 2
-          secType: 0
-          position:
-            x: 2
-            y: 13
-        - type: 2
-          secType: 0
+        - type: 3
+          secType: 5
           position:
             x: 1
-            y: 13
-        - type: 2
-          secType: 0
+            y: 2
+        - type: 3
+          secType: 5
           position:
-            x: 7
-            y: 3
-        - type: 2
-          secType: 0
-          position:
-            x: 7
-            y: 4
-        - type: 2
-          secType: 0
-          position:
-            x: 7
+            x: 1
             y: 5
-        - type: 2
-          secType: 0
+        - type: 3
+          secType: 5
           position:
-            x: 7
+            x: 1
             y: 6
         - type: 2
-          secType: 0
+          secType: 4
           position:
-            x: 7
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 8
-            y: 2
-        - type: 2
-          secType: 0
-          position:
-            x: 8
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 8
-            y: 11
-        - type: 2
-          secType: 0
-          position:
-            x: 8
-            y: 12
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 3
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 6
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 9
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 10
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 11
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 12
-        - type: 2
-          secType: 0
-          position:
-            x: 9
-            y: 14
-        - type: 2
-          secType: 0
-          position:
-            x: 10
-            y: 2
-        - type: 2
-          secType: 0
-          position:
-            x: 10
-            y: 3
-        - type: 2
-          secType: 0
-          position:
-            x: 10
-            y: 4
-        - type: 2
-          secType: 0
-          position:
-            x: 10
-            y: 6
-        - type: 2
-          secType: 0
-          position:
-            x: 10
-            y: 13
-        - type: 2
-          secType: 0
-          position:
-            x: 11
-            y: 7
-        - type: 2
-          secType: 0
-          position:
-            x: 11
+            x: 1
             y: 8
-        - type: 2
-          secType: 0
-          position:
-            x: 11
-            y: 9
-        - type: 2
-          secType: 0
-          position:
-            x: 11
-            y: 10
-        - type: 2
-          secType: 0
-          position:
-            x: 11
-            y: 11
-        - type: 2
-          secType: 0
-          position:
-            x: 11
-            y: 12
-        - type: 2
-          secType: 0
-          position:
-            x: 11
-            y: 13
-        - type: 0
-          secType: 0
-          position:
-            x: 1
-            y: 2
-        - type: 0
-          secType: 0
-          position:
-            x: 1
-            y: 7
-        - type: 0
-          secType: 0
+        - type: 3
+          secType: 5
           position:
             x: 2
-            y: 14
+            y: 2
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 3
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 7
+        - type: 3
+          secType: 6
+          position:
+            x: 3
+            y: 2
+        - type: 1
+          secType: 1
+          position:
+            x: 3
+            y: 3
+        - type: 3
+          secType: 5
+          position:
+            x: 3
+            y: 8
+        - type: 3
+          secType: 5
+          position:
+            x: 3
+            y: 9
+        - type: 3
+          secType: 5
+          position:
+            x: 4
+            y: 8
         - type: 0
           secType: 0
           position:
-            x: 10
-            y: 12
-        - type: 6
-          secType: 0
-          position:
-            x: 9
-            y: 3
-        - type: 4
-          secType: 0
+            x: 4
+            y: 9
+        - type: 3
+          secType: 5
           position:
             x: 5
-            y: 11
-        - type: 4
-          secType: 0
+            y: 5
+        - type: 3
+          secType: 5
+          position:
+            x: 5
+            y: 8
+        - type: 3
+          secType: 6
+          position:
+            x: 6
+            y: 6
+        - type: 3
+          secType: 5
           position:
             x: 6
             y: 7
-        gooStartPosses: []
-        minAmountOfHumans: 4
-        maxAmountOfHumans: 4
-        bossID: 2
+      - id: 0
+        rows: 7
+        columns: 11
+        grid:
+        - row: 0100000001000000000000000000000000000000000000000000000002000000000000000000000000000000
+        - row: 0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        - row: 0000000002000000000000000000000000000000000000000000000000000000000000000000000000000000
+        spawnNodes:
+        - type: 0
+          secType: 0
+          position:
+            x: 1
+            y: 1
+        - type: 3
+          secType: 5
+          position:
+            x: 1
+            y: 2
+        - type: 3
+          secType: 5
+          position:
+            x: 1
+            y: 5
+        - type: 3
+          secType: 5
+          position:
+            x: 1
+            y: 6
+        - type: 2
+          secType: 4
+          position:
+            x: 1
+            y: 8
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 2
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 3
+        - type: 3
+          secType: 5
+          position:
+            x: 2
+            y: 7
+        - type: 3
+          secType: 6
+          position:
+            x: 3
+            y: 2
+        - type: 1
+          secType: 1
+          position:
+            x: 3
+            y: 3
+        - type: 3
+          secType: 5
+          position:
+            x: 3
+            y: 8
+        - type: 3
+          secType: 5
+          position:
+            x: 3
+            y: 9
+        - type: 3
+          secType: 5
+          position:
+            x: 4
+            y: 8
+        - type: 0
+          secType: 0
+          position:
+            x: 4
+            y: 9
+        - type: 3
+          secType: 5
+          position:
+            x: 5
+            y: 5
+        - type: 3
+          secType: 5
+          position:
+            x: 5
+            y: 8
+        - type: 3
+          secType: 6
+          position:
+            x: 6
+            y: 6
+        - type: 3
+          secType: 5
+          position:
+            x: 6
+            y: 7
   contractManager:
     contractTypes:
     - type: 0

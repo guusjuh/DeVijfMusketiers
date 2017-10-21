@@ -24,8 +24,8 @@ public enum TileType
 
 public enum SecTileType
 {
-    Grass,
     Dirt,
+    Grass,
     Gap,
 }
 

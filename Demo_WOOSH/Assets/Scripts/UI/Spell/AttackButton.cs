@@ -12,7 +12,7 @@ public class AttackButton : SpellButton
         cost = 1;
         type = GameManager.SpellType.Attack;
         spellDamage = 10;
-        SpawnAP(cost);
+        SpawnAP();
     }
 
     public override void ApplyEffect()

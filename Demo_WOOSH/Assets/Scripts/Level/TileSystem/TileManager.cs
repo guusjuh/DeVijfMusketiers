@@ -108,7 +108,7 @@ public class TileManager
         // Initialize and set the parent. 
 
         // Create the grid.
-        CreateGrid(rows, columns);
+        CreateGrid();
 
         // Let every node find it's neighbours.
         for (int i = 0; i < rows; i++)
@@ -140,19 +140,20 @@ public class TileManager
     /// </summary>
     /// <param name="sizeX">Amount of hexagon rows.</param>
     /// <param name="sizeY">Amount of hexagon columns.</param>
-    /// TODO:NOW sec type should be passed on
-    private void CreateGrid(int sizeX, int sizeY)
+    private void CreateGrid()
     {
-        for (int i = 0; i < sizeX; i++)
+        SecTileTypeRow[] tempGrid = ContentManager.Instance.LevelData(GameManager.Instance.CurrentLevel).grid;
+
+        for (int i = 0; i < tempGrid.Length; i++)
         {
-            for (int j = 0; j < sizeY; j++)
+            for (int j = 0; j < tempGrid[0].row.Length; j++)
             {
                 // Determine grid- and worldposition. 
                 Coordinate gridPosition = new Coordinate(i, j);
                 Vector3 worldPosition = GetWorldPosition(gridPosition);
 
                 // Create the grid node. 
-                TileNode tileNode = new TileNode(gridPosition, worldPosition);
+                TileNode tileNode = new TileNode(gridPosition, worldPosition, tempGrid[i].row[j]);
                 tileNode.Hexagon.transform.parent = gridParent.transform;
 
                 // Add the grid node to the grid array. 
@@ -160,7 +161,6 @@ public class TileManager
             }
         }
     }
-
 
     public List<TileNode> GeneratePathTo(Coordinate from, Coordinate to, WorldObject worldObject)
     {
@@ -237,6 +237,11 @@ public class TileManager
 
     public float CostToEnterTile(TileNode nextTile, WorldObject worldObject)
     {
+        bool isWalkingMonster = worldObject.IsMonster() && worldObject.IsWalking();
+
+        if (nextTile.GetType() == TileType.Dangerous && isWalkingMonster)
+            return 1000;
+
         return nextTile.EnterCost();
     }
 

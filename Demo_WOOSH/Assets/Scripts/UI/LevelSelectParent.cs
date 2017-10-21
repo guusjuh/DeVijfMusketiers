@@ -39,11 +39,11 @@ public class LevelSelectParent : MonoBehaviour
         // check for the amount of humans in the next level plus the humans traveling from this level
         // being smaller than 7
         bool nextLevelExists = levelID < ContentManager.Instance.AmountOfLevels - 1;
-        bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).minAmountOfHumans +
+        bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).amountOfHumans +
                                 UberManager.Instance.ContractManager.AmountOfContracts(levelID + 1) 
                                 <= 6;
         bool hasEnoughHumans = UberManager.Instance.ContractManager.AmountOfContracts(levelID) <
-                               ContentManager.Instance.LevelData(levelID).minAmountOfHumans;
+                               ContentManager.Instance.LevelData(levelID).amountOfHumans;
 
         if ((nextLevelExists && !spaceInNextLevel) || hasEnoughHumans) 
             levelSelectButton.GetComponent<Button>().interactable = false;

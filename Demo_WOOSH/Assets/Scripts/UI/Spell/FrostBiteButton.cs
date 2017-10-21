@@ -14,7 +14,7 @@ public class FrostBiteButton : SpellButton
         spellDamage = 5;
         duration = 2;
         type = GameManager.SpellType.FrostBite;
-        SpawnAP(cost);
+        SpawnAP();
     }
 
     public override void ApplyEffect()
