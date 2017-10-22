@@ -23,7 +23,10 @@ public class GameManager : StateManager {
     }
 
     private bool gameOn = false;
-    public bool GameOn { get { return gameOn; } }
+
+    public bool GameOn { get{ return gameOn; }
+    }
+
     private bool won = false;
     public bool Won { get { return won; } }
 

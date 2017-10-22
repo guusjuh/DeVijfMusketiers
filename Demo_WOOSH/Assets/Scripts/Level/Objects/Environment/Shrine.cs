@@ -16,7 +16,7 @@ public class Shrine : EnemyTarget
         get { return active; }
         private set {
             active = value;
-            sprRender.color = active ? activeColor : normalColor;
+            sprRender.color = value ? activeColor : normalColor;
         }
     }
 
@@ -46,7 +46,7 @@ public class Shrine : EnemyTarget
         return true;
     }
 
-    public void CheckForActive()
+    public bool CheckForActive(bool givePoints = true)
     {
         List<Coordinate> neighbourCoordinates = new List<Coordinate>(GameManager.Instance.TileManager.Directions(GridPosition));
 
@@ -58,21 +58,21 @@ public class Shrine : EnemyTarget
             {
                 Active = true;
 
-                if (!gaveAP)
+                if (givePoints && !gaveAP)
                 {
                     gaveAP = true;
                     GameManager.Instance.LevelManager.Player.IncreaseActionPoints();
                 }
-
-                break;
+                return true;
             }
         }
-
-        Active = false;
+        if (!givePoints || !gaveAP) Active = false;
+        return false;
     }
 
     public void EndPlayerTurn()
     {
+        CheckForActive(false);
         gaveAP = false;
     }
 

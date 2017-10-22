@@ -189,9 +189,15 @@ public class Human : MovableObject {
 
         contractRef.Die();
 
-        GameManager.Instance.LevelManager.RemoveObject(this, true);
+        GameManager.Instance.LevelManager.RemoveObject(this);
 
         return true;
+    }
+
+    public override void DeadByGap()
+    {
+        contractRef.Die();
+        base.DeadByGap();
     }
 
     public override bool IsHuman() { return true; }

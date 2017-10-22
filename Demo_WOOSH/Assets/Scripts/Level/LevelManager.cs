@@ -111,24 +111,28 @@ public class LevelManager
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
         {
-            enemies[i].StartTurn();
+            Enemy e = enemies[i];
+            e.StartTurn();
 
-            bool canHandleTurn = !enemies[i].Dead && enemies[i].CurrentActionPoints > 0;
+            bool canHandleTurn = GameManager.Instance.GameOn && !e.Dead && e.CurrentActionPoints > 0;
 
-            while (GameManager.Instance.GameOn && canHandleTurn)
+            while (canHandleTurn)
             {
-                enemies[i].EnemyMove();
+                e.EnemyMove();
 
                 yield return new WaitForSeconds(delay);
 
-                canHandleTurn = !enemies[i].Dead && enemies[i].CurrentActionPoints > 0;
+                canHandleTurn = GameManager.Instance.GameOn && !e.Dead && e.CurrentActionPoints > 0;
             }
 
             // need to check for the enemy having killed everything
             if (!GameManager.Instance.GameOn) yield break;
 
-            if (!enemies[i].Dead) enemies[i].EndTurn();
-
+            if (!e.Dead) e.EndTurn();
+            if (e.Dead)
+            {
+                i--;
+            }
             // need to check for the last enemy died from status effect
             if (!GameManager.Instance.GameOn) yield break;
         }
@@ -154,7 +158,7 @@ public class LevelManager
                 }
             }
         }
-
+        shrines.HandleAction(s => s.CheckForActive(false));
         yield return null;
     }
 
@@ -377,7 +381,7 @@ public class LevelManager
         return enemies.Last();
     }
 
-    public void RemoveObject(WorldObject toRemove, bool inGame = false)
+    public void RemoveObject(WorldObject toRemove)
     {
         if (toRemove.IsBarrel())
         {
@@ -386,17 +390,23 @@ public class LevelManager
         else if (toRemove.IsHuman())
         {
             humans.Remove((Human)toRemove);
-            if (inGame && humans.Count <= 0)
+            if (GameManager.Instance.GameOn && humans.Count <= 0)
             {
                 Remove(toRemove);
                 GameManager.Instance.GameOver();
+                return;
+            }
+            else
+            {
+                Remove(toRemove);
+                shrines.HandleAction(s => s.CheckForActive(false));
                 return;
             }
         }
         else if (toRemove.IsMonster())
         {
             enemies.Remove((Enemy)toRemove);
-            if (inGame && enemies.Count <= 0)
+            if (GameManager.Instance.GameOn && enemies.Count <= 0)
             {
                 Remove(toRemove);
                 GameManager.Instance.GameOver();

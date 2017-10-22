@@ -7,7 +7,6 @@ public class FrostBiteButton : SpellButton
 {
     public override void Initialize()
     {
-        //TODO: cooldown = 3
         base.Initialize();
         cost = 1;
         hitchance = 0.3f;
@@ -22,7 +21,7 @@ public class FrostBiteButton : SpellButton
         float chance = Random.Range(0.0f, 1.0f);
         if (chance < hitchance)
         {
-            target.GetComponent<Enemy>().Hit(spellDamage);
+            target.GetComponent<Enemy>().TryHit(spellDamage);
         }
         target.GetComponent<Enemy>().Slow(duration);
     }

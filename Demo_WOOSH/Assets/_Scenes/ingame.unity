@@ -802,12 +802,12 @@ MonoBehaviour:
             x: 2
             y: 7
         - type: 3
-          secType: 6
+          secType: 5
           position:
             x: 3
             y: 2
         - type: 1
-          secType: 1
+          secType: 3
           position:
             x: 3
             y: 4

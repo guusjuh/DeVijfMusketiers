@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Sketta : Enemy {
-    private float blockChange = 0.2f;
     public GameObject Shield;
     private float shieldActiveTime;
 
     public override void Initialize(Coordinate startPos)
     {
         this.startHealth = 130;
+        blockChance = 0.3f;
+        canBlock = true;
 
         Shield.SetActive(false);
 
@@ -22,15 +23,15 @@ public class Sketta : Enemy {
         base.Initialize(startPos);
     }
 
-    public override bool Hit(int dmg)
+    public override bool TryHit(int dmg)
     {
-        float block = Random.Range(0.0f, 1.0f);
-        if (block <= blockChange)
+        if (!base.TryHit(dmg))
         {
             StartCoroutine(ShieldVisual());
             return false;
         }
-        return base.Hit(dmg);
+
+        return true;
     }
 
     protected IEnumerator ShieldVisual()

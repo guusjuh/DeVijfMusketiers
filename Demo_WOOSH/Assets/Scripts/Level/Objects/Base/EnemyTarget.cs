@@ -19,7 +19,7 @@ public class EnemyTarget : WorldObject {
         return false;
     }
 
-    public void DeadByGap()
+    public virtual void DeadByGap()
     {
         canBeTargeted = false;
         GameManager.Instance.LevelManager.RemoveObject(this);
