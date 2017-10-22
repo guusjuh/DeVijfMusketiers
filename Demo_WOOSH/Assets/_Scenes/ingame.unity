@@ -851,7 +851,7 @@ MonoBehaviour:
           position:
             x: 6
             y: 7
-      - id: 0
+      - id: 1
         rows: 7
         columns: 11
         grid:
@@ -909,7 +909,7 @@ MonoBehaviour:
             x: 3
             y: 2
         - type: 1
-          secType: 1
+          secType: 2
           position:
             x: 3
             y: 3
@@ -953,7 +953,7 @@ MonoBehaviour:
           position:
             x: 6
             y: 7
-      - id: 0
+      - id: 2
         rows: 7
         columns: 11
         grid:
@@ -1011,7 +1011,7 @@ MonoBehaviour:
             x: 3
             y: 2
         - type: 1
-          secType: 1
+          secType: 3
           position:
             x: 3
             y: 3

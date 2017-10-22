@@ -21,6 +21,7 @@ public class Arnest : Enemy
         if (other.IsHuman() || other.IsShrine())
         {
             totalActionPoints++;
+            calculatedTotalAP++;
         }
 
         base.Attack(other);

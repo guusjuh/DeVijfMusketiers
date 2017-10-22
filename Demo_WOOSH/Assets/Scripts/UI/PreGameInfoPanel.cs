@@ -36,6 +36,7 @@ public class PreGameInfoPanel : MonoBehaviour
 
     public void Restart()
     {
+        levelID = UberManager.Instance.PreGameManager.SelectedLevel;
         BuildGrids();
         levelText.text = LEVEL_TEXT + (levelID + 1);
     }

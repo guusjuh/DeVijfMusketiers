@@ -28,7 +28,7 @@ public class TileContent
     {
         int cost = 1;
 
-        if (contentTypes.Find(c => c.IsBarrel()) ||
+        if (contentTypes.Find(c => (c.IsBarrel() && !c.GetComponent<Barrel>().Destroyed)) ||
             contentTypes.Find(c => c.IsShrine()) ||
             contentTypes.Find(c => c.IsHuman()))
         {
