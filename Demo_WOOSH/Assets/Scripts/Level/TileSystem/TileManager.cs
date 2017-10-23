@@ -48,6 +48,7 @@ public class TileManager
 
     private TileNode[,] grid;
     private GameObject gridParent;
+    public GameObject GridParent { get { return gridParent; } }
     private List<TileNode> highlightedNodes;
 
     private Coordinate[] corners;
@@ -79,9 +80,9 @@ public class TileManager
     public void Initialize()
     {
         gridParent = new GameObject("Grid Parent");
-        SetUpGrid();
+        if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
+        else SetUpGrid();
 
-        //TODO: these don't seem to be right, but they really seem to be right?!
         corners = new Coordinate[4]
         {
             new Coordinate(     0,         0),
@@ -93,7 +94,62 @@ public class TileManager
 
     public void Restart()
     {
-        SetUpGrid();
+        if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
+        else SetUpGrid();
+    }
+
+    private void SetUpEmptyGridDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        rows = UberManager.Instance.LevelEditor.Rows;
+        columns = UberManager.Instance.LevelEditor.Columns;
+
+        grid = new TileNode[rows, columns];
+    }
+
+    private void PasteGridDEVMODE(TileNode[,] oldGrid, TileNode[,] newGrid, Coordinate startPos)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        for (int i = startPos.x; i < oldGrid.GetLength(0) + startPos.x; i++)
+        {
+            for (int j = startPos.y; j < oldGrid.GetLength(1) + startPos.y; j++)
+            {
+                // if it doesn't fit in the new grid, continue
+                if (i >= newGrid.GetLength(0) || j >= newGrid.GetLength(1)) continue;
+
+                // if the node was null, continue
+                if (oldGrid[i - startPos.x, j - startPos.y] == null) continue;
+
+                // Determine grid- and worldposition. 
+                Coordinate gridPosition = new Coordinate(i, j);
+                Vector3 worldPosition = GetWorldPosition(gridPosition);
+
+                // Create the grid node. 
+                TileNode tileNode = new TileNode(gridPosition, worldPosition, oldGrid[i-startPos.x, j-startPos.y].GetSecType());
+                tileNode.Hexagon.transform.parent = gridParent.transform;
+
+                // Add the grid node to the grid array. 
+                grid[i, j] = tileNode;
+            }
+        }
+    }
+
+    public void AdjustGridSizeDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        rows = UberManager.Instance.LevelEditor.Rows;
+        columns = UberManager.Instance.LevelEditor.Columns;
+
+        TileNode[,] oldGrid = grid;
+
+        grid = new TileNode[rows, columns];
+
+        PasteGridDEVMODE(oldGrid, grid, Coordinate.zero);
+
+        ClearGrid(oldGrid);
     }
 
     private void SetUpGrid()
@@ -120,19 +176,22 @@ public class TileManager
         }
     }
 
-    public void ClearGrid()
+    public void ClearGrid(TileNode[,] gridToRemove = null)
     {
+        if (gridToRemove == null) gridToRemove = grid;
+
         HidePossibleRoads();
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < gridToRemove.GetLength(0); i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < gridToRemove.GetLength(1); j++)
             {
-                grid[i,j].Clear();
+                if(gridToRemove[i,j] == null) continue;
+                gridToRemove[i,j].Clear();
             }
         }
 
-        grid = null;
+        gridToRemove = null;
     }
 
     /// <summary>
@@ -288,12 +347,29 @@ public class TileManager
         return true;
     }
 
-    public void SetTileType(SecTileType type, Coordinate pos)
+    public void SetTileTypeDEVMODE(SecTileType type, Coordinate pos)
     {
-        //TODO: maybe we need conditions and checks for this being valid
-        if (GetNodeReference(pos) == null) return;
+        if (!UberManager.Instance.DevelopersMode) return;
 
-        grid[pos.x,pos.y].CreateHexagon(type);
+        if (GetNodeReference(pos) == null)
+        {
+            grid[pos.x, pos.y] = new TileNode(pos, GetWorldPosition(pos), type);
+        }
+        else
+        {
+            grid[pos.x, pos.y].CreateHexagon(type);
+        }
+    }
+
+    public void RemoveTileDEVMODE(Coordinate pos)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (GetNodeReference(pos) != null)
+        {
+            GetNodeReference(pos).Clear();
+            grid[pos.x, pos.y] = null;
+        }
     }
 
     public void SetObject(Coordinate pos, WorldObject worldObject)
@@ -349,6 +425,35 @@ public class TileManager
         return new Vector2(xPos, yPos);
     }
 
+    public Coordinate GetGridPosition(Vector2 worldPosition)
+    {
+        // Return if the grid is empty.
+        if (grid.Length < 1) return Coordinate.zero;
+
+        // Get the distance from the first node to the given worldposition.
+        float distance = Vector3.Distance(GetWorldPosition(new Coordinate(0,0)), worldPosition);
+
+        // Set the node closest to the given worldposition.
+        Coordinate closeCoord = new Coordinate(0, 0);
+
+        // Check for every node.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                // If the node is closer to the given world position than the current closed distance.
+                if (distance > Vector3.Distance(GetWorldPosition(new Coordinate(i, j)), worldPosition))
+                {
+                    // Set the node as new closest node.
+                    distance = Vector3.Distance(GetWorldPosition(new Coordinate(i, j)), worldPosition);
+                    closeCoord = new Coordinate(i, j);
+                }
+            }
+        }
+
+        return closeCoord;
+    }
+
     /// <summary>
     /// Get node closest to given world position.
     /// </summary>
@@ -395,7 +500,7 @@ public class TileManager
         foreach (TileNode t in grid)
         {
             // If the grid node is located at the given grid position, return it.
-            if (t.GridPosition == gridPos)
+            if (t != null && t.GridPosition == gridPos)
                 return t;
         }
 

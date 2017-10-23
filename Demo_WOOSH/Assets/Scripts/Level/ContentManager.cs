@@ -69,7 +69,9 @@ public class ContentManager {
     }
 
     private static Dictionary<ContentType, List<SecContentType>> validContentTypes;
+    public static Dictionary<ContentType, List<SecContentType>> ValidContentTypes { get {return validContentTypes; } }
     private static Dictionary<TileType, List<SecTileType>> validTileTypes;
+    public static Dictionary<TileType, List<SecTileType>> ValidTileTypes { get { return validTileTypes; } }
 
     private Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> contentPrefabs = new Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject>();
     public Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> ContentPrefabs { get { return contentPrefabs; } }

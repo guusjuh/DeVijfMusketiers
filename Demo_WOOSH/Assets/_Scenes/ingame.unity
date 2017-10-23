@@ -728,8 +728,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1638883504}
   - component: {fileID: 1638883503}
+  - component: {fileID: 1638883505}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: UberManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -746,6 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa479ee0615e2a54d9b7a96e696622e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  developersMode: 1
   contentManager:
     levelDataContainer:
       levelData:
@@ -1120,6 +1122,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1638883505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1638883502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5465cb845494f4fa7562400f331b72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows: 5
+  columns: 7
 --- !u!1 &1646176667
 GameObject:
   m_ObjectHideFlags: 0

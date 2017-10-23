@@ -23,11 +23,19 @@ public class UIManager
 
     public void Initialize()
     {
-        uiManagers.Add(UberManager.GameStates.InGame, new InGameUIManager());
-        uiManagers.Add(UberManager.GameStates.PostGame, new PostGameUIManager());
-        uiManagers.Add(UberManager.GameStates.LevelSelection, new LevelSelectUIManager());
-        uiManagers.Add(UberManager.GameStates.PreGame, new PreGameUIManager());
+        if (UberManager.Instance.DevelopersMode)
+        {
+            uiManagers.Add(UberManager.GameStates.InGame, new InGameUIManager());
+        }
+        else
+        {
+            uiManagers.Add(UberManager.GameStates.InGame, new InGameUIManager());
+            uiManagers.Add(UberManager.GameStates.PostGame, new PostGameUIManager());
+            uiManagers.Add(UberManager.GameStates.LevelSelection, new LevelSelectUIManager());
+            uiManagers.Add(UberManager.GameStates.PreGame, new PreGameUIManager());
+        }
     }
+
 
     public void RestartUI()
     {

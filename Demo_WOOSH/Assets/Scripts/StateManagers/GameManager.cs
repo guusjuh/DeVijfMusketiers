@@ -22,6 +22,9 @@ public class GameManager : StateManager {
         }
     }
 
+    private bool pause = false;
+    public bool Pause { get {return pause; } private set { pause = value; UIManager.Instance.InGameUI.Pause(pause); } }
+
     private bool gameOn = false;
     public bool GameOn { get { return gameOn; } }
     private bool won = false;
@@ -43,7 +46,9 @@ public class GameManager : StateManager {
     public List<Contract> SelectedContracts { get { return selectedContracts; } }
 
     protected override void Initialize()
-    { 
+    {
+        if (UberManager.Instance.DevelopersMode) pause = true;
+
         tileManager.Initialize();
         UIManager.Instance.RestartUI();
         levelManager.Initialize();
@@ -56,6 +61,8 @@ public class GameManager : StateManager {
 
     protected override void Restart()
     {
+        if (UberManager.Instance.DevelopersMode) pause = true;
+
         tileManager.Restart();
         UIManager.Instance.RestartUI();
         levelManager.Restart();
@@ -67,6 +74,7 @@ public class GameManager : StateManager {
 
     public override void Clear()
     {
+        pause = false;
         gameOn = false;
 
         // call all clear methods
@@ -83,6 +91,7 @@ public class GameManager : StateManager {
 
     public void GameOver()
     {
+        pause = false;
         gameOn = false;
 
         if (LevelManager.Humans.Count > 0) won = true;
@@ -94,7 +103,7 @@ public class GameManager : StateManager {
     // update is called every frame
     public override void Update()
     {
-        if (!gameOn) return;
+        if (!gameOn || pause) return;
 
         UberManager.Instance.InputManager.CatchInput();
         cameraManager.UpdatePosition();

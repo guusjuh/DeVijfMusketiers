@@ -59,7 +59,8 @@ public class LevelManager
 
         amountOfTurns = 0;
 
-        SpawnLevel();
+        if (UberManager.Instance.DevelopersMode) SpawnEmptyLevel();
+        else SpawnLevel();
 
         // start with other turn
         playersTurn = false;
@@ -244,6 +245,48 @@ public class LevelManager
         yield return null;
     }
 
+    private void SpawnEmptyLevel()
+    {
+        
+    }
+
+    public void SpawnObjectDEVMODE(SpawnNode s)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (!ContentManager.IsValidSecContentType(s.type, s.secType))
+        {
+            Debug.LogError("Sectype not supported for given type");
+            return;
+        }
+
+        WorldObject toBeSpawned = null;
+
+        switch (s.type)
+        {
+            case ContentType.Boss:
+                toBeSpawned = SpawnBoss(s);
+                break;
+            case ContentType.Minion:
+                toBeSpawned = SpawnMinion(s);
+                break;
+            case ContentType.Environment:
+                toBeSpawned = SpawnEnvironment(s);
+                break;
+            case ContentType.Human:
+                toBeSpawned = SpawnHuman(s, false);
+                break;
+        }
+
+        if (toBeSpawned == null)
+        {
+            Debug.LogError("Prefab not found for this spawnnode");
+            return;
+        }
+
+        GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
+    }
+
     private void SpawnLevel()
     {
         // spawn nodes
@@ -289,8 +332,14 @@ public class LevelManager
         return null;
     }
 
-    private WorldObject SpawnHuman(SpawnNode s)
+    private WorldObject SpawnHuman(SpawnNode s, bool withContract = true)
     {
+        if (!withContract && !UberManager.Instance.DevelopersMode)
+        {
+            Debug.Log("You have to assign a contract in game mode");
+            withContract = true;
+        }
+
         if (s.secType != SecContentType.Human) return null;
 
         GameObject prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
@@ -300,7 +349,7 @@ public class LevelManager
                                           GameManager.Instance.TileManager.GetWorldPosition(s.position), 
                                           Quaternion.identity).GetComponent<Human>());
         humans.Last().Initialize(s.position);
-        humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+        if(withContract) humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
         humansInstantiated++;
 
         return humans.Last();
