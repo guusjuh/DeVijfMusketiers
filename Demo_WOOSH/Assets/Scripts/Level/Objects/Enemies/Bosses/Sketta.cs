@@ -9,7 +9,7 @@ public class Sketta : Enemy {
     public override void Initialize(Coordinate startPos)
     {
         startHealth = 130;
-        blockChance = 0.2f;
+        blockChance = 0.3f;
         canBlock = true;
 
         Shield.SetActive(false);
