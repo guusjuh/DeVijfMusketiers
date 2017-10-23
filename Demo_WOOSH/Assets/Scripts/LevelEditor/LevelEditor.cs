@@ -22,26 +22,31 @@ public class LevelEditor : MonoBehaviour
 
     [SerializeField] private int rows;
     [SerializeField] private int columns;
-
-    public int Rows
-    {
-        get { return rows; }
-    }
-
-    public int Columns
-    {
-        get { return columns; }
-    }
+    public int Rows { get { return rows; } }
+    public int Columns { get { return columns; } }
 
     private ToolType toolType = ToolType.Brush;
 
     private PlacableType placableType = PlacableType.Tile;
     private Transform previewObject; // the preview stuck on the mouse
 
-    
+    /// <summary>
+    /// The previous selected tile type, used to set when switched between placement type to tile
+    /// </summary>
+    private TileType prevTileType;
+    /// <summary>
+    /// The previous selected content type, used to set when switched between placement type to content
+    /// </summary>
+    private ContentType prevContentType;
 
-    //private Dictionary<TileType, SecTileType> lastSelectedTileTypes;
-    //private Dictionary<ContentType, SecContentType> lastSelectedContentTypes;
+    /// <summary>
+    /// The previous selected secondairy tile type, used to set when switched between primary type
+    /// </summary>
+    private Dictionary<TileType, SecTileType> prevSecTileTypes;
+    /// <summary>
+    /// The previous selected secondairy content type, used to set when switched between primary type
+    /// </summary>
+    private Dictionary<ContentType, SecContentType> prevSecContentTypes;
 
     private KeyValuePair<TileType, SecTileType> selectedTile; // the pair to access the go from contentmanager
     private KeyValuePair<ContentType, SecContentType> selectedContent; // the pair to access the go from contentmanager
@@ -74,17 +79,24 @@ public class LevelEditor : MonoBehaviour
         placableType = PlacableType.Tile;
 
         // set each type initially to the first of its kind
-        //lastSelectedContentTypes = new Dictionary<ContentType, SecContentType>();
-        //for (int i = 0; i < Enum.GetValues(typeof(ContentType)).Length; i++)
-        //    lastSelectedContentTypes.Add((ContentType)i, 0);
+        prevSecContentTypes = new Dictionary<ContentType, SecContentType>();
+        for (int i = 0; i < Enum.GetValues(typeof(ContentType)).Length - 1; i++)
+        {
+            prevSecContentTypes.Add((ContentType) i, ContentManager.ValidContentTypes[(ContentType) i][0]);
+        }
 
-        //lastSelectedTileTypes = new Dictionary<TileType, SecTileType>();
-        //for (int i = 0; i < Enum.GetValues(typeof(TileType)).Length; i++)
-        //    lastSelectedTileTypes.Add((TileType)i, 0);
+        prevSecTileTypes = new Dictionary<TileType, SecTileType>();
+        for (int i = 0; i < Enum.GetValues(typeof(TileType)).Length - 1; i++)
+        {
+            prevSecTileTypes.Add((TileType) i, ContentManager.ValidTileTypes[(TileType) i][0]);
+        }
+
+        prevContentType = (ContentType) 0;
+        prevTileType = (TileType) 0;
 
         // select the first tile and the first content types
-        selectedContent = new KeyValuePair<ContentType, SecContentType>(0, 0);//lastSelectedContentTypes.GetEntry((ContentType) 0);
-        selectedTile = new KeyValuePair<TileType, SecTileType>(0, 0);
+        selectedContent = prevSecContentTypes.GetEntry(prevContentType);
+        selectedTile = prevSecTileTypes.GetEntry(prevTileType);
 
         SetSelectedObject(selectedTile.Value);
     }
@@ -113,16 +125,26 @@ public class LevelEditor : MonoBehaviour
         {
             // is there a primary type matching this number for the current placement type?
             bool isValidType = placableType == PlacableType.Content
-                ? pressedNumber < Enum.GetValues(typeof(ContentType)).Length
-                : pressedNumber < Enum.GetValues(typeof(TileType)).Length;
+                ? pressedNumber < Enum.GetValues(typeof(ContentType)).Length - 1
+                : pressedNumber < Enum.GetValues(typeof(TileType)).Length - 1;
 
             if (isValidType)
             {
                 //TODO: not a key bug
                 if (placableType == PlacableType.Content)
-                    SetSelectedObject(ContentManager.ValidContentTypes[(ContentType)pressedNumber][0]);
+                {
+                    if (selectedContent.Key != (ContentType)pressedNumber)
+                    {
+                        SetSelectedObject(prevSecContentTypes[(ContentType)pressedNumber]);
+                    }
+                }
                 else
-                    SetSelectedObject(ContentManager.ValidTileTypes[(TileType)pressedNumber][0]);
+                {
+                    if (selectedTile.Key != (TileType)pressedNumber)
+                    {
+                        SetSelectedObject(prevSecTileTypes[(TileType)pressedNumber]);
+                    }
+                }
             }
             else
             {
@@ -138,7 +160,7 @@ public class LevelEditor : MonoBehaviour
             if (placableType != PlacableType.Tile)
             {
                 placableType = PlacableType.Tile;
-                SetSelectedObject((SecTileType)0);
+                SetSelectedObject(prevSecTileTypes[prevTileType]);
             }
         }
         else if (Input.GetKeyDown(KeyCode.F2))
@@ -146,7 +168,7 @@ public class LevelEditor : MonoBehaviour
             if (placableType != PlacableType.Content)
             {
                 placableType = PlacableType.Content;
-                SetSelectedObject((SecContentType)0);
+                SetSelectedObject(prevSecContentTypes[prevContentType]);
             }
         }
     }
@@ -219,8 +241,11 @@ public class LevelEditor : MonoBehaviour
     private void SetSelectedObject(SecTileType secondairyType)
     {
         TileType primaryType = ContentManager.GetPrimaryFromSecTile(secondairyType);
+        KeyValuePair<TileType, SecTileType> newSelected = new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType);
 
-        selectedTile = new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType);
+        selectedTile = newSelected;
+        prevTileType = selectedTile.Key;
+        prevSecTileTypes[selectedTile.Key] = selectedTile.Value;
 
         if (previewObject != null) Destroy(previewObject.gameObject);
 
@@ -230,8 +255,11 @@ public class LevelEditor : MonoBehaviour
     private void SetSelectedObject(SecContentType secondairyType)
     {
         ContentType primaryType = ContentManager.GetPrimaryFromSecContent(secondairyType);
+        KeyValuePair<ContentType, SecContentType> newSelected = new KeyValuePair<ContentType, SecContentType>(primaryType, secondairyType);
 
-        selectedContent = new KeyValuePair<ContentType, SecContentType>(primaryType, secondairyType);
+        selectedContent = newSelected;
+        prevContentType = selectedContent.Key;
+        prevSecContentTypes[selectedContent.Key] = selectedContent.Value;
 
         if (previewObject != null) Destroy(previewObject.gameObject);
 

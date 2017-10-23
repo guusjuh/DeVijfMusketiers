@@ -77,7 +77,7 @@ public class UberManager : MonoBehaviour {
 #if UNITY_EDITOR
     private void StartDevMode()
     {
-        levelEditor = GetComponent<LevelEditor>();
+        levelEditor = gameObject.AddComponent<LevelEditor>();
         levelEditor.Initialize();
 
         stateManagers.Add(GameStates.InGame, new GameManager());
