@@ -193,4 +193,9 @@ public class TileNode {
     {
         content.RemoveContent(worldObject);
     }
+
+    public WorldObject RemoveContent()
+    {
+        return content.RemoveContent();
+    }
 }

@@ -70,4 +70,11 @@ public class TileContent
     {
         contentTypes.Remove(worldObject);
     }
+
+    public WorldObject RemoveContent()
+    {
+        WorldObject returnObj = contentTypes.Last();
+        contentTypes.Remove(returnObj);
+        return returnObj;
+    }
 }

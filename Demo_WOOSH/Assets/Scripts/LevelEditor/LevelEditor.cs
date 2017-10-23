@@ -210,7 +210,8 @@ public class LevelEditor : MonoBehaviour
     }
 
     private void HandleMouse()
-    {
+    {        
+        //TODO: check for valid mouse position (not outside the screen)
         worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
 
@@ -219,7 +220,8 @@ public class LevelEditor : MonoBehaviour
         // left click is tool
         if (Input.GetMouseButton(0))
         {
-            PencilClicked(coordinateMousePosition);
+            if(toolType == ToolType.Brush) PencilClicked(coordinateMousePosition);
+            if(toolType == ToolType.Fill) FillClicked(coordinateMousePosition);
         }
         // right click is delete
         else if (Input.GetMouseButton(1))
@@ -235,8 +237,6 @@ public class LevelEditor : MonoBehaviour
         toolType = newType;
         Cursor.SetCursor(newType == ToolType.Brush ? pencilCursor : fillCursor, new Vector2(40, 40), CursorMode.Auto);
     }
-
-
 
     private void SetSelectedObject(SecTileType secondairyType)
     {
@@ -281,9 +281,23 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
-    private void FillClicked()
+    private void FillClicked(Coordinate coord)
     {
-        
+        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
+
+        bool alreadyThisTileType = existingNode != null && existingNode.GetSecType() == selectedTile.Value;
+        bool alreadyContent = existingNode != null && existingNode.GetAmountOfContent() > 0;
+        bool occupied = placableType == PlacableType.Content ? alreadyContent : alreadyThisTileType;
+
+        if (!ValidPosition(coord) || occupied) return;
+
+        if (placableType == PlacableType.Tile) PlaceTile(coord);
+        else PlaceContent(coord);
+
+        FillClicked(new Coordinate(coord.x + 1, coord.y));
+        FillClicked(new Coordinate(coord.x - 1, coord.y));
+        FillClicked(new Coordinate(coord.x, coord.y + 1));
+        FillClicked(new Coordinate(coord.x, coord.y - 1));
     }
 
     private void PencilClicked(Coordinate coord)
@@ -310,7 +324,7 @@ public class LevelEditor : MonoBehaviour
         TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
         // if the node is null, there cannot be placed anything
-        if (existingNode != null)
+        if (existingNode != null && existingNode.GetType() != TileType.Dangerous)
         {
             //TODO: push to undo stack
 
@@ -327,7 +341,8 @@ public class LevelEditor : MonoBehaviour
         }
         else
         {
-            Debug.LogError("You cannot place content on a non-existing tile.");
+            if(existingNode == null) Debug.LogError("You cannot place content on a non-existing tile.");
+            else if(existingNode.GetType() == TileType.Dangerous) Debug.LogError("You cannot place content on a dangerous tile.");
         }
     }
 
@@ -344,12 +359,34 @@ public class LevelEditor : MonoBehaviour
         // if the node actually exists, delete it
         if (existingNode != null)
         {
-            GameManager.Instance.TileManager.RemoveTileDEVMODE(coord);
+            if (existingNode.GetAmountOfContent() <= 0)
+            {
+                GameManager.Instance.TileManager.RemoveTileDEVMODE(coord);
+            }
+            else
+            {
+                Debug.LogError("Cannot remove a tile with content on it.");
+            }
         }
     }
 
     private void DeleteContent(Coordinate coord)
     {
-        
+        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
+
+        // if the node actually exists, delete it
+        if (existingNode != null && existingNode.GetAmountOfContent() > 0)
+        {
+            GameManager.Instance.TileManager.RemoveContentDEVMODE(coord);
+        }
+    }
+
+    private bool ValidPosition(Coordinate coord)
+    {
+        // if the coord is outside the field, return false
+        if (coord.x < 0 || coord.x >= rows || coord.y < 0 || coord.y >= columns)
+            return false;
+
+        return true;
     }
 }

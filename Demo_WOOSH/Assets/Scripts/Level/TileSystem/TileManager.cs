@@ -372,6 +372,18 @@ public class TileManager
         }
     }
 
+    public void RemoveContentDEVMODE(Coordinate pos)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (GetNodeReference(pos) != null && 
+            GetNodeReference(pos).GetAmountOfContent() > 0)
+        {
+            WorldObject removedObject = GetNodeReference(pos).RemoveContent();
+            GameManager.Instance.LevelManager.RemoveObject(removedObject);
+        }
+    }
+
     public void SetObject(Coordinate pos, WorldObject worldObject)
     {
         if (GetNodeReference(pos) == null) return;
