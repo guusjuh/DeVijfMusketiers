@@ -29,7 +29,6 @@ public class GridOverlay : MonoBehaviour
             if ((rows != UberManager.Instance.LevelEditor.Rows || columns != UberManager.Instance.LevelEditor.Columns) 
                 && (UberManager.Instance.LevelEditor.Rows > 0 && UberManager.Instance.LevelEditor.Columns > 0))
             {
-                GameManager.Instance.TileManager.AdjustGridSizeDEVMODE();
                 rows = UberManager.Instance.LevelEditor.Rows;
                 columns = UberManager.Instance.LevelEditor.Columns;
             }

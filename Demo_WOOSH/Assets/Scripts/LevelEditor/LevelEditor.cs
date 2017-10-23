@@ -76,8 +76,12 @@ public class LevelEditor : MonoBehaviour
 
     public void AdjustSize(Vector2 newSize)
     {
+        if (rows == (int) newSize.x && columns == (int) newSize.y) return;
+
         rows = (int)newSize.x;
         columns = (int)newSize.y;
+
+        GameManager.Instance.TileManager.AdjustGridSizeDEVMODE();
     }
 
     public void AdjustDangerGrowRate(int newValue)
@@ -200,7 +204,6 @@ public class LevelEditor : MonoBehaviour
 
     private void HandleMouse()
     {        
-        //TODO: check for valid mouse position (not outside the screen)
         worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
 
@@ -216,7 +219,13 @@ public class LevelEditor : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if(toolType == ToolType.Brush) PencilClicked(coordinateMousePosition);
-            if(toolType == ToolType.Fill) FillClicked(coordinateMousePosition);
+            if (toolType == ToolType.Fill)
+            {
+                if (placableType == PlacableType.Content)
+                    FillClicked(coordinateMousePosition);
+                else if (placableType == PlacableType.Tile)
+                    FillClicked(coordinateMousePosition, GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition) == null? SecTileType.Unknown : GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition).GetSecType());
+            }
         }
         // right click is delete
         else if (Input.GetMouseButton(1))
@@ -280,24 +289,52 @@ public class LevelEditor : MonoBehaviour
 
     private void FillClicked(Coordinate coord)
     {
+        if (placableType != PlacableType.Content) return;
+
         TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
-        bool alreadyThisTileType = existingNode != null && existingNode.GetSecType() == selectedData.selectedTile.Value;
         bool alreadyContent = existingNode != null && existingNode.GetAmountOfContent() > 0;
         bool cannotPlaceContent = (existingNode != null && existingNode.GetType() == TileType.Dangerous) || existingNode == null;
 
-        bool occupied = placableType == PlacableType.Content ? alreadyContent || cannotPlaceContent : alreadyThisTileType;
+        bool occupied = alreadyContent || cannotPlaceContent;
 
         if (!ValidPosition(coord) || occupied) return;
 
-        if (placableType == PlacableType.Tile) PlaceTile(coord);
-        else PlaceContent(coord);
+        PlaceContent(coord);
 
         Coordinate[] directions = GameManager.Instance.TileManager.Directions(coord);
 
         for (int i = 0; i < directions.Length; i++)
         {
             FillClicked(coord + directions[i]);
+        }
+    }
+
+    private void FillClicked(Coordinate coord, SecTileType initialType)
+    {
+        if (placableType != PlacableType.Tile) return;
+
+        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
+
+        bool alreadyThisTileType = existingNode != null && existingNode.GetSecType() == selectedData.selectedTile.Value;
+        bool sameTypeAsInitial = true;
+
+        if (initialType == SecTileType.Unknown && existingNode == null)
+            sameTypeAsInitial = true;
+        else if (existingNode != null && existingNode.GetSecType() == initialType)
+            sameTypeAsInitial = true;
+        else
+            sameTypeAsInitial = false;
+
+        if (!ValidPosition(coord) || alreadyThisTileType || !sameTypeAsInitial) return;
+
+        PlaceTile(coord);
+
+        Coordinate[] directions = GameManager.Instance.TileManager.Directions(coord);
+
+        for (int i = 0; i < directions.Length; i++)
+        {
+            FillClicked(coord + directions[i], initialType);
         }
     }
 
@@ -378,7 +415,7 @@ public class LevelEditor : MonoBehaviour
         // if the node actually exists, delete it
         if (existingNode != null && existingNode.GetAmountOfContent() > 0)
         {
-            GameManager.Instance.TileManager.RemoveContentDEVMODE(coord);
+            GameManager.Instance.TileManager.RemoveContentDEVMODE(existingNode);
         }
     }
 

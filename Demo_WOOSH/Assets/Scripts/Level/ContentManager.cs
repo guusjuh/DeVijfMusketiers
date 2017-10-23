@@ -24,6 +24,7 @@ public enum TileType
 
 public enum SecTileType
 {
+    Unknown = -1,
     Dirt,
     Grass,
     Gap,
@@ -40,6 +41,7 @@ public enum ContentType
 
 public enum SecContentType
 {
+    Unknown = -1,
     Human = 0,
     Dodin,
     Arnest,
