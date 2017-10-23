@@ -28,8 +28,9 @@ public class InGameUIManager : SubUIManager {
     private const float RADIUS = 200f;
 
     private SpellVisual spellVisual;
-    private bool castingSpell = false;
-    public bool CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
+    private int castingSpell = -1;
+    public int CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
+    public Dictionary<GameManager.SpellType, Color> SpellColors;
 
     private List<SurroundingPushButton> teleportButtons = new List<SurroundingPushButton>();
     private bool teleportButtonsOn = false;
@@ -72,6 +73,12 @@ public class InGameUIManager : SubUIManager {
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
+
+        SpellColors = new Dictionary<GameManager.SpellType, Color>();
+        SpellColors.Add(GameManager.SpellType.Attack, Color.white);
+        SpellColors.Add(GameManager.SpellType.Fireball, Color.red);
+        SpellColors.Add(GameManager.SpellType.FrostBite, Color.blue);
+        SpellColors.Add(GameManager.SpellType.Teleport, Color.magenta);
     }
 
     private void CreateSpellButton(GameManager.SpellType type, string prefabPath)
@@ -95,7 +102,7 @@ public class InGameUIManager : SubUIManager {
 
     public override void Clear()
     {
-        CastingSpell = false;
+        CastingSpell = -1;
 
         // you knwo the banners are off
 

@@ -14,21 +14,13 @@ public class SpellVisual : MonoBehaviour
     // per second
     private float shrinkSpeed = 3500.0f;
     private float rotationSpeed = 270.0f;
-
-    private Dictionary<GameManager.SpellType, Color> colors;
-
+    
     private Vector2 worldPos;
 
     public void Initialize()
     {
         image = GetComponent<Image>();
         rect = GetComponent<RectTransform>();
-
-        colors = new Dictionary<GameManager.SpellType, Color>();
-        colors.Add(GameManager.SpellType.Attack, Color.white);
-        colors.Add(GameManager.SpellType.Fireball, Color.red);
-        colors.Add(GameManager.SpellType.FrostBite, Color.blue);
-        colors.Add(GameManager.SpellType.Teleport, Color.magenta);
 
         gameObject.SetActive(false);
     }
@@ -40,7 +32,7 @@ public class SpellVisual : MonoBehaviour
         rect.sizeDelta = new Vector2(MAX_SIZE, MAX_SIZE);
 
         gameObject.SetActive(true);
-        image.color = colors[type];
+        image.color = UberManager.Instance.UiManager.InGameUI.SpellColors[type];
 
         yield return StartCoroutine(Adjust());
     }

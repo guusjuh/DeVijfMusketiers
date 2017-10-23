@@ -17,15 +17,15 @@ public class Dodin : Enemy
     public override void Initialize(Coordinate startPos)
     {
         //set boss specific health
-        this.startHealth = 100;
+        startHealth = 100;
 
         //disables the fireball
         fireBall = transform.Find("FireBall").gameObject;
         fireBall.SetActive(false);
         viewDistance = 4;
 
-        this.hasSpecial = true;
-        this.type = SecContentType.Dodin;
+        hasSpecial = true;
+        type = SecContentType.Dodin;
 
         base.Initialize(startPos);
     }

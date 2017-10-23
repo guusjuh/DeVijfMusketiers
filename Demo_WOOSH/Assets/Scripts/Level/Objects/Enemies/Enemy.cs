@@ -115,7 +115,6 @@ public class Enemy : WorldObject
         }
 
         return false;
-        
     }
 
     protected virtual bool Hit(int dmg)
