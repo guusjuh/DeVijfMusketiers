@@ -40,17 +40,22 @@ public class LevelEditorWindow : EditorWindow
                 GUI.enabled = false;
                 GUILayout.TextField(levelEditorRef.LevelID.ToString());
                 GUI.enabled = true;
-
-
-                //GUILayout.Label(levelEditorRef.LevelID.ToString(), "TextField");
-                //EditorGUILayout.SelectableLabel(levelEditorRef.LevelID.ToString(), EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
                 GUILayout.EndHorizontal();
 
                 // rows and cols
-                // danger grow rate
-                // danger grow start turn    
+                GUILayout.BeginHorizontal();
+                levelEditorRef.AdjustSize = EditorGUILayout.Vector2Field("Level Size: ", new Vector2(levelEditorRef.Rows, levelEditorRef.Columns));
+                GUILayout.EndHorizontal();
 
-                // toggle content vs tile edit mode 
+                // danger grow rate
+                GUILayout.BeginHorizontal();
+                levelEditorRef.AdjustDangerGrowRate = EditorGUILayout.IntField("Danger grow speed: ", levelEditorRef.AdjustDangerGrowRate);
+                GUILayout.EndHorizontal();
+
+                // danger grow start turn 
+                GUILayout.BeginHorizontal();
+                levelEditorRef.AdjustDangerStartTurn = EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.AdjustDangerStartTurn);
+                GUILayout.EndHorizontal();
 
                 // end box layout
                 GUILayout.EndVertical();

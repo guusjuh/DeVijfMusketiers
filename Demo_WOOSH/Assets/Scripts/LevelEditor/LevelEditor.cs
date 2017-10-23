@@ -23,10 +23,22 @@ public class LevelEditor : MonoBehaviour
 
     public int LevelID { get { return 1; } }
 
-    [SerializeField] private int rows;
-    [SerializeField] private int columns;
+    private int rows;
+    private int columns;
     public int Rows { get { return rows; } }
     public int Columns { get { return columns; } }
+
+    public Vector2 AdjustSize
+    {
+        set
+        {
+            rows = (int) value.x;
+            columns = (int) value.y;
+        }
+    }
+
+    public int AdjustDangerGrowRate { get; set; }
+    public int AdjustDangerStartTurn { get; set; }
 
     private ToolType toolType = ToolType.Brush;
 
@@ -96,7 +108,6 @@ public class LevelEditor : MonoBehaviour
 
             if (isValidType)
             {
-                //TODO: not a key bug
                 if (placableType == PlacableType.Content)
                 {
                     if (selectedData.selectedContent.Key != (ContentType)pressedNumber)
@@ -181,6 +192,12 @@ public class LevelEditor : MonoBehaviour
         worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
 
+        if (!ValidMousePosition(worldMousePosition, coordinateMousePosition))
+        {
+            if (previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(false);
+            return;
+        }
+
         UpdateObjectPreview();
 
         // left click is tool
@@ -242,6 +259,8 @@ public class LevelEditor : MonoBehaviour
     {
         if (previewObject != null)
         {
+            if(!previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(true);
+
             Vector2 worldPos = GameManager.Instance.TileManager.GetWorldPosition(coordinateMousePosition);
             previewObject.position = new Vector3(worldPos.x, worldPos.y, -5);
         }
@@ -349,6 +368,16 @@ public class LevelEditor : MonoBehaviour
         {
             GameManager.Instance.TileManager.RemoveContentDEVMODE(coord);
         }
+    }
+
+    private bool ValidMousePosition(Vector2 worldPos, Coordinate coordPos)
+    {
+        Vector2 coordinatesWorldPos = GameManager.Instance.TileManager.GetWorldPosition(coordPos);
+
+        if ((coordinatesWorldPos - worldPos).magnitude > GameManager.Instance.TileManager.HexagonScale)
+            return false;
+
+        return true;
     }
 
     private bool ValidPosition(Coordinate coord)
