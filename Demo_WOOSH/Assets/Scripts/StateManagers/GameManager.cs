@@ -94,6 +94,12 @@ public class GameManager : StateManager {
 
     public void GameOver()
     {
+        if (UberManager.Instance.DevelopersMode)
+        {
+            //TODO: reset intial level
+            return;
+        }
+
         pause = false;
         gameOn = false;
 

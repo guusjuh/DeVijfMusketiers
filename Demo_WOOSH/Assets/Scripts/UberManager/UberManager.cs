@@ -26,7 +26,8 @@ public class UberManager : MonoBehaviour {
     }
 
     [SerializeField] private bool developersMode;
-    public bool DevelopersMode { get { return developersMode; } }
+    private bool selectedDevMode;
+    public bool DevelopersMode { get { return selectedDevMode; } }
 
     private LevelEditor levelEditor;
     public LevelEditor LevelEditor { get { return levelEditor;  } }
@@ -70,7 +71,9 @@ public class UberManager : MonoBehaviour {
         uiManager.Initialize();
         contractManager.Initialize();
 
-        if(developersMode) StartDevMode();
+        selectedDevMode = developersMode;
+
+        if (developersMode) StartDevMode();
         else StartGameMode();
     }
 
