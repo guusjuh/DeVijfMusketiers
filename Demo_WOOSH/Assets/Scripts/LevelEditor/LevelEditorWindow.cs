@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class LevelEditorWindow : EditorWindow
@@ -85,9 +86,17 @@ public class LevelEditorWindow : EditorWindow
                 if (showNormals)
                 {
                     GUILayout.BeginHorizontal();
-                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                    GUILayout.EndHorizontal();
+                    List<SecTileType> listAssets = ContentManager.ValidTileTypes[TileType.Normal];
+                    Texture2D[] assets = new Texture2D[listAssets.Count];
 
+                    for (int i = 0; i < listAssets.Count; i++)
+                    {
+                        assets[i] = ContentManager.Instance.TileTextures[
+                                new KeyValuePair<TileType, SecTileType>(TileType.Normal, listAssets[i])];
+                    }
+
+                    GUILayout.SelectionGrid(-1, assets, 2, GUILayout.Width(200), GUILayout.Height(100));
+                    GUILayout.EndHorizontal();
                 }
 
                 showDangerous = EditorGUILayout.Foldout(showDangerous, "Dangerous Tile");

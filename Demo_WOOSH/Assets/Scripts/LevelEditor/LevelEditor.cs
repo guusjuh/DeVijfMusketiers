@@ -39,7 +39,8 @@ public class LevelEditor : MonoBehaviour
 
     private PlacableType placableType = PlacableType.Tile;
     private SelectedTypeData selectedData;
-
+    public KeyValuePair<ContentType, SecContentType> SelectedContent { get { return selectedData.selectedContent; } }
+    public KeyValuePair<TileType, SecTileType> SelectedTile { get { return selectedData.selectedTile; } }
     private Vector3 worldMousePosition;
     private Coordinate coordinateMousePosition;
     Texture2D fillCursor;

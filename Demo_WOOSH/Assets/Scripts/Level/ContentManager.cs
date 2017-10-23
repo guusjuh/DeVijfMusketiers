@@ -78,8 +78,17 @@ public class ContentManager {
     private Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> contentPrefabs = new Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject>();
     public Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> ContentPrefabs { get { return contentPrefabs; } }
 
+    //TODO: you dont need this in this form, store it just like valid content types to obtain all textures from one prime type
+    private Dictionary<KeyValuePair<ContentType, SecContentType>, Texture2D> contentTextures = new Dictionary<KeyValuePair<ContentType, SecContentType>, Texture2D>();
+    public Dictionary<KeyValuePair<ContentType, SecContentType>, Texture2D> ContentTextures { get { return contentTextures; } }
+
     private Dictionary<KeyValuePair<TileType, SecTileType>, GameObject> tilePrefabs = new Dictionary<KeyValuePair<TileType, SecTileType>, GameObject>();
     public Dictionary<KeyValuePair<TileType, SecTileType>, GameObject> TilePrefabs { get { return tilePrefabs; } }
+
+    //TODO: you dont need this in this form, store it just like valid content types to obtain all textures from one prime type
+    private Dictionary<KeyValuePair<TileType, SecTileType>, Texture2D> tileTextures = new Dictionary<KeyValuePair<TileType, SecTileType>, Texture2D>();
+    public Dictionary<KeyValuePair<TileType, SecTileType>, Texture2D> TileTextures { get { return tileTextures; } }
+
 
     //TODO: same as content but for tiles
     public GameObject Gap { get; private set; }
@@ -106,6 +115,14 @@ public class ContentManager {
         LoadPrefabsForTileType("Prefabs/Tiles/Normal", TileType.Normal);
         LoadPrefabsForTileType("Prefabs/Tiles/Dangerous", TileType.Dangerous);
 
+        LoadTexturesForContentType("Textures/Bosses", ContentType.Boss);
+        LoadTexturesForContentType("Textures/Minions", ContentType.Minion);
+        LoadTexturesForContentType("Textures/Humans", ContentType.Human);
+        LoadTexturesForContentType("Textures/Environment", ContentType.Environment);
+
+        LoadTexturesForTileType("Textures/Tiles/Normal", TileType.Normal);
+        LoadTexturesForTileType("Textures/Tiles/Dangerous", TileType.Dangerous);
+
         //ReadLevelData();
     }
 
@@ -130,6 +147,27 @@ public class ContentManager {
         }
     }
 
+    private void LoadTexturesForContentType(String toLoadString, ContentType type)
+    {
+        List<Texture2D> tempTextures = new List<Texture2D>(Resources.LoadAll<Texture2D>(toLoadString));
+        KeyValuePair<ContentType, SecContentType> tempKeyValuePair = new KeyValuePair<ContentType, SecContentType>();
+
+        for (int i = 0; i < tempTextures.Count; i++)
+        {
+            for (int j = 0; j < validContentTypes[type].Count; j++)
+            {
+                String name = tempTextures[i].name;
+                String enumName = validContentTypes[type][j].ToString();
+
+                if (name == enumName)
+                {
+                    tempKeyValuePair = new KeyValuePair<ContentType, SecContentType>(type, validContentTypes[type][j]);
+                    contentTextures.Add(tempKeyValuePair, tempTextures[i]);
+                }
+            }
+        }
+    }
+
     private void LoadPrefabsForTileType(String toLoadString, TileType type)
     {
         List<GameObject> tempPrefabs = new List<GameObject>(Resources.LoadAll<GameObject>(toLoadString));
@@ -146,6 +184,27 @@ public class ContentManager {
                 {
                     tempKeyValuePair = new KeyValuePair<TileType, SecTileType>(type, validTileTypes[type][j]);
                     tilePrefabs.Add(tempKeyValuePair, tempPrefabs[i]);
+                }
+            }
+        }
+    }
+
+    private void LoadTexturesForTileType(String toLoadString, TileType type)
+    {
+        List<Texture2D> tempTextures = new List<Texture2D>(Resources.LoadAll<Texture2D>(toLoadString));
+        KeyValuePair<TileType, SecTileType> tempKeyValuePair = new KeyValuePair<TileType, SecTileType>();
+
+        for (int i = 0; i < tempTextures.Count; i++)
+        {
+            for (int j = 0; j < validTileTypes[type].Count; j++)
+            {
+                String name = tempTextures[i].name;
+                String enumName = validTileTypes[type][j].ToString();
+
+                if (name == enumName)
+                {
+                    tempKeyValuePair = new KeyValuePair<TileType, SecTileType>(type, validTileTypes[type][j]);
+                    tileTextures.Add(tempKeyValuePair, tempTextures[i]);
                 }
             }
         }
