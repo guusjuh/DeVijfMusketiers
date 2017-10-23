@@ -8,7 +8,6 @@ public class WorldObject : MonoBehaviour
     protected SecContentType type;
 
     protected bool canBlock = false;
-    protected bool blockedLastAttack = false;
     protected float blockChance = 0.0f;
 
     protected Coordinate gridPosition;
@@ -36,7 +35,6 @@ public class WorldObject : MonoBehaviour
 
     public virtual bool TryHit(int dmg)
     {
-        if (blockedLastAttack) return true;
         float roll = Random.Range(0.0f, 1.0f);
         if (canBlock && roll < blockChance)
         {

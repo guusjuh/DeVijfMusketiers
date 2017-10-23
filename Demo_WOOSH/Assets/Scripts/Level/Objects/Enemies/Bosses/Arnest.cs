@@ -7,11 +7,11 @@ public class Arnest : Enemy
     public override void Initialize(Coordinate startPos)
     {
         //set boss specific health
-        this.startHealth = 100;
-        this.hasSpecial = false;
+        startHealth = 100;
+        hasSpecial = false;
         viewDistance = 3;
 
-        this.type = SecContentType.Arnest;
+        type = SecContentType.Arnest;
 
         base.Initialize(startPos);
     }
