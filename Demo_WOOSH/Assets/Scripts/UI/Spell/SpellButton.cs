@@ -49,7 +49,7 @@ public class SpellButton : MonoBehaviour
     {
         StartCoroutine(CastSpell());
 
-        UIManager.Instance.InGameUI.CastingSpell = true;
+        UIManager.Instance.InGameUI.CastingSpell = (int)type;
     }
 
     public virtual IEnumerator CastSpell()
@@ -62,7 +62,7 @@ public class SpellButton : MonoBehaviour
         GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
 
-        UIManager.Instance.InGameUI.CastingSpell = false;
+        UIManager.Instance.InGameUI.CastingSpell = -1;
 
         UIManager.Instance.InGameUI.HideSpellButtons();
 

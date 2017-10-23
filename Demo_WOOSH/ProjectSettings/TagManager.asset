@@ -64,3 +64,6 @@ TagManager:
   - name: Equipment
     uniqueID: 2866300877
     locked: 0
+  - name: ParticleOverlay
+    uniqueID: 3433572919
+    locked: 0

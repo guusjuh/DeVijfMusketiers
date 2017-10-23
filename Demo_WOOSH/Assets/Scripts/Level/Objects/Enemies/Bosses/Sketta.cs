@@ -9,7 +9,7 @@ public class Sketta : Enemy {
     public override void Initialize(Coordinate startPos)
     {
         this.startHealth = 130;
-        blockChance = 0.3f;
+        blockChance = 0.2f;
         canBlock = true;
 
         Shield.SetActive(false);
@@ -37,6 +37,7 @@ public class Sketta : Enemy {
     protected IEnumerator ShieldVisual()
     {
         Shield.SetActive(true);
+        Shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
 
         yield return new WaitForSeconds(0.5f);
 

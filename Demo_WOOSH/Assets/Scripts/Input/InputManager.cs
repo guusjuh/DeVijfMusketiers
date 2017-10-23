@@ -17,7 +17,7 @@ public class InputManager
 
     public void CatchInput()
     {
-        if (UIManager.Instance.InGameUI.CastingSpell) return;
+        if (UIManager.Instance.InGameUI.CastingSpell >= 0) return;
 
         if (CatchZoomInput()) return;
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
