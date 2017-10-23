@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [Serializable]
@@ -30,26 +31,7 @@ public class LevelEditor : MonoBehaviour
     private PlacableType placableType = PlacableType.Tile;
     private Transform previewObject; // the preview stuck on the mouse
 
-    /// <summary>
-    /// The previous selected tile type, used to set when switched between placement type to tile
-    /// </summary>
-    private TileType prevTileType;
-    /// <summary>
-    /// The previous selected content type, used to set when switched between placement type to content
-    /// </summary>
-    private ContentType prevContentType;
-
-    /// <summary>
-    /// The previous selected secondairy tile type, used to set when switched between primary type
-    /// </summary>
-    private Dictionary<TileType, SecTileType> prevSecTileTypes;
-    /// <summary>
-    /// The previous selected secondairy content type, used to set when switched between primary type
-    /// </summary>
-    private Dictionary<ContentType, SecContentType> prevSecContentTypes;
-
-    private KeyValuePair<TileType, SecTileType> selectedTile; // the pair to access the go from contentmanager
-    private KeyValuePair<ContentType, SecContentType> selectedContent; // the pair to access the go from contentmanager
+    private SelectedTypeData selectedData;
 
     private Vector3 worldMousePosition;
     private Coordinate coordinateMousePosition;
@@ -78,27 +60,10 @@ public class LevelEditor : MonoBehaviour
         // set intial selected 
         placableType = PlacableType.Tile;
 
-        // set each type initially to the first of its kind
-        prevSecContentTypes = new Dictionary<ContentType, SecContentType>();
-        for (int i = 0; i < Enum.GetValues(typeof(ContentType)).Length - 1; i++)
-        {
-            prevSecContentTypes.Add((ContentType) i, ContentManager.ValidContentTypes[(ContentType) i][0]);
-        }
+        selectedData = new SelectedTypeData();
+        selectedData.Initialize();
 
-        prevSecTileTypes = new Dictionary<TileType, SecTileType>();
-        for (int i = 0; i < Enum.GetValues(typeof(TileType)).Length - 1; i++)
-        {
-            prevSecTileTypes.Add((TileType) i, ContentManager.ValidTileTypes[(TileType) i][0]);
-        }
-
-        prevContentType = (ContentType) 0;
-        prevTileType = (TileType) 0;
-
-        // select the first tile and the first content types
-        selectedContent = prevSecContentTypes.GetEntry(prevContentType);
-        selectedTile = prevSecTileTypes.GetEntry(prevTileType);
-
-        SetSelectedObject(selectedTile.Value);
+        SetSelectedObject(selectedData.selectedTile.Value);
     }
 
     public void Update()
@@ -133,16 +98,16 @@ public class LevelEditor : MonoBehaviour
                 //TODO: not a key bug
                 if (placableType == PlacableType.Content)
                 {
-                    if (selectedContent.Key != (ContentType)pressedNumber)
+                    if (selectedData.selectedContent.Key != (ContentType)pressedNumber)
                     {
-                        SetSelectedObject(prevSecContentTypes[(ContentType)pressedNumber]);
+                        SetSelectedObject(selectedData.prevSecContents[(ContentType)pressedNumber]);
                     }
                 }
                 else
                 {
-                    if (selectedTile.Key != (TileType)pressedNumber)
+                    if (selectedData.selectedTile.Key != (TileType)pressedNumber)
                     {
-                        SetSelectedObject(prevSecTileTypes[(TileType)pressedNumber]);
+                        SetSelectedObject(selectedData.prevSecTiles[(TileType)pressedNumber]);
                     }
                 }
             }
@@ -160,7 +125,7 @@ public class LevelEditor : MonoBehaviour
             if (placableType != PlacableType.Tile)
             {
                 placableType = PlacableType.Tile;
-                SetSelectedObject(prevSecTileTypes[prevTileType]);
+                SetSelectedObject(selectedData.prevSecTiles[selectedData.prevTile]);
             }
         }
         else if (Input.GetKeyDown(KeyCode.F2))
@@ -168,7 +133,7 @@ public class LevelEditor : MonoBehaviour
             if (placableType != PlacableType.Content)
             {
                 placableType = PlacableType.Content;
-                SetSelectedObject(prevSecContentTypes[prevContentType]);
+                SetSelectedObject(selectedData.prevSecContents[selectedData.prevContent]);
             }
         }
     }
@@ -243,9 +208,9 @@ public class LevelEditor : MonoBehaviour
         TileType primaryType = ContentManager.GetPrimaryFromSecTile(secondairyType);
         KeyValuePair<TileType, SecTileType> newSelected = new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType);
 
-        selectedTile = newSelected;
-        prevTileType = selectedTile.Key;
-        prevSecTileTypes[selectedTile.Key] = selectedTile.Value;
+        selectedData.selectedTile = newSelected;
+        selectedData.prevTile = selectedData.selectedTile.Key;
+        selectedData.prevSecTiles[selectedData.selectedTile.Key] = selectedData.selectedTile.Value;
 
         if (previewObject != null) Destroy(previewObject.gameObject);
 
@@ -257,9 +222,9 @@ public class LevelEditor : MonoBehaviour
         ContentType primaryType = ContentManager.GetPrimaryFromSecContent(secondairyType);
         KeyValuePair<ContentType, SecContentType> newSelected = new KeyValuePair<ContentType, SecContentType>(primaryType, secondairyType);
 
-        selectedContent = newSelected;
-        prevContentType = selectedContent.Key;
-        prevSecContentTypes[selectedContent.Key] = selectedContent.Value;
+        selectedData.selectedContent = newSelected;
+        selectedData.prevContent = selectedData.selectedContent.Key;
+        selectedData.prevSecContents[selectedData.selectedContent.Key] = selectedData.selectedContent.Value;
 
         if (previewObject != null) Destroy(previewObject.gameObject);
 
@@ -285,19 +250,23 @@ public class LevelEditor : MonoBehaviour
     {
         TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
-        bool alreadyThisTileType = existingNode != null && existingNode.GetSecType() == selectedTile.Value;
+        bool alreadyThisTileType = existingNode != null && existingNode.GetSecType() == selectedData.selectedTile.Value;
         bool alreadyContent = existingNode != null && existingNode.GetAmountOfContent() > 0;
-        bool occupied = placableType == PlacableType.Content ? alreadyContent : alreadyThisTileType;
+        bool cannotPlaceContent = (existingNode != null && existingNode.GetType() == TileType.Dangerous) || existingNode == null;
+
+        bool occupied = placableType == PlacableType.Content ? alreadyContent || cannotPlaceContent : alreadyThisTileType;
 
         if (!ValidPosition(coord) || occupied) return;
 
         if (placableType == PlacableType.Tile) PlaceTile(coord);
         else PlaceContent(coord);
 
-        FillClicked(new Coordinate(coord.x + 1, coord.y));
-        FillClicked(new Coordinate(coord.x - 1, coord.y));
-        FillClicked(new Coordinate(coord.x, coord.y + 1));
-        FillClicked(new Coordinate(coord.x, coord.y - 1));
+        Coordinate[] directions = GameManager.Instance.TileManager.Directions(coord);
+
+        for (int i = 0; i < directions.Length; i++)
+        {
+            FillClicked(coord + directions[i]);
+        }
     }
 
     private void PencilClicked(Coordinate coord)
@@ -311,11 +280,11 @@ public class LevelEditor : MonoBehaviour
         TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
         // if it's not already this tile type on this tile
-        if (existingNode == null || existingNode.GetSecType() != selectedTile.Value)
+        if (existingNode == null || existingNode.GetSecType() != selectedData.selectedTile.Value)
         {
             //TODO: push to undo stack
 
-            GameManager.Instance.TileManager.SetTileTypeDEVMODE(selectedTile.Value, coord);
+            GameManager.Instance.TileManager.SetTileTypeDEVMODE(selectedData.selectedTile.Value, coord);
         }
     }
 
@@ -332,8 +301,8 @@ public class LevelEditor : MonoBehaviour
             if (existingNode.GetAmountOfContent() == 0)
             {
                 SpawnNode s = new SpawnNode();
-                s.type = selectedContent.Key;
-                s.secType = selectedContent.Value;
+                s.type = selectedData.selectedContent.Key;
+                s.secType = selectedData.selectedContent.Value;
                 s.position = coord;
 
                 GameManager.Instance.LevelManager.SpawnObjectDEVMODE(s);
