@@ -21,6 +21,8 @@ public class LevelEditor : MonoBehaviour
 
     private GridOverlay gridOverlay;
 
+    public int LevelID { get { return 1; } }
+
     [SerializeField] private int rows;
     [SerializeField] private int columns;
     public int Rows { get { return rows; } }
@@ -29,14 +31,13 @@ public class LevelEditor : MonoBehaviour
     private ToolType toolType = ToolType.Brush;
 
     private PlacableType placableType = PlacableType.Tile;
-    private Transform previewObject; // the preview stuck on the mouse
-
     private SelectedTypeData selectedData;
 
     private Vector3 worldMousePosition;
     private Coordinate coordinateMousePosition;
     Texture2D fillCursor;
     Texture2D pencilCursor;
+    private Transform previewObject; // the preview stuck on the mouse
 
     public void Initialize()
     {

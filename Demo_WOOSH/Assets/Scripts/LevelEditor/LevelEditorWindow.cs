@@ -5,10 +5,7 @@ public class LevelEditorWindow : EditorWindow
 {
     private LevelEditor levelEditorRef;
 
-    string myString = "Hello World";
-    bool groupEnabled;
-    bool myBool = true;
-    float myFloat = 1.23f;
+    private bool showProperties;
 
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
@@ -30,13 +27,48 @@ public class LevelEditorWindow : EditorWindow
     {
         if (levelEditorRef != null)
         {
-            GUILayout.Label("Base Settings", EditorStyles.boldLabel);
+            // -------------- PROPERTIES -------------------
+            showProperties = EditorGUILayout.Foldout(showProperties, "Properties");
+            if (showProperties)
+            {
+                // create a box layout
+                GUILayout.BeginVertical("box");
+
+                // level id cannot be changed
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Level ID: ");
+                GUI.enabled = false;
+                GUILayout.TextField(levelEditorRef.LevelID.ToString());
+                GUI.enabled = true;
+
+
+                //GUILayout.Label(levelEditorRef.LevelID.ToString(), "TextField");
+                //EditorGUILayout.SelectableLabel(levelEditorRef.LevelID.ToString(), EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                GUILayout.EndHorizontal();
+
+                // rows and cols
+                // danger grow rate
+                // danger grow start turn    
+
+                // toggle content vs tile edit mode 
+
+                // end box layout
+                GUILayout.EndVertical();
+            }
+            // ---------------------------------------------
+
+            // toggle content vs tile edit mode
+            // toggle brush vs fill mode
+
+            /*GUILayout.Label("Base Settings", EditorStyles.boldLabel);
             myString = EditorGUILayout.TextField("Text Field", myString);
 
             groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
             myBool = EditorGUILayout.Toggle("Toggle", myBool);
             myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
-            EditorGUILayout.EndToggleGroup();
+            EditorGUILayout.EndToggleGroup();*/
+
+
         }
     }
 }
