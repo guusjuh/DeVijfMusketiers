@@ -48,6 +48,13 @@ public class Shrine : EnemyTarget
 
     public bool CheckForActive(bool givePoints = true)
     {
+        if (Active && givePoints && !gaveAP)
+        {
+            gaveAP = true;
+            GameManager.Instance.LevelManager.Player.IncreaseActionPoints();
+            return true;
+        }
+
         List<Coordinate> neighbourCoordinates = new List<Coordinate>(GameManager.Instance.TileManager.Directions(GridPosition));
 
         // each neighbouring node
@@ -66,7 +73,6 @@ public class Shrine : EnemyTarget
                 return true;
             }
         }
-        if (!givePoints || !gaveAP) Active = false;
         return false;
     }
 
