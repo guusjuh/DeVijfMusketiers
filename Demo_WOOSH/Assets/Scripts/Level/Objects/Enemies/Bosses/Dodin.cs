@@ -26,6 +26,7 @@ public class Dodin : Enemy
 
         this.hasSpecial = true;
         this.type = SecContentType.Dodin;
+        this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/Spells/enemySpell");
 
         base.Initialize(startPos);
     }

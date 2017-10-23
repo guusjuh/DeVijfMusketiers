@@ -9,6 +9,7 @@ public class EnemyInfoUI : MonoBehaviour
     private Text apText;
 
     private GameObject specialAttack;
+    private GameObject specialAttackIcon;
     private GameObject disabledSpecialAttack;
     private Text cooldownText;
 
@@ -23,6 +24,7 @@ public class EnemyInfoUI : MonoBehaviour
         apText = transform.Find("ActionPoints").GetComponentInChildren<Text>();
 
         specialAttack = transform.Find("Spell").gameObject;
+        specialAttackIcon = specialAttack.transform.Find("SpellIcon").gameObject;
         disabledSpecialAttack = specialAttack.transform.Find("Disabled").gameObject;
         cooldownText = specialAttack.GetComponentInChildren<Text>();
     }
@@ -111,7 +113,11 @@ public class EnemyInfoUI : MonoBehaviour
     {
         if (on)
         {
-            if (!specialAttack.activeInHierarchy) specialAttack.SetActive(true);
+            if (!specialAttack.activeInHierarchy)
+            {
+                specialAttack.SetActive(true);
+                specialAttackIcon.GetComponent<Image>().sprite = selectedEnemy.SpellIconSprite;
+            }
         }
         else
         {

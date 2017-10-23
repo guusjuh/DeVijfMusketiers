@@ -53,6 +53,8 @@ public class Enemy : WorldObject
     protected EnemyTarget prevTarget;
     protected List<TileNode> currentPath = null;
 
+    public Sprite SpellIconSprite;
+
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
 
@@ -147,6 +149,12 @@ public class Enemy : WorldObject
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
 
         yield break;
+    }
+
+    protected virtual void Heal(int amount)
+    {
+        if(Health + amount > startHealth){ health = startHealth; }
+        else{ health += amount; }
     }
 
     private void DestroyStatusIcons()

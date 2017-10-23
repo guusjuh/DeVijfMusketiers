@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 222029079361956338}
   - component: {fileID: 114987910561178980}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: SpellIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
