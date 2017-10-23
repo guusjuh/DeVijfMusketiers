@@ -24,6 +24,9 @@ public class InputManager
         {
             if (!CatchUIClicks())
             {
+                //TODO: close skip button
+                UberManager.Instance.UiManager.InGameUI.PlayerActionPoints.CloseSkipButton();
+
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 
                 List<WorldObject> worldObjects = ObtainClickedObjects();
