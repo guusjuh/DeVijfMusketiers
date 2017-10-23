@@ -24,9 +24,6 @@ public class InputManager
         {
             if (!CatchUIClicks())
             {
-                //TODO: close skip button
-                UberManager.Instance.UiManager.InGameUI.PlayerActionPoints.CloseSkipButton();
-
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 
                 List<WorldObject> worldObjects = ObtainClickedObjects();
@@ -152,6 +149,9 @@ public class InputManager
         bool noUIClicked = results.Count <= 0;
         bool onlyStatusIconClicked = (results.Count > 0 &&
                                       results.FindAll(r => r.gameObject.transform.tag == "StatusIcon").Count != 0);
+        bool closeSkipButton = (results.FindAll(r => r.gameObject.transform.tag == "APSkip-indicator")).Count == 0;
+        if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerActionPoints.CloseSkipButton();
+
 
         return !(noUIClicked || onlyStatusIconClicked);
     }

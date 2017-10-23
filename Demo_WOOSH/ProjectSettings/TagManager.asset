@@ -12,6 +12,7 @@ TagManager:
   - LevelSelectCanvas
   - PreGameCanvas
   - StatusIcon
+  - APSkip-indicator
   layers:
   - Default
   - TransparentFX

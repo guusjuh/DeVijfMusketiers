@@ -47,22 +47,23 @@ public class PlayerAPSkipButton : MonoBehaviour {
         dissabledColorPlayerAP = Color.grey;
 
         myButton = gameObject.GetComponent<Button>();
-        myButton.onClick.AddListener(OpenSkipButton);
+        myButton.onClick.AddListener(OnClick);
 
         size = rtAP.sizeDelta.x;
     }
 
-    public void OpenSkipButton()
+    public void OnClick()
     {
+        //only react in the player turn
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
-        // if pressed again, skip buton
+        
         if (skipOpen)
         {
             SkipTurn();
             return;
         }
         
-        StartCoroutine(RotateButton(speed, true));
+        StartCoroutine(RotateButton(speed, true)); //rotate the button towards the skip side
     }
 
     public void CloseSkipButton()
@@ -81,12 +82,18 @@ public class PlayerAPSkipButton : MonoBehaviour {
     private IEnumerator RotateButton(float speed, bool toSkip)
     {
         speed = (toSkip) ? -speed : speed;
-
-        yield return SmoothRotate(rtAP, playerAPText, speed, toSkip);
-
-        myButton.targetGraphic = rtSkip.gameObject.GetComponent<Image>();
-
+        if (toSkip)
+        {
+            yield return SmoothRotate(rtAP, playerAPText, speed, toSkip);
+            myButton.targetGraphic = rtSkip.gameObject.GetComponent<Image>();
+        }
         yield return SmoothRotate(rtSkip, playerSkipText, -speed, !toSkip);
+
+        if (!toSkip)
+        {
+            myButton.targetGraphic = rtAP.gameObject.GetComponent<Image>();
+            yield return SmoothRotate(rtAP, playerAPText, speed, toSkip);
+        }
 
         skipOpen = toSkip;
     }
