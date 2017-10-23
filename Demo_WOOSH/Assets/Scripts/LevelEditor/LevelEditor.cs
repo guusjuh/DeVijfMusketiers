@@ -24,21 +24,16 @@ public class LevelEditor : MonoBehaviour
     public int LevelID { get { return 1; } }
 
     private int rows;
-    private int columns;
     public int Rows { get { return rows; } }
+
+    private int columns;
     public int Columns { get { return columns; } }
 
-    public Vector2 AdjustSize
-    {
-        set
-        {
-            rows = (int) value.x;
-            columns = (int) value.y;
-        }
-    }
+    private int dangerGrowRate;
+    public int DangerGrowRate { get { return dangerGrowRate; } }
 
-    public int AdjustDangerGrowRate { get; set; }
-    public int AdjustDangerStartTurn { get; set; }
+    private int dangerStartTurn;
+    public int DangerStartTurn { get { return dangerStartTurn; } }
 
     private ToolType toolType = ToolType.Brush;
 
@@ -78,6 +73,23 @@ public class LevelEditor : MonoBehaviour
 
         SetSelectedObject(selectedData.selectedTile.Value);
     }
+
+    public void AdjustSize(Vector2 newSize)
+    {
+        rows = (int)newSize.x;
+        columns = (int)newSize.y;
+    }
+
+    public void AdjustDangerGrowRate(int newValue)
+    {
+        dangerGrowRate = newValue;
+    }
+
+    public void AdjustDangerStartTurn(int newValue)
+    {
+        dangerStartTurn = newValue;
+    }
+
 
     public void Update()
     {

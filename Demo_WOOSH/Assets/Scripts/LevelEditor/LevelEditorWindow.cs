@@ -7,6 +7,16 @@ public class LevelEditorWindow : EditorWindow
 
     private bool showProperties;
 
+    private bool showTiles;
+    private bool showNormals;
+    private bool showDangerous;
+
+    private bool showContent;
+    private bool showBosses;
+    private bool showMinions;
+    private bool showEnvironment;
+    private bool showHumans;
+
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
     {
@@ -44,17 +54,17 @@ public class LevelEditorWindow : EditorWindow
 
                 // rows and cols
                 GUILayout.BeginHorizontal();
-                levelEditorRef.AdjustSize = EditorGUILayout.Vector2Field("Level Size: ", new Vector2(levelEditorRef.Rows, levelEditorRef.Columns));
+                levelEditorRef.AdjustSize(EditorGUILayout.Vector2Field("Level Size: ", new Vector2(levelEditorRef.Rows, levelEditorRef.Columns)));
                 GUILayout.EndHorizontal();
 
                 // danger grow rate
                 GUILayout.BeginHorizontal();
-                levelEditorRef.AdjustDangerGrowRate = EditorGUILayout.IntField("Danger grow speed: ", levelEditorRef.AdjustDangerGrowRate);
+                levelEditorRef.AdjustDangerGrowRate(EditorGUILayout.IntField("Danger grow speed: ", levelEditorRef.DangerGrowRate));
                 GUILayout.EndHorizontal();
 
                 // danger grow start turn 
                 GUILayout.BeginHorizontal();
-                levelEditorRef.AdjustDangerStartTurn = EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.AdjustDangerStartTurn);
+                levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
                 GUILayout.EndHorizontal();
 
                 // end box layout
@@ -62,18 +72,76 @@ public class LevelEditorWindow : EditorWindow
             }
             // ---------------------------------------------
 
-            // toggle content vs tile edit mode
-            // toggle brush vs fill mode
+            // buttons for content vs tile edit mode
+            // buttons for brush vs fill mode
 
-            /*GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-            myString = EditorGUILayout.TextField("Text Field", myString);
+            // types
+            showTiles = EditorGUILayout.Foldout(showTiles, "Tiles");
+            if (showTiles)
+            {
+                GUILayout.BeginVertical("box");
 
-            groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-            myBool = EditorGUILayout.Toggle("Toggle", myBool);
-            myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
-            EditorGUILayout.EndToggleGroup();*/
+                showNormals = EditorGUILayout.Foldout(showNormals, "Normal Tiles");
+                if (showNormals)
+                {
+                    GUILayout.BeginHorizontal();
+                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+                    GUILayout.EndHorizontal();
 
+                }
 
+                showDangerous = EditorGUILayout.Foldout(showDangerous, "Dangerous Tile");
+                if (showDangerous)
+                {
+                    GUILayout.BeginHorizontal();
+                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+                    GUILayout.EndHorizontal();
+                }
+
+                GUILayout.EndVertical();
+
+            }
+
+            showContent = EditorGUILayout.Foldout(showContent, "Content");
+            if (showContent)
+            {
+                GUILayout.BeginVertical("box");
+
+                showBosses = EditorGUILayout.Foldout(showBosses, "Bosses");
+                if (showDangerous)
+                {
+                    GUILayout.BeginHorizontal();
+                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+                    GUILayout.EndHorizontal();
+                }
+
+                showMinions = EditorGUILayout.Foldout(showMinions, "Minions");
+                if (showDangerous)
+                {
+                    GUILayout.BeginHorizontal();
+                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+                    GUILayout.EndHorizontal();
+                }
+
+                showEnvironment = EditorGUILayout.Foldout(showEnvironment, "Environment");
+                if (showDangerous)
+                {
+                    GUILayout.BeginHorizontal();
+                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+                    GUILayout.EndHorizontal();
+                }
+
+                showHumans = EditorGUILayout.Foldout(showHumans, "Humans");
+                if (showDangerous)
+                {
+                    GUILayout.BeginHorizontal();
+                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+                    GUILayout.EndHorizontal();
+                }
+
+                GUILayout.EndVertical();
+
+            }
         }
     }
 }
