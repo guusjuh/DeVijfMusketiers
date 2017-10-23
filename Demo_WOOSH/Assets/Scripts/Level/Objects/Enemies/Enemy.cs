@@ -111,8 +111,10 @@ public class Enemy : WorldObject
         if (base.TryHit(dmg))
         {
             Hit(dmg);
+            blockedLastAttack = false;
             return true;
         }
+        blockedLastAttack = true;
 
         return false;
         

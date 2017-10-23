@@ -11,6 +11,7 @@ public class Sketta : Enemy {
         this.startHealth = 130;
         blockChance = 0.2f;
         canBlock = true;
+        blockedLastAttack = false;
 
         Shield.SetActive(false);
 
