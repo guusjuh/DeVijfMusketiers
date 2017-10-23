@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224275651981478276}
-  - component: {fileID: 114869433109543240}
   m_Layer: 5
   m_Name: YourTurn
   m_TagString: Untagged
@@ -121,17 +120,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: YOUR TURN
---- !u!114 &114869433109543240
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1432165468783948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b20c20fdf0ff4ad409f3a4c4045de7a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &222526334794279702
 CanvasRenderer:
   m_ObjectHideFlags: 1

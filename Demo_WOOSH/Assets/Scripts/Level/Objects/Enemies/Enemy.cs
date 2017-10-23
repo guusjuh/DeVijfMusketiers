@@ -106,7 +106,19 @@ public class Enemy : WorldObject
         other.Hit();
     }
 
-    public virtual bool Hit(int dmg)
+    public override bool TryHit(int dmg)
+    {
+        if (base.TryHit(dmg))
+        {
+            Hit(dmg);
+            return true;
+        }
+
+        return false;
+        
+    }
+
+    protected virtual bool Hit(int dmg)
     {
         health -= dmg;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
@@ -117,7 +129,7 @@ public class Enemy : WorldObject
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
             DestroyStatusIcons();
-            GameManager.Instance.LevelManager.RemoveObject(this, true);
+            GameManager.Instance.LevelManager.RemoveObject(this);
             return true;
         }
 

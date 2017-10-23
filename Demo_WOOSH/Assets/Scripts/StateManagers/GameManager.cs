@@ -26,7 +26,10 @@ public class GameManager : StateManager {
     public bool Pause { get {return pause; } private set { pause = value; UIManager.Instance.InGameUI.Pause(pause); } }
 
     private bool gameOn = false;
-    public bool GameOn { get { return gameOn; } }
+
+    public bool GameOn { get{ return gameOn; }
+    }
+
     private bool won = false;
     public bool Won { get { return won; } }
 

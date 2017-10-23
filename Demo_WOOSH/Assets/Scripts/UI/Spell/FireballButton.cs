@@ -19,6 +19,6 @@ public class FireballButton : SpellButton
     public override void ApplyEffect()
     {
         target.GetComponent<Enemy>().Burn(duration, fireDamage);
-        target.GetComponent<Enemy>().Hit(spellDamage);
+        target.GetComponent<Enemy>().TryHit(spellDamage);
     }
 }

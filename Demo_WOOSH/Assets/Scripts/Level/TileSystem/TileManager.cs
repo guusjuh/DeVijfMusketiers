@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TileManager
 {
+    private int debugCounter = 0;
     private static Coordinate[] directionsEven = new Coordinate[] {
             /*right up*/ new Coordinate(1, 0),
             /*left up*/ new Coordinate(-1, 0),
@@ -548,6 +549,7 @@ public class TileManager
                 if (gapNodes.Contains(GetNodeReference(currPos)) ||
                     currPos.x < 0 || currPos.x >= rows ||
                     currPos.y < 0 || currPos.y >= columns ||
+                    possGapNodes.ContainsKey(GetNodeReference(currPos)) ||
                     GetNodeReference(currPos).ContainsMonster())
                 {
                     continue;

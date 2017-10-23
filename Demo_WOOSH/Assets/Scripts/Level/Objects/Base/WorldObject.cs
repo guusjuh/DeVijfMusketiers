@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class WorldObject : MonoBehaviour
 {
     protected SecContentType type;
+
+    protected bool canBlock = false;
+    protected float blockChance = 0.0f;
 
     protected Coordinate gridPosition;
     public Coordinate GridPosition { get { return gridPosition; } }
@@ -27,6 +31,21 @@ public class WorldObject : MonoBehaviour
         GameManager.Instance.CameraManager.LockTarget(this.transform);
 
         UIManager.Instance.InGameUI.ShowSpellButtons(this);
+    }
+
+    public virtual bool TryHit(int dmg)
+    {
+        float roll = Random.Range(0.0f, 1.0f);
+        if (canBlock && roll < blockChance)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    protected virtual bool Hit(int dmg)
+    {
+        return false;
     }
 
     public virtual void Clear() { }
