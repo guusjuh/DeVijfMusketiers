@@ -23,12 +23,32 @@ public class GameManager : StateManager {
     }
 
     private bool pause = false;
-    public bool Pause { get {return pause; } private set { pause = value; UIManager.Instance.InGameUI.Pause(pause); } }
+    public bool Paused { get {return pause; } private set { pause = value; } }
+
+    public void Pause(bool on)
+    {
+        if (!UberManager.Instance.LevelEditor.CurrentLevelIsPlayable())
+        {
+            Debug.LogError("Current level is not playable");
+            return;
+        }
+
+        pause = on;
+
+        //TODO: save current level 
+
+        //TODO: set last played grid back
+
+        //TODO: make neighbours find each other
+        TileManager.FindNeighboursDEVMODE();
+
+        UIManager.Instance.InGameUI.Pause(pause);
+        UberManager.Instance.LevelEditor.Pause(pause);
+    }
 
     private bool gameOn = false;
 
-    public bool GameOn { get{ return gameOn; }
-    }
+    public bool GameOn { get{ return gameOn; } }
 
     private bool won = false;
     public bool Won { get { return won; } }
@@ -112,6 +132,8 @@ public class GameManager : StateManager {
     // update is called every frame
     public override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P)) Pause(!pause);
+
         if (!gameOn || pause) return;
 
         UberManager.Instance.InputManager.CatchInput();

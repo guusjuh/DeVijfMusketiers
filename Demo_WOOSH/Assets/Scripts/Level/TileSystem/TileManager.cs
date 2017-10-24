@@ -434,7 +434,7 @@ public class TileManager
 
         foreach (TileNode t in grid)
         {
-            if (t.GetSecType() == SecTileType.Gap)
+            if (t != null && t.GetSecType() == SecTileType.Gap)
                 gapNodes.Add(t);
         }
 
@@ -678,7 +678,6 @@ public class TileManager
             {
                 if (gridToRemove[i, j] == null) continue;
 
-                //TODO: dammit now all content gets removed... D:
                 if (gridToRemove[i, j].GetAmountOfContent() > 0)
                 {
                     RemoveContentDEVMODE(gridToRemove[i, j]);
@@ -689,5 +688,37 @@ public class TileManager
         }
 
         gridToRemove = null;
+    }
+
+    public void FindNeighboursDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        // Let every node find it's neighbours.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if(grid[i, j] == null) continue;
+
+                grid[i, j].SearchNeighbours();
+            }
+        }
+    }
+
+    public bool ValidGridDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return false;
+
+        // Let every node find it's neighbours.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (grid[i, j] == null) return false;
+            }
+        }
+
+        return true;
     }
 }

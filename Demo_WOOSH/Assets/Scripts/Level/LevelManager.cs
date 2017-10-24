@@ -336,12 +336,12 @@ public class LevelManager
         return null;
     }
 
-    private WorldObject SpawnHuman(SpawnNode s, bool withContract = true)
+    private WorldObject SpawnHuman(SpawnNode s, bool exitstingContract = true)
     {
-        if (!withContract && !UberManager.Instance.DevelopersMode)
+        if (!exitstingContract && !UberManager.Instance.DevelopersMode)
         {
             Debug.Log("You have to assign a contract in game mode");
-            withContract = true;
+            exitstingContract = true;
         }
 
         if (s.secType != SecContentType.Human) return null;
@@ -353,7 +353,8 @@ public class LevelManager
                                           GameManager.Instance.TileManager.GetWorldPosition(s.position), 
                                           Quaternion.identity).GetComponent<Human>());
         humans.Last().Initialize(s.position);
-        if(withContract) humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+        if(exitstingContract) humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+        else humans.Last().ContractRef = UberManager.Instance.ContractManager.GenerateRandomContract();
         humansInstantiated++;
 
         return humans.Last();

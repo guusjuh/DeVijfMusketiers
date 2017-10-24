@@ -20,7 +20,7 @@ public class GridOverlay : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (init)
+        if (init && GameManager.Instance.Paused)
         {
             // if the amount of rows/columns changed, update accordingly, but only if they are not 0
             if ((rows != UberManager.Instance.LevelEditor.Rows || columns != UberManager.Instance.LevelEditor.Columns) 

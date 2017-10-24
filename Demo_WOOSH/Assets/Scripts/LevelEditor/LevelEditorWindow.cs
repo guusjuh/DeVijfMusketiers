@@ -39,7 +39,7 @@ public class LevelEditorWindow : EditorWindow
 
     void OnGUI()
     {
-        if (levelEditorRef != null)
+        if (levelEditorRef != null && GameManager.Instance.Paused)
         {
             using (
                 var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),

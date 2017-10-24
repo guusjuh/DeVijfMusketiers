@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Win32.SafeHandles;
 using UnityEditor;
 using UnityEngine;
 
@@ -110,6 +111,33 @@ public class LevelEditor : MonoBehaviour
         SetSelectedObject(selectedData.selectedTile.Value);
     }
 
+    public void Pause(bool gamePaused)
+    {
+        if (gamePaused)
+        {
+            if (ValidMousePosition(worldMousePosition, coordinateMousePosition))
+            {
+                highlightPreviewObject.SetActive(true);
+            }
+        }
+        else
+        {
+            highlightPreviewObject.SetActive(false);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
+    }
+
+    public bool CurrentLevelIsPlayable()
+    {
+        //TODO: these should check the initial level, NOT the current
+        if (GameManager.Instance.LevelManager.Humans.Count <= 0) return false;
+        if (GameManager.Instance.LevelManager.Enemies.Count <= 0) return false;
+        if (GameManager.Instance.TileManager.GetNodeWithGapReferences().Count <= 0) return false;
+        if (!GameManager.Instance.TileManager.ValidGridDEVMODE()) return false;
+
+        return true;
+    }
+
     // ---------- VARS THAT CAN BE CHANGED IN LEVEL EDITOR WINDOW -----------
     public void AdjustSize(Vector2 newSize)
     {
@@ -136,7 +164,7 @@ public class LevelEditor : MonoBehaviour
 
     public void Update()
     {
-        if (UberManager.Instance.DoingSetup) return;
+        if (UberManager.Instance.DoingSetup || !GameManager.Instance.Paused) return;
 
         HandleKeyboard();
         HandleMouse();
@@ -179,6 +207,7 @@ public class LevelEditor : MonoBehaviour
 
     private void HandleMouse()
     {
+        Debug.Log(GameManager.Instance.Paused);
         worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
 
