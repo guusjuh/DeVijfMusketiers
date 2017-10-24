@@ -17,6 +17,9 @@ public class LevelEditorWindow : EditorWindow
 
     private Vector2 scrollPos = Vector2.zero;
 
+    int selectedTool = 0;
+
+
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
     {
@@ -42,6 +45,13 @@ public class LevelEditorWindow : EditorWindow
                     GUILayout.Height(position.height - 5)))
             {
                 scrollPos = scrollViewScope.scrollPosition;
+
+                // -------------- TOOLS ------------------------
+
+                selectedTool = GUILayout.SelectionGrid((int)levelEditorRef.CurrentToolType, levelEditorRef.CursorButtons, 2, GUILayout.Width(60), GUILayout.Height(30));
+                if (selectedTool != (int) levelEditorRef.CurrentToolType) levelEditorRef.ChangeToolType((LevelEditor.ToolType)selectedTool);
+
+                // ---------------------------------------------
 
                 // -------------- PROPERTIES -------------------
                 showProperties = EditorGUILayout.Foldout(showProperties, "Properties");

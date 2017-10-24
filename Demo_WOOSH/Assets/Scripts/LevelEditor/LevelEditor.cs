@@ -15,8 +15,8 @@ public class LevelEditor : MonoBehaviour
 
     public enum ToolType
     {
+        Fill,
         Brush,
-        Fill
     }
 
     private const KeyCode FILL = KeyCode.Q;
@@ -27,6 +27,7 @@ public class LevelEditor : MonoBehaviour
 
     // the current tool used
     private ToolType toolType = ToolType.Brush;
+    public ToolType CurrentToolType { get { return toolType; } }
 
     // the current type that can be placed
     private PlacableType placableType = PlacableType.Tile;
@@ -45,8 +46,9 @@ public class LevelEditor : MonoBehaviour
 
     // cursors
     private Vector2 cursorOffset = new Vector2(40, 40);
-    Texture2D fillCursor;
-    Texture2D pencilCursor;
+    private Texture2D fillCursor;
+    private Texture2D pencilCursor;
+    public Texture2D[] CursorButtons = new Texture2D[2];
 
     // preview objects
     private GameObject highlightPreviewObject;
@@ -82,8 +84,12 @@ public class LevelEditor : MonoBehaviour
         // setup mouse
         worldMousePosition = Vector3.zero;
         coordinateMousePosition = Coordinate.zero;
+
         fillCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/fill");
         pencilCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/pencil");
+        CursorButtons[0] = Resources.Load<Texture2D>("Sprites/LevelEditor/fillBttn");
+        CursorButtons[1] = Resources.Load<Texture2D>("Sprites/LevelEditor/pencilBttn");
+
         highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/PreviewHighlight"));
         highlightPreviewObject.SetActive(false);
 
@@ -259,7 +265,7 @@ public class LevelEditor : MonoBehaviour
             ChangeToolType(ToolType.Brush);
     }
 
-    private void ChangeToolType(ToolType newType)
+    public void ChangeToolType(ToolType newType)
     {
         toolType = newType;
         Cursor.SetCursor(newType == ToolType.Brush ? pencilCursor : fillCursor, new Vector2(40, 40), CursorMode.Auto);
