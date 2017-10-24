@@ -59,7 +59,7 @@ public class Contract
         {
             diedLastLevel = false;
 
-            //TODO: animation for losing heart
+            //TODO: animation for losing happiness
 
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.NegativeRepPerLevel);
 

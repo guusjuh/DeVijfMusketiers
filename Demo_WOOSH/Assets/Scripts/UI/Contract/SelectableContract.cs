@@ -35,7 +35,7 @@ public class SelectableContract : ContractButton
         checkImage = transform.Find("Check").GetComponent<Image>();
         checkImage.gameObject.SetActive(false);
 
-        AddHearts(contractRef.Health, contractRef.TotalHealth);
+        SetHappiness(contractRef.Health);
         AddStars(contractRef.Reputation);
     }
 

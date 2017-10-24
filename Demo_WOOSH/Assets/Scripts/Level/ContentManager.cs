@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using UnityEditorInternal;
 
 [Serializable]
 public struct SpawnNode
@@ -68,6 +66,9 @@ public class ContentManager {
         }
     }
 
+    private GameObject[] happinessPrefabs;
+    public GameObject[] HappinessPrefabs {get { return happinessPrefabs; } }
+
     private static Dictionary<ContentType, List<SecContentType>> validContentTypes;
     private static Dictionary<TileType, List<SecTileType>> validTileTypes;
 
@@ -102,7 +103,18 @@ public class ContentManager {
         LoadPrefabsForTileType("Prefabs/Tiles/Normal", TileType.Normal);
         LoadPrefabsForTileType("Prefabs/Tiles/Dangerous", TileType.Dangerous);
 
+        LoadHappinessPrefabs();
         //ReadLevelData();
+    }
+
+    private void LoadHappinessPrefabs()
+    {
+        string[] happinessOrder = { "Waah", "Smeh", "Ok", "Good", "Awesome"};
+        happinessPrefabs = new GameObject[happinessOrder.Length];
+        for (int i = 0; i < happinessOrder.Length; i++)
+        {
+            happinessPrefabs[i] = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/Happiness/" + happinessOrder[i] + "Img");
+        }
     }
 
     private void LoadPrefabsForContentType(String toLoadString, ContentType type)

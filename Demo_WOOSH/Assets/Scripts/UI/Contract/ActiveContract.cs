@@ -21,12 +21,12 @@ public class ActiveContract : ContractButton
             {
                 //TODO: reset sprite to default sprite (to be made)
                 contractRef = null;
-                ClearHeartsAndStars();
+                ClearStars();
             }
             else
             {
                 iconImage.sprite = contractRef.Portrait;
-                AddHearts(contractRef.Health, contractRef.TotalHealth);
+                SetHappiness(contractRef.Health);
                 AddStars(contractRef.Reputation);
             }
         }
