@@ -79,15 +79,15 @@ public class ContentManager {
     public Dictionary<KeyValuePair<ContentType, SecContentType>, GameObject> ContentPrefabs { get { return contentPrefabs; } }
 
     //TODO: you dont need this in this form, store it just like valid content types to obtain all textures from one prime type
-    private Dictionary<KeyValuePair<ContentType, SecContentType>, Texture2D> contentTextures = new Dictionary<KeyValuePair<ContentType, SecContentType>, Texture2D>();
-    public Dictionary<KeyValuePair<ContentType, SecContentType>, Texture2D> ContentTextures { get { return contentTextures; } }
+    private Dictionary<ContentType, Texture[]> contentTextures = new Dictionary<ContentType, Texture[]>();
+    public Dictionary<ContentType, Texture[]> ContentTextures { get { return contentTextures; } }
 
     private Dictionary<KeyValuePair<TileType, SecTileType>, GameObject> tilePrefabs = new Dictionary<KeyValuePair<TileType, SecTileType>, GameObject>();
     public Dictionary<KeyValuePair<TileType, SecTileType>, GameObject> TilePrefabs { get { return tilePrefabs; } }
 
     //TODO: you dont need this in this form, store it just like valid content types to obtain all textures from one prime type
-    private Dictionary<KeyValuePair<TileType, SecTileType>, Texture2D> tileTextures = new Dictionary<KeyValuePair<TileType, SecTileType>, Texture2D>();
-    public Dictionary<KeyValuePair<TileType, SecTileType>, Texture2D> TileTextures { get { return tileTextures; } }
+    private Dictionary<TileType, Texture[]> tileTextures = new Dictionary<TileType, Texture[]>();
+    public Dictionary<TileType, Texture[]> TileTextures { get { return tileTextures; } }
 
 
     //TODO: same as content but for tiles
@@ -149,23 +149,24 @@ public class ContentManager {
 
     private void LoadTexturesForContentType(String toLoadString, ContentType type)
     {
-        List<Texture2D> tempTextures = new List<Texture2D>(Resources.LoadAll<Texture2D>(toLoadString));
-        KeyValuePair<ContentType, SecContentType> tempKeyValuePair = new KeyValuePair<ContentType, SecContentType>();
+        // load all texutres
+        Texture[] loadedTextures = Resources.LoadAll<Texture>(toLoadString);
 
-        for (int i = 0; i < tempTextures.Count; i++)
+        // declare the array to store the valid textures in 
+        Texture[] validTextures = new Texture[loadedTextures.Length];
+
+        // loop through all loaded textures and check there names
+        for (int i = 0; i < loadedTextures.Length; i++)
         {
-            for (int j = 0; j < validContentTypes[type].Count; j++)
-            {
-                String name = tempTextures[i].name;
-                String enumName = validContentTypes[type][j].ToString();
+            String name = loadedTextures[i].name;
+            String enumName = validContentTypes[type][i].ToString();
 
-                if (name == enumName)
-                {
-                    tempKeyValuePair = new KeyValuePair<ContentType, SecContentType>(type, validContentTypes[type][j]);
-                    contentTextures.Add(tempKeyValuePair, tempTextures[i]);
-                }
+            if (name == enumName) {
+                validTextures[i] = loadedTextures[i];
             }
         }
+
+        contentTextures[type] = validTextures;
     }
 
     private void LoadPrefabsForTileType(String toLoadString, TileType type)
@@ -191,56 +192,58 @@ public class ContentManager {
 
     private void LoadTexturesForTileType(String toLoadString, TileType type)
     {
-        List<Texture2D> tempTextures = new List<Texture2D>(Resources.LoadAll<Texture2D>(toLoadString));
-        KeyValuePair<TileType, SecTileType> tempKeyValuePair = new KeyValuePair<TileType, SecTileType>();
+        // load all texutres
+        Texture[] loadedTextures = Resources.LoadAll<Texture>(toLoadString);
 
-        for (int i = 0; i < tempTextures.Count; i++)
+        // declare the array to store the valid textures in 
+        Texture[] validTextures = new Texture[loadedTextures.Length];
+
+        // loop through all loaded textures and check there names
+        for (int i = 0; i < loadedTextures.Length; i++)
         {
-            for (int j = 0; j < validTileTypes[type].Count; j++)
-            {
-                String name = tempTextures[i].name;
-                String enumName = validTileTypes[type][j].ToString();
+            String name = loadedTextures[i].name;
+            String enumName = validTileTypes[type][i].ToString();
 
-                if (name == enumName)
-                {
-                    tempKeyValuePair = new KeyValuePair<TileType, SecTileType>(type, validTileTypes[type][j]);
-                    tileTextures.Add(tempKeyValuePair, tempTextures[i]);
-                }
+            if (name == enumName)
+            {
+                validTextures[i] = loadedTextures[i];
             }
         }
+
+        tileTextures[type] = validTextures;
     }
 
     private void SetValidTypes()
     {
         validContentTypes = new Dictionary<ContentType, List<SecContentType>>();
 
-        List<SecContentType> humans = new List<SecContentType>();
-        humans.Add(SecContentType.Human);
         List<SecContentType> bosses = new List<SecContentType>();
-        bosses.Add(SecContentType.Dodin);
         bosses.Add(SecContentType.Arnest);
+        bosses.Add(SecContentType.Dodin);
         bosses.Add(SecContentType.Sketta);
-        List<SecContentType> minions = new List<SecContentType>();
-        minions.Add(SecContentType.Wolf);
         List<SecContentType> environmentals = new List<SecContentType>();
         environmentals.Add(SecContentType.Barrel);
         environmentals.Add(SecContentType.Shrine);
+        List<SecContentType> humans = new List<SecContentType>();
+        humans.Add(SecContentType.Human);
+        List<SecContentType> minions = new List<SecContentType>();
+        minions.Add(SecContentType.Wolf);
 
-        validContentTypes.Add(ContentType.Human, humans);
         validContentTypes.Add(ContentType.Boss, bosses);
-        validContentTypes.Add(ContentType.Minion, minions);
         validContentTypes.Add(ContentType.Environment, environmentals);
+        validContentTypes.Add(ContentType.Human, humans);
+        validContentTypes.Add(ContentType.Minion, minions);
 
         validTileTypes = new Dictionary<TileType, List<SecTileType>>();
 
+        List<SecTileType> dangerZones = new List<SecTileType>();
+        dangerZones.Add(SecTileType.Gap);
         List<SecTileType> normals = new List<SecTileType>();
         normals.Add(SecTileType.Dirt);
         normals.Add(SecTileType.Grass);
-        List<SecTileType> dangerZones = new List<SecTileType>();
-        dangerZones.Add(SecTileType.Gap);
 
-        validTileTypes.Add(TileType.Normal, normals);
         validTileTypes.Add(TileType.Dangerous, dangerZones);
+        validTileTypes.Add(TileType.Normal, normals);
     }
 
     static public bool IsValidSecContentType(ContentType contentType, SecContentType secContentType)

@@ -38,9 +38,12 @@ public class LevelEditor : MonoBehaviour
     private ToolType toolType = ToolType.Brush;
 
     private PlacableType placableType = PlacableType.Tile;
+    public PlacableType CurrentPlacableType { get { return placableType; } }
+
     private SelectedTypeData selectedData;
     public KeyValuePair<ContentType, SecContentType> SelectedContent { get { return selectedData.selectedContent; } }
     public KeyValuePair<TileType, SecTileType> SelectedTile { get { return selectedData.selectedTile; } }
+
     private Vector3 worldMousePosition;
     private Coordinate coordinateMousePosition;
     Texture2D fillCursor;
@@ -243,7 +246,7 @@ public class LevelEditor : MonoBehaviour
         Cursor.SetCursor(newType == ToolType.Brush ? pencilCursor : fillCursor, new Vector2(40, 40), CursorMode.Auto);
     }
 
-    private void SetSelectedObject(SecTileType secondairyType)
+    public void SetSelectedObject(SecTileType secondairyType)
     {
         TileType primaryType = ContentManager.GetPrimaryFromSecTile(secondairyType);
         KeyValuePair<TileType, SecTileType> newSelected = new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType);
@@ -257,7 +260,7 @@ public class LevelEditor : MonoBehaviour
         CreateObjectPreview(ContentManager.Instance.TilePrefabs[new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType)]);
     }
 
-    private void SetSelectedObject(SecContentType secondairyType)
+    public void SetSelectedObject(SecContentType secondairyType)
     {
         ContentType primaryType = ContentManager.GetPrimaryFromSecContent(secondairyType);
         KeyValuePair<ContentType, SecContentType> newSelected = new KeyValuePair<ContentType, SecContentType>(primaryType, secondairyType);

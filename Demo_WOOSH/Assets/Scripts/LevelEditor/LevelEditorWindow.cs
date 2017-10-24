@@ -18,6 +18,11 @@ public class LevelEditorWindow : EditorWindow
     private bool showEnvironment;
     private bool showHumans;
 
+    private int rows = 2;
+    private float textureWidth;
+
+    private Vector2 scrollPos = Vector2.zero;
+
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
     {
@@ -29,6 +34,7 @@ public class LevelEditorWindow : EditorWindow
         if (levelEditorRef == null)
         {
             levelEditorRef = UberManager.Instance.LevelEditor;
+            if(levelEditorRef != null) textureWidth = ContentManager.Instance.TileTextures[TileType.Dangerous][0].width;
             Repaint();
             return;
         }
@@ -38,119 +44,155 @@ public class LevelEditorWindow : EditorWindow
     {
         if (levelEditorRef != null)
         {
-            // -------------- PROPERTIES -------------------
-            showProperties = EditorGUILayout.Foldout(showProperties, "Properties");
-            if (showProperties)
+            float padding = 2.0f;
+            float elementSize = (padding * 2) + textureWidth;
+
+            int newRows = Mathf.FloorToInt(position.width / elementSize);
+            rows = 4;//newRows > 0 ? newRows : 1;
+            //scrollPos = GUILayout.BeginScrollView(scrollPos);
+
+            using (var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),
+                    GUILayout.Height(position.height - 5)))
             {
-                // create a box layout
-                GUILayout.BeginVertical("box");
+                scrollPos = scrollViewScope.scrollPosition;
 
-                // level id cannot be changed
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Level ID: ");
-                GUI.enabled = false;
-                GUILayout.TextField(levelEditorRef.LevelID.ToString());
-                GUI.enabled = true;
-                GUILayout.EndHorizontal();
-
-                // rows and cols
-                GUILayout.BeginHorizontal();
-                levelEditorRef.AdjustSize(EditorGUILayout.Vector2Field("Level Size: ", new Vector2(levelEditorRef.Rows, levelEditorRef.Columns)));
-                GUILayout.EndHorizontal();
-
-                // danger grow rate
-                GUILayout.BeginHorizontal();
-                levelEditorRef.AdjustDangerGrowRate(EditorGUILayout.IntField("Danger grow speed: ", levelEditorRef.DangerGrowRate));
-                GUILayout.EndHorizontal();
-
-                // danger grow start turn 
-                GUILayout.BeginHorizontal();
-                levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                GUILayout.EndHorizontal();
-
-                // end box layout
-                GUILayout.EndVertical();
-            }
-            // ---------------------------------------------
-
-            // buttons for content vs tile edit mode
-            // buttons for brush vs fill mode
-
-            // types
-            showTiles = EditorGUILayout.Foldout(showTiles, "Tiles");
-            if (showTiles)
-            {
-                GUILayout.BeginVertical("box");
-
-                showNormals = EditorGUILayout.Foldout(showNormals, "Normal Tiles");
-                if (showNormals)
+                // -------------- PROPERTIES -------------------
+                showProperties = EditorGUILayout.Foldout(showProperties, "Properties");
+                if (showProperties)
                 {
-                    GUILayout.BeginHorizontal();
-                    List<SecTileType> listAssets = ContentManager.ValidTileTypes[TileType.Normal];
-                    Texture2D[] assets = new Texture2D[listAssets.Count];
+                    ShowProperties();
+                }
+                // ---------------------------------------------
 
-                    for (int i = 0; i < listAssets.Count; i++)
+                // buttons for content vs tile edit mode
+                // buttons for brush vs fill mode
+
+                // types
+                showTiles = EditorGUILayout.Foldout(showTiles, "Tiles");
+                if (showTiles)
+                {
+
+                    // minus 5 for the scrollbars
+                    GUILayout.BeginVertical("box");
+
+                    showNormals = EditorGUILayout.Foldout(showNormals, "Normal Tiles");
+                    if (showNormals)
                     {
-                        assets[i] = ContentManager.Instance.TileTextures[
-                                new KeyValuePair<TileType, SecTileType>(TileType.Normal, listAssets[i])];
+                        ShowTypes(TileType.Normal);
                     }
 
-                    GUILayout.SelectionGrid(-1, assets, 2, GUILayout.Width(200), GUILayout.Height(100));
-                    GUILayout.EndHorizontal();
+                    showDangerous = EditorGUILayout.Foldout(showDangerous, "Dangerous Tile");
+                    if (showDangerous)
+                    {
+                        ShowTypes(TileType.Dangerous);
+                    }
+
+                    GUILayout.EndVertical();
+
                 }
-
-                showDangerous = EditorGUILayout.Foldout(showDangerous, "Dangerous Tile");
-                if (showDangerous)
-                {
-                    GUILayout.BeginHorizontal();
-                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                    GUILayout.EndHorizontal();
-                }
-
-                GUILayout.EndVertical();
-
             }
 
-            showContent = EditorGUILayout.Foldout(showContent, "Content");
+
+
+            /*showContent = EditorGUILayout.Foldout(showContent, "Content");
             if (showContent)
             {
                 GUILayout.BeginVertical("box");
 
                 showBosses = EditorGUILayout.Foldout(showBosses, "Bosses");
-                if (showDangerous)
-                {
-                    GUILayout.BeginHorizontal();
-                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                    GUILayout.EndHorizontal();
-                }
+                if (showBosses)
+                    ShowTypes(ContentType.Boss);
 
                 showMinions = EditorGUILayout.Foldout(showMinions, "Minions");
-                if (showDangerous)
-                {
-                    GUILayout.BeginHorizontal();
-                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                    GUILayout.EndHorizontal();
-                }
+                if (showMinions)
+                    ShowTypes(ContentType.Minion);
 
                 showEnvironment = EditorGUILayout.Foldout(showEnvironment, "Environment");
-                if (showDangerous)
-                {
-                    GUILayout.BeginHorizontal();
-                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                    GUILayout.EndHorizontal();
-                }
+                if (showEnvironment)
+                    ShowTypes(ContentType.Environment);
 
                 showHumans = EditorGUILayout.Foldout(showHumans, "Humans");
-                if (showDangerous)
-                {
-                    GUILayout.BeginHorizontal();
-                    levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
-                    GUILayout.EndHorizontal();
-                }
+                if (showHumans)
+                    ShowTypes(ContentType.Human);
 
                 GUILayout.EndVertical();
+            }*/
+            //GUI.EndScrollView();
 
-            }
         }
+    }
+
+    private void ShowTypes(ContentType type)
+    {
+        bool selectedThisPrim = levelEditorRef.CurrentPlacableType == LevelEditor.PlacableType.Content &&
+                                levelEditorRef.SelectedContent.Key == type;
+        int selectionIndex = selectedThisPrim ? ContentManager.ValidContentTypes[levelEditorRef.SelectedContent.Key].FindIndex(t => t == levelEditorRef.SelectedContent.Value) : -1;
+
+        GUILayout.BeginHorizontal();
+        selectionIndex = GUILayout.SelectionGrid(selectionIndex, ContentManager.Instance.ContentTextures[type], rows);
+        GUILayout.EndHorizontal();
+
+        bool somethingSelected = selectionIndex >= 0;
+        bool otherSecSamePrim = levelEditorRef.SelectedContent.Value != (SecContentType)selectionIndex &&
+                                levelEditorRef.SelectedContent.Key == type;
+        bool otherPrim = levelEditorRef.SelectedContent.Key != type;
+
+        if (somethingSelected && (otherSecSamePrim || otherPrim))
+        {
+            levelEditorRef.SetSelectedObject(ContentManager.ValidContentTypes[type][selectionIndex]);
+        }
+    }
+
+    private void ShowTypes(TileType type)
+    {
+        bool selectedThisPrim = levelEditorRef.CurrentPlacableType == LevelEditor.PlacableType.Tile &&
+                                levelEditorRef.SelectedTile.Key == type;
+        int selectionIndex = selectedThisPrim ? ContentManager.ValidTileTypes[levelEditorRef.SelectedTile.Key].FindIndex(t => t == levelEditorRef.SelectedTile.Value) : -1;
+
+        GUILayout.BeginHorizontal();
+        selectionIndex = GUILayout.SelectionGrid(selectionIndex, ContentManager.Instance.TileTextures[type], rows, UberManager.Instance.myStyle);
+        GUILayout.EndHorizontal();
+
+        bool somethingSelected = selectionIndex >= 0;
+        bool otherSecSamePrim = levelEditorRef.SelectedTile.Value != (SecTileType) selectionIndex &&
+                                levelEditorRef.SelectedTile.Key == type;
+        bool otherPrim = levelEditorRef.SelectedTile.Key != type;
+
+        if (somethingSelected && (otherSecSamePrim || otherPrim))
+        {
+            levelEditorRef.SetSelectedObject(ContentManager.ValidTileTypes[type][selectionIndex]);
+        }
+    }
+
+    private void ShowProperties()
+    {
+        // create a box layout
+        GUILayout.BeginVertical("box");
+
+        // level id cannot be changed
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Level ID: ");
+        GUI.enabled = false;
+        GUILayout.TextField(levelEditorRef.LevelID.ToString());
+        GUI.enabled = true;
+        GUILayout.EndHorizontal();
+
+        // rows and cols
+        GUILayout.BeginHorizontal();
+        levelEditorRef.AdjustSize(EditorGUILayout.Vector2Field("Level Size: ", new Vector2(levelEditorRef.Rows, levelEditorRef.Columns)));
+        GUILayout.EndHorizontal();
+
+        // danger grow rate
+        GUILayout.BeginHorizontal();
+        levelEditorRef.AdjustDangerGrowRate(EditorGUILayout.IntField("Danger grow speed: ", levelEditorRef.DangerGrowRate));
+        GUILayout.EndHorizontal();
+
+        // danger grow start turn 
+        GUILayout.BeginHorizontal();
+        levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));
+        GUILayout.EndHorizontal();
+
+        // end box layout
+        GUILayout.EndVertical();
     }
 }

@@ -62,6 +62,8 @@ public class UberManager : MonoBehaviour {
     private bool doingSetup = true;
     public bool DoingSetup { get { return doingSetup; } }
 
+    public GUIStyle myStyle;
+
     public void Awake() {
         doingSetup = true;
 
