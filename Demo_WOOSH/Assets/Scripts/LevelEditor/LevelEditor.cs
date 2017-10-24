@@ -251,6 +251,7 @@ public class LevelEditor : MonoBehaviour
         TileType primaryType = ContentManager.GetPrimaryFromSecTile(secondairyType);
         KeyValuePair<TileType, SecTileType> newSelected = new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType);
 
+        placableType = PlacableType.Tile;
         selectedData.selectedTile = newSelected;
         selectedData.prevTile = selectedData.selectedTile.Key;
         selectedData.prevSecTiles[selectedData.selectedTile.Key] = selectedData.selectedTile.Value;
@@ -265,6 +266,7 @@ public class LevelEditor : MonoBehaviour
         ContentType primaryType = ContentManager.GetPrimaryFromSecContent(secondairyType);
         KeyValuePair<ContentType, SecContentType> newSelected = new KeyValuePair<ContentType, SecContentType>(primaryType, secondairyType);
 
+        placableType = PlacableType.Content;
         selectedData.selectedContent = newSelected;
         selectedData.prevContent = selectedData.selectedContent.Key;
         selectedData.prevSecContents[selectedData.selectedContent.Key] = selectedData.selectedContent.Value;

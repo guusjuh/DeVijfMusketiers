@@ -18,7 +18,7 @@ public class LevelEditorWindow : EditorWindow
     private bool showEnvironment;
     private bool showHumans;
 
-    private int rows = 2;
+    private int rows = 3;
     private float textureWidth;
 
     private Vector2 scrollPos = Vector2.zero;
@@ -44,13 +44,6 @@ public class LevelEditorWindow : EditorWindow
     {
         if (levelEditorRef != null)
         {
-            float padding = 2.0f;
-            float elementSize = (padding * 2) + textureWidth;
-
-            int newRows = Mathf.FloorToInt(position.width / elementSize);
-            rows = 4;//newRows > 0 ? newRows : 1;
-            //scrollPos = GUILayout.BeginScrollView(scrollPos);
-
             using (var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),
                     GUILayout.Height(position.height - 5)))
             {
@@ -88,54 +81,48 @@ public class LevelEditorWindow : EditorWindow
                     }
 
                     GUILayout.EndVertical();
+                }
 
+                showContent = EditorGUILayout.Foldout(showContent, "Content");
+                if (showContent)
+                {
+                    GUILayout.BeginVertical("box");
+
+                    showBosses = EditorGUILayout.Foldout(showBosses, "Bosses");
+                    if (showBosses)
+                        ShowTypes(ContentType.Boss);
+
+                    showMinions = EditorGUILayout.Foldout(showMinions, "Minions");
+                    if (showMinions)
+                        ShowTypes(ContentType.Minion);
+
+                    showEnvironment = EditorGUILayout.Foldout(showEnvironment, "Environment");
+                    if (showEnvironment)
+                        ShowTypes(ContentType.Environment);
+
+                    showHumans = EditorGUILayout.Foldout(showHumans, "Humans");
+                    if (showHumans)
+                        ShowTypes(ContentType.Human);
+
+                    GUILayout.EndVertical();
                 }
             }
-
-
-
-            /*showContent = EditorGUILayout.Foldout(showContent, "Content");
-            if (showContent)
-            {
-                GUILayout.BeginVertical("box");
-
-                showBosses = EditorGUILayout.Foldout(showBosses, "Bosses");
-                if (showBosses)
-                    ShowTypes(ContentType.Boss);
-
-                showMinions = EditorGUILayout.Foldout(showMinions, "Minions");
-                if (showMinions)
-                    ShowTypes(ContentType.Minion);
-
-                showEnvironment = EditorGUILayout.Foldout(showEnvironment, "Environment");
-                if (showEnvironment)
-                    ShowTypes(ContentType.Environment);
-
-                showHumans = EditorGUILayout.Foldout(showHumans, "Humans");
-                if (showHumans)
-                    ShowTypes(ContentType.Human);
-
-                GUILayout.EndVertical();
-            }*/
-            //GUI.EndScrollView();
-
         }
     }
 
     private void ShowTypes(ContentType type)
     {
-        bool selectedThisPrim = levelEditorRef.CurrentPlacableType == LevelEditor.PlacableType.Content &&
-                                levelEditorRef.SelectedContent.Key == type;
+        bool selectedThisPrim = levelEditorRef.CurrentPlacableType == LevelEditor.PlacableType.Content && levelEditorRef.SelectedContent.Key == type;
         int selectionIndex = selectedThisPrim ? ContentManager.ValidContentTypes[levelEditorRef.SelectedContent.Key].FindIndex(t => t == levelEditorRef.SelectedContent.Value) : -1;
 
         GUILayout.BeginHorizontal();
-        selectionIndex = GUILayout.SelectionGrid(selectionIndex, ContentManager.Instance.ContentTextures[type], rows);
+        selectionIndex = GUILayout.SelectionGrid(selectionIndex, ContentManager.Instance.ContentTextures[type], rows, UberManager.Instance.myStyle);
         GUILayout.EndHorizontal();
 
         bool somethingSelected = selectionIndex >= 0;
         bool otherSecSamePrim = levelEditorRef.SelectedContent.Value != (SecContentType)selectionIndex &&
                                 levelEditorRef.SelectedContent.Key == type;
-        bool otherPrim = levelEditorRef.SelectedContent.Key != type;
+        bool otherPrim = levelEditorRef.SelectedContent.Key != type || levelEditorRef.CurrentPlacableType != LevelEditor.PlacableType.Content;
 
         if (somethingSelected && (otherSecSamePrim || otherPrim))
         {
@@ -145,8 +132,7 @@ public class LevelEditorWindow : EditorWindow
 
     private void ShowTypes(TileType type)
     {
-        bool selectedThisPrim = levelEditorRef.CurrentPlacableType == LevelEditor.PlacableType.Tile &&
-                                levelEditorRef.SelectedTile.Key == type;
+        bool selectedThisPrim = levelEditorRef.CurrentPlacableType == LevelEditor.PlacableType.Tile && levelEditorRef.SelectedTile.Key == type;
         int selectionIndex = selectedThisPrim ? ContentManager.ValidTileTypes[levelEditorRef.SelectedTile.Key].FindIndex(t => t == levelEditorRef.SelectedTile.Value) : -1;
 
         GUILayout.BeginHorizontal();
@@ -156,7 +142,7 @@ public class LevelEditorWindow : EditorWindow
         bool somethingSelected = selectionIndex >= 0;
         bool otherSecSamePrim = levelEditorRef.SelectedTile.Value != (SecTileType) selectionIndex &&
                                 levelEditorRef.SelectedTile.Key == type;
-        bool otherPrim = levelEditorRef.SelectedTile.Key != type;
+        bool otherPrim = levelEditorRef.SelectedTile.Key != type || levelEditorRef.CurrentPlacableType != LevelEditor.PlacableType.Tile;
 
         if (somethingSelected && (otherSecSamePrim || otherPrim))
         {
