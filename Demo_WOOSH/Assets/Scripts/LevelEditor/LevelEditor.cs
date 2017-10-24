@@ -23,6 +23,11 @@ public class LevelEditor : MonoBehaviour
     private const KeyCode PENCIL = KeyCode.W;
     private const KeyCode SWITCH_TILE_CONTENT = KeyCode.Tab;
 
+    public const string FILL_HK        = "Q - Fill";
+    public const string PENCIL_HK      = "W - Pencil";
+    public const string TOGGLE_HK      = "TAB - Toggle between content/tile";
+    public const string SWITCH_PRIM_HK = "1-9 - Switch primary type";
+
     private GridOverlay gridOverlay;
 
     // the current tool used

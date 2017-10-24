@@ -11,6 +11,7 @@ public class LevelEditorWindow : EditorWindow
     private bool showNormals, showDangerous;
     private bool showContent;
     private bool showBosses, showMinions, showEnvironment, showHumans;
+    private bool showHotKeys;
 
     private int rows = 3;
     private float textureWidth;
@@ -32,25 +33,25 @@ public class LevelEditorWindow : EditorWindow
         {
             levelEditorRef = UberManager.Instance.LevelEditor;
             if(levelEditorRef != null) textureWidth = ContentManager.Instance.TileTextures[TileType.Dangerous][0].width;
-            Repaint();
-            return;
         }
+        Repaint();
     }
 
     void OnGUI()
     {
         if (levelEditorRef != null)
         {
-            using (var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),
+            using (
+                var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),
                     GUILayout.Height(position.height - 5)))
             {
                 scrollPos = scrollViewScope.scrollPosition;
 
                 // -------------- TOOLS ------------------------
-
-                selectedTool = GUILayout.SelectionGrid((int)levelEditorRef.CurrentToolType, levelEditorRef.CursorButtons, 2, GUILayout.Width(60), GUILayout.Height(30));
-                if (selectedTool != (int) levelEditorRef.CurrentToolType) levelEditorRef.ChangeToolType((LevelEditor.ToolType)selectedTool);
-
+                selectedTool = GUILayout.SelectionGrid((int) levelEditorRef.CurrentToolType,
+                    levelEditorRef.CursorButtons, 2, GUILayout.Width(60), GUILayout.Height(30));
+                if (selectedTool != (int) levelEditorRef.CurrentToolType)
+                    levelEditorRef.ChangeToolType((LevelEditor.ToolType) selectedTool);
                 // ---------------------------------------------
 
                 // -------------- PROPERTIES -------------------
@@ -60,9 +61,6 @@ public class LevelEditorWindow : EditorWindow
                     ShowProperties();
                 }
                 // ---------------------------------------------
-
-                // buttons for content vs tile edit mode
-                // buttons for brush vs fill mode
 
                 // ------------ TILES -------------------------
                 showTiles = EditorGUILayout.Foldout(showTiles, "Tiles");
@@ -110,6 +108,18 @@ public class LevelEditorWindow : EditorWindow
                 }
                 // ---------------------------------------------
 
+                showHotKeys = EditorGUILayout.Foldout(showHotKeys, "Hotkeys cheatsheet");
+                if (showHotKeys)
+                {
+                    GUILayout.BeginVertical("box");
+
+                    EditorGUILayout.TextArea(LevelEditor.FILL_HK + "\n" +
+                                             LevelEditor.PENCIL_HK + "\n" +
+                                             LevelEditor.TOGGLE_HK + "\n" +
+                                             LevelEditor.SWITCH_PRIM_HK);
+
+                    GUILayout.EndVertical();
+                }
             }
         }
     }
