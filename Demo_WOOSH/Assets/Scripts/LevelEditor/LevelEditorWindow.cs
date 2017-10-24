@@ -7,16 +7,10 @@ public class LevelEditorWindow : EditorWindow
     private LevelEditor levelEditorRef;
 
     private bool showProperties;
-
     private bool showTiles;
-    private bool showNormals;
-    private bool showDangerous;
-
+    private bool showNormals, showDangerous;
     private bool showContent;
-    private bool showBosses;
-    private bool showMinions;
-    private bool showEnvironment;
-    private bool showHumans;
+    private bool showBosses, showMinions, showEnvironment, showHumans;
 
     private int rows = 3;
     private float textureWidth;
@@ -60,7 +54,7 @@ public class LevelEditorWindow : EditorWindow
                 // buttons for content vs tile edit mode
                 // buttons for brush vs fill mode
 
-                // types
+                // ------------ TILES -------------------------
                 showTiles = EditorGUILayout.Foldout(showTiles, "Tiles");
                 if (showTiles)
                 {
@@ -82,30 +76,30 @@ public class LevelEditorWindow : EditorWindow
 
                     GUILayout.EndVertical();
                 }
+                // ---------------------------------------------
 
+                // ------------ CONTENT -------------------------
                 showContent = EditorGUILayout.Foldout(showContent, "Content");
                 if (showContent)
                 {
                     GUILayout.BeginVertical("box");
 
                     showBosses = EditorGUILayout.Foldout(showBosses, "Bosses");
-                    if (showBosses)
-                        ShowTypes(ContentType.Boss);
+                    if (showBosses) ShowTypes(ContentType.Boss);
 
                     showMinions = EditorGUILayout.Foldout(showMinions, "Minions");
-                    if (showMinions)
-                        ShowTypes(ContentType.Minion);
+                    if (showMinions) ShowTypes(ContentType.Minion);
 
                     showEnvironment = EditorGUILayout.Foldout(showEnvironment, "Environment");
-                    if (showEnvironment)
-                        ShowTypes(ContentType.Environment);
+                    if (showEnvironment) ShowTypes(ContentType.Environment);
 
                     showHumans = EditorGUILayout.Foldout(showHumans, "Humans");
-                    if (showHumans)
-                        ShowTypes(ContentType.Human);
+                    if (showHumans) ShowTypes(ContentType.Human);
 
                     GUILayout.EndVertical();
                 }
+                // ---------------------------------------------
+
             }
         }
     }

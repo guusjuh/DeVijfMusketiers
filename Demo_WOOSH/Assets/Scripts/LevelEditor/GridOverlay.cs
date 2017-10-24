@@ -22,16 +22,18 @@ public class GridOverlay : MonoBehaviour
     {
         if (init)
         {
-            // draw tile cells
-            Gizmos.color = Color.white;
-
+            // if the amount of rows/columns changed, update accordingly, but only if they are not 0
             if ((rows != UberManager.Instance.LevelEditor.Rows || columns != UberManager.Instance.LevelEditor.Columns) 
                 && (UberManager.Instance.LevelEditor.Rows > 0 && UberManager.Instance.LevelEditor.Columns > 0))
             {
                 rows = UberManager.Instance.LevelEditor.Rows;
                 columns = UberManager.Instance.LevelEditor.Columns;
             }
-                
+
+            // set gizmos color
+            Gizmos.color = Color.white;
+
+            // draw all hexagons
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
@@ -42,6 +44,10 @@ public class GridOverlay : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Draws the hexagon.
+    /// </summary>
+    /// <param name="worldPosition">The world position, center of the hexagon.</param>
     private void DrawHex(Vector2 worldPosition)
     {
         float radius = GameManager.Instance.TileManager.HexagonScale / 2.0f;

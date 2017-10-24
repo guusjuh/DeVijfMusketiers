@@ -19,9 +19,42 @@ public class LevelEditor : MonoBehaviour
         Fill
     }
 
+    private const KeyCode FILL = KeyCode.Q;
+    private const KeyCode PENCIL = KeyCode.W;
+    private const KeyCode SWITCH_TILE_CONTENT = KeyCode.Tab;
+
     private GridOverlay gridOverlay;
 
-    public int LevelID { get { return 1; } }
+    // the current tool used
+    private ToolType toolType = ToolType.Brush;
+
+    // the current type that can be placed
+    private PlacableType placableType = PlacableType.Tile;
+    public PlacableType CurrentPlacableType { get { return placableType; } }
+
+    // class to hold the selected data
+    private SelectedTypeData selectedData;
+
+    // direct getters to the selected content and tile
+    public KeyValuePair<ContentType, SecContentType> SelectedContent { get { return selectedData.selectedContent; } }
+    public KeyValuePair<TileType, SecTileType> SelectedTile { get { return selectedData.selectedTile; } }
+
+    // mouse position
+    private Vector3 worldMousePosition;
+    private Coordinate coordinateMousePosition;
+
+    // cursors
+    private Vector2 cursorOffset = new Vector2(40, 40);
+    Texture2D fillCursor;
+    Texture2D pencilCursor;
+
+    // preview objects
+    private GameObject highlightPreviewObject;
+    private Transform previewObject; // the preview stuck on the mouse
+
+    // ---------------------------------------------------------------
+    //TODO: direct to level data instance
+    public int LevelID { get { return 1; /*TODO: read from files which is the next id*/} }
 
     private int rows;
     public int Rows { get { return rows; } }
@@ -34,21 +67,7 @@ public class LevelEditor : MonoBehaviour
 
     private int dangerStartTurn;
     public int DangerStartTurn { get { return dangerStartTurn; } }
-
-    private ToolType toolType = ToolType.Brush;
-
-    private PlacableType placableType = PlacableType.Tile;
-    public PlacableType CurrentPlacableType { get { return placableType; } }
-
-    private SelectedTypeData selectedData;
-    public KeyValuePair<ContentType, SecContentType> SelectedContent { get { return selectedData.selectedContent; } }
-    public KeyValuePair<TileType, SecTileType> SelectedTile { get { return selectedData.selectedTile; } }
-
-    private Vector3 worldMousePosition;
-    private Coordinate coordinateMousePosition;
-    Texture2D fillCursor;
-    Texture2D pencilCursor;
-    private Transform previewObject; // the preview stuck on the mouse
+    // ---------------------------------------------------------------
 
     public void Initialize()
     {
@@ -65,9 +84,11 @@ public class LevelEditor : MonoBehaviour
         coordinateMousePosition = Coordinate.zero;
         fillCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/fill");
         pencilCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/pencil");
+        highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/PreviewHighlight"));
+        highlightPreviewObject.SetActive(false);
 
         // set intial tooltype
-        ChangeToolType(ToolType.Fill);
+        ChangeToolType(ToolType.Brush);
 
         // set intial selected 
         placableType = PlacableType.Tile;
@@ -78,6 +99,7 @@ public class LevelEditor : MonoBehaviour
         SetSelectedObject(selectedData.selectedTile.Value);
     }
 
+    // ---------- VARS THAT CAN BE CHANGED IN LEVEL EDITOR WINDOW -----------
     public void AdjustSize(Vector2 newSize)
     {
         if (rows == (int) newSize.x && columns == (int) newSize.y) return;
@@ -90,14 +112,16 @@ public class LevelEditor : MonoBehaviour
 
     public void AdjustDangerGrowRate(int newValue)
     {
+        if (newValue <= 0) return;
         dangerGrowRate = newValue;
     }
 
     public void AdjustDangerStartTurn(int newValue)
     {
+        if (newValue <= 0) return;
         dangerStartTurn = newValue;
     }
-
+    // ----------------------------------------------------------------------
 
     public void Update()
     {
@@ -112,6 +136,67 @@ public class LevelEditor : MonoBehaviour
         HandlePrimaryTypeSwitch();
         HandlePlacementSwitch();
         HandeToolSwitch();
+    }
+
+    private int NumberKeyPressed()
+    {
+        int returnNumber = -1;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            returnNumber = 0;
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+            returnNumber = 1;
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+            returnNumber = 2;
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+            returnNumber = 3;
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+            returnNumber = 4;
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+            returnNumber = 5;
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+            returnNumber = 6;
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+            returnNumber = 7;
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+            returnNumber = 8;
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+            returnNumber = 9;
+
+        return returnNumber;
+    }
+
+    private void HandleMouse()
+    {
+        worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
+
+        if (!ValidMousePosition(worldMousePosition, coordinateMousePosition))
+        {
+            //if (previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(false);
+            if (highlightPreviewObject.activeInHierarchy) highlightPreviewObject.SetActive(false);
+            return;
+        }
+
+        UpdateObjectPreview();
+
+        // left click is tool
+        if (Input.GetMouseButton(0))
+        {
+            if (toolType == ToolType.Brush) PencilClicked(coordinateMousePosition);
+            if (toolType == ToolType.Fill)
+            {
+                if (placableType == PlacableType.Content)
+                    FillClicked(coordinateMousePosition);
+                else if (placableType == PlacableType.Tile)
+                    FillClicked(coordinateMousePosition, GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition) == null ? SecTileType.Unknown : GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition).GetSecType());
+            }
+        }
+        // right click is delete
+        else if (Input.GetMouseButton(1))
+        {
+            DeleteClicked(coordinateMousePosition);
+        }
     }
 
     private void HandlePrimaryTypeSwitch()
@@ -152,17 +237,13 @@ public class LevelEditor : MonoBehaviour
 
     private void HandlePlacementSwitch()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(SWITCH_TILE_CONTENT))
         {
             if (placableType != PlacableType.Tile)
             {
                 placableType = PlacableType.Tile;
                 SetSelectedObject(selectedData.prevSecTiles[selectedData.prevTile]);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.F2))
-        {
-            if (placableType != PlacableType.Content)
+            }else if (placableType != PlacableType.Content)
             {
                 placableType = PlacableType.Content;
                 SetSelectedObject(selectedData.prevSecContents[selectedData.prevContent]);
@@ -172,76 +253,14 @@ public class LevelEditor : MonoBehaviour
 
     private void HandeToolSwitch()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(FILL))
             ChangeToolType(ToolType.Fill);
-        else if (Input.GetKeyDown(KeyCode.B))
+        else if (Input.GetKeyDown(PENCIL))
             ChangeToolType(ToolType.Brush);
-    }
-
-    private int NumberKeyPressed()
-    {
-        int returnNumber = -1;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            returnNumber = 0;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            returnNumber = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            returnNumber = 2;
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            returnNumber = 3;
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-            returnNumber = 4;
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-            returnNumber = 5;
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-            returnNumber = 6;
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-            returnNumber = 7;
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-            returnNumber = 8;
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-            returnNumber = 9;
-
-        return returnNumber;
-    }
-
-    private void HandleMouse()
-    {        
-        worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
-
-        if (!ValidMousePosition(worldMousePosition, coordinateMousePosition))
-        {
-            if (previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(false);
-            return;
-        }
-
-        UpdateObjectPreview();
-
-        // left click is tool
-        if (Input.GetMouseButton(0))
-        {
-            if(toolType == ToolType.Brush) PencilClicked(coordinateMousePosition);
-            if (toolType == ToolType.Fill)
-            {
-                if (placableType == PlacableType.Content)
-                    FillClicked(coordinateMousePosition);
-                else if (placableType == PlacableType.Tile)
-                    FillClicked(coordinateMousePosition, GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition) == null? SecTileType.Unknown : GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition).GetSecType());
-            }
-        }
-        // right click is delete
-        else if (Input.GetMouseButton(1))
-        {
-            DeleteClicked(coordinateMousePosition);
-        }
     }
 
     private void ChangeToolType(ToolType newType)
     {
-        if (newType == toolType) return;
-
         toolType = newType;
         Cursor.SetCursor(newType == ToolType.Brush ? pencilCursor : fillCursor, new Vector2(40, 40), CursorMode.Auto);
     }
@@ -256,7 +275,11 @@ public class LevelEditor : MonoBehaviour
         selectedData.prevTile = selectedData.selectedTile.Key;
         selectedData.prevSecTiles[selectedData.selectedTile.Key] = selectedData.selectedTile.Value;
 
-        if (previewObject != null) Destroy(previewObject.gameObject);
+        if (previewObject != null)
+        {
+            Destroy(previewObject.gameObject);
+            highlightPreviewObject.SetActive(false);
+        }
 
         CreateObjectPreview(ContentManager.Instance.TilePrefabs[new KeyValuePair<TileType, SecTileType>(primaryType, secondairyType)]);
     }
@@ -271,25 +294,35 @@ public class LevelEditor : MonoBehaviour
         selectedData.prevContent = selectedData.selectedContent.Key;
         selectedData.prevSecContents[selectedData.selectedContent.Key] = selectedData.selectedContent.Value;
 
-        if (previewObject != null) Destroy(previewObject.gameObject);
+        if (previewObject != null)
+        {
+            Destroy(previewObject.gameObject);
+            highlightPreviewObject.SetActive(false);
+        }
 
         CreateObjectPreview(ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>(primaryType, secondairyType)]);
     }
 
     private void CreateObjectPreview(GameObject prefab)
     {
-        previewObject = Instantiate(prefab, new Vector3(worldMousePosition.x, worldMousePosition.y, 100), Quaternion.identity).transform;
+        highlightPreviewObject.SetActive(true);
+
+        previewObject = Instantiate(prefab, Vector3.zero, Quaternion.identity).transform;
         previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
+        previewObject.parent = highlightPreviewObject.transform;
+        previewObject.localPosition = Vector3.zero;
+        int hoi = 0;
     }
 
     private void UpdateObjectPreview()
     {
         if (previewObject != null)
         {
-            if(!previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(true);
+            if (!previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(true);
+            if (!highlightPreviewObject.activeInHierarchy) highlightPreviewObject.SetActive(true);
 
             Vector2 worldPos = GameManager.Instance.TileManager.GetWorldPosition(coordinateMousePosition);
-            previewObject.position = new Vector3(worldPos.x, worldPos.y, -5);
+            highlightPreviewObject.transform.position = new Vector3(worldPos.x, worldPos.y, -5);
         }
     }
 
