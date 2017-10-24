@@ -13,6 +13,7 @@ public class ContractButton : MonoBehaviour
     protected GridLayoutGroup starGrid;
 
     protected GameObject heartPrefab;
+    protected GameObject[] happinessPrefabs;
     protected GameObject starPrefab;
 
     protected List<GameObject> hearts = new List<GameObject>();
@@ -26,6 +27,7 @@ public class ContractButton : MonoBehaviour
         starGrid = transform.Find("StarParent").GetComponent<GridLayoutGroup>();
 
         heartPrefab = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/HeartImg");
+
         starPrefab = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/StarImg");
     }
 
@@ -39,6 +41,11 @@ public class ContractButton : MonoBehaviour
         {
             stars.Add(UIManager.Instance.CreateUIElement(starPrefab, Vector2.zero, starGrid.transform));
         }
+    }
+
+    protected void SetHappiness(int health)
+    {
+
     }
 
     protected void AddHearts(int currentAmount, int totalAmount)
