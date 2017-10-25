@@ -35,10 +35,14 @@ public class ContractButton : MonoBehaviour
         }
     }
 
-    protected void SetHappiness(int health)
+    protected void SetHappiness(int health, int totalHealth)
     {
+        //what respective health would this hooman have if his total was 5
+        float percentage = (float)health / (float)totalHealth;
+        int normalizedHealth = (health > 1)? Mathf.RoundToInt(percentage * 5.0f) : 1;
+
         happinessIndicator =
-            UIManager.Instance.CreateUIElement(UberManager.Instance.ContentManager.HappinessPrefabs[health - 1],
+            UIManager.Instance.CreateUIElement(UberManager.Instance.ContentManager.HappinessPrefabs[normalizedHealth - 1],
                                                new Vector2(45.0f, 45.0f), this.transform);
     }
 

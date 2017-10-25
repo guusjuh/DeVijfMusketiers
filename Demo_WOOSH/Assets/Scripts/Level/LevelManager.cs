@@ -408,6 +408,8 @@ public class LevelManager
             enemies.Remove((Enemy)toRemove);
             if (GameManager.Instance.GameOn && enemies.Count <= 0)
             {
+                IncreaseHappinessOfSurvivors();
+
                 Remove(toRemove);
                 GameManager.Instance.GameOver();
                 return;
@@ -420,6 +422,19 @@ public class LevelManager
 
         // finalize object
         Remove(toRemove);
+    }
+
+    //increase happiness of all surviving humans
+    private void IncreaseHappinessOfSurvivors()
+    {
+        if (humans.Count > 0)
+        {
+            for (int i = 0; i < humans.Count; i++)
+            {
+                humans[i].ContractRef.MakeHappy();
+                Debug.Log("Mii so happy :D");
+            }
+        }
     }
 
     private void Remove(WorldObject toRemove)

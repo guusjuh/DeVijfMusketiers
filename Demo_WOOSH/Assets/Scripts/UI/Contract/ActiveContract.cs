@@ -26,7 +26,7 @@ public class ActiveContract : ContractButton
             else
             {
                 iconImage.sprite = contractRef.Portrait;
-                SetHappiness(contractRef.Health);
+                SetHappiness(contractRef.Happiness, contractRef.TotalHappiness);
                 AddStars(contractRef.Reputation);
             }
         }
