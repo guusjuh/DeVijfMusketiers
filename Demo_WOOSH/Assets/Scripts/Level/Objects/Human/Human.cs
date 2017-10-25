@@ -52,6 +52,13 @@ public class Human : MovableObject {
         possibleSpellTypes.Add(GameManager.SpellType.Teleport);
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        currentFleePoints = totalFleePoints;
+        inPanic = false;
+    }
+
     public void StartTurn()
     {
         CheckInPanic();

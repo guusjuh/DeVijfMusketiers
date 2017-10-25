@@ -660,7 +660,7 @@ public class TileManager
             node.GetAmountOfContent() > 0)
         {
             WorldObject removedObject = node.RemoveContent();
-            GameManager.Instance.LevelManager.RemoveObject(removedObject);
+            GameManager.Instance.LevelManager.RemoveObject(removedObject, true);
         }
     }
 

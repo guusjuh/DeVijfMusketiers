@@ -123,9 +123,28 @@ public class LevelEditor : MonoBehaviour
     {
         if (gamePaused)
         {
-            EditorUtility.DisplayDialog("Which level do you want to edit?",
-                "Do you want to continue with the initial edited level or use this in-game level to edit?", 
-                "Initial Level", "In-game Level");
+            if (EditorUtility.DisplayDialog("Which level do you want to edit?",
+                "Do you want to continue with the initial edited level or use this in-game level to edit?",
+                "Initial Level", "In-game Level"))
+            {
+                // reset to intial
+
+                // reset the grid to initial types
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
+                        GameManager.Instance.TileManager.SetTileTypeDEVMODE(levelData.grid[i].row[j], new Coordinate(i, j));
+                    }
+                }
+
+                // reset the objects that belong to the spawnnodes
+                GameManager.Instance.LevelManager.ResetAllToInitDEVMODE(levelData.spawnNodes);
+            }
+            else
+            {
+                // save current to level data
+            }
 
             if (ValidMousePosition(worldMousePosition, coordinateMousePosition))
             {

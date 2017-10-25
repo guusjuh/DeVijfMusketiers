@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Sketta : Enemy {
     public GameObject Shield;
-    private float shieldActiveTime;
 
     public override void Initialize(Coordinate startPos)
     {
@@ -21,6 +20,12 @@ public class Sketta : Enemy {
         this.type = SecContentType.Sketta;
 
         base.Initialize(startPos);
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        Shield.SetActive(false);
     }
 
     public override bool TryHit(int dmg)

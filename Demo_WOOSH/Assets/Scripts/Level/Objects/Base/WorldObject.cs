@@ -6,6 +6,7 @@ using UnityEngine;
 public class WorldObject : MonoBehaviour
 {
     protected SecContentType type;
+    public SecContentType Type { get { return type; } }
 
     protected bool canBlock = false;
     protected float blockChance = 0.0f;
@@ -46,6 +47,13 @@ public class WorldObject : MonoBehaviour
     protected virtual bool Hit(int dmg)
     {
         return false;
+    }
+
+    public virtual void Reset() { }
+    public virtual void ResetToInitDEVMODE(Coordinate startPos)
+    {
+        gameObject.SetActive(true);
+        gridPosition = startPos;
     }
 
     public virtual void Clear() { }

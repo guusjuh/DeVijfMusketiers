@@ -16,6 +16,12 @@ public class Arnest : Enemy
         base.Initialize(startPos);
     }
 
+    public override void Reset()
+    {
+        totalActionPoints = 3;
+        base.Reset();
+    }
+
     protected override void Attack(EnemyTarget other)
     {
         if (other.IsHuman() || other.IsShrine())

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager
@@ -20,6 +21,9 @@ public class LevelManager
 
     private List<Enemy> enemies;
     public List<Enemy> Enemies { get { return enemies; } }
+
+    private List<WorldObject> removedObjects = new List<WorldObject>();
+    public List<WorldObject> RemovedObjects { get { return removedObjects; } }
 
     private Player player;
     public Player Player { get { return player; } }
@@ -431,8 +435,14 @@ public class LevelManager
         return enemies.Last();
     }
 
-    public void RemoveObject(WorldObject toRemove)
+    public void RemoveObject(WorldObject toRemove, bool fromEditor = false)
     {
+        if (UberManager.Instance.DevelopersMode && !fromEditor)
+        {
+            RemoveObjectDEVMODE(toRemove);
+            return;
+        }
+
         if (toRemove.IsBarrel())
         {
             barrels.Remove((Barrel)toRemove);
@@ -472,9 +482,115 @@ public class LevelManager
         Remove(toRemove);
     }
 
+    private void RemoveObjectDEVMODE(WorldObject toRemove)
+    {
+        removedObjects.Add(toRemove);
+        removedObjects.Last().gameObject.SetActive(false);
+        GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
+
+        if (toRemove.IsBarrel())
+        {
+            barrels.Remove((Barrel)toRemove);
+        }
+        else if (toRemove.IsHuman())
+        {
+            humans.Remove((Human)toRemove);
+            if (GameManager.Instance.GameOn && humans.Count <= 0)
+            {
+                GameManager.Instance.GameOver();
+                return;
+            }
+            else
+            {
+                shrines.HandleAction(s => s.CheckForActive(false));
+                return;
+            }
+        }
+        else if (toRemove.IsMonster())
+        {
+            enemies.Remove((Enemy)toRemove);
+            if (GameManager.Instance.GameOn && enemies.Count <= 0)
+            {
+                GameManager.Instance.GameOver();
+                return;
+            }
+        }
+        else if (toRemove.IsShrine())
+        {
+            shrines.Remove((Shrine)toRemove);
+        }
+    }
+
     private void Remove(WorldObject toRemove)
     {
         GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
         GameObject.Destroy(toRemove.gameObject);
+    }
+
+    public void ResetAllDEVMODE()
+    {
+        humans.HandleAction(h => h.Reset());
+        barrels.HandleAction(b => b.Reset());
+        shrines.HandleAction(s => s.Reset());
+        enemies.HandleAction(e => e.Reset());
+        removedObjects.HandleAction(o => o.Reset());
+    }
+
+    public void ResetAllToInitDEVMODE(List<SpawnNode> spawnNodes)
+    {
+        // copy the spawnnodes, so we can be sure we had them all 
+        List<SpawnNode> copyList = new List<SpawnNode>(spawnNodes);
+
+        // copy all to be resetted objects to a list
+        List<WorldObject> allObjects = new List<WorldObject>();
+        allObjects.AddRange(humans.Cast<WorldObject>());
+        allObjects.AddRange(barrels.Cast<WorldObject>());
+        allObjects.AddRange(shrines.Cast<WorldObject>());
+        allObjects.AddRange(enemies.Cast<WorldObject>());
+        allObjects.AddRange(removedObjects);
+
+        SpawnNode s;
+        WorldObject w;
+
+        for (int i = 0; i < copyList.Count; i++)
+        {
+            for (int j = 0; j < allObjects.Count; j++)
+            {
+                s = copyList[i];
+                w = allObjects[j];
+
+                if (s.secType == w.Type)
+                {
+                    //if in removed objects, add
+                    if (removedObjects.Contains(w))
+                    {
+                        GameManager.Instance.TileManager.SetObject(s.position, w);
+                    }
+                    //else move
+                    else
+                    {
+                        GameManager.Instance.TileManager.MoveObject(w.GridPosition, s.position, w);
+                    }
+
+                    w.gameObject.transform.position = GameManager.Instance.TileManager.GetWorldPosition(s.position);
+                    w.ResetToInitDEVMODE(s.position);
+
+                    copyList.Remove(s);
+                    allObjects.Remove(w);
+
+                    i--;
+                    break;
+                }
+            }
+        }
+
+        if (copyList.Count > 0)
+        {
+            Debug.LogError("More spawnnodes than existing objects found!");
+        }
+        if(allObjects.Count > 0)
+        {
+            Debug.LogError("Not enough spawnnodes, not all objects resetted");
+        }
     }
 }

@@ -27,13 +27,26 @@ public class GameManager : StateManager {
 
     public void Pause(bool on)
     {
-        if (!pause && !UberManager.Instance.LevelEditor.CurrentLevelIsPlayable())
+        // currently paused, trying to unpause and level isn't playable
+        if (!on && !UberManager.Instance.LevelEditor.CurrentLevelIsPlayable())
         {
             Debug.LogError("Current level is not playable");
             return;
         }
 
         pause = on;
+        UberManager.Instance.LevelEditor.Pause(pause);
+        UIManager.Instance.InGameUI.Pause(pause);
+
+        // currently unpaused, now pausing
+        if (pause)
+        {
+            // reset all the still active objects
+            levelManager.ResetAllDEVMODE();
+
+            // hide highlighted rules
+            tileManager.HidePossibleRoads();
+        }
 
         //TODO: save current level 
 
@@ -42,8 +55,6 @@ public class GameManager : StateManager {
         //TODO: make neighbours find each other
         TileManager.FindNeighboursDEVMODE();
 
-        UIManager.Instance.InGameUI.Pause(pause);
-        UberManager.Instance.LevelEditor.Pause(pause);
     }
 
     private bool gameOn = false;
@@ -116,6 +127,7 @@ public class GameManager : StateManager {
     {
         if (UberManager.Instance.DevelopersMode)
         {
+            gameOn = false;
             //TODO: reset intial level
             return;
         }
@@ -136,7 +148,6 @@ public class GameManager : StateManager {
 
         if (pause)
         {
-            UberManager.Instance.InputManager.CatchInput();
             cameraManager.UpdateDEVMODE();
             return;
         }
