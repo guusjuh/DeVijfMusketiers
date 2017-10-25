@@ -11,6 +11,9 @@ public class Contract
     private int health;
     public int Health { get { return health; } }
 
+    private Path path;
+    private int levelInPath;
+    
     private ContractType type;
     public HumanTypes HumanType { get { return type.HumanType; } }
     public int Reputation { get { return type.Reputation; } }
@@ -28,11 +31,13 @@ public class Contract
     private bool diedLastLevel = false;
     public bool Died { get { return diedLastLevel;} }
 
-    public Contract(int id, ContractType type)
+    public Contract(int id, ContractType type, Path path)
     {
         this.id = id;
         this.type = type;
-        this.currentLevel = 0;
+        levelInPath = 0;
+        currentLevel = path.Levels[0].LevelID;
+        this.path = path;
 
         health = type.TotalHealth;
     }
@@ -73,16 +78,21 @@ public class Contract
         else
         {
             //TODO: animation for walking to next level
-            currentLevel++;
 
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepPerLevel);
 
-            if (currentLevel >= ContentManager.Instance.AmountOfLevels)
+            //TODO:fix this
+            if (levelInPath + 1 > path.Levels.Count)
             {
                 UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepCompleted);
 
                 BreakContract();
                 return false;
+            }
+            else
+            {
+                currentLevel = path.GetNextLevelID(levelInPath);
+                levelInPath++;
             }
         }
 
@@ -93,5 +103,10 @@ public class Contract
     {
         UberManager.Instance.ContractManager.RemoveContract(this);
         GameManager.Instance.SelectedContracts.Remove(this);
+    }
+
+    public bool HasNextLevel()
+    {
+        return path.hasNextLevel(levelInPath);
     }
 }

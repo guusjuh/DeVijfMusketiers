@@ -9,12 +9,17 @@ public class LevelSelectParent : MonoBehaviour
     private GameObject contractIndicatorPrefab;
     private List<ContractIndicator> contractIndicators;
 
-    private int levelID;
+    [SerializeField]private int levelID;
+    public int LevelID { get { return levelID; } }
+    private Path path;
+    private int levelInPathId;
 
-    public void Initialize(int id)
+    public void Initialize(Path path, int levelInPathId)
     {
+        this.path = path;
+        this.levelInPathId = levelInPathId;
+
         levelSelectButton = transform.Find("Button").GetComponent<LevelSelectButton>();
-        levelID = id;
         levelSelectButton.Initialize(levelID);
 
         contractIndicatorPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelSelect/ContractIndicator");
@@ -38,17 +43,21 @@ public class LevelSelectParent : MonoBehaviour
         // if there is a next level
         // check for the amount of humans in the next level plus the humans traveling from this level
         // being smaller than 7
-        bool nextLevelExists = levelID < ContentManager.Instance.AmountOfLevels - 1;
+        bool nextLevelExists = path.hasNextLevel(levelInPathId);
         bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).amountOfHumans +
-                                UberManager.Instance.ContractManager.AmountOfContracts(levelID + 1) 
+                                UberManager.Instance.ContractManager.AmountOfContracts(path.GetNextLevelID(levelInPathId)) 
                                 <= 6;
-        bool hasEnoughHumans = UberManager.Instance.ContractManager.AmountOfContracts(levelID) <
+        bool hasEnoughHumans = UberManager.Instance.ContractManager.AmountOfContracts(levelID) >=
                                ContentManager.Instance.LevelData(levelID).amountOfHumans;
 
-        if ((nextLevelExists && !spaceInNextLevel) || hasEnoughHumans) 
+        if ((nextLevelExists && !spaceInNextLevel) || !hasEnoughHumans)
+        {
             levelSelectButton.GetComponent<Button>().interactable = false;
+        }
         else
+        {
             levelSelectButton.GetComponent<Button>().interactable = true;
+        }
     }
 
     public void Clear()

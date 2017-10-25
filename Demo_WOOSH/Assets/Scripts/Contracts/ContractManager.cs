@@ -9,6 +9,7 @@ public class ContractManager
 {
     private List<Contract> contracts = new List<Contract>();
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
+    public List<ContractType> ContractTypes { get { return contractTypes; } }
 
     public void Initialize()
     {
@@ -45,25 +46,11 @@ public class ContractManager
         return contracts.FindAll(c => c.CurrentLevel == level);
     }
 
-    public Contract GenerateRandomContract()
-    {
-        int id = AmountOfContracts();
-
-        // get random type   
-        HumanTypes type = GetRandomHumanType();
-        List<ContractType> matchingContractTypes = contractTypes.FindAll(c => c.HumanType == type);
-
-        Contract newContract = new Contract(id,
-                                            matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)]);
-        AddContract(newContract);
-        return newContract;
-    }
-
     /// <summary>
     /// Returns a random human type based on the current player reputation.
     /// </summary>
     /// <returns></returns>
-    private HumanTypes GetRandomHumanType()
+    public HumanTypes GetRandomHumanType()
     {
         Dictionary<HumanTypes, int> possibleTypes = new Dictionary<HumanTypes, int>();
         int maxReputation = UberManager.Instance.PlayerData.Reputation + 1;
