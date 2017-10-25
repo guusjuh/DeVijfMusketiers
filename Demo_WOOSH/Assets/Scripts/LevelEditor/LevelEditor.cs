@@ -24,10 +24,10 @@ public class LevelEditor : MonoBehaviour
     private const KeyCode PENCIL = KeyCode.W;
     private const KeyCode SWITCH_TILE_CONTENT = KeyCode.Tab;
 
-    public const string FILL_HK        = "Q - Fill";
-    public const string PENCIL_HK      = "W - Pencil";
-    public const string TOGGLE_HK      = "TAB - Toggle between content/tile";
-    public const string SWITCH_PRIM_HK = "1-9 - Switch primary type";
+    public const string FILL_HK        = "Q \t- Fill";
+    public const string PENCIL_HK      = "W \t- Pencil";
+    public const string TOGGLE_HK      = "TAB \t- Toggle between content/tile";
+    public const string SWITCH_PRIM_HK = "1-9 \t- Switch primary type";
 
     private GridOverlay gridOverlay;
 
@@ -61,6 +61,8 @@ public class LevelEditor : MonoBehaviour
     private Transform previewObject; // the preview stuck on the mouse
 
     // ---------------------------------------------------------------
+    private LevelData levelData;
+
     //TODO: direct to level data instance
     public int LevelID { get { return 1; /*TODO: read from files which is the next id*/} }
 
@@ -79,9 +81,15 @@ public class LevelEditor : MonoBehaviour
 
     public void Initialize()
     {
+        levelData = new LevelData();
+        levelData.id = LevelID; // TODO: read from files
+        levelData.spawnNodes = new List<SpawnNode>();
+
         // set initial rows and columns
         rows = 7;
         columns = 9;
+
+        BuildNewLevelDataGrid();
 
         // setup grid overlay
         gridOverlay = UberManager.Instance.gameObject.AddComponent<GridOverlay>();
@@ -115,6 +123,10 @@ public class LevelEditor : MonoBehaviour
     {
         if (gamePaused)
         {
+            EditorUtility.DisplayDialog("Which level do you want to edit?",
+                "Do you want to continue with the initial edited level or use this in-game level to edit?", 
+                "Initial Level", "In-game Level");
+
             if (ValidMousePosition(worldMousePosition, coordinateMousePosition))
             {
                 highlightPreviewObject.SetActive(true);
@@ -147,6 +159,8 @@ public class LevelEditor : MonoBehaviour
         columns = (int)newSize.y;
 
         GameManager.Instance.TileManager.AdjustGridSizeDEVMODE();
+        GameManager.Instance.CameraManager.ResetDEVMODE();
+        BuildNewLevelDataGrid();
     }
 
     public void AdjustDangerGrowRate(int newValue)
@@ -207,7 +221,6 @@ public class LevelEditor : MonoBehaviour
 
     private void HandleMouse()
     {
-        Debug.Log(GameManager.Instance.Paused);
         worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         coordinateMousePosition = GameManager.Instance.TileManager.GetGridPosition(worldMousePosition);
 
@@ -351,7 +364,7 @@ public class LevelEditor : MonoBehaviour
         previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
         previewObject.parent = highlightPreviewObject.transform;
         previewObject.localPosition = Vector3.zero;
-        int hoi = 0;
+        
     }
 
     private void UpdateObjectPreview()
@@ -433,6 +446,7 @@ public class LevelEditor : MonoBehaviour
             //TODO: push to undo stack
 
             GameManager.Instance.TileManager.SetTileTypeDEVMODE(selectedData.selectedTile.Value, coord);
+            levelData.grid[coord.x].row[coord.y] = selectedData.selectedTile.Value;
         }
     }
 
@@ -454,6 +468,7 @@ public class LevelEditor : MonoBehaviour
                 s.position = coord;
 
                 GameManager.Instance.LevelManager.SpawnObjectDEVMODE(s);
+                levelData.spawnNodes.Add(s);
             }
         }
         else
@@ -479,6 +494,7 @@ public class LevelEditor : MonoBehaviour
             if (existingNode.GetAmountOfContent() <= 0)
             {
                 GameManager.Instance.TileManager.RemoveTileDEVMODE(coord);
+                levelData.grid[coord.x].row[coord.y] = SecTileType.Unknown;
             }
             else
             {
@@ -495,6 +511,8 @@ public class LevelEditor : MonoBehaviour
         if (existingNode != null && existingNode.GetAmountOfContent() > 0)
         {
             GameManager.Instance.TileManager.RemoveContentDEVMODE(existingNode);
+
+            levelData.spawnNodes.Remove(levelData.spawnNodes.Find(s => s.position == coord));
         }
     }
 
@@ -515,5 +533,33 @@ public class LevelEditor : MonoBehaviour
             return false;
 
         return true;
+    }
+
+
+    // ----- UPDATING THE LEVEL DATA --------------
+
+    private void BuildNewLevelDataGrid()
+    {
+        levelData.grid = null;
+
+        levelData.rows = rows;
+        levelData.columns = columns;
+
+        levelData.grid = new SecTileTypeRow[levelData.rows];
+        for (int i = 0; i < levelData.rows; i++)
+        {
+            levelData.grid[i] = new SecTileTypeRow();
+            levelData.grid[i].row = new SecTileType[columns];
+        }
+    }
+
+    private void AddNewSpawnNode()
+    {
+        
+    }
+
+    private void RemoveSpawnNode()
+    {
+        
     }
 }

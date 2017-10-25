@@ -27,7 +27,7 @@ public class GameManager : StateManager {
 
     public void Pause(bool on)
     {
-        if (!UberManager.Instance.LevelEditor.CurrentLevelIsPlayable())
+        if (!pause && !UberManager.Instance.LevelEditor.CurrentLevelIsPlayable())
         {
             Debug.LogError("Current level is not playable");
             return;
@@ -134,7 +134,14 @@ public class GameManager : StateManager {
     {
         if (Input.GetKeyDown(KeyCode.P)) Pause(!pause);
 
-        if (!gameOn || pause) return;
+        if (pause)
+        {
+            UberManager.Instance.InputManager.CatchInput();
+            cameraManager.UpdateDEVMODE();
+            return;
+        }
+
+        if (!gameOn) return;
 
         UberManager.Instance.InputManager.CatchInput();
         cameraManager.UpdatePosition();

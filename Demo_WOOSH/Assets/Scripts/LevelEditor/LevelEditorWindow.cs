@@ -20,6 +20,7 @@ public class LevelEditorWindow : EditorWindow
 
     int selectedTool = 0;
 
+    private Vector2 levelSize = new Vector2(0,0);
 
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
@@ -32,7 +33,11 @@ public class LevelEditorWindow : EditorWindow
         if (levelEditorRef == null)
         {
             levelEditorRef = UberManager.Instance.LevelEditor;
-            if(levelEditorRef != null) textureWidth = ContentManager.Instance.TileTextures[TileType.Dangerous][0].width;
+            if (levelEditorRef != null)
+            {
+                levelSize = new Vector2(levelEditorRef.Rows, levelEditorRef.Columns);
+                textureWidth = ContentManager.Instance.TileTextures[TileType.Dangerous][0].width;
+            }
         }
         Repaint();
     }
@@ -179,8 +184,12 @@ public class LevelEditorWindow : EditorWindow
 
         // rows and cols
         GUILayout.BeginHorizontal();
-        levelEditorRef.AdjustSize(EditorGUILayout.Vector2Field("Level Size: ", new Vector2(levelEditorRef.Rows, levelEditorRef.Columns)));
+        levelSize = EditorGUILayout.Vector2Field("Level Size: ", levelSize);
         GUILayout.EndHorizontal();
+        if (GUILayout.Button("Apply level size"))
+        {
+            levelEditorRef.AdjustSize(levelSize);
+        }
 
         // danger grow rate
         GUILayout.BeginHorizontal();
