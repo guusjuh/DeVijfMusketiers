@@ -17,9 +17,9 @@ public class InGameUIManager : SubUIManager {
     private EnemyInfoUI enemyInfoUI;
     public EnemyInfoUI EnemyInfoUI { get { return enemyInfoUI; } }
 
-    private SkipTurnButton skipTurnButton;
-    private PlayerActionPointsUI playerActionPoints;
-    public PlayerActionPointsUI PlayerActionPoints { get { return playerActionPoints; } }
+    //private SkipTurnButton skipTurnButton;
+    private PlayerAPSkipButton playerActionPoints;
+    public PlayerAPSkipButton PlayerActionPoints { get { return playerActionPoints; } }
 
     private WorldObject target = null;
 
@@ -47,10 +47,10 @@ public class InGameUIManager : SubUIManager {
         enemyInfoUI.Initialize();
         enemyInfoUI.Clear();
 
-        skipTurnButton = UIManager.Instance.CreateUIElement("Prefabs/UI/SkipTurnButton", Vector2.zero, anchorBottomLeft).GetComponent<SkipTurnButton>();
-        skipTurnButton.Initialize();
+        //skipTurnButton = UIManager.Instance.CreateUIElement("Prefabs/UI/SkipTurnButton", new Vector2(-15.0f, 5.0f), anchorBottomRight).GetComponent<SkipTurnButton>();
+        //skipTurnButton.Initialize();
 
-        playerActionPoints = UIManager.Instance.CreateUIElement("Prefabs/UI/PlayerActionPoints", new Vector2(-10.0f, 10.0f), anchorBottomRight).GetComponent<PlayerActionPointsUI>();
+        playerActionPoints = UIManager.Instance.CreateUIElement("Prefabs/UI/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft).GetComponent<PlayerAPSkipButton>();
         playerActionPoints.Initialize();
 
         playerTurnBanner = UIManager.Instance.CreateUIElement("Prefabs/UI/YourTurn", new Vector2(0, 500), anchorCenter);
@@ -96,7 +96,6 @@ public class InGameUIManager : SubUIManager {
         teleportButtons = new List<SurroundingPushButton>();
         InitializeTeleportButtons();
 
-        skipTurnButton.gameObject.SetActive(true);
         playerActionPoints.gameObject.SetActive(true);
     }
 
@@ -109,8 +108,7 @@ public class InGameUIManager : SubUIManager {
         // let enemy info ui clear itself
         enemyInfoUI.Clear();
 
-        // clear skip and player ap elements
-        skipTurnButton.gameObject.SetActive(false);
+        // clear player ap elements
         playerActionPoints.gameObject.SetActive(false);
 
         // hide spell buttons 
@@ -190,14 +188,14 @@ public class InGameUIManager : SubUIManager {
     {
         playerActionPoints.SetAPText();
 
-        skipTurnButton.Active = true;
+        //TODO: skipTurnButton.Active = true;
     }
 
     public void EndPlayerTurn()
     {
         playerActionPoints.SetAPText();
 
-        skipTurnButton.Active = false;
+        //TODO: skipTurnButton.Active = false;
     }
 
     public IEnumerator StartTurn(bool player)
