@@ -25,38 +25,6 @@ public class GameManager : StateManager {
     private bool pause = false;
     public bool Paused { get {return pause; } private set { pause = value; } }
 
-    public void Pause(bool on)
-    {
-        // currently paused, trying to unpause and level isn't playable
-        if (!on && !UberManager.Instance.LevelEditor.CurrentLevelIsPlayable())
-        {
-            Debug.LogError("Current level is not playable");
-            return;
-        }
-
-        pause = on;
-        UberManager.Instance.LevelEditor.Pause(pause);
-        UIManager.Instance.InGameUI.Pause(pause);
-
-        // currently unpaused, now pausing
-        if (pause)
-        {
-            // reset all the still active objects
-            levelManager.ResetAllDEVMODE();
-
-            // hide highlighted rules
-            tileManager.HidePossibleRoads();
-        }
-
-        //TODO: save current level 
-
-        //TODO: set last played grid back
-
-        //TODO: make neighbours find each other
-        TileManager.FindNeighboursDEVMODE();
-
-    }
-
     private bool gameOn = false;
 
     public bool GameOn { get{ return gameOn; } }
@@ -128,7 +96,10 @@ public class GameManager : StateManager {
         if (UberManager.Instance.DevelopersMode)
         {
             gameOn = false;
-            //TODO: reset intial level
+            pause = true;
+
+            UberManager.Instance.LevelEditor.GameOver();
+
             return;
         }
 
@@ -139,6 +110,16 @@ public class GameManager : StateManager {
 
         // Switch game state
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
+    }
+
+    public void RestartDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+        LevelManager.ResetTurns();
+        UIManager.Instance.InGameUI.Pause(pause);
+        tileManager.HidePossibleRoads();
+        TileManager.FindNeighboursDEVMODE();
+        gameOn = true;
     }
 
     // update is called every frame
@@ -163,5 +144,30 @@ public class GameManager : StateManager {
     {
         currentLevel = levelID;
         this.selectedContracts = selectedContracts;
+    }
+
+    public void Pause(bool on)
+    {
+        // currently paused, trying to unpause and level isn't playable
+        // or currently unpaused, trying to pause and level isn't pausable
+        if (!on && !UberManager.Instance.LevelEditor.CurrentLevelIsPlayable() ||
+            on && !UberManager.Instance.LevelEditor.CurrentLevelIsPausable())
+            return;
+
+        pause = on;
+        UberManager.Instance.LevelEditor.Pause(pause);
+        UIManager.Instance.InGameUI.Pause(pause);
+
+        // currently unpaused, now pausing
+        if (pause)
+        {
+            // reset all the still active objects
+            levelManager.ResetAllDEVMODE();
+
+            // hide highlighted rules
+            tileManager.HidePossibleRoads();
+        }
+
+        TileManager.FindNeighboursDEVMODE();
     }
 }

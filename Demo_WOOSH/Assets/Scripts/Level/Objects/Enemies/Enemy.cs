@@ -110,6 +110,12 @@ public class Enemy : WorldObject
         ShowStatusEffects();
     }
 
+    public override void ResetToInitDEVMODE(Coordinate startPos)
+    {
+        base.ResetToInitDEVMODE(startPos);
+        Dead = false;
+    }
+
     public override void Clear()
     {
         DestroyStatusIcons();
@@ -144,7 +150,17 @@ public class Enemy : WorldObject
             Dead = true;
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
-            //DestroyStatusIcons();
+
+            if (!UberManager.Instance.DevelopersMode)
+            {
+                DestroyStatusIcons();
+            }
+            else
+            {
+                burnedIcon.SetActive(false);
+                frozenIcon.SetActive(false);
+            }
+
             GameManager.Instance.LevelManager.RemoveObject(this);
             return true;
         }

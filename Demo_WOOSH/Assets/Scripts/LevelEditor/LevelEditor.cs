@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using UnityEditor;
 using UnityEngine;
@@ -63,31 +64,21 @@ public class LevelEditor : MonoBehaviour
     // ---------------------------------------------------------------
     private LevelData levelData;
 
-    //TODO: direct to level data instance
-    public int LevelID { get { return 1; /*TODO: read from files which is the next id*/} }
+    public int Rows { get { return levelData.rows; } }
+    public int Columns { get { return levelData.columns; } }
+    public int LevelID { get { return levelData.id; } }
+    public int DangerStartTurn { get { return levelData.dangerStartGrow; } }
 
-    private int rows;
-    public int Rows { get { return rows; } }
-
-    private int columns;
-    public int Columns { get { return columns; } }
-
-    private int dangerGrowRate;
-    public int DangerGrowRate { get { return dangerGrowRate; } }
-
-    private int dangerStartTurn;
-    public int DangerStartTurn { get { return dangerStartTurn; } }
     // ---------------------------------------------------------------
 
     public void Initialize()
     {
         levelData = new LevelData();
-        levelData.id = LevelID; // TODO: read from files
+        levelData.id = 1; // TODO: read from files
         levelData.spawnNodes = new List<SpawnNode>();
-
-        // set initial rows and columns
-        rows = 7;
-        columns = 9;
+        levelData.rows = 7;
+        levelData.columns = 9;
+        levelData.dangerStartGrow = 3;
 
         BuildNewLevelDataGrid();
 
@@ -122,17 +113,16 @@ public class LevelEditor : MonoBehaviour
     public void Pause(bool gamePaused)
     {
         if (gamePaused)
-        {
+        {                
+            // reset to intial
             if (EditorUtility.DisplayDialog("Which level do you want to edit?",
                 "Do you want to continue with the initial edited level or use this in-game level to edit?",
                 "Initial Level", "In-game Level"))
             {
-                // reset to intial
-
                 // reset the grid to initial types
-                for (int i = 0; i < rows; i++)
+                for (int i = 0; i < levelData.rows; i++)
                 {
-                    for (int j = 0; j < columns; j++)
+                    for (int j = 0; j < levelData.columns; j++)
                     {
                         GameManager.Instance.TileManager.SetTileTypeDEVMODE(levelData.grid[i].row[j], new Coordinate(i, j));
                     }
@@ -140,12 +130,15 @@ public class LevelEditor : MonoBehaviour
 
                 // reset the objects that belong to the spawnnodes
                 GameManager.Instance.LevelManager.ResetAllToInitDEVMODE(levelData.spawnNodes);
+                GameManager.Instance.LevelManager.ResetTurnAmount();
             }
+            // save current to level data
             else
             {
-                // save current to level data
+                SetInGameLevelAsLevelData();
             }
 
+            ChangeToolType(toolType);
             if (ValidMousePosition(worldMousePosition, coordinateMousePosition))
             {
                 highlightPreviewObject.SetActive(true);
@@ -153,18 +146,71 @@ public class LevelEditor : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.LevelManager.StartGapTurn = DangerStartTurn;
             highlightPreviewObject.SetActive(false);
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
     }
 
+    public void GameOver()
+    {
+        if (EditorUtility.DisplayDialog("Game is over!",
+                   "This level isn't playable anymore. Press O.K. to return to the last saved level.",
+                   "O.K."))
+        {
+            // reset the grid to initial types
+            for (int i = 0; i < levelData.rows; i++)
+            {
+                for (int j = 0; j < levelData.columns; j++)
+                {
+                    GameManager.Instance.TileManager.SetTileTypeDEVMODE(levelData.grid[i].row[j], new Coordinate(i, j));
+                }
+            }
+
+            // reset the objects that belong to the spawnnodes
+            GameManager.Instance.LevelManager.ResetAllToInitDEVMODE(levelData.spawnNodes);
+
+            ChangeToolType(toolType);
+            if (ValidMousePosition(worldMousePosition, coordinateMousePosition))
+            {
+                highlightPreviewObject.SetActive(true);
+            }
+
+            GameManager.Instance.RestartDEVMODE();
+        }
+    }
+
+    public bool CurrentLevelIsPausable()
+    {
+        if (GameManager.Instance.TileManager.NoMoreThanOneAtATile())
+        {
+            Debug.LogError("Current level is not pausable (More than one object on a tile)");
+
+            return false;
+        }
+
+        return true;
+    }
+
     public bool CurrentLevelIsPlayable()
     {
-        //TODO: these should check the initial level, NOT the current
-        if (GameManager.Instance.LevelManager.Humans.Count <= 0) return false;
-        if (GameManager.Instance.LevelManager.Enemies.Count <= 0) return false;
-        if (GameManager.Instance.TileManager.GetNodeWithGapReferences().Count <= 0) return false;
-        if (!GameManager.Instance.TileManager.ValidGridDEVMODE()) return false;
+        if (!GameManager.Instance.TileManager.ValidGridDEVMODE())
+        {
+            Debug.LogError("Current level is not playable  (Not a Valid Grid)");
+
+            return false;
+        }
+        if (levelData.spawnNodes.FindAll(s => s.type == ContentType.Human).Count <= 0)
+        {
+            Debug.LogError("Current level is not playable (Missing Human)");
+
+            return false;
+        }
+        if (levelData.spawnNodes.FindAll(s => s.type == ContentType.Boss || s.type == ContentType.Minion).Count <= 0)
+        {
+            Debug.LogError("Current level is not playable (Missing Enemy)");
+            return false;
+        }
 
         return true;
     }
@@ -172,26 +218,21 @@ public class LevelEditor : MonoBehaviour
     // ---------- VARS THAT CAN BE CHANGED IN LEVEL EDITOR WINDOW -----------
     public void AdjustSize(Vector2 newSize)
     {
-        if (rows == (int) newSize.x && columns == (int) newSize.y) return;
+        if (levelData.rows == (int) newSize.x && levelData.columns == (int) newSize.y) return;
 
-        rows = (int)newSize.x;
-        columns = (int)newSize.y;
+        levelData.rows = (int)newSize.x;
+        levelData.columns = (int)newSize.y;
 
         GameManager.Instance.TileManager.AdjustGridSizeDEVMODE();
         GameManager.Instance.CameraManager.ResetDEVMODE();
         BuildNewLevelDataGrid();
     }
 
-    public void AdjustDangerGrowRate(int newValue)
-    {
-        if (newValue <= 0) return;
-        dangerGrowRate = newValue;
-    }
-
     public void AdjustDangerStartTurn(int newValue)
     {
         if (newValue <= 0) return;
-        dangerStartTurn = newValue;
+        levelData.dangerStartGrow = newValue;
+        int hoin = 0;
     }
     // ----------------------------------------------------------------------
 
@@ -529,9 +570,9 @@ public class LevelEditor : MonoBehaviour
         // if the node actually exists, delete it
         if (existingNode != null && existingNode.GetAmountOfContent() > 0)
         {
-            GameManager.Instance.TileManager.RemoveContentDEVMODE(existingNode);
+            SecContentType removedType = GameManager.Instance.TileManager.RemoveContentDEVMODE(existingNode);
 
-            levelData.spawnNodes.Remove(levelData.spawnNodes.Find(s => s.position == coord));
+            levelData.spawnNodes.Remove(levelData.spawnNodes.Find(s => s.secType == removedType));
         }
     }
 
@@ -548,7 +589,7 @@ public class LevelEditor : MonoBehaviour
     private bool ValidPosition(Coordinate coord)
     {
         // if the coord is outside the field, return false
-        if (coord.x < 0 || coord.x >= rows || coord.y < 0 || coord.y >= columns)
+        if (coord.x < 0 || coord.x >= Rows || coord.y < 0 || coord.y >= Columns)
             return false;
 
         return true;
@@ -561,24 +602,68 @@ public class LevelEditor : MonoBehaviour
     {
         levelData.grid = null;
 
-        levelData.rows = rows;
-        levelData.columns = columns;
-
         levelData.grid = new SecTileTypeRow[levelData.rows];
         for (int i = 0; i < levelData.rows; i++)
         {
             levelData.grid[i] = new SecTileTypeRow();
-            levelData.grid[i].row = new SecTileType[columns];
+            levelData.grid[i].row = new SecTileType[levelData.columns];
         }
     }
 
-    private void AddNewSpawnNode()
+    private void SetInGameLevelAsLevelData()
     {
-        
+        // clear the current spawnnodes
+        levelData.spawnNodes.Clear();
+        levelData.spawnNodes = null;
+
+        // initialize new spawnnodes
+        levelData.spawnNodes = new List<SpawnNode>();
+
+        // create new spawn node all humans
+        for (int i = 0; i < GameManager.Instance.LevelManager.Humans.Count; i++)
+        {
+            levelData.spawnNodes.Add(GenerateSpawnNodeFromWorldObject(GameManager.Instance.LevelManager.Humans[i]));
+        }
+
+        // create new spawn node all enemies
+        for (int i = 0; i < GameManager.Instance.LevelManager.Enemies.Count; i++)
+        {
+            levelData.spawnNodes.Add(GenerateSpawnNodeFromWorldObject(GameManager.Instance.LevelManager.Enemies[i]));
+        }
+
+        // create new spawn node all barrels
+        for (int i = 0; i < GameManager.Instance.LevelManager.Barrels.Count; i++)
+        {
+            levelData.spawnNodes.Add(GenerateSpawnNodeFromWorldObject(GameManager.Instance.LevelManager.Barrels[i]));
+        }
+
+        // create new spawn node all shrines
+        for (int i = 0; i < GameManager.Instance.LevelManager.Shrines.Count; i++)
+        {
+            levelData.spawnNodes.Add(GenerateSpawnNodeFromWorldObject(GameManager.Instance.LevelManager.Shrines[i]));
+        }
+
+        // clear and init the current grid
+        BuildNewLevelDataGrid();
+
+        // set all new types
+        for (int i = 0; i < levelData.rows; i++)
+        {
+            for (int j = 0; j < levelData.columns; j++)
+            {
+                levelData.grid[i].row[j] =
+                    GameManager.Instance.TileManager.GetNodeReference(new Coordinate(i, j)).GetSecType();
+            }
+        }
     }
 
-    private void RemoveSpawnNode()
+    private SpawnNode GenerateSpawnNodeFromWorldObject(WorldObject worldObject)
     {
-        
+        SpawnNode newNode = new SpawnNode();
+        newNode.type = ContentManager.GetPrimaryFromSecContent(worldObject.Type);
+        newNode.secType = worldObject.Type;
+        newNode.position = worldObject.GridPosition;
+
+        return newNode;
     }
 }

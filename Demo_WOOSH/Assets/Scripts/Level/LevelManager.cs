@@ -33,11 +33,20 @@ public class LevelManager
     public bool PlayersTurn { get { return playersTurn; } }
     private int extraPoints;
 
-    private int amountOfTurns = 0;
+    private int amountOfTurns = 1;
     public int AmountOfTurns { get { return amountOfTurns; } }
 
     private float delay = 0.5f;
     private int startGapTurn = 2;
+
+    public int StartGapTurn
+    {
+        set
+        {
+            if(!UberManager.Instance.DevelopersMode) return;
+            startGapTurn = value;
+        }
+    }
 
     public void Initialize()
     {
@@ -61,8 +70,8 @@ public class LevelManager
         player = new Player();
         player.Initialize();
 
-        amountOfTurns = 0;
-
+        amountOfTurns = 1;
+        
         if (UberManager.Instance.DevelopersMode) SpawnEmptyLevel();
         else SpawnLevel();
 
@@ -237,6 +246,8 @@ public class LevelManager
 
     private IEnumerator SpawnGap()
     {
+        if (GameManager.Instance.TileManager.GetNodeWithGapReferences().Count <= 0) yield return null;
+
         for (int i = 0; i < amountOfTurns - startGapTurn; i++)
         {
             TileNode chosenGap = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
@@ -318,6 +329,8 @@ public class LevelManager
 
             GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
         }
+
+        startGapTurn = ContentManager.Instance.LevelData(GameManager.Instance.CurrentLevel).dangerStartGrow;
     }
 
     private WorldObject SpawnFromNode(SpawnNode s)
@@ -450,7 +463,7 @@ public class LevelManager
         else if (toRemove.IsHuman())
         {
             humans.Remove((Human)toRemove);
-            if (GameManager.Instance.GameOn && humans.Count <= 0)
+            if (!fromEditor && GameManager.Instance.GameOn && humans.Count <= 0)
             {
                 Remove(toRemove);
                 GameManager.Instance.GameOver();
@@ -466,7 +479,7 @@ public class LevelManager
         else if (toRemove.IsMonster())
         {
             enemies.Remove((Enemy)toRemove);
-            if (GameManager.Instance.GameOn && enemies.Count <= 0)
+            if (!fromEditor && GameManager.Instance.GameOn && enemies.Count <= 0)
             {
                 Remove(toRemove);
                 GameManager.Instance.GameOver();
@@ -564,6 +577,29 @@ public class LevelManager
                     //if in removed objects, add
                     if (removedObjects.Contains(w))
                     {
+                        //TODO: switch to add back to update lists
+                        switch (ContentManager.GetPrimaryFromSecContent(w.Type))
+                        {
+                            case ContentType.Boss:
+                            case ContentType.Minion:
+                                enemies.Add((Enemy)w);
+                                break;
+                            case ContentType.Environment:
+                                if (w.Type == SecContentType.Barrel)
+                                    barrels.Add((Barrel) w);
+                                else if(w.Type == SecContentType.Shrine)
+                                    shrines.Add((Shrine)w);
+                                else
+                                    Debug.LogError("Tried to add a non-type to levelmanager update lists " + w.name);
+                                break;
+                            case ContentType.Human:
+                                humans.Add((Human)w);
+                                break;
+                            default:
+                                Debug.LogError("Tried to add a non-type to levelmanager update lists " + w.name);
+                                break;
+                        }
+                        removedObjects.Remove(w);
                         GameManager.Instance.TileManager.SetObject(s.position, w);
                     }
                     //else move
@@ -592,5 +628,29 @@ public class LevelManager
         {
             Debug.LogError("Not enough spawnnodes, not all objects resetted");
         }
+    }
+
+    public void ClearRemoveObjectsDEVMODE()
+    {
+        while (removedObjects.Count > 0)
+        {
+            GameObject.Destroy(removedObjects.Last().gameObject);
+            removedObjects.Remove(removedObjects.Last());
+        }
+
+        removedObjects.Clear();
+        removedObjects = null;
+    }
+
+    public void ResetTurnAmount()
+    {
+        amountOfTurns = 0;
+    }
+
+    public void ResetTurns()
+    {
+        amountOfTurns = 0;
+        playersTurn = false;
+        othersTurn = false;
     }
 }

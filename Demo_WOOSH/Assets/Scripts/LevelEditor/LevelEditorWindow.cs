@@ -191,11 +191,6 @@ public class LevelEditorWindow : EditorWindow
             levelEditorRef.AdjustSize(levelSize);
         }
 
-        // danger grow rate
-        GUILayout.BeginHorizontal();
-        levelEditorRef.AdjustDangerGrowRate(EditorGUILayout.IntField("Danger grow speed: ", levelEditorRef.DangerGrowRate));
-        GUILayout.EndHorizontal();
-
         // danger grow start turn 
         GUILayout.BeginHorizontal();
         levelEditorRef.AdjustDangerStartTurn(EditorGUILayout.IntField("Danger start turn: ", levelEditorRef.DangerStartTurn));

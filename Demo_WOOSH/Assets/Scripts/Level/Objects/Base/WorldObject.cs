@@ -49,9 +49,13 @@ public class WorldObject : MonoBehaviour
         return false;
     }
 
+    // Called on pausing the ingame while in devmode
     public virtual void Reset() { }
+
+    // Called to reset every object back to inital position etc. of last saved level
     public virtual void ResetToInitDEVMODE(Coordinate startPos)
     {
+        Reset();
         gameObject.SetActive(true);
         gridPosition = startPos;
     }

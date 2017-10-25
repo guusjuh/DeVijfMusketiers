@@ -652,16 +652,21 @@ public class TileManager
         }
     }
 
-    public void RemoveContentDEVMODE(TileNode node)
+    public SecContentType RemoveContentDEVMODE(TileNode node)
     {
-        if (!UberManager.Instance.DevelopersMode) return;
+        if (!UberManager.Instance.DevelopersMode) return SecContentType.Unknown;
+
+        SecContentType returnType = SecContentType.Unknown;
 
         if (node != null &&
             node.GetAmountOfContent() > 0)
         {
             WorldObject removedObject = node.RemoveContent();
+            returnType = removedObject.Type;
             GameManager.Instance.LevelManager.RemoveObject(removedObject, true);
         }
+
+        return returnType;
     }
 
     public void ClearGridDEVMODE(TileNode[,] gridToRemove = null)
@@ -720,5 +725,22 @@ public class TileManager
         }
 
         return true;
+    }
+
+    public bool NoMoreThanOneAtATile()
+    {
+        if (!UberManager.Instance.DevelopersMode) return false;
+
+        // Let every node find it's neighbours.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (grid[i, j] == null) return true;
+                if (grid[i, j].GetAmountOfContent() > 1) return true;
+            }
+        }
+
+        return false;
     }
 }

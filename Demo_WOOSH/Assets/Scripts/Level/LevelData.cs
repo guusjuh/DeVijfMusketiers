@@ -12,6 +12,7 @@ public class LevelData
     [SerializeField] public int columns;
     [SerializeField] public SecTileTypeRow[] grid;
     [SerializeField] public List<SpawnNode> spawnNodes;
+    [SerializeField] public int dangerStartGrow;
     public int amountOfHumans { get { return spawnNodes.FindAll(s => s.secType == SecContentType.Human).Count; } }
 }
 
