@@ -99,6 +99,10 @@ public class LevelManager
         enemies.Clear();
         enemies = null;
 
+        while (removedObjects.Count > 0) removedObjects[0].Clear();
+        removedObjects.Clear();
+        removedObjects = null;
+
         playersTurn = false;
         othersTurn = false;
     }

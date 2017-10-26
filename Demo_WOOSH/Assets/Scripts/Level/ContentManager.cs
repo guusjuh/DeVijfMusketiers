@@ -285,15 +285,4 @@ public class ContentManager {
 
         textReader.Close();
     }
-
-    public void SaveAllInformation()
-    {
-        FileStream fs = new FileStream("Assets/Resources/LevelData.xml", FileMode.OpenOrCreate);
-
-        XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
-
-        serializer.Serialize(fs, levelDataContainer);
-
-        fs.Close();
-    }
 }

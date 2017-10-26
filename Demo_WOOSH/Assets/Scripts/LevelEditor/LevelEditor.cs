@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using Microsoft.Win32.SafeHandles;
 using UnityEditor;
 using UnityEngine;
@@ -71,10 +74,14 @@ public class LevelEditor : MonoBehaviour
 
     // ---------------------------------------------------------------
 
+    private const string LEVEL_PATH = "Assets/Resources/Levels/";
+    private const string PRE_FIX = "level";
+    private const string FILE_EXTENSION = ".txt";
+
     public void Initialize()
     {
         levelData = new LevelData();
-        levelData.id = 1; // TODO: read from files
+        levelData.id = NewID();  // TODO: read from files
         levelData.spawnNodes = new List<SpawnNode>();
         levelData.rows = 7;
         levelData.columns = 9;
@@ -106,6 +113,34 @@ public class LevelEditor : MonoBehaviour
 
         selectedData = new SelectedTypeData();
         selectedData.Initialize();
+
+        SetSelectedObject(selectedData.selectedTile.Value);
+    }
+
+    public void StartNew()
+    {
+        //clear grid
+        GameManager.Instance.TileManager.ClearGridDEVMODE();
+        GameManager.Instance.TileManager.Restart();
+
+        //clear objects
+        GameManager.Instance.LevelManager.Clear();
+
+        levelData = null;
+        levelData = new LevelData();
+        levelData.id = NewID(); 
+        levelData.spawnNodes = new List<SpawnNode>();
+        levelData.rows = 7;
+        levelData.columns = 9;
+        levelData.dangerStartGrow = 3;
+
+        BuildNewLevelDataGrid();
+
+        // set intial tooltype
+        ChangeToolType(ToolType.Brush);
+
+        // set intial selected 
+        placableType = PlacableType.Tile;
 
         SetSelectedObject(selectedData.selectedTile.Value);
     }
@@ -595,7 +630,6 @@ public class LevelEditor : MonoBehaviour
         return true;
     }
 
-
     // ----- UPDATING THE LEVEL DATA --------------
 
     private void BuildNewLevelDataGrid()
@@ -665,5 +699,32 @@ public class LevelEditor : MonoBehaviour
         newNode.position = worldObject.GridPosition;
 
         return newNode;
+    }
+
+    //TODO: save level with button as 'level<ID>'
+    //TODO: load: popup with number and load that file
+    private int NewID()
+    {
+        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/Levels");
+        FileInfo[] allFiles = dir.GetFiles("*.txt");
+        List<int> validFiles = new List<int>();
+
+        foreach (FileInfo f in allFiles)
+        {
+            Match match = Regex.Match(f.Name, @"\d+");//"[0-9]*");
+
+            validFiles.Add(int.Parse(match.Value));
+        }
+        return validFiles.Last() + 1;
+    }
+
+    public void SaveCurrentLevel()
+    {
+        FileStream fs = new FileStream(LEVEL_PATH + PRE_FIX + LevelID + FILE_EXTENSION, FileMode.Create);
+
+        XmlSerializer serializer = new XmlSerializer(typeof(LevelData));
+        serializer.Serialize(fs, levelData);
+
+        fs.Close();
     }
 }

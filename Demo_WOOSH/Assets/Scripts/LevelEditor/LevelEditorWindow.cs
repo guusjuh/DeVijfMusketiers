@@ -125,6 +125,22 @@ public class LevelEditorWindow : EditorWindow
 
                     GUILayout.EndVertical();
                 }
+
+                // ------------------------------------------------
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Save Current Level"))
+                {
+                    if (!levelEditorRef.CurrentLevelIsPlayable()) return;
+                    levelEditorRef.SaveCurrentLevel();
+
+                    if (!EditorUtility.DisplayDialog("Continue editing this level?",
+                        "You saved the current level. Would you like to continue or start a new level?",
+                        "Continue With current", "Start New Level"))
+                    {
+                        levelEditorRef.StartNew();
+                    }
+                }
+                GUILayout.EndHorizontal();
             }
         }
     }
