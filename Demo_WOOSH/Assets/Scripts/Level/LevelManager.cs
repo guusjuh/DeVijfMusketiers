@@ -119,12 +119,14 @@ public class LevelManager
     {
         othersTurn = true;
 
-        // wait for turn delay
-        yield return new WaitForSeconds(delay);
-
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
         {
+            // wait for turn delay
+            yield return new WaitForSeconds(delay);
+
+            if(GameManager.Instance.Paused) yield break;
+
             Enemy e = enemies[i];
             e.StartTurn();
 
@@ -135,6 +137,8 @@ public class LevelManager
                 e.EnemyMove();
 
                 yield return new WaitForSeconds(delay);
+
+                if (GameManager.Instance.Paused) break;
 
                 canHandleTurn = GameManager.Instance.GameOn && !e.Dead && e.CurrentActionPoints > 0;
             }
@@ -147,6 +151,14 @@ public class LevelManager
             {
                 i--;
             }
+
+            if (GameManager.Instance.Paused)
+            {
+                playersTurn = false;
+                othersTurn = false;
+                yield break;
+            }
+
             // need to check for the last enemy died from status effect
             if (!GameManager.Instance.GameOn) yield break;
         }
@@ -159,6 +171,8 @@ public class LevelManager
     {
         foreach (Human h in humans)
         {
+            if (GameManager.Instance.Paused) yield break;
+
             // only handle a turn for the human if he is panicking
             if (h.InPanic)
             {
@@ -168,6 +182,8 @@ public class LevelManager
                 while (h.CurrentFleePoints > 0)
                 {
                     yield return UberManager.Instance.StartCoroutine(h.Flee());
+                    if (GameManager.Instance.Paused) break;
+
                     yield return new WaitForSeconds(delay);
                 }
             }
@@ -192,7 +208,7 @@ public class LevelManager
         amountOfTurns++;
 
         // show banner
-        yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
+        if(!GameManager.Instance.Paused) yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
         // start players turn
         player.StartPlayerTurn();
@@ -258,7 +274,7 @@ public class LevelManager
 
             chosenGap.CreateHexagon(SecTileType.Gap);
 
-            if (!GameManager.Instance.GameOn) break;
+            if (!GameManager.Instance.GameOn || GameManager.Instance.Paused) break;
         }
 
         yield return null;
