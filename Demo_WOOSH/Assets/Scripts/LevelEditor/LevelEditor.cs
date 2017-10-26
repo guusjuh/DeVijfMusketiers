@@ -758,7 +758,7 @@ public class LevelEditor : MonoBehaviour
 
             validFiles.Add(int.Parse(match.Value));
         }
-        return validFiles.Last() + 1;
+        return validFiles.Count;
     }
 
     public void SaveCurrentLevel()

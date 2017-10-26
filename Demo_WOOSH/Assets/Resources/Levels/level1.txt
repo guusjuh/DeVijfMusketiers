@@ -98,11 +98,11 @@
   </grid>
   <spawnNodes>
     <SpawnNode>
-      <type>Boss</type>
-      <secType>Arnest</secType>
+      <type>Minion</type>
+      <secType>Wolf</secType>
       <position>
-        <x>2</x>
-        <y>8</y>
+        <x>1</x>
+        <y>7</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -110,7 +110,7 @@
       <secType>Human</secType>
       <position>
         <x>4</x>
-        <y>1</y>
+        <y>2</y>
       </position>
     </SpawnNode>
   </spawnNodes>

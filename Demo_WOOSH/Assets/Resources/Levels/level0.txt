@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <LevelData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <id>5</id>
+  <id>0</id>
   <rows>7</rows>
   <columns>9</columns>
   <grid>
@@ -11,19 +11,6 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -51,9 +38,22 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Gap</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
@@ -98,99 +98,19 @@
   </grid>
   <spawnNodes>
     <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
+      <type>Minion</type>
+      <secType>Wolf</secType>
       <position>
-        <x>4</x>
-        <y>3</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
-      <position>
-        <x>5</x>
-        <y>3</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
-      <position>
-        <x>6</x>
-        <y>3</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Shrine</secType>
-      <position>
-        <x>5</x>
-        <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Human</type>
-      <secType>Human</secType>
-      <position>
-        <x>0</x>
-        <y>8</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Human</type>
-      <secType>Human</secType>
-      <position>
-        <x>5</x>
+        <x>1</x>
         <y>7</y>
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
-      <position>
-        <x>3</x>
-        <y>1</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
-      <position>
-        <x>6</x>
-        <y>4</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Boss</type>
-      <secType>Arnest</secType>
+      <type>Human</type>
+      <secType>Human</secType>
       <position>
         <x>4</x>
         <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Minion</type>
-      <secType>Wolf</secType>
-      <position>
-        <x>4</x>
-        <y>4</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Minion</type>
-      <secType>Wolf</secType>
-      <position>
-        <x>3</x>
-        <y>3</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Minion</type>
-      <secType>Wolf</secType>
-      <position>
-        <x>2</x>
-        <y>3</y>
       </position>
     </SpawnNode>
   </spawnNodes>
