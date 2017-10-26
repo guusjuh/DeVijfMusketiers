@@ -1,15 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
 using UnityEngine;
 
 [Serializable]
 public class ContractManager
 {
+    //all active contracts
     private List<Contract> contracts = new List<Contract>();
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
     public List<ContractType> ContractTypes { get { return contractTypes; } }
+
+    public const float CONTRACT_REFRESH_RATE = 260.0f; //refresh rate in seconds
+    private bool hasNewContracts = false;
+
 
     public void Initialize()
     {
