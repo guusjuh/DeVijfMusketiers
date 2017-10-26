@@ -67,6 +67,7 @@ public class TileNode {
                                                             (ContentManager.GetPrimaryFromSecTile(type), type)];
 
         hexagon = GameObject.Instantiate(prefab) as GameObject;
+        hexagon.transform.parent = GameManager.Instance.TileManager.GridParent.transform;
         hexagon.name = prefab.name;
 
         // Set the position.
@@ -191,5 +192,10 @@ public class TileNode {
     public void RemoveContent(WorldObject worldObject)
     {
         content.RemoveContent(worldObject);
+    }
+
+    public WorldObject RemoveContent()
+    {
+        return content.RemoveContent();
     }
 }

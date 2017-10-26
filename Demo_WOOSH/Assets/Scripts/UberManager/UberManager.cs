@@ -25,6 +25,13 @@ public class UberManager : MonoBehaviour {
         }
     }
 
+    [SerializeField] private bool developersMode;
+    private bool selectedDevMode;
+    public bool DevelopersMode { get { return selectedDevMode; } }
+
+    private LevelEditor levelEditor;
+    public LevelEditor LevelEditor { get { return levelEditor;  } }
+
     private Dictionary<GameStates, StateManager> stateManagers = new Dictionary<GameStates, StateManager>();
     public LevelSelectionManager LevelSelectionManager { get { return (LevelSelectionManager)stateManagers.Get(GameStates.LevelSelection); } }
     public PreGameManager PreGameManager { get { return (PreGameManager)stateManagers.Get(GameStates.PreGame); } }
@@ -53,6 +60,9 @@ public class UberManager : MonoBehaviour {
     public PlayerData PlayerData { get { return playerData; } }
 
     private bool doingSetup = true;
+    public bool DoingSetup { get { return doingSetup; } }
+
+    public GUIStyle myStyle;
 
     public void Awake() {
         doingSetup = true;
@@ -60,9 +70,34 @@ public class UberManager : MonoBehaviour {
         Application.targetFrameRate = 60;
 
         contentManager.Initialize();
-        uiManager.Initialize();
         contractManager.Initialize();
+        uiManager.Initialize();
 
+        selectedDevMode = developersMode;
+
+        if (developersMode) StartDevMode();
+        else StartGameMode();
+    }
+
+#if UNITY_EDITOR
+    private void StartDevMode()
+    {
+        levelEditor = gameObject.AddComponent<LevelEditor>();
+        levelEditor.Initialize();
+
+        stateManagers.Add(GameStates.InGame, new GameManager());
+
+        GameManager.SetLevelInfo(-1, null);
+
+        state = GameStates.InGame;
+        stateManagers.Get(state).Start();
+
+        GameManager.CameraManager.ResetDEVMODE();
+    }
+#endif
+
+    private void StartGameMode()
+    {
         stateManagers.Add(GameStates.InGame, new GameManager());
         stateManagers.Add(GameStates.PostGame, new PostGameManager());
         stateManagers.Add(GameStates.LevelSelection, new LevelSelectionManager());
@@ -70,9 +105,11 @@ public class UberManager : MonoBehaviour {
 
         state = GameStates.LevelSelection;
         stateManagers.Get(state).Start();
-    }
+    } 
 
     public void Update() {
+        doingSetup = false;
+
         stateManagers.Get(state).Update();
         uiManager.UpdateUI();
     }
@@ -108,18 +145,3 @@ public class UberManager : MonoBehaviour {
         return default(T);
     }
 }
-
-#if UNITY_EDITOR  
-[CustomEditor(typeof(UberManager))]
-// ^ This is the script we are making a custom editor for.
-public class UberEditorScript : Editor {
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
-
-        if (GUILayout.Button("Save level data")) {
-            ContentManager.Instance.SaveAllInformation();
-            Debug.Log("Level Data saved");
-        }
-    }
-}
-#endif 

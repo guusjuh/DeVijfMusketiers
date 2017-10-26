@@ -96,6 +96,28 @@ public class Enemy : WorldObject
         possibleSpellTypes.Add(GameManager.SpellType.Fireball);
     }
 
+
+    public override void Reset()
+    {
+        base.Reset();
+        calculatedTotalAP = totalActionPoints;
+        currentActionPoints = calculatedTotalAP;
+        health = startHealth;
+        specialCooldown = 0;
+
+        slowCount = 0;
+        slowed = false;
+        burnCount = 0;
+        burning = false;
+        ShowStatusEffects();
+    }
+
+    public override void ResetToInitDEVMODE(Coordinate startPos)
+    {
+        base.ResetToInitDEVMODE(startPos);
+        Dead = false;
+    }
+
     public override void Clear()
     {
         DestroyStatusIcons();
@@ -129,7 +151,17 @@ public class Enemy : WorldObject
             Dead = true;
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
-            DestroyStatusIcons();
+
+            if (!UberManager.Instance.DevelopersMode)
+            {
+                DestroyStatusIcons();
+            }
+            else
+            {
+                burnedIcon.SetActive(false);
+                frozenIcon.SetActive(false);
+            }
+
             GameManager.Instance.LevelManager.RemoveObject(this);
             return true;
         }

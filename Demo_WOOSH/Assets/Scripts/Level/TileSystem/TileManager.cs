@@ -49,6 +49,7 @@ public class TileManager
 
     private TileNode[,] grid;
     private GameObject gridParent;
+    public GameObject GridParent { get { return gridParent; } }
     private List<TileNode> highlightedNodes;
 
     private Coordinate[] corners;
@@ -80,9 +81,9 @@ public class TileManager
     public void Initialize()
     {
         gridParent = new GameObject("Grid Parent");
-        SetUpGrid();
+        if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
+        else SetUpGrid();
 
-        //TODO: these don't seem to be right, but they really seem to be right?!
         corners = new Coordinate[4]
         {
             new Coordinate(     0,         0),
@@ -94,7 +95,8 @@ public class TileManager
 
     public void Restart()
     {
-        SetUpGrid();
+        if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
+        else SetUpGrid();
     }
 
     private void SetUpGrid()
@@ -125,10 +127,11 @@ public class TileManager
     {
         HidePossibleRoads();
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < grid.GetLength(0); i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < grid.GetLength(1); j++)
             {
+                if(grid[i,j] == null) continue;
                 grid[i,j].Clear();
             }
         }
@@ -289,14 +292,6 @@ public class TileManager
         return true;
     }
 
-    public void SetTileType(SecTileType type, Coordinate pos)
-    {
-        //TODO: maybe we need conditions and checks for this being valid
-        if (GetNodeReference(pos) == null) return;
-
-        grid[pos.x,pos.y].CreateHexagon(type);
-    }
-
     public void SetObject(Coordinate pos, WorldObject worldObject)
     {
         if (GetNodeReference(pos) == null) return;
@@ -350,6 +345,35 @@ public class TileManager
         return new Vector2(xPos, yPos);
     }
 
+    public Coordinate GetGridPosition(Vector2 worldPosition)
+    {
+        // Return if the grid is empty.
+        if (grid.Length < 1) return Coordinate.zero;
+
+        // Get the distance from the first node to the given worldposition.
+        float distance = Vector3.Distance(GetWorldPosition(new Coordinate(0,0)), worldPosition);
+
+        // Set the node closest to the given worldposition.
+        Coordinate closeCoord = new Coordinate(0, 0);
+
+        // Check for every node.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                // If the node is closer to the given world position than the current closed distance.
+                if (distance > Vector3.Distance(GetWorldPosition(new Coordinate(i, j)), worldPosition))
+                {
+                    // Set the node as new closest node.
+                    distance = Vector3.Distance(GetWorldPosition(new Coordinate(i, j)), worldPosition);
+                    closeCoord = new Coordinate(i, j);
+                }
+            }
+        }
+
+        return closeCoord;
+    }
+
     /// <summary>
     /// Get node closest to given world position.
     /// </summary>
@@ -396,7 +420,7 @@ public class TileManager
         foreach (TileNode t in grid)
         {
             // If the grid node is located at the given grid position, return it.
-            if (t.GridPosition == gridPos)
+            if (t != null && t.GridPosition == gridPos)
                 return t;
         }
 
@@ -410,7 +434,7 @@ public class TileManager
 
         foreach (TileNode t in grid)
         {
-            if (t.GetSecType() == SecTileType.Gap)
+            if (t != null && t.GetSecType() == SecTileType.Gap)
                 gapNodes.Add(t);
         }
 
@@ -543,5 +567,201 @@ public class TileManager
 
         if (distance <= (viewDist * FromTileToTile)) return true;
         else return false;
+    }
+
+
+    // ---------------------------- DEVMODE FUNCTIONS -------------------------------------------
+    public void CreateGridDEVMODE(SecTileTypeRow[] newGrid)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        for (int i = 0; i < newGrid.Length; i++)
+        {
+            for (int j = 0; j < newGrid[0].row.Length; j++)
+            {
+                // Determine grid- and worldposition. 
+                Coordinate gridPosition = new Coordinate(i, j);
+                Vector3 worldPosition = GetWorldPosition(gridPosition);
+
+                // Create the grid node. 
+                TileNode tileNode = new TileNode(gridPosition, worldPosition, newGrid[i].row[j]);
+                tileNode.Hexagon.transform.parent = gridParent.transform;
+
+                // Add the grid node to the grid array. 
+                grid[i, j] = tileNode;
+            }
+        }
+    }
+
+    private void SetUpEmptyGridDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        rows = UberManager.Instance.LevelEditor.Rows;
+        columns = UberManager.Instance.LevelEditor.Columns;
+
+        grid = new TileNode[rows, columns];
+    }
+
+    public void AdjustGridSizeDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        int oldRows = rows;
+        int oldColumns = columns;
+
+        rows = UberManager.Instance.LevelEditor.Rows;
+        columns = UberManager.Instance.LevelEditor.Columns;
+
+        TileNode[,] tempGrid = grid;
+
+        grid = new TileNode[rows, columns];
+
+        PasteGridDEVMODE(tempGrid, grid);
+
+        ClearGridDEVMODE(tempGrid);
+
+        tempGrid = null;
+    }
+
+    private void PasteGridDEVMODE(TileNode[,] oldGrid, TileNode[,] newGrid)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        for (int i = 0; i < oldGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < oldGrid.GetLength(1); j++)
+            {
+                // if it doesn't fit in the new grid, continue
+                if (i >= newGrid.GetLength(0) || j >= newGrid.GetLength(1)) continue;
+
+                // if the node was null, continue
+                if (oldGrid[i, j] == null) continue;
+
+                // Add the grid node to the grid array. 
+                newGrid[i, j] = oldGrid[i, j];
+
+                oldGrid[i, j] = null;
+            }
+        }
+    }
+
+    public void SetTileTypeDEVMODE(SecTileType type, Coordinate pos)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (GetNodeReference(pos) == null)
+        {
+            grid[pos.x, pos.y] = new TileNode(pos, GetWorldPosition(pos), type);
+        }
+        else
+        {
+            grid[pos.x, pos.y].CreateHexagon(type);
+        }
+    }
+
+    public void RemoveTileDEVMODE(Coordinate pos)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (GetNodeReference(pos) != null)
+        {
+            RemoveContentDEVMODE(GetNodeReference(pos));
+
+            GetNodeReference(pos).Clear();
+            grid[pos.x, pos.y] = null;
+        }
+    }
+
+    public SecContentType RemoveContentDEVMODE(TileNode node)
+    {
+        if (!UberManager.Instance.DevelopersMode) return SecContentType.Unknown;
+
+        SecContentType returnType = SecContentType.Unknown;
+
+        if (node != null &&
+            node.GetAmountOfContent() > 0)
+        {
+            WorldObject removedObject = node.RemoveContent();
+            returnType = removedObject.Type;
+            GameManager.Instance.LevelManager.RemoveObject(removedObject, true);
+        }
+
+        return returnType;
+    }
+
+    public void ClearGridDEVMODE(TileNode[,] gridToRemove = null)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (gridToRemove == null) gridToRemove = grid;
+
+        HidePossibleRoads();
+
+        for (int i = 0; i < gridToRemove.GetLength(0); i++)
+        {
+            for (int j = 0; j < gridToRemove.GetLength(1); j++)
+            {
+                if (gridToRemove[i, j] == null) continue;
+
+                if (gridToRemove[i, j].GetAmountOfContent() > 0)
+                {
+                    RemoveContentDEVMODE(gridToRemove[i, j]);
+                }
+
+                gridToRemove[i, j].Clear();
+            }
+        }
+
+        gridToRemove = null;
+    }
+
+    public void FindNeighboursDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        // Let every node find it's neighbours.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if(grid[i, j] == null) continue;
+
+                grid[i, j].SearchNeighbours();
+            }
+        }
+    }
+
+    public bool ValidGridDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return false;
+
+        // Let every node find it's neighbours.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (grid[i, j] == null) return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool NoMoreThanOneAtATile()
+    {
+        if (!UberManager.Instance.DevelopersMode) return false;
+
+        // Let every node find it's neighbours.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (grid[i, j] == null) return true;
+                if (grid[i, j].GetAmountOfContent() > 1) return true;
+            }
+        }
+
+        return false;
     }
 }

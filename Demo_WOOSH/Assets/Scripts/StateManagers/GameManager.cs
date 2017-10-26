@@ -22,10 +22,12 @@ public class GameManager : StateManager {
         }
     }
 
+    private bool pause = false;
+    public bool Paused { get {return pause; } private set { pause = value; } }
+
     private bool gameOn = false;
 
-    public bool GameOn { get{ return gameOn; }
-    }
+    public bool GameOn { get{ return gameOn; } }
 
     private bool won = false;
     public bool Won { get { return won; } }
@@ -46,7 +48,9 @@ public class GameManager : StateManager {
     public List<Contract> SelectedContracts { get { return selectedContracts; } }
 
     protected override void Initialize()
-    { 
+    {
+        if (UberManager.Instance.DevelopersMode) pause = true;
+
         tileManager.Initialize();
         UIManager.Instance.RestartUI();
         levelManager.Initialize();
@@ -59,6 +63,8 @@ public class GameManager : StateManager {
 
     protected override void Restart()
     {
+        if (UberManager.Instance.DevelopersMode) pause = true;
+
         tileManager.Restart();
         UIManager.Instance.RestartUI();
         levelManager.Restart();
@@ -70,6 +76,7 @@ public class GameManager : StateManager {
 
     public override void Clear()
     {
+        pause = false;
         gameOn = false;
 
         // call all clear methods
@@ -86,6 +93,17 @@ public class GameManager : StateManager {
 
     public void GameOver()
     {
+        if (UberManager.Instance.DevelopersMode)
+        {
+            gameOn = false;
+            pause = true;
+
+            UberManager.Instance.LevelEditor.GameOver();
+
+            return;
+        }
+
+        pause = false;
         gameOn = false;
 
         if (LevelManager.Humans.Count > 0) won = true;
@@ -94,9 +112,27 @@ public class GameManager : StateManager {
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
     }
 
+    public void RestartDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+        LevelManager.ResetTurns();
+        UIManager.Instance.InGameUI.Pause(pause);
+        tileManager.HidePossibleRoads();
+        TileManager.FindNeighboursDEVMODE();
+        gameOn = true;
+    }
+
     // update is called every frame
     public override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P)) Pause(!pause);
+
+        if (pause)
+        {
+            cameraManager.UpdateDEVMODE();
+            return;
+        }
+
         if (!gameOn) return;
 
         UberManager.Instance.InputManager.CatchInput();
@@ -108,5 +144,30 @@ public class GameManager : StateManager {
     {
         currentLevel = levelID;
         this.selectedContracts = selectedContracts;
+    }
+
+    public void Pause(bool on)
+    {
+        // currently paused, trying to unpause and level isn't playable
+        // or currently unpaused, trying to pause and level isn't pausable
+        if (!on && !UberManager.Instance.LevelEditor.CurrentLevelIsPlayable() ||
+            on && !UberManager.Instance.LevelEditor.CurrentLevelIsPausable())
+            return;
+
+        pause = on;
+        UberManager.Instance.LevelEditor.Pause(pause);
+        UIManager.Instance.InGameUI.Pause(pause);
+
+        // currently unpaused, now pausing
+        if (pause)
+        {
+            // reset all the still active objects
+            levelManager.ResetAllDEVMODE();
+
+            // hide highlighted rules
+            tileManager.HidePossibleRoads();
+        }
+
+        TileManager.FindNeighboursDEVMODE();
     }
 }

@@ -31,6 +31,12 @@ public class Dodin : Enemy
         base.Initialize(startPos);
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        fireBall.SetActive(false);
+    }
+
     public override bool CheckForSpell()
     {
         // target reached

@@ -29,6 +29,13 @@ public class Shrine : EnemyTarget
         type = SecContentType.Shrine;
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        Active = false;
+        gaveAP = false;
+    }
+
     public override void Clear()
     {
         GameManager.Instance.LevelManager.RemoveObject(this);

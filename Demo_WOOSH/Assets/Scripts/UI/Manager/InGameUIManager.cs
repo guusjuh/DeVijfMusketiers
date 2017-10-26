@@ -74,6 +74,7 @@ public class InGameUIManager : SubUIManager {
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
 
+        if (UberManager.Instance.DevelopersMode) Pause(true);
         SpellColors = new Dictionary<GameManager.SpellType, Color>();
         SpellColors.Add(GameManager.SpellType.Attack, Color.white);
         SpellColors.Add(GameManager.SpellType.Fireball, Color.red);
@@ -97,6 +98,17 @@ public class InGameUIManager : SubUIManager {
         InitializeTeleportButtons();
 
         playerActionPoints.gameObject.SetActive(true);
+
+        if (UberManager.Instance.DevelopersMode) Pause(true);
+    }
+
+    public void ResetTeleportButtons()
+    {
+        teleportButtonsOn = false;
+        teleportButtons.HandleAction(b => b.Destory());
+        teleportButtons.Clear();
+        teleportButtons = new List<SurroundingPushButton>();
+        InitializeTeleportButtons();
     }
 
     public override void Clear()
@@ -119,6 +131,32 @@ public class InGameUIManager : SubUIManager {
         teleportButtons = null;
 
         base.Clear();
+    }
+
+    public void Pause(bool on)
+    {
+        if (on)
+        {
+            foreach (var pair in spellButtons)
+            {
+                pair.Value.gameObject.SetActive(false);
+            }
+
+            enemyInfoUI.OnChange();
+            playerActionPoints.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (spellButtonsOn)
+            {
+                foreach (var pair in spellButtons)
+                {
+                    pair.Value.gameObject.SetActive(true);
+                }
+            }
+
+            playerActionPoints.gameObject.SetActive(true);
+        }
     }
 
     public void InitializeTeleportButtons()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager
@@ -21,6 +22,9 @@ public class LevelManager
     private List<Enemy> enemies;
     public List<Enemy> Enemies { get { return enemies; } }
 
+    private List<WorldObject> removedObjects = new List<WorldObject>();
+    public List<WorldObject> RemovedObjects { get { return removedObjects; } }
+
     private Player player;
     public Player Player { get { return player; } }
 
@@ -29,11 +33,20 @@ public class LevelManager
     public bool PlayersTurn { get { return playersTurn; } }
     private int extraPoints;
 
-    private int amountOfTurns = 0;
+    private int amountOfTurns = 1;
     public int AmountOfTurns { get { return amountOfTurns; } }
 
     private float delay = 0.5f;
     private int startGapTurn = 2;
+
+    public int StartGapTurn
+    {
+        set
+        {
+            if(!UberManager.Instance.DevelopersMode) return;
+            startGapTurn = value;
+        }
+    }
 
     public void Initialize()
     {
@@ -54,12 +67,14 @@ public class LevelManager
         barrels = new List<Barrel>();
         shrines = new List<Shrine>();
         enemies = new List<Enemy>();
+        removedObjects = new List<WorldObject>();
         player = new Player();
         player.Initialize();
 
-        amountOfTurns = 0;
-
-        SpawnLevel();
+        amountOfTurns = 1;
+        
+        if (UberManager.Instance.DevelopersMode) SpawnEmptyLevel();
+        else SpawnLevel();
 
         // start with other turn
         playersTurn = false;
@@ -85,8 +100,21 @@ public class LevelManager
         enemies.Clear();
         enemies = null;
 
+        while (removedObjects.Count > 0) removedObjects[0].Clear();
+        removedObjects.Clear();
+        removedObjects = null;
+
         playersTurn = false;
         othersTurn = false;
+    }
+
+    public void RestartDEVMODE()
+    {
+        humans = new List<Human>();
+        barrels = new List<Barrel>();
+        shrines = new List<Shrine>();
+        enemies = new List<Enemy>();
+        removedObjects = new List<WorldObject>();
     }
 
     public void Update()
@@ -105,12 +133,14 @@ public class LevelManager
     {
         othersTurn = true;
 
-        // wait for turn delay
-        yield return new WaitForSeconds(delay);
-
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
         {
+            // wait for turn delay
+            yield return new WaitForSeconds(delay);
+
+            if(GameManager.Instance.Paused) yield break;
+
             Enemy e = enemies[i];
             e.StartTurn();
 
@@ -121,6 +151,8 @@ public class LevelManager
                 e.EnemyMove();
 
                 yield return new WaitForSeconds(delay);
+
+                if (GameManager.Instance.Paused) break;
 
                 canHandleTurn = GameManager.Instance.GameOn && !e.Dead && e.CurrentActionPoints > 0;
             }
@@ -133,6 +165,14 @@ public class LevelManager
             {
                 i--;
             }
+
+            if (GameManager.Instance.Paused)
+            {
+                playersTurn = false;
+                othersTurn = false;
+                yield break;
+            }
+
             // need to check for the last enemy died from status effect
             if (!GameManager.Instance.GameOn) yield break;
         }
@@ -145,6 +185,8 @@ public class LevelManager
     {
         foreach (Human h in humans)
         {
+            if (GameManager.Instance.Paused) yield break;
+
             // only handle a turn for the human if he is panicking
             if (h.InPanic)
             {
@@ -154,6 +196,8 @@ public class LevelManager
                 while (h.CurrentFleePoints > 0)
                 {
                     yield return UberManager.Instance.StartCoroutine(h.Flee());
+                    if (GameManager.Instance.Paused) break;
+
                     yield return new WaitForSeconds(delay);
                 }
             }
@@ -178,7 +222,7 @@ public class LevelManager
         amountOfTurns++;
 
         // show banner
-        yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
+        if(!GameManager.Instance.Paused) yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
 
         // start players turn
         player.StartPlayerTurn();
@@ -224,6 +268,8 @@ public class LevelManager
 
     private IEnumerator HandleGapSpawning()
     {
+        if (GameManager.Instance.TileManager.GetNodeWithGapReferences().Count <= 0) yield break;
+
         if (amountOfTurns == startGapTurn)
             yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.WarningText());
         else if(amountOfTurns > startGapTurn)
@@ -242,10 +288,91 @@ public class LevelManager
 
             chosenGap.CreateHexagon(SecTileType.Gap);
 
-            if (!GameManager.Instance.GameOn) break;
+            if (!GameManager.Instance.GameOn || GameManager.Instance.Paused) break;
         }
 
         yield return null;
+    }
+
+    private void SpawnEmptyLevel()
+    {
+        
+    }
+
+    public void SpawnObjectDEVMODE(SpawnNode s)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        if (!ContentManager.IsValidSecContentType(s.type, s.secType))
+        {
+            Debug.LogError("Sectype not supported for given type");
+            return;
+        }
+
+        WorldObject toBeSpawned = null;
+
+        switch (s.type)
+        {
+            case ContentType.Boss:
+                toBeSpawned = SpawnBoss(s);
+                break;
+            case ContentType.Minion:
+                toBeSpawned = SpawnMinion(s);
+                break;
+            case ContentType.Environment:
+                toBeSpawned = SpawnEnvironment(s);
+                break;
+            case ContentType.Human:
+                toBeSpawned = SpawnHuman(s, false);
+                break;
+        }
+
+        if (toBeSpawned == null)
+        {
+            Debug.LogError("Prefab not found for this spawnnode");
+            return;
+        }
+
+        GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
+    }
+
+    public void SpawnLevelDEVMODE(List<SpawnNode> spawnNodes)
+    {
+        // spawn nodes
+        foreach (SpawnNode s in spawnNodes)
+        {
+            if (!ContentManager.IsValidSecContentType(s.type, s.secType))
+            {
+                Debug.LogError("Sectype not supported for given type");
+                continue;
+            }
+
+            WorldObject toBeSpawned = null;
+
+            switch (s.type)
+            {
+                case ContentType.Boss:
+                    toBeSpawned = SpawnBoss(s);
+                    break;
+                case ContentType.Minion:
+                    toBeSpawned = SpawnMinion(s);
+                    break;
+                case ContentType.Environment:
+                    toBeSpawned = SpawnEnvironment(s);
+                    break;
+                case ContentType.Human:
+                    toBeSpawned = SpawnHuman(s, false);
+                    break;
+            }
+
+            if (toBeSpawned == null)
+            {
+                Debug.LogError("Prefab not found for this spawnnode");
+                return;
+            }
+
+            GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
+        }
     }
 
     private void SpawnLevel()
@@ -271,6 +398,8 @@ public class LevelManager
 
             GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
         }
+
+        startGapTurn = ContentManager.Instance.LevelData(GameManager.Instance.CurrentLevel).dangerStartGrow;
     }
 
     private WorldObject SpawnFromNode(SpawnNode s)
@@ -293,8 +422,14 @@ public class LevelManager
         return null;
     }
 
-    private WorldObject SpawnHuman(SpawnNode s)
+    private WorldObject SpawnHuman(SpawnNode s, bool exitstingContract = true)
     {
+        if (!exitstingContract && !UberManager.Instance.DevelopersMode)
+        {
+            Debug.Log("You have to assign a contract in game mode");
+            exitstingContract = true;
+        }
+
         if (s.secType != SecContentType.Human) return null;
 
         GameObject prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
@@ -304,7 +439,8 @@ public class LevelManager
                                           GameManager.Instance.TileManager.GetWorldPosition(s.position), 
                                           Quaternion.identity).GetComponent<Human>());
         humans.Last().Initialize(s.position);
-        humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+        if(exitstingContract) humans.Last().ContractRef = GameManager.Instance.SelectedContracts[humansInstantiated];
+        else humans.Last().ContractRef = UberManager.Instance.ContractManager.GenerateRandomContract();
         humansInstantiated++;
 
         return humans.Last();
@@ -381,8 +517,14 @@ public class LevelManager
         return enemies.Last();
     }
 
-    public void RemoveObject(WorldObject toRemove)
+    public void RemoveObject(WorldObject toRemove, bool fromEditor = false)
     {
+        if (UberManager.Instance.DevelopersMode && !fromEditor)
+        {
+            RemoveObjectDEVMODE(toRemove);
+            return;
+        }
+
         if (toRemove.IsBarrel())
         {
             barrels.Remove((Barrel)toRemove);
@@ -390,7 +532,7 @@ public class LevelManager
         else if (toRemove.IsHuman())
         {
             humans.Remove((Human)toRemove);
-            if (GameManager.Instance.GameOn && humans.Count <= 0)
+            if (!fromEditor && GameManager.Instance.GameOn && humans.Count <= 0)
             {
                 Remove(toRemove);
                 GameManager.Instance.GameOver();
@@ -406,7 +548,7 @@ public class LevelManager
         else if (toRemove.IsMonster())
         {
             enemies.Remove((Enemy)toRemove);
-            if (GameManager.Instance.GameOn && enemies.Count <= 0)
+            if (!fromEditor && GameManager.Instance.GameOn && enemies.Count <= 0)
             {
                 Remove(toRemove);
                 GameManager.Instance.GameOver();
@@ -422,9 +564,162 @@ public class LevelManager
         Remove(toRemove);
     }
 
+    private void RemoveObjectDEVMODE(WorldObject toRemove)
+    {
+        removedObjects.Add(toRemove);
+        removedObjects.Last().gameObject.SetActive(false);
+        GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
+
+        if (toRemove.IsBarrel())
+        {
+            barrels.Remove((Barrel)toRemove);
+        }
+        else if (toRemove.IsHuman())
+        {
+            humans.Remove((Human)toRemove);
+            if (GameManager.Instance.GameOn && humans.Count <= 0)
+            {
+                GameManager.Instance.GameOver();
+                return;
+            }
+            else
+            {
+                shrines.HandleAction(s => s.CheckForActive(false));
+                return;
+            }
+        }
+        else if (toRemove.IsMonster())
+        {
+            enemies.Remove((Enemy)toRemove);
+            if (GameManager.Instance.GameOn && enemies.Count <= 0)
+            {
+                GameManager.Instance.GameOver();
+                return;
+            }
+        }
+        else if (toRemove.IsShrine())
+        {
+            shrines.Remove((Shrine)toRemove);
+        }
+    }
+
     private void Remove(WorldObject toRemove)
     {
         GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
         GameObject.Destroy(toRemove.gameObject);
+    }
+
+    public void ResetAllDEVMODE()
+    {
+        humans.HandleAction(h => h.Reset());
+        barrels.HandleAction(b => b.Reset());
+        shrines.HandleAction(s => s.Reset());
+        enemies.HandleAction(e => e.Reset());
+        removedObjects.HandleAction(o => o.Reset());
+    }
+
+    public void ResetAllToInitDEVMODE(List<SpawnNode> spawnNodes)
+    {
+        // copy the spawnnodes, so we can be sure we had them all 
+        List<SpawnNode> copyList = new List<SpawnNode>(spawnNodes);
+
+        // copy all to be resetted objects to a list
+        List<WorldObject> allObjects = new List<WorldObject>();
+        allObjects.AddRange(humans.Cast<WorldObject>());
+        allObjects.AddRange(barrels.Cast<WorldObject>());
+        allObjects.AddRange(shrines.Cast<WorldObject>());
+        allObjects.AddRange(enemies.Cast<WorldObject>());
+        allObjects.AddRange(removedObjects);
+
+        SpawnNode s;
+        WorldObject w;
+
+        for (int i = 0; i < copyList.Count; i++)
+        {
+            for (int j = 0; j < allObjects.Count; j++)
+            {
+                s = copyList[i];
+                w = allObjects[j];
+
+                if (s.secType == w.Type)
+                {
+                    //if in removed objects, add
+                    if (removedObjects.Contains(w))
+                    {
+                        //TODO: switch to add back to update lists
+                        switch (ContentManager.GetPrimaryFromSecContent(w.Type))
+                        {
+                            case ContentType.Boss:
+                            case ContentType.Minion:
+                                enemies.Add((Enemy)w);
+                                break;
+                            case ContentType.Environment:
+                                if (w.Type == SecContentType.Barrel)
+                                    barrels.Add((Barrel) w);
+                                else if(w.Type == SecContentType.Shrine)
+                                    shrines.Add((Shrine)w);
+                                else
+                                    Debug.LogError("Tried to add a non-type to levelmanager update lists " + w.name);
+                                break;
+                            case ContentType.Human:
+                                humans.Add((Human)w);
+                                break;
+                            default:
+                                Debug.LogError("Tried to add a non-type to levelmanager update lists " + w.name);
+                                break;
+                        }
+                        removedObjects.Remove(w);
+                        GameManager.Instance.TileManager.SetObject(s.position, w);
+                    }
+                    //else move
+                    else
+                    {
+                        GameManager.Instance.TileManager.MoveObject(w.GridPosition, s.position, w);
+                    }
+
+                    w.gameObject.transform.position = GameManager.Instance.TileManager.GetWorldPosition(s.position);
+                    w.ResetToInitDEVMODE(s.position);
+
+                    copyList.Remove(s);
+                    allObjects.Remove(w);
+
+                    i--;
+                    break;
+                }
+            }
+        }
+
+        if (copyList.Count > 0)
+        {
+            Debug.LogError("More spawnnodes than existing objects found!");
+        }
+        if(allObjects.Count > 0)
+        {
+            Debug.LogError("Not enough spawnnodes, not all objects resetted");
+        }
+    }
+
+    public void ClearRemoveObjectsDEVMODE()
+    {
+        while (removedObjects.Count > 0)
+        {
+            GameObject.Destroy(removedObjects.Last().gameObject);
+            removedObjects.Remove(removedObjects.Last());
+        }
+
+        removedObjects.Clear();
+        removedObjects = null;
+    }
+
+    public void ResetTurnAmount()
+    {
+        amountOfTurns = 0;
+    }
+
+    public void ResetTurns()
+    {
+        amountOfTurns = 0;
+        playersTurn = false;
+        othersTurn = false;
     }
 }
