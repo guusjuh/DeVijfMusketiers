@@ -10,13 +10,17 @@ public class ContractManager
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
     public List<ContractType> ContractTypes { get { return contractTypes; } }
 
-    public const float CONTRACT_REFRESH_RATE = 260.0f; //refresh rate in seconds
-    private bool hasNewContracts = false;
-
+    public const double CONTRACT_REFRESH_RATE = 10.0f;//261.0d; //refresh rate in seconds
+    private const int CONTRACTS_PER_DESTINATION = 7;
+    private DateTime contractRefreshDate;
+    public DateTime ContractRefreshDate { get {return contractRefreshDate;} }
 
     public void Initialize()
     {
         contracts.HandleAction(c => c.Initialize());
+
+        //TODO: ensure that refreshdate is saved, so that it does not reset on restart
+        LoadContractTimer();
     }
 
     public void AddContract(Contract contract)
@@ -49,6 +53,57 @@ public class ContractManager
         return contracts.FindAll(c => c.CurrentLevel == level);
     }
 
+    private void SaveContractTimer()
+    {
+        //TODO: save contract timer in file
+    }
+
+    private void LoadContractTimer()
+    {
+        //TODO: load contract timer from file
+        contractRefreshDate = System.DateTime.Now.AddSeconds(2.0d);
+    }
+
+    private void SetContractTimer()
+    {
+        contractRefreshDate = System.DateTime.Now.AddSeconds(CONTRACT_REFRESH_RATE);
+        SaveContractTimer();
+    }
+
+    public void UpdateContractTimer()
+    {
+        UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SetTimer(contractRefreshDate.Subtract(System.DateTime.Now));
+        if (contractRefreshDate <= System.DateTime.Now)
+        {
+            RefreshContracts();
+            SetContractTimer();
+        }
+    }
+
+    private void RefreshContracts()
+    {
+        Debug.Log("new contracts");
+        
+        //find all cities and paths
+        List<City> cities = UberManager.Instance.UiManager.LevelSelectUI.Cities;
+
+        for (int i = 0; i < cities.Count; i++)
+        {
+            for (int j = 0; j < cities[i].Paths.Count; j++)
+            {
+                List<Contract> newContracts = new List<Contract>();
+                
+                //generate x new contracts, for each destination
+                for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                {
+                    newContracts.Add(GenerateRandomContract(cities[i].Paths[j]));
+                }
+                //pass contracts to right cities including destination
+                cities[i].RefreshAvailableContracts(newContracts, cities[i].Paths[j].Destination);
+            }
+        }
+    }
+
     /// <summary>
     /// Returns a random human type based on the current player reputation.
     /// </summary>
@@ -65,7 +120,21 @@ public class ContractManager
         {
             possibleTypes.Add((HumanTypes) i, i < maxReputation - 1 ? 100 : 10);
         }
-
+        
         return UberManager.PerformRandomRoll<HumanTypes>(possibleTypes);
+    }
+
+    public Contract GenerateRandomContract(Path path)
+    {
+        int id = AmountOfContracts();
+
+        // get random type   
+        HumanTypes type = GetRandomHumanType();
+        List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
+
+        Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
+        //AddContract(newContract);
+        
+        return newContract;
     }
 }

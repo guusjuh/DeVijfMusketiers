@@ -13,11 +13,11 @@ public class LevelSelectUIManager : SubUIManager
 
     private ReputationUIManager reputationParent;
 
+    private SelectContractWindow selectContractWindow;
+    public SelectContractWindow SelectContractWindow { get { return selectContractWindow;} }
+
     private List<City> cities;
     public List<City> Cities { get { return cities; } }
-
-    private GameObject newHumanButton;
-    private GameObject newHumanButton2;
 
     protected override void Initialize()
     {
@@ -32,6 +32,8 @@ public class LevelSelectUIManager : SubUIManager
 
         reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid.transform).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
+
+        selectContractWindow = new SelectContractWindow(levelSelectPanel.transform.Find("SelectContractMenu").gameObject);
     }
 
     protected override void Restart()

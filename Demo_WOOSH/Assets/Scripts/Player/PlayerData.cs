@@ -9,7 +9,7 @@ public class PlayerData {
     //public List<Contract> ContractsRef { get { return contractsRef; } }
 
     // Reputation
-    [SerializeField] private float reputation = 100;
+    [SerializeField] private float reputation = 500;
 
     public int Reputation
     {

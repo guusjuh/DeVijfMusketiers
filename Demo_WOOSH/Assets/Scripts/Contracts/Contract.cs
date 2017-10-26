@@ -12,6 +12,8 @@ public class Contract
     public int Health { get { return health; } }
 
     private Path path;
+    public Path MyPath { get { return path; } }
+
     private int levelInPath;
     
     private ContractType type;

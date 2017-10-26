@@ -15,5 +15,8 @@ public class LevelSelectionManager : StateManager {
         UIManager.Instance.ClearUI();
     }
 
-    public override void Update() { }
+    public override void Update()
+    {
+        UberManager.Instance.ContractManager.UpdateContractTimer();
+    }
 }

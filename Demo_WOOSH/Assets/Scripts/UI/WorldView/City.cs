@@ -3,61 +3,92 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Destination
+{
+    Red,
+    Green
+}
+
 public class City : MonoBehaviour {
-    private Button newContractButton;
     private List<Path> paths;
+    
+    private ContractState contractState = ContractState.Nothing;
+
+    public ContractState MyContractState
+    {
+        get { return contractState;}
+        set
+        {
+            contractState = value;
+            nCI.SetState(value);
+        }
+    }
+
+    private NewContractIndicator nCI;
+
+    //TODO: implement different destinations
+    [SerializeField] private Destination destination;
+    private Dictionary<Destination, List<Contract>> availableContracts;
+    public Dictionary<Destination, List<Contract>> AvailableContracts { get { return availableContracts;} }
+
     public List<Path> Paths { get { return paths; } }
     private int cityId;
     public int CityId { get { return cityId; } }
 
-
     public void Initiliaze()
     {
         paths = new List<Path>();
+        availableContracts = new Dictionary<Destination, List<Contract>>();
+
         for (int i = 1; i < transform.childCount; i++)
         {
-            paths.Add(new Path(transform.GetChild(i), this, i));
+            paths.Add(new Path(transform.GetChild(i), this, i - 1, destination));
+            availableContracts.Add(destination, new List<Contract>());
         }
-        gameObject.GetComponent<Button>().onClick.AddListener(ActivateContractButton);
-
-        newContractButton = transform.GetChild(0).GetComponent<Button>();
+        gameObject.GetComponent<Button>().onClick.AddListener( delegate{ UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination); });
         
+        nCI = new NewContractIndicator(transform.GetChild(0).gameObject);
         //TODO: find right path, by checking the contract destination
-        newContractButton.onClick.AddListener(delegate { SpawnContract(paths[0]); });
     }
 
-    public void ActivateContractButton()
+    public void RefreshAvailableContracts(List<Contract> newContracts, Destination destination)
     {
-        newContractButton.gameObject.SetActive(!newContractButton.gameObject.activeInHierarchy);
-    }
+        ClearAvailableContracts(destination);
+        AddAvailableContracts(newContracts, destination);
 
-    public void SpawnContract(Path path)
-    {
-        //spawning a contract, so always level 0
-        bool spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(path.Levels[0].LevelID) < 6;
+        MyContractState = ContractState.New;
 
-        if (spaceInThisLevel)
+        if (UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.isCitySelected(this))
         {
-            GenerateRandomContract(path);
-            path.Levels.HandleAction(l => l.CheckActiveForButton());
-
-            spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(path.Levels[0].LevelID) < 6;
-            newContractButton.interactable = spaceInThisLevel;
+            UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Refresh(this, destination);
         }
     }
 
-    public Contract GenerateRandomContract(Path path)
+    private void AddAvailableContracts(List<Contract> newContracts, Destination destination)
     {
-        int id = UberManager.Instance.ContractManager.AmountOfContracts();
+        availableContracts[destination].AddRange(newContracts);
+    }
 
-        // get random type   
-        HumanTypes type = UberManager.Instance.ContractManager.GetRandomHumanType();
-        List<ContractType> matchingContractTypes = UberManager.Instance.ContractManager.ContractTypes.FindAll(c => c.HumanType == type);
+    public void SawNewContracts()
+    {
+        MyContractState = ContractState.Seen;
+    }
 
-        Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
-        UberManager.Instance.ContractManager.AddContract(newContract);
-        path.Levels[0].AddHuman();
-        return newContract;
+    public void RemoveAvailableContract(Contract toRemove, Destination destination)
+    {
+        if (availableContracts[destination].Contains(toRemove))
+        {
+            availableContracts[destination].Remove(toRemove);
+            if (availableContracts[destination].Count <= 0) MyContractState = ContractState.Nothing;
+        }
+    }
+
+    private void ClearAvailableContracts(Destination destination)
+    {
+        //moet dit?
+        availableContracts[destination].HandleAction(c => UberManager.Instance.ContractManager.RemoveContract(c));
+        availableContracts[destination].Clear();
+        availableContracts[destination] = new List<Contract>();
     }
 
     public void Clear()
@@ -71,7 +102,12 @@ public class City : MonoBehaviour {
         //TODO: implement Restart
         paths.HandleAction(p => p.Restart());
         //TODO: multiple paths
-        bool spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(paths[0].Levels[0].LevelID) < 6;
-        newContractButton.interactable = spaceInThisLevel;
+    }
+
+    public enum ContractState
+    {
+        Nothing = 0,
+        Seen = 1,
+        New = 2
     }
 }
