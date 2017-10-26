@@ -107,6 +107,15 @@ public class LevelManager
         othersTurn = false;
     }
 
+    public void RestartDEVMODE()
+    {
+        humans = new List<Human>();
+        barrels = new List<Barrel>();
+        shrines = new List<Shrine>();
+        enemies = new List<Enemy>();
+        removedObjects = new List<WorldObject>();
+    }
+
     public void Update()
     {
         enemies.HandleAction(e => e.ShowStatusEffects());
@@ -258,6 +267,8 @@ public class LevelManager
 
     private IEnumerator HandleGapSpawning()
     {
+        if (GameManager.Instance.TileManager.GetNodeWithGapReferences().Count <= 0) yield break;
+
         if (amountOfTurns == startGapTurn)
             yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.WarningText());
         else if(amountOfTurns > startGapTurn)
@@ -266,8 +277,6 @@ public class LevelManager
 
     private IEnumerator SpawnGap()
     {
-        if (GameManager.Instance.TileManager.GetNodeWithGapReferences().Count <= 0) yield return null;
-
         for (int i = 0; i < amountOfTurns - startGapTurn; i++)
         {
             TileNode chosenGap = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
@@ -324,6 +333,45 @@ public class LevelManager
         }
 
         GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
+    }
+
+    public void SpawnLevelDEVMODE(List<SpawnNode> spawnNodes)
+    {
+        // spawn nodes
+        foreach (SpawnNode s in spawnNodes)
+        {
+            if (!ContentManager.IsValidSecContentType(s.type, s.secType))
+            {
+                Debug.LogError("Sectype not supported for given type");
+                continue;
+            }
+
+            WorldObject toBeSpawned = null;
+
+            switch (s.type)
+            {
+                case ContentType.Boss:
+                    toBeSpawned = SpawnBoss(s);
+                    break;
+                case ContentType.Minion:
+                    toBeSpawned = SpawnMinion(s);
+                    break;
+                case ContentType.Environment:
+                    toBeSpawned = SpawnEnvironment(s);
+                    break;
+                case ContentType.Human:
+                    toBeSpawned = SpawnHuman(s, false);
+                    break;
+            }
+
+            if (toBeSpawned == null)
+            {
+                Debug.LogError("Prefab not found for this spawnnode");
+                return;
+            }
+
+            GameManager.Instance.TileManager.SetObject(s.position, toBeSpawned);
+        }
     }
 
     private void SpawnLevel()

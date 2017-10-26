@@ -22,14 +22,17 @@ public class LevelEditor : MonoBehaviour
     {
         Fill,
         Brush,
+        Eraser,
     }
 
     private const KeyCode FILL = KeyCode.Q;
     private const KeyCode PENCIL = KeyCode.W;
+    private const KeyCode ERASER = KeyCode.E;
     private const KeyCode SWITCH_TILE_CONTENT = KeyCode.Tab;
 
     public const string FILL_HK        = "Q \t- Fill";
     public const string PENCIL_HK      = "W \t- Pencil";
+    public const string ERASER_HK      = "E \t- Eraser";
     public const string TOGGLE_HK      = "TAB \t- Toggle between content/tile";
     public const string SWITCH_PRIM_HK = "1-9 \t- Switch primary type";
 
@@ -58,7 +61,9 @@ public class LevelEditor : MonoBehaviour
     private Vector2 cursorOffset = new Vector2(40, 40);
     private Texture2D fillCursor;
     private Texture2D pencilCursor;
-    public Texture2D[] CursorButtons = new Texture2D[2];
+    private Texture2D eraserCursor;
+
+    public Texture2D[] CursorButtons = new Texture2D[3];
 
     // preview objects
     private GameObject highlightPreviewObject;
@@ -99,8 +104,11 @@ public class LevelEditor : MonoBehaviour
 
         fillCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/fill");
         pencilCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/pencil");
+        eraserCursor = Resources.Load<Texture2D>("Sprites/LevelEditor/eraser");
+
         CursorButtons[0] = Resources.Load<Texture2D>("Sprites/LevelEditor/fillBttn");
         CursorButtons[1] = Resources.Load<Texture2D>("Sprites/LevelEditor/pencilBttn");
+        CursorButtons[2] = Resources.Load<Texture2D>("Sprites/LevelEditor/eraserBttn");
 
         highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/PreviewHighlight"));
         highlightPreviewObject.SetActive(false);
@@ -125,6 +133,7 @@ public class LevelEditor : MonoBehaviour
 
         //clear objects
         GameManager.Instance.LevelManager.Clear();
+        GameManager.Instance.LevelManager.RestartDEVMODE();
 
         levelData = null;
         levelData = new LevelData();
@@ -143,6 +152,23 @@ public class LevelEditor : MonoBehaviour
         placableType = PlacableType.Tile;
 
         SetSelectedObject(selectedData.selectedTile.Value);
+    }
+
+    public void LoadLevel(int id)
+    {
+        //clear grid
+        GameManager.Instance.TileManager.ClearGridDEVMODE();
+        GameManager.Instance.TileManager.Restart();
+
+        //clear objects
+        GameManager.Instance.LevelManager.Clear();
+        GameManager.Instance.LevelManager.RestartDEVMODE();
+
+        levelData = null;
+        levelData = ContentManager.Instance.LevelData(id);
+
+        GameManager.Instance.TileManager.CreateGridDEVMODE(levelData.grid);
+        GameManager.Instance.LevelManager.SpawnLevelDEVMODE(levelData.spawnNodes);
     }
 
     public void Pause(bool gamePaused)
@@ -321,7 +347,6 @@ public class LevelEditor : MonoBehaviour
 
         if (!ValidMousePosition(worldMousePosition, coordinateMousePosition))
         {
-            //if (previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(false);
             if (highlightPreviewObject.activeInHierarchy) highlightPreviewObject.SetActive(false);
             return;
         }
@@ -339,6 +364,7 @@ public class LevelEditor : MonoBehaviour
                 else if (placableType == PlacableType.Tile)
                     FillClicked(coordinateMousePosition, GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition) == null ? SecTileType.Unknown : GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition).GetSecType());
             }
+            if(toolType == ToolType.Eraser) ErasorClicked(coordinateMousePosition);
         }
         // right click is delete
         else if (Input.GetMouseButton(1))
@@ -405,12 +431,17 @@ public class LevelEditor : MonoBehaviour
             ChangeToolType(ToolType.Fill);
         else if (Input.GetKeyDown(PENCIL))
             ChangeToolType(ToolType.Brush);
+        else if (Input.GetKeyDown(ERASER))
+            ChangeToolType(ToolType.Eraser);
     }
 
     public void ChangeToolType(ToolType newType)
     {
         toolType = newType;
-        Cursor.SetCursor(newType == ToolType.Brush ? pencilCursor : fillCursor, new Vector2(40, 40), CursorMode.Auto);
+        Texture2D newCursor = pencilCursor;
+        if (newType == ToolType.Fill) newCursor = fillCursor;
+        if (newType == ToolType.Eraser) newCursor = eraserCursor;
+        Cursor.SetCursor(newCursor, new Vector2(40, 40), CursorMode.Auto);
     }
 
     public void SetSelectedObject(SecTileType secondairyType)
@@ -453,21 +484,27 @@ public class LevelEditor : MonoBehaviour
 
     private void CreateObjectPreview(GameObject prefab)
     {
-        highlightPreviewObject.SetActive(true);
+        if(ValidMousePosition(worldMousePosition, coordinateMousePosition)) highlightPreviewObject.SetActive(true);
 
         previewObject = Instantiate(prefab, Vector3.zero, Quaternion.identity).transform;
         previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
         previewObject.parent = highlightPreviewObject.transform;
         previewObject.localPosition = Vector3.zero;
-        
     }
 
     private void UpdateObjectPreview()
     {
         if (previewObject != null)
         {
-            if (!previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(true);
-            if (!highlightPreviewObject.activeInHierarchy) highlightPreviewObject.SetActive(true);
+            if (toolType != ToolType.Eraser)
+            {
+                if (!previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(true);
+                if (!highlightPreviewObject.activeInHierarchy) highlightPreviewObject.SetActive(true);
+            }
+            else
+            {
+                if (previewObject.gameObject.activeInHierarchy) previewObject.gameObject.SetActive(false);
+            }
 
             Vector2 worldPos = GameManager.Instance.TileManager.GetWorldPosition(coordinateMousePosition);
             highlightPreviewObject.transform.position = new Vector3(worldPos.x, worldPos.y, -5);
@@ -529,6 +566,11 @@ public class LevelEditor : MonoBehaviour
     {
         if (placableType == PlacableType.Tile) PlaceTile(coord);
         else PlaceContent(coord);
+    }
+
+    private void ErasorClicked(Coordinate coord)
+    {
+        DeleteClicked(coord);
     }
 
     private void PlaceTile(Coordinate coord)
@@ -613,6 +655,8 @@ public class LevelEditor : MonoBehaviour
 
     private bool ValidMousePosition(Vector2 worldPos, Coordinate coordPos)
     {
+        if (UberManager.Instance.DoingSetup) return false;
+
         Vector2 coordinatesWorldPos = GameManager.Instance.TileManager.GetWorldPosition(coordPos);
 
         if ((coordinatesWorldPos - worldPos).magnitude > GameManager.Instance.TileManager.HexagonScale)
@@ -701,8 +745,6 @@ public class LevelEditor : MonoBehaviour
         return newNode;
     }
 
-    //TODO: save level with button as 'level<ID>'
-    //TODO: load: popup with number and load that file
     private int NewID()
     {
         DirectoryInfo dir = new DirectoryInfo("Assets/Resources/Levels");

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <LevelData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <id>2</id>
+  <id>4</id>
   <rows>7</rows>
   <columns>9</columns>
   <grid>
@@ -36,7 +36,20 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -50,20 +63,7 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -76,7 +76,7 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -88,8 +88,8 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -98,27 +98,11 @@
   </grid>
   <spawnNodes>
     <SpawnNode>
-      <type>Human</type>
-      <secType>Human</secType>
-      <position>
-        <x>0</x>
-        <y>6</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Boss</type>
-      <secType>Arnest</secType>
-      <position>
-        <x>5</x>
-        <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
       <type>Boss</type>
       <secType>Arnest</secType>
       <position>
         <x>4</x>
-        <y>7</y>
+        <y>3</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -126,7 +110,15 @@
       <secType>Arnest</secType>
       <position>
         <x>0</x>
-        <y>2</y>
+        <y>7</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Human</type>
+      <secType>Human</secType>
+      <position>
+        <x>5</x>
+        <y>7</y>
       </position>
     </SpawnNode>
   </spawnNodes>

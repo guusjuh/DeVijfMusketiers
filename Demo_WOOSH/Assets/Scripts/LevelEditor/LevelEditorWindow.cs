@@ -22,6 +22,8 @@ public class LevelEditorWindow : EditorWindow
 
     private Vector2 levelSize = new Vector2(0,0);
 
+    private int levelToLoadID = 1;
+
     [MenuItem("Window/Level Editor")]
     public static void ShowWindow()
     {
@@ -46,25 +48,38 @@ public class LevelEditorWindow : EditorWindow
     {
         if (levelEditorRef != null && GameManager.Instance.Paused)
         {
+
+
             using (
                 var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),
                     GUILayout.Height(position.height - 5)))
             {
                 scrollPos = scrollViewScope.scrollPosition;
 
+                // -------------- SAVE, LOAD, NEW ------------------------
+
+                NewLevel();
+                SaveLevel();
+                LoadLevel();
+
+                SeperationLine();
+
                 // -------------- TOOLS ------------------------
-                selectedTool = GUILayout.SelectionGrid((int) levelEditorRef.CurrentToolType,
-                    levelEditorRef.CursorButtons, 2, GUILayout.Width(60), GUILayout.Height(30));
-                if (selectedTool != (int) levelEditorRef.CurrentToolType)
-                    levelEditorRef.ChangeToolType((LevelEditor.ToolType) selectedTool);
+                selectedTool = GUILayout.SelectionGrid((int)levelEditorRef.CurrentToolType, levelEditorRef.CursorButtons, 3, GUILayout.Width(90), GUILayout.Height(30));
+
+                if (selectedTool != (int)levelEditorRef.CurrentToolType) levelEditorRef.ChangeToolType((LevelEditor.ToolType) selectedTool);
+
+                SeperationLine();
                 // ---------------------------------------------
 
                 // -------------- PROPERTIES -------------------
                 showProperties = EditorGUILayout.Foldout(showProperties, "Properties");
                 if (showProperties)
                 {
-                    ShowProperties();
+                    Properties();
                 }
+
+                SeperationLine();
                 // ---------------------------------------------
 
                 // ------------ TILES -------------------------
@@ -76,19 +91,15 @@ public class LevelEditorWindow : EditorWindow
                     GUILayout.BeginVertical("box");
 
                     showNormals = EditorGUILayout.Foldout(showNormals, "Normal Tiles");
-                    if (showNormals)
-                    {
-                        ShowTypes(TileType.Normal);
-                    }
+                    if (showNormals) ShowTypes(TileType.Normal);
 
                     showDangerous = EditorGUILayout.Foldout(showDangerous, "Dangerous Tile");
-                    if (showDangerous)
-                    {
-                        ShowTypes(TileType.Dangerous);
-                    }
+                    if (showDangerous) ShowTypes(TileType.Dangerous);
 
                     GUILayout.EndVertical();
                 }
+
+                SeperationLine();
                 // ---------------------------------------------
 
                 // ------------ CONTENT -------------------------
@@ -111,6 +122,8 @@ public class LevelEditorWindow : EditorWindow
 
                     GUILayout.EndVertical();
                 }
+
+                SeperationLine();
                 // ---------------------------------------------
 
                 showHotKeys = EditorGUILayout.Foldout(showHotKeys, "Hotkeys cheatsheet");
@@ -125,24 +138,72 @@ public class LevelEditorWindow : EditorWindow
 
                     GUILayout.EndVertical();
                 }
-
                 // ------------------------------------------------
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Save Current Level"))
-                {
-                    if (!levelEditorRef.CurrentLevelIsPlayable()) return;
-                    levelEditorRef.SaveCurrentLevel();
 
-                    if (!EditorUtility.DisplayDialog("Continue editing this level?",
-                        "You saved the current level. Would you like to continue or start a new level?",
-                        "Continue With current", "Start New Level"))
-                    {
-                        levelEditorRef.StartNew();
-                    }
-                }
-                GUILayout.EndHorizontal();
+
             }
         }
+    }
+
+    private void SeperationLine()
+    {
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+    }
+
+    private void NewLevel()
+    {
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("New Level"))
+        {
+            if (EditorUtility.DisplayDialog("Start new level?",
+                "By starting a new level you will discard all changes. Are you sure?",
+                "Start New Level", "Go Back"))
+            {
+                levelEditorRef.StartNew();
+            }
+        }
+        GUILayout.EndHorizontal();
+    }
+
+    private void SaveLevel()
+    {
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Save Level"))
+        {
+            if (!levelEditorRef.CurrentLevelIsPlayable()) return;
+            levelEditorRef.SaveCurrentLevel();
+
+            if (!EditorUtility.DisplayDialog("Continue editing this level?",
+                "You saved the current level. Would you like to continue or start a new level?",
+                "Continue With current", "Start New Level"))
+            {
+                levelEditorRef.StartNew();
+            }
+        }
+        GUILayout.EndHorizontal();
+    }
+
+    private void LoadLevel()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("ID to load: ");
+        levelToLoadID = EditorGUILayout.IntField(levelToLoadID);
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Load Level"))
+        {
+            ContentManager.Instance.ReadLevelData();
+
+            // cannot load a level that isn't loaded by the contentmanager
+            if (ContentManager.Instance.LevelData(levelToLoadID) == null)
+            {
+                Debug.LogError("Cannot load this level (doesn't exist)");
+                return;
+            }
+
+            levelEditorRef.LoadLevel(levelToLoadID);
+        }
+        GUILayout.EndHorizontal();
     }
 
     private void ShowTypes(ContentType type)
@@ -185,7 +246,7 @@ public class LevelEditorWindow : EditorWindow
         }
     }
 
-    private void ShowProperties()
+    private void Properties()
     {
         // create a box layout
         GUILayout.BeginVertical("box");

@@ -571,6 +571,27 @@ public class TileManager
 
 
     // ---------------------------- DEVMODE FUNCTIONS -------------------------------------------
+    public void CreateGridDEVMODE(SecTileTypeRow[] newGrid)
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        for (int i = 0; i < newGrid.Length; i++)
+        {
+            for (int j = 0; j < newGrid[0].row.Length; j++)
+            {
+                // Determine grid- and worldposition. 
+                Coordinate gridPosition = new Coordinate(i, j);
+                Vector3 worldPosition = GetWorldPosition(gridPosition);
+
+                // Create the grid node. 
+                TileNode tileNode = new TileNode(gridPosition, worldPosition, newGrid[i].row[j]);
+                tileNode.Hexagon.transform.parent = gridParent.transform;
+
+                // Add the grid node to the grid array. 
+                grid[i, j] = tileNode;
+            }
+        }
+    }
 
     private void SetUpEmptyGridDEVMODE()
     {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using UnityEditorInternal;
 
@@ -93,13 +94,14 @@ public class ContentManager {
     //TODO: same as content but for tiles
     public GameObject Gap { get; private set; }
 
-    [SerializeField] private LevelDataContainer levelDataContainer = new LevelDataContainer();
+    private LevelDataContainer levelDataContainer = new LevelDataContainer();
 
     public LevelData LevelData(int id)
     {
-        if (id > levelDataContainer.LevelData.Count) return null;
-        return levelDataContainer.LevelData[id];
+        LevelData returnData = levelDataContainer.LevelData.Find(l => l.id == id);
+        return returnData;
     }
+
     public int AmountOfLevels { get { return levelDataContainer.LevelData.Count; } }
 
     public void Initialize() {
@@ -123,7 +125,7 @@ public class ContentManager {
         LoadTexturesForTileType("Textures/Tiles/Normal", TileType.Normal);
         LoadTexturesForTileType("Textures/Tiles/Dangerous", TileType.Dangerous);
 
-        //ReadLevelData();
+        ReadLevelData();
     }
 
     private void LoadPrefabsForContentType(String toLoadString, ContentType type)
@@ -274,15 +276,33 @@ public class ContentManager {
         return type;
     }
 
-    private void ReadLevelData()
+    public void ReadLevelData()
     {
-        XmlSerializer serializer = new XmlSerializer(typeof(LevelDataContainer));
-        string path = "LevelData";
-        TextAsset file = Resources.Load(path) as TextAsset;
-        TextReader textReader = new System.IO.StringReader(file.text);
+        levelDataContainer = null;
+        levelDataContainer = new LevelDataContainer();
 
-        levelDataContainer = (LevelDataContainer)serializer.Deserialize(textReader);
+        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/Levels");
+        FileInfo[] allFiles = dir.GetFiles("*.txt");
+        List<int> validFiles = new List<int>();
 
-        textReader.Close();
+        foreach (FileInfo f in allFiles)
+        {
+            Match match = Regex.Match(f.Name, @"\d+");//"[0-9]*");
+
+            validFiles.Add(int.Parse(match.Value));
+        }
+
+        XmlSerializer serializer = new XmlSerializer(typeof(LevelData));
+        string path = "Levels/level";
+
+        for (int i = 0; i < validFiles.Count; i++)
+        {
+            TextAsset file = Resources.Load("Levels/level" + validFiles[i]) as TextAsset;
+            TextReader textReader = new StringReader(file.text);
+
+            levelDataContainer.AddLevel((LevelData)serializer.Deserialize(textReader));
+
+            textReader.Close();
+        }
     }
 }

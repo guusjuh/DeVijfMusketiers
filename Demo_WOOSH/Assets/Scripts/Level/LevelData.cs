@@ -27,4 +27,9 @@ public class LevelDataContainer
 {
     [SerializeField] private List<LevelData> levelData = new List<LevelData>();
     public List<LevelData> LevelData { get { return levelData; } }
+
+    public void AddLevel(LevelData newLevel)
+    {
+        levelData.Add(newLevel);
+    }
 }

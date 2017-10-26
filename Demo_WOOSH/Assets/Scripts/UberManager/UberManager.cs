@@ -93,7 +93,6 @@ public class UberManager : MonoBehaviour {
         stateManagers.Get(state).Start();
 
         GameManager.CameraManager.ResetDEVMODE();
-
     }
 #endif
 
