@@ -88,6 +88,8 @@ public class InGameUIManager : SubUIManager {
         enemyInfoUI.Restart();
 
         teleportButtonsOn = false;
+        teleportButtons.HandleAction(b => b.Destory());
+        teleportButtons.Clear();
         teleportButtons = new List<SurroundingPushButton>();
         InitializeTeleportButtons();
 
@@ -95,6 +97,15 @@ public class InGameUIManager : SubUIManager {
         playerActionPoints.gameObject.SetActive(true);
 
         if (UberManager.Instance.DevelopersMode) Pause(true);
+    }
+
+    public void ResetTeleportButtons()
+    {
+        teleportButtonsOn = false;
+        teleportButtons.HandleAction(b => b.Destory());
+        teleportButtons.Clear();
+        teleportButtons = new List<SurroundingPushButton>();
+        InitializeTeleportButtons();
     }
 
     public override void Clear()
