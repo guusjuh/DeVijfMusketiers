@@ -10,8 +10,8 @@ public class ContractManager
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
     public List<ContractType> ContractTypes { get { return contractTypes; } }
 
-    public const double CONTRACT_REFRESH_RATE = 10.0f;//261.0d; //refresh rate in seconds
-    private const int CONTRACTS_PER_DESTINATION = 7;
+    public const double CONTRACT_REFRESH_RATE = 261.0d; //refresh rate in seconds
+    private const int CONTRACTS_PER_DESTINATION = 6;
     private DateTime contractRefreshDate;
     public DateTime ContractRefreshDate { get {return contractRefreshDate;} }
 
@@ -102,6 +102,8 @@ public class ContractManager
                 cities[i].RefreshAvailableContracts(newContracts, cities[i].Paths[j].Destination);
             }
         }
+
+        UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SetInteractable();
     }
 
     /// <summary>
