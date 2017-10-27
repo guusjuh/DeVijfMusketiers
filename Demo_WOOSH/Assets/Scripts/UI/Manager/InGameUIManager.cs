@@ -324,7 +324,14 @@ public class InGameUIManager : SubUIManager {
 
     public void HumanDied()
     {
+        if (wizard == null) return;
         wizardAnimController.SetTrigger("HoomanDied");
+    }
+
+    public void EnemyDied()
+    {
+        if (wizard == null) return;
+        wizardAnimController.SetTrigger("EnemyDied");
     }
 
     public static Vector2 CalculatePointOnCircle(float radius, float partialCircle, float divider, float offset, int index)

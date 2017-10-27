@@ -557,6 +557,7 @@ public class LevelManager
                 GameManager.Instance.GameOver();
                 return;
             }
+            UIManager.Instance.InGameUI.EnemyDied();
         }
         else if (toRemove.IsShrine())
         {
