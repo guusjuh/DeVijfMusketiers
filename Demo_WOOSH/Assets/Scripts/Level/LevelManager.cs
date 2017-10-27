@@ -541,6 +541,7 @@ public class LevelManager
             else
             {
                 Remove(toRemove);
+                UIManager.Instance.InGameUI.HumanDied();
                 shrines.HandleAction(s => s.CheckForActive(false));
                 return;
             }
