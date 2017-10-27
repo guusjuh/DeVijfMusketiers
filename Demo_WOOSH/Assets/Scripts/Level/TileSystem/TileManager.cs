@@ -303,8 +303,6 @@ public class TileManager
 
         grid[pos.x, pos.y].AddContent(worldObject);
         counter += grid[pos.x, pos.y].GetAmountOfContent();
-        Debug.Log("setting object " + counter);
-        Debug.Log("total objects "); AmountOfConten();
     }
 
     public void RemoveObject(Coordinate pos, WorldObject worldObject)
@@ -772,19 +770,5 @@ public class TileManager
         }
 
         return false;
-    }
-
-    public void AmountOfConten()
-    {
-        int c = 0;
-        for(int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                if (grid[i, j] == null) continue;
-                c += grid[i, j].GetAmountOfContent();
-            }
-        }
-        Debug.Log(c);
     }
 }

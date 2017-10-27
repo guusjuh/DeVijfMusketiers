@@ -169,20 +169,9 @@ public class LevelEditor : MonoBehaviour
         GameManager.Instance.TileManager.Restart();
         GameManager.Instance.LevelManager.RestartDEVMODE();
 
-        Debug.Log("Before grid creation");
-        GameManager.Instance.TileManager.AmountOfConten();
-
         GameManager.Instance.TileManager.CreateGridDEVMODE(levelData.grid);
 
-        Debug.Log("After grid creation");
-        GameManager.Instance.TileManager.AmountOfConten();
-
         GameManager.Instance.LevelManager.SpawnLevelDEVMODE(levelData.spawnNodes);
-
-        Debug.Log("After level spawning");
-        GameManager.Instance.TileManager.AmountOfConten();
-
-        int i = 0;
     }
 
     public void Pause(bool gamePaused)
@@ -308,7 +297,6 @@ public class LevelEditor : MonoBehaviour
     {
         if (newValue <= 0) return;
         levelData.dangerStartGrow = newValue;
-        int hoin = 0;
     }
     // ----------------------------------------------------------------------
 
