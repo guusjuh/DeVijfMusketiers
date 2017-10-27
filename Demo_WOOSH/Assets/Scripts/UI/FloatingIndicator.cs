@@ -7,6 +7,7 @@ public class FloatingIndicator
 {
     // The offset in y-axis, how much the number should appear above it's unit. 
     private float offsetYaxis;
+    private Vector3 startPos;
 
     // The speed of the number floating up.
     private float moveSpeed = 3.5f;
@@ -29,6 +30,7 @@ public class FloatingIndicator
     {
         this.moveSpeed = moveSpeed;
         this.lifeTime = lifeTime;
+        this.startPos = startPos;
 
         // Load the floating text and instantiate it. 
         parentGO = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/FloatingIndicator")).GetComponent<RectTransform>();
@@ -42,10 +44,10 @@ public class FloatingIndicator
         // Set the object to non-active. 
         parentGO.gameObject.SetActive(false);
 
-        // Set the offset to a hardcoded value for now. 
+        // Start at only a tiny bit offset, increase over time. 
         offsetYaxis = 0.05f;
 
-        Activate(text, color, startPos);
+        Activate(text, color);
     }
 
     /// <summary>
@@ -53,7 +55,7 @@ public class FloatingIndicator
     /// </summary>
     /// <param name="text">The taken damage.</param>
     /// <param name="startPos">The position the number starts floating up. </param>
-    public void Activate(string text, Color color, Vector3 startPos)
+    public void Activate(string text, Color color)
     {
         // Calculate the position based on the camera. 
         Vector3 uiPosition = UIManager.Instance.InGameUI.WorldToCanvas(startPos);
@@ -89,8 +91,14 @@ public class FloatingIndicator
             // Decrease lifetime by delta time. 
             lifeTime -= deltaTime;
 
+            offsetYaxis += moveSpeed;
+
+            Vector3 uiPosition = UIManager.Instance.InGameUI.WorldToCanvas(startPos);
+            uiPosition.y += offsetYaxis;
+            uiPosition.z = 0;
+
             // Go up at the speed of moveSpeed.
-            parentGO.anchoredPosition = new Vector3(parentGO.anchoredPosition.x, parentGO.anchoredPosition.y + moveSpeed);
+            parentGO.anchoredPosition = new Vector3(uiPosition.x, uiPosition.y);
 
             // Wait delta time. 
             yield return new WaitForSeconds(deltaTime);
