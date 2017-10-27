@@ -121,6 +121,7 @@ public class Enemy : WorldObject
     public override void Clear()
     {
         DestroyStatusIcons();
+
         GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
@@ -137,6 +138,8 @@ public class Enemy : WorldObject
             Hit(dmg);
             return true;
         }
+
+        NewFloatingDmgNumber(0);
 
         return false;
     }
@@ -167,6 +170,7 @@ public class Enemy : WorldObject
         }
 
         StartCoroutine(HitVisual());
+        NewFloatingDmgNumber(dmg);
 
         return false;
     }
@@ -180,6 +184,12 @@ public class Enemy : WorldObject
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
 
         yield break;
+    }
+
+    private void NewFloatingDmgNumber(float dmg)
+    {
+        FloatingIndicator newFloatingIndicator = new FloatingIndicator();
+        newFloatingIndicator.Initialize(dmg.ToString(), Color.red, 4.0f, 0.5f, transform.position);
     }
 
     protected virtual void Heal(int amount)

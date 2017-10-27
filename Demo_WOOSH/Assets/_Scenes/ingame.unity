@@ -746,7 +746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa479ee0615e2a54d9b7a96e696622e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  developersMode: 0
+  developersMode: 1
   contractManager:
     contractTypes:
     - type: 0
