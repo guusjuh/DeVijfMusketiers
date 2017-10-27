@@ -29,6 +29,13 @@ public class Shrine : EnemyTarget
         type = SecContentType.Shrine;
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        Active = false;
+        gaveAP = false;
+    }
+
     public override void Clear()
     {
         GameManager.Instance.LevelManager.RemoveObject(this);
@@ -69,6 +76,7 @@ public class Shrine : EnemyTarget
                 {
                     gaveAP = true;
                     GameManager.Instance.LevelManager.Player.IncreaseActionPoints();
+                    NewFloatingDmgNumber();
                 }
                 return true;
             }
@@ -80,6 +88,12 @@ public class Shrine : EnemyTarget
     {
         CheckForActive(false);
         gaveAP = false;
+    }
+
+    private void NewFloatingDmgNumber()
+    {
+        FloatingIndicator newFloatingIndicator = new FloatingIndicator();
+        newFloatingIndicator.Initialize("+1 AP", Color.green, 2.0f, 1.0f, transform.position);
     }
 
     public override bool IsShrine() { return true; }

@@ -58,6 +58,8 @@ public class SurroundingPushButton : MonoBehaviour
 
     public void TeleportSource()
     {
+        if(GameManager.Instance.Paused | source == null) return;
+        
         source.Teleport(gridPosition);
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(3);

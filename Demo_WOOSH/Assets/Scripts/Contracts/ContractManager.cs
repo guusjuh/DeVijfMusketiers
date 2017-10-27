@@ -115,6 +115,8 @@ public class ContractManager
         Dictionary<HumanTypes, int> possibleTypes = new Dictionary<HumanTypes, int>();
         int maxReputation = UberManager.Instance.PlayerData.Reputation + 1;
 
+        if (maxReputation > 5) maxReputation = 5;
+
         // obtain all possible types with the current players reputation
         // all same reputations have a probability of 100
         // one start above the player rep as a prob of 10

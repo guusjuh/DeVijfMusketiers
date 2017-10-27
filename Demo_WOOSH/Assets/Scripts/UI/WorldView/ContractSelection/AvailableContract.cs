@@ -17,7 +17,7 @@ public class AvailableContract : ContractButton {
 
         transform.Find("Image").GetComponent<Image>().sprite = contractRef.Portrait;
 
-        AddHearts(contractRef.Health, contractRef.TotalHealth);
+        SetHappiness(contractRef.Happiness, contractRef.TotalHappiness);
         AddStars(contractRef.Reputation);
     }
 

@@ -27,6 +27,8 @@ public class PlayerData {
     {
         reputation += adjustment;
 
+        reputation = Mathf.Clamp(reputation, minRep, maxRep);
+
         // check for updating the visuals.
     }
 }

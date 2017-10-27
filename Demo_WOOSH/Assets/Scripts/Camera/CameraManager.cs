@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
@@ -19,7 +20,7 @@ public class CameraManager : MonoBehaviour
 
     private Rect viewportRect;
 
-    private const float minSize = 3.0f, maxSize = 8.0f;
+    private float minSize = 3.0f, maxSize = 8.0f;
 
     private Vector2 velocity = Vector2.zero;
     private float speedScalar = 0.001f;
@@ -48,6 +49,26 @@ public class CameraManager : MonoBehaviour
 
         Vector2 position = bordersMin + ((bordersMax - bordersMin) * 0.5f);
         transform.position = new Vector3(position.x, position.y, transform.position.z);
+    }
+
+    public void ResetDEVMODE()
+    {
+        if (!UberManager.Instance.DevelopersMode) return;
+
+        Vector2 min = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(-3, -3));
+        Vector2 max = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(GameManager.Instance.TileManager.Rows + 2,
+                                                                                       GameManager.Instance.TileManager.Columns + 2));
+        SetBorderRange(min, max);
+
+        Vector2 newPos = (((min + max) / 2.0f));
+        transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
+
+        Vector2 newSize = (max - min);
+
+        float maxY =  newSize.y / 2;
+        float maxX = (newSize.x / 2) / Camera.main.aspect;
+
+        maxSize = maxX > maxY ? maxX : maxY;
     }
 
     //clamps camera between minimum (in world position) and maximum (in world position).
@@ -168,6 +189,52 @@ public class CameraManager : MonoBehaviour
                                      transform.position;
                 MoveCamera(toPosition, false);
             }
+        }
+    }
+
+    // Update is called once per frame
+    public void UpdateDEVMODE()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+        float zoomVelocity = Input.GetAxis("Mouse ScrollWheel");
+
+        if (mousePosition.x < 0 || mousePosition.y < 0 || mousePosition.x > Camera.main.pixelWidth ||
+            mousePosition.y > Camera.main.pixelHeight)
+        {
+            zoomVelocity = 0.0f;
+        }
+
+        Vector2 moveVelocity = Vector2.zero;
+        float speed = 3.0f;
+
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            moveVelocity.y = 1.0f;
+        }
+        else if (Input.GetKey(KeyCode.UpArrow))
+        {
+            moveVelocity.y = -1.0f;
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            moveVelocity.x = 1.0f;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            moveVelocity.x = -1.0f;
+        }
+
+        if (moveVelocity != Vector2.zero)
+        {
+            target = null;
+            UnlockAxis();
+            MoveCamera(-moveVelocity * speed * Time.deltaTime, true);
+            return;
+        }
+        else if (Mathf.Abs(zoomVelocity) > 0.01f)
+        {
+            Zoom(-zoomVelocity);
         }
     }
 

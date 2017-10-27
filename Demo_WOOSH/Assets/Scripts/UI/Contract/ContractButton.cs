@@ -9,23 +9,17 @@ public class ContractButton : MonoBehaviour
     protected Contract contractRef;
     public Contract ContractRef { get { return contractRef; } }
 
-    protected GridLayoutGroup heartGrid;
+    protected GameObject happinessIndicator;
     protected GridLayoutGroup starGrid;
-
-    protected GameObject heartPrefab;
     protected GameObject starPrefab;
 
-    protected List<GameObject> hearts = new List<GameObject>();
     protected List<GameObject> stars = new List<GameObject>();
 
     public virtual void Initialize(Contract contractRef = null)
     {
         this.contractRef = contractRef;
 
-        heartGrid = transform.Find("HeartParent").GetComponent<GridLayoutGroup>();
         starGrid = transform.Find("StarParent").GetComponent<GridLayoutGroup>();
-
-        heartPrefab = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/HeartImg");
         starPrefab = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/StarImg");
     }
 
@@ -41,29 +35,19 @@ public class ContractButton : MonoBehaviour
         }
     }
 
-    protected void AddHearts(int currentAmount, int totalAmount)
+    protected void SetHappiness(int health, int totalHealth)
     {
-        hearts = new List<GameObject>();
+        //what respective health would this hooman have if his total was 5
+        float percentage = (float)health / (float)totalHealth;
+        int normalizedHealth = (health > 1)? Mathf.RoundToInt(percentage * 5.0f) : 1;
 
-        for (int i = 0; i < totalAmount; i++)
-        {
-            hearts.Add(UIManager.Instance.CreateUIElement(heartPrefab, Vector2.zero, heartGrid.transform));
-
-            if (i >= currentAmount)
-            {
-                hearts.Last().GetComponent<Image>().color = Color.black;
-            }
-        }
+        happinessIndicator =
+            UIManager.Instance.CreateUIElement(UberManager.Instance.ContentManager.HappinessPrefabs[normalizedHealth - 1],
+                                               new Vector2(45.0f, 45.0f), this.transform);
     }
 
-    protected void ClearHeartsAndStars()
+    protected void ClearStars()
     {
-        while (hearts.Count > 0)
-        {
-            Destroy(hearts[0]);
-            hearts.RemoveAt(0);
-        }
-
         while (stars.Count > 0)
         {
             Destroy(stars[0]);
@@ -73,7 +57,8 @@ public class ContractButton : MonoBehaviour
 
     public virtual void Clear()
     {
-        ClearHeartsAndStars();
+        Destroy(happinessIndicator);
+        ClearStars();
         Destroy(this.gameObject);
     }
 }

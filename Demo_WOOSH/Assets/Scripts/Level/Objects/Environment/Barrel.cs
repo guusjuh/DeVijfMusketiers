@@ -35,6 +35,12 @@ public class Barrel : MovableObject
         destoryedSpr = Resources.Load<Sprite>("Sprites/World/brokenbarrel");
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        Destroyed = false;
+    }
+
     public override void Clear()
     {
         GameManager.Instance.LevelManager.RemoveObject(this);

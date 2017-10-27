@@ -13,11 +13,26 @@ public class Player
 
     public void Initialize()
     {
-        totalCooldown = new Dictionary<GameManager.SpellType, int>();
-        totalCooldown.Add(GameManager.SpellType.Attack, 0);
-        totalCooldown.Add(GameManager.SpellType.Fireball, 1);
-        totalCooldown.Add(GameManager.SpellType.FrostBite, 3);
-        totalCooldown.Add(GameManager.SpellType.Teleport, 2);
+        if (UberManager.Instance.DevelopersMode)
+        {
+            totalActionPoints = 99;
+
+            UberManager.Instance.PlayerData.AdjustReputation(999);
+
+            totalCooldown = new Dictionary<GameManager.SpellType, int>();
+            totalCooldown.Add(GameManager.SpellType.Attack, 0);
+            totalCooldown.Add(GameManager.SpellType.Fireball, 0);
+            totalCooldown.Add(GameManager.SpellType.FrostBite, 0);
+            totalCooldown.Add(GameManager.SpellType.Teleport, 0);
+        }
+        else
+        {
+            totalCooldown = new Dictionary<GameManager.SpellType, int>();
+            totalCooldown.Add(GameManager.SpellType.Attack, 0);
+            totalCooldown.Add(GameManager.SpellType.Fireball, 1);
+            totalCooldown.Add(GameManager.SpellType.FrostBite, 3);
+            totalCooldown.Add(GameManager.SpellType.Teleport, 2);
+        }
 
         currentCooldown = new Dictionary<GameManager.SpellType, int>();
         currentCooldown.Add(GameManager.SpellType.Attack, 0);

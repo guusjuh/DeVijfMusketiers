@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// SCG Dictionary extension.
@@ -57,4 +58,10 @@ public static class SCGDictionaryExtension
 	{
 		return dictionary.Exists () ? dictionary.Count.IsNeutral () : true;
 	}
+
+    public static KeyValuePair<TKey, TValue> GetEntry<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+    {
+        return new KeyValuePair<TKey, TValue>(key, dictionary[key]);
+    }
+
 }

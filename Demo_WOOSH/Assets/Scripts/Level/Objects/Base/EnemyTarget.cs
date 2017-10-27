@@ -24,4 +24,10 @@ public class EnemyTarget : WorldObject {
         canBeTargeted = false;
         GameManager.Instance.LevelManager.RemoveObject(this);
     }
+
+    public override void Reset()
+    {
+        canBeTargeted = true;
+    }
+
 }

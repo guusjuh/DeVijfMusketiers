@@ -37,8 +37,8 @@ public class PostGameInfoPanel : MonoBehaviour
         if (!GameManager.Instance.SelectedContracts[0].HasNextLevel()) postGameInfo.Get(HumanPostGameStatus.MoveOn).SpecialInitialize(GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
         else postGameInfo.Get(HumanPostGameStatus.MoveOn).Initialize(WIN, GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
 
-        postGameInfo.Get(HumanPostGameStatus.Stay).Initialize(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health > 0));
-        postGameInfo.Get(HumanPostGameStatus.Dead).Initialize(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health <= 0));
+        postGameInfo.Get(HumanPostGameStatus.Stay).Initialize(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness > 0));
+        postGameInfo.Get(HumanPostGameStatus.Dead).Initialize(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0));
     }
 
     public void Restart()
@@ -49,8 +49,8 @@ public class PostGameInfoPanel : MonoBehaviour
         if (!GameManager.Instance.SelectedContracts[0].HasNextLevel()) postGameInfo.Get(HumanPostGameStatus.MoveOn).SpecialInitialize(GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
         else postGameInfo.Get(HumanPostGameStatus.MoveOn).Restart(WIN, GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
 
-        postGameInfo.Get(HumanPostGameStatus.Stay).Restart(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health > 0));
-        postGameInfo.Get(HumanPostGameStatus.Dead).Restart(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Health <= 0));
+        postGameInfo.Get(HumanPostGameStatus.Stay).Restart(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness > 0));
+        postGameInfo.Get(HumanPostGameStatus.Dead).Restart(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0));
     }
 
     private void SetText()

@@ -116,8 +116,8 @@ public class EnemyInfoUI : MonoBehaviour
             if (!specialAttack.activeInHierarchy)
             {
                 specialAttack.SetActive(true);
-                specialAttackIcon.GetComponent<Image>().sprite = selectedEnemy.SpellIconSprite;
             }
+            specialAttackIcon.GetComponent<Image>().sprite = selectedEnemy.SpellIconSprite;
         }
         else
         {
