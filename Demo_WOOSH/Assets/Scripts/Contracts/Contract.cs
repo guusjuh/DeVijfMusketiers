@@ -8,13 +8,13 @@ public class Contract
     private int id;
     public int ID { get { return id; } }
 
-    private int health;
-    public int Health { get { return health; } }
+    private int happiness;
+    public int Happiness { get { return happiness; } }
 
     private ContractType type;
     public HumanTypes HumanType { get { return type.HumanType; } }
     public int Reputation { get { return type.Reputation; } }
-    public int TotalHealth { get { return type.TotalHealth; } }
+    public int TotalHappiness { get { return type.TotalHappiness; } }
     public Sprite InWorld { get { return type.InWorld; } }
     public Sprite Portrait { get { return type.Portrait; } }
     public Rewards Rewards { get { return type.Rewards; } }
@@ -34,12 +34,20 @@ public class Contract
         this.type = type;
         this.currentLevel = 0;
 
-        health = type.TotalHealth;
+        happiness = type.TotalHappiness;
+    }
+
+    public void MakeHappy()
+    {
+        if (happiness < TotalHappiness)
+        {
+            happiness++;
+        }
     }
 
     public void Initialize()
     {
-        health = type.TotalHealth;
+        happiness = type.TotalHappiness;
     }
 
     public void SetActive(bool on)
@@ -50,7 +58,7 @@ public class Contract
     public void Die()
     {
         diedLastLevel = true;
-        health--;
+        happiness--;
     }
 
     public bool EndLevel()
@@ -59,11 +67,11 @@ public class Contract
         {
             diedLastLevel = false;
 
-            //TODO: animation for losing heart
+            //TODO: animation for losing happiness
 
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.NegativeRepPerLevel);
 
-            if (health <= 0)
+            if (happiness <= 0)
             {
                 UberManager.Instance.PlayerData.AdjustReputation(Rewards.NegativeRepCompleted);
                 BreakContract();

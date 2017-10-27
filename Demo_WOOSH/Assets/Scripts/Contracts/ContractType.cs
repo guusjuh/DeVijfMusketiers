@@ -12,8 +12,8 @@ public class ContractType
     [SerializeField] private int reputation;
     public int Reputation { get { return reputation; } }
 
-    [SerializeField] private int totalHealth;
-    public int TotalHealth { get { return totalHealth; } }
+    [SerializeField] private int totalHappiness;
+    public int TotalHappiness { get { return totalHappiness; } }
 
     [SerializeField] private Sprite inWorld;
     public Sprite InWorld { get { return inWorld; } }
