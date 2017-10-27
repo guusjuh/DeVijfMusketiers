@@ -1,66 +1,38 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <LevelData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>1</id>
-  <rows>7</rows>
-  <columns>11</columns>
+  <rows>9</rows>
+  <columns>12</columns>
   <grid>
     <SecTileTypeRow>
       <row>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Grass</SecTileType>
       </row>
     </SecTileTypeRow>
@@ -69,20 +41,22 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -99,14 +73,79 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
       </row>
     </SecTileTypeRow>
   </grid>
@@ -115,7 +154,23 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>3</x>
+        <x>5</x>
+        <y>11</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>5</x>
+        <y>10</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>5</x>
         <y>9</y>
       </position>
     </SpawnNode>
@@ -123,7 +178,7 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>3</x>
+        <x>7</x>
         <y>8</y>
       </position>
     </SpawnNode>
@@ -131,7 +186,7 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>4</x>
+        <x>8</x>
         <y>8</y>
       </position>
     </SpawnNode>
@@ -139,15 +194,23 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>5</x>
-        <y>8</y>
+        <x>8</x>
+        <y>9</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
       <secType>Shrine</secType>
       <position>
-        <x>6</x>
+        <x>7</x>
+        <y>10</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>0</x>
         <y>6</y>
       </position>
     </SpawnNode>
@@ -155,15 +218,15 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>6</x>
-        <y>7</y>
+        <x>1</x>
+        <y>5</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>5</x>
+        <x>2</x>
         <y>5</y>
       </position>
     </SpawnNode>
@@ -172,7 +235,15 @@
       <secType>Barrel</secType>
       <position>
         <x>1</x>
-        <y>2</y>
+        <y>4</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>1</x>
+        <y>3</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -187,31 +258,15 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
-        <x>2</x>
-        <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Shrine</secType>
-      <position>
-        <x>3</x>
-        <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
-      <position>
-        <x>2</x>
-        <y>7</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Barrel</secType>
-      <position>
         <x>1</x>
+        <y>8</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>6</x>
         <y>6</y>
       </position>
     </SpawnNode>
@@ -219,40 +274,96 @@
       <type>Environment</type>
       <secType>Barrel</secType>
       <position>
+        <x>3</x>
+        <y>4</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>3</x>
+        <y>8</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
         <x>1</x>
+        <y>0</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>8</x>
+        <y>1</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Barrel</secType>
+      <position>
+        <x>5</x>
+        <y>7</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Human</type>
+      <secType>Human</secType>
+      <position>
+        <x>2</x>
+        <y>4</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Human</type>
+      <secType>Human</secType>
+      <position>
+        <x>0</x>
         <y>5</y>
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Human</type>
-      <secType>Human</secType>
+      <type>Boss</type>
+      <secType>Sketta</secType>
       <position>
-        <x>4</x>
-        <y>9</y>
+        <x>6</x>
+        <y>1</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Human</type>
       <secType>Human</secType>
       <position>
-        <x>1</x>
-        <y>1</y>
+        <x>3</x>
+        <y>10</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Minion</type>
       <secType>Wolf</secType>
       <position>
-        <x>0</x>
+        <x>6</x>
+        <y>10</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Minion</type>
+      <secType>Wolf</secType>
+      <position>
+        <x>7</x>
         <y>9</y>
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Boss</type>
-      <secType>Dodin</secType>
+      <type>Environment</type>
+      <secType>Shrine</secType>
       <position>
-        <x>3</x>
-        <y>5</y>
+        <x>8</x>
+        <y>2</y>
       </position>
     </SpawnNode>
   </spawnNodes>

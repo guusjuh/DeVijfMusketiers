@@ -13,7 +13,7 @@
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -82,7 +82,7 @@
     <SecTileTypeRow>
       <row>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
@@ -97,8 +97,8 @@
     <SecTileTypeRow>
       <row>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
