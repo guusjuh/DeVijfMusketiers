@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,9 @@ public class InGameUIManager : SubUIManager {
     private const float RADIUS = 200f;
 
     private SpellVisual spellVisual;
+    private GameObject wizard;
+    private Animator wizardAnimController;
+
     private int castingSpell = -1;
     public int CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
     public Dictionary<GameManager.SpellType, Color> SpellColors;
@@ -73,6 +77,8 @@ public class InGameUIManager : SubUIManager {
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
+        wizard = UIManager.Instance.CreateUIElement("Prefabs/WizardUI", new Vector2(-25.0f, -60.0f), anchorBottomRight).gameObject;
+        wizardAnimController = wizard.GetComponent<Animator>();
 
         if (UberManager.Instance.DevelopersMode) Pause(true);
         SpellColors = new Dictionary<GameManager.SpellType, Color>();
@@ -98,6 +104,7 @@ public class InGameUIManager : SubUIManager {
         InitializeTeleportButtons();
 
         playerActionPoints.gameObject.SetActive(true);
+        wizard.gameObject.SetActive(true);
 
         if (UberManager.Instance.DevelopersMode) Pause(true);
     }
@@ -122,6 +129,7 @@ public class InGameUIManager : SubUIManager {
 
         // clear player ap elements
         playerActionPoints.gameObject.SetActive(false);
+        wizard.gameObject.SetActive(false);
 
         // hide spell buttons 
         HideSpellButtons();
@@ -144,6 +152,8 @@ public class InGameUIManager : SubUIManager {
 
             enemyInfoUI.OnChange();
             playerActionPoints.gameObject.SetActive(false);
+
+            wizard.gameObject.SetActive(false);
         }
         else
         {
@@ -156,6 +166,8 @@ public class InGameUIManager : SubUIManager {
             }
 
             playerActionPoints.gameObject.SetActive(true);
+
+            wizard.gameObject.SetActive(true);
         }
     }
 
@@ -303,9 +315,23 @@ public class InGameUIManager : SubUIManager {
 
     public IEnumerator CastSpell(GameManager.SpellType type, Vector2 worldPos)
     {
+        wizardAnimController.SetTrigger("CastSpell");
+
         yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, worldPos));
 
         spellVisual.gameObject.SetActive(false);
+    }
+
+    public void HumanDied()
+    {
+        if (wizard == null) return;
+        wizardAnimController.SetTrigger("HoomanDied");
+    }
+
+    public void EnemyDied()
+    {
+        if (wizard == null) return;
+        wizardAnimController.SetTrigger("EnemyDied");
     }
 
     public static Vector2 CalculatePointOnCircle(float radius, float partialCircle, float divider, float offset, int index)

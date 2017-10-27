@@ -541,6 +541,7 @@ public class LevelManager
             else
             {
                 Remove(toRemove);
+                UIManager.Instance.InGameUI.HumanDied();
                 shrines.HandleAction(s => s.CheckForActive(false));
                 return;
             }
@@ -556,6 +557,7 @@ public class LevelManager
                 GameManager.Instance.GameOver();
                 return;
             }
+            UIManager.Instance.InGameUI.EnemyDied();
         }
         else if (toRemove.IsShrine())
         {

@@ -36,7 +36,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
         rtAP = transform.Find("AP").GetComponent<RectTransform>();
         rtSkip = transform.Find("Skip").GetComponent<RectTransform>();
 
-        transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(130.0f, 130.0f);
+        transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(75.0f, 75.0f);
 
         playerAPText = rtAP.GetComponentInChildren<Text>();
         playerAPBackground = rtAP.GetComponentInChildren<Image>();

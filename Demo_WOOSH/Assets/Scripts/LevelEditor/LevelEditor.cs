@@ -603,7 +603,6 @@ public class LevelEditor : MonoBehaviour
         else if(!noContentWillBeDeleted)
         {
             Debug.LogError("Cannot place a dangerous tile underneath content");
-
         }
     }
 
