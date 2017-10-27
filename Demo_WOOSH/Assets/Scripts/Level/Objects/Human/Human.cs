@@ -194,6 +194,8 @@ public class Human : MovableObject {
     {
         canBeTargeted = false;
 
+        Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
+
         contractRef.Die();
 
         GameManager.Instance.LevelManager.RemoveObject(this);

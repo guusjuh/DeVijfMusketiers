@@ -121,6 +121,7 @@ public class Enemy : WorldObject
     public override void Clear()
     {
         DestroyStatusIcons();
+
         GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
@@ -138,6 +139,8 @@ public class Enemy : WorldObject
             return true;
         }
 
+        NewFloatingDmgNumber(0);
+
         return false;
     }
 
@@ -145,6 +148,9 @@ public class Enemy : WorldObject
     {
         health -= dmg;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
+
+        StartCoroutine(HitVisual());
+        NewFloatingDmgNumber(dmg);
 
         if (health <= 0)
         {
@@ -166,8 +172,6 @@ public class Enemy : WorldObject
             return true;
         }
 
-        StartCoroutine(HitVisual());
-
         return false;
     }
 
@@ -175,11 +179,19 @@ public class Enemy : WorldObject
     {
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, 1);
 
+        Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
+
         yield return new WaitForSeconds(0.35f);
 
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
 
         yield break;
+    }
+
+    private void NewFloatingDmgNumber(float dmg)
+    {
+        FloatingIndicator newFloatingIndicator = new FloatingIndicator();
+        newFloatingIndicator.Initialize(dmg.ToString(), Color.red, 4.0f, 0.5f, transform.position);
     }
 
     protected virtual void Heal(int amount)

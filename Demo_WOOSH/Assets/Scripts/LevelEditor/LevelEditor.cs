@@ -129,11 +129,9 @@ public class LevelEditor : MonoBehaviour
     {
         //clear grid
         GameManager.Instance.TileManager.ClearGridDEVMODE();
-        GameManager.Instance.TileManager.Restart();
 
         //clear objects
         GameManager.Instance.LevelManager.Clear();
-        GameManager.Instance.LevelManager.RestartDEVMODE();
 
         levelData = null;
         levelData = new LevelData();
@@ -144,6 +142,9 @@ public class LevelEditor : MonoBehaviour
         levelData.dangerStartGrow = 3;
 
         BuildNewLevelDataGrid();
+
+        GameManager.Instance.TileManager.Restart();
+        GameManager.Instance.LevelManager.RestartDEVMODE();
 
         // set intial tooltype
         ChangeToolType(ToolType.Brush);
@@ -158,16 +159,18 @@ public class LevelEditor : MonoBehaviour
     {
         //clear grid
         GameManager.Instance.TileManager.ClearGridDEVMODE();
-        GameManager.Instance.TileManager.Restart();
 
         //clear objects
         GameManager.Instance.LevelManager.Clear();
-        GameManager.Instance.LevelManager.RestartDEVMODE();
 
         levelData = null;
         levelData = ContentManager.Instance.LevelData(id);
 
+        GameManager.Instance.TileManager.Restart();
+        GameManager.Instance.LevelManager.RestartDEVMODE();
+
         GameManager.Instance.TileManager.CreateGridDEVMODE(levelData.grid);
+
         GameManager.Instance.LevelManager.SpawnLevelDEVMODE(levelData.spawnNodes);
     }
 
@@ -294,7 +297,6 @@ public class LevelEditor : MonoBehaviour
     {
         if (newValue <= 0) return;
         levelData.dangerStartGrow = newValue;
-        int hoin = 0;
     }
     // ----------------------------------------------------------------------
 
@@ -551,7 +553,12 @@ public class LevelEditor : MonoBehaviour
         else
             sameTypeAsInitial = false;
 
-        if (!ValidPosition(coord) || alreadyThisTileType || !sameTypeAsInitial) return;
+        bool noContentWillBeDeleted = existingNode == null ||
+                                      (existingNode.GetAmountOfContent() <= 0 &&
+                                      selectedData.selectedTile.Key == TileType.Dangerous) ||
+                                      selectedData.selectedTile.Key != TileType.Dangerous;
+
+        if (!ValidPosition(coord) || alreadyThisTileType || !sameTypeAsInitial || !noContentWillBeDeleted) return;
 
         PlaceTile(coord);
 
@@ -578,13 +585,25 @@ public class LevelEditor : MonoBehaviour
     {
         TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
+        bool notThisType = existingNode == null ||
+                           existingNode.GetSecType() != selectedData.selectedTile.Value;
+        bool noContentWillBeDeleted = existingNode == null ||
+                                      (existingNode.GetAmountOfContent() <= 0 &&
+                                      selectedData.selectedTile.Key == TileType.Dangerous) ||
+                                      selectedData.selectedTile.Key != TileType.Dangerous;
+
         // if it's not already this tile type on this tile
-        if (existingNode == null || existingNode.GetSecType() != selectedData.selectedTile.Value)
+        if (notThisType && noContentWillBeDeleted)
         {
             //TODO: push to undo stack
 
             GameManager.Instance.TileManager.SetTileTypeDEVMODE(selectedData.selectedTile.Value, coord);
             levelData.grid[coord.x].row[coord.y] = selectedData.selectedTile.Value;
+        }
+        else if(!noContentWillBeDeleted)
+        {
+            Debug.LogError("Cannot place a dangerous tile underneath content");
+
         }
     }
 
@@ -650,7 +669,7 @@ public class LevelEditor : MonoBehaviour
         {
             SecContentType removedType = GameManager.Instance.TileManager.RemoveContentDEVMODE(existingNode);
 
-            levelData.spawnNodes.Remove(levelData.spawnNodes.Find(s => s.secType == removedType));
+            levelData.spawnNodes.Remove(levelData.spawnNodes.Find(s => s.secType == removedType && s.position == coord));
         }
     }
 

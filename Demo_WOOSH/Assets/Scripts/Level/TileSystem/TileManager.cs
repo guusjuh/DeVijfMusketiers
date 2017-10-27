@@ -292,11 +292,17 @@ public class TileManager
         return true;
     }
 
+    private static int counter = 0;
     public void SetObject(Coordinate pos, WorldObject worldObject)
     {
-        if (GetNodeReference(pos) == null) return;
+        if (GetNodeReference(pos) == null)
+        {
+            Debug.Log("failed to set object");
+            return;
+        }
 
         grid[pos.x, pos.y].AddContent(worldObject);
+        counter += grid[pos.x, pos.y].GetAmountOfContent();
     }
 
     public void RemoveObject(Coordinate pos, WorldObject worldObject)
@@ -702,9 +708,10 @@ public class TileManager
         {
             for (int j = 0; j < gridToRemove.GetLength(1); j++)
             {
-                if (gridToRemove[i, j] == null) continue;
+                if (gridToRemove[i, j] == null)
+                    continue;
 
-                if (gridToRemove[i, j].GetAmountOfContent() > 0)
+                while (gridToRemove[i, j].GetAmountOfContent() > 0)
                 {
                     RemoveContentDEVMODE(gridToRemove[i, j]);
                 }
