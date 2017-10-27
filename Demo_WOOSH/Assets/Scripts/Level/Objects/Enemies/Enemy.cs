@@ -149,6 +149,9 @@ public class Enemy : WorldObject
         health -= dmg;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
+        StartCoroutine(HitVisual());
+        NewFloatingDmgNumber(dmg);
+
         if (health <= 0)
         {
             Dead = true;
@@ -169,15 +172,14 @@ public class Enemy : WorldObject
             return true;
         }
 
-        StartCoroutine(HitVisual());
-        NewFloatingDmgNumber(dmg);
-
         return false;
     }
 
     protected IEnumerator HitVisual()
     {
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, 1);
+
+        Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.35f);
 
