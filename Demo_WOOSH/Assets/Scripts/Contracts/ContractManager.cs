@@ -113,7 +113,7 @@ public class ContractManager
     public HumanTypes GetRandomHumanType()
     {
         Dictionary<HumanTypes, int> possibleTypes = new Dictionary<HumanTypes, int>();
-        int maxReputation = UberManager.Instance.PlayerData.Reputation + 1;
+        int maxReputation = UberManager.Instance.PlayerData.ReputationLevel + 1;
 
         if (maxReputation > 5) maxReputation = 5;
 

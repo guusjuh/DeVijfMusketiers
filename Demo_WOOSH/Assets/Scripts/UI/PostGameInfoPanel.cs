@@ -22,9 +22,12 @@ public class PostGameInfoPanel : MonoBehaviour
 
     private Dictionary<HumanPostGameStatus, PostGameInfo> postGameInfo;
 
+    private PostGameInfoReputation reputation;
+
     public void Initialize()
     {
         statusText = transform.Find("StatusText").GetComponent<Text>();
+        reputation = transform.Find("Reputation").GetComponent<PostGameInfoReputation>();
 
         SetText();
 
@@ -39,6 +42,11 @@ public class PostGameInfoPanel : MonoBehaviour
 
         postGameInfo.Get(HumanPostGameStatus.Stay).Initialize(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness > 0));
         postGameInfo.Get(HumanPostGameStatus.Dead).Initialize(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0));
+
+        float startRep = UberManager.Instance.PlayerData.Reputation;
+        calculateRep();
+        float endRep = UberManager.Instance.PlayerData.Reputation;
+        reputation.Initialize(startRep, endRep);
     }
 
     public void Restart()
@@ -51,6 +59,11 @@ public class PostGameInfoPanel : MonoBehaviour
 
         postGameInfo.Get(HumanPostGameStatus.Stay).Restart(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness > 0));
         postGameInfo.Get(HumanPostGameStatus.Dead).Restart(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0));
+
+        float startRep = UberManager.Instance.PlayerData.Reputation;
+        calculateRep();
+        float endRep = UberManager.Instance.PlayerData.Reputation;
+        reputation.Restart(startRep, endRep);
     }
 
     private void SetText()
@@ -64,7 +77,10 @@ public class PostGameInfoPanel : MonoBehaviour
         {
             p.Value.Clear();
         }
+    }
 
+    private void calculateRep()
+    {
         for (int i = 0; i < GameManager.Instance.SelectedContracts.Count; i++)
         {
             if (!GameManager.Instance.SelectedContracts[i].EndLevel())

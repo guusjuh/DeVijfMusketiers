@@ -16,7 +16,7 @@ public class ReputationUIManager : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            if (i < UberManager.Instance.PlayerData.Reputation) stars[i].color = Color.white;
+            if (i < UberManager.Instance.PlayerData.ReputationLevel) stars[i].color = Color.white;
             else stars[i].color = Color.black; 
         }
     }
