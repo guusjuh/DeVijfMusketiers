@@ -13,8 +13,12 @@ public class Path {
     private City city;
     private City MyCity { get { return city; } }
 
+    private Transform pathObject;
+    public Transform PathObject { get { return pathObject; } }
+
     public Path(Transform pathObject, City city, int pathId, Destination destination)
     {
+        this.pathObject = pathObject;
         this.city = city;
         this.destination = destination;
         this.pathId = pathId;

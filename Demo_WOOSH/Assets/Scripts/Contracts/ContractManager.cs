@@ -19,6 +19,8 @@ public class ContractManager
     {
         contracts.HandleAction(c => c.Initialize());
 
+        //TODO: in tutorial? set one hooman in -1
+
         //TODO: ensure that refreshdate is saved, so that it does not reset on restart
         LoadContractTimer();
     }

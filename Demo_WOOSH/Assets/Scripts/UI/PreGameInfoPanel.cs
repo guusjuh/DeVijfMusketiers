@@ -17,6 +17,7 @@ public class PreGameInfoPanel : MonoBehaviour
 
     private List<SelectableContract> selectableContracts = new List<SelectableContract>();
     private List<ActiveContract> activeContracts = new List<ActiveContract>();
+    public Image FirstSelectableContract { get { return selectableContracts[0].transform.Find("Image").GetComponent<Image>();  } }
 
     public void Initialize()
     {

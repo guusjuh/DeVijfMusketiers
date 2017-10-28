@@ -1,11 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SubUIManager
 {
     protected Canvas canvas;
     protected bool first = true;
+
+    protected RectTransform noClickPanel;
+    private Color panelDissabledColor = new Color(0.37f, 0.37f, 0.37f, 0.57f);
+    protected Button onlyButton;
+    protected Button clickToContinue;
+    protected NewContractIndicator tutorialIndicator;
+
+    protected bool initializedInGame = false;
 
     public void Start()
     {
@@ -23,6 +32,8 @@ public class SubUIManager
     }
 
     protected virtual void Initialize() { }
+    protected virtual void InitializeTutorial() { }
+    protected virtual void InitializeInGame() { }
 
     protected virtual void Restart() { }
 
@@ -31,6 +42,41 @@ public class SubUIManager
     public virtual void Clear()
     {
         canvas.gameObject.SetActive(false);
+    }
+
+    public virtual void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, float width = 100, float height = 100)
+    {
+        noClickPanel.gameObject.SetActive(true);
+        noClickPanel.GetComponent<Image>().color = panelDissabledColor;
+
+        onlyButton.gameObject.SetActive(true);
+        clickToContinue.gameObject.SetActive(false);
+
+        onlyButton.GetComponent<Image>().sprite = buttonSprite;
+        onlyButton.GetComponent<RectTransform>().anchoredPosition = onlyButtonPos;
+        onlyButton.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+        onlyButton.onClick.AddListener(UberManager.Instance.TutorialManager.Next);
+    }
+
+    public void ActivateNoClickPanel()
+    {
+        noClickPanel.gameObject.SetActive(true);
+        noClickPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+
+        onlyButton.gameObject.SetActive(false);
+        clickToContinue.gameObject.SetActive(true);
+
+        clickToContinue.onClick.AddListener(UberManager.Instance.TutorialManager.Next);
+    }
+
+    public virtual void DeactivateNoClickPanel()
+    {
+        noClickPanel.gameObject.SetActive(false);
+        onlyButton.gameObject.SetActive(false);
+        clickToContinue.gameObject.SetActive(false);
+
+        onlyButton.onClick.RemoveAllListeners();
+        clickToContinue.onClick.RemoveAllListeners();
     }
 
     public Vector2 WorldToCanvas(Vector3 worldPosition)

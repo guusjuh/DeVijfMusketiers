@@ -92,7 +92,7 @@ public class Contract
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepPerLevel);
 
             //TODO:fix this
-            if (levelInPath + 1 > path.Levels.Count)
+            if (levelInPath + 1 >= path.Levels.Count)
             {
                 UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepCompleted);
 

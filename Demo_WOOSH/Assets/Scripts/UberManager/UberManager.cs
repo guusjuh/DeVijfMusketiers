@@ -62,6 +62,12 @@ public class UberManager : MonoBehaviour {
     private bool doingSetup = true;
     public bool DoingSetup { get { return doingSetup; } }
 
+    private bool tutorial = true;
+    public bool Tutorial { get { return tutorial; } }
+
+    private TutorialManager tutorialManager;
+    public TutorialManager TutorialManager { get { return tutorialManager; } }
+
     public GUIStyle myStyle;
 
     public void Awake() {
@@ -82,6 +88,8 @@ public class UberManager : MonoBehaviour {
 #if UNITY_EDITOR
     private void StartDevMode()
     {
+        tutorial = false;
+
         levelEditor = gameObject.AddComponent<LevelEditor>();
         levelEditor.Initialize();
 
@@ -98,6 +106,12 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
+        if (tutorial)
+        {
+            tutorialManager = new TutorialManager();
+            tutorialManager.Initialize();
+        }
+
         stateManagers.Add(GameStates.InGame, new GameManager());
         stateManagers.Add(GameStates.PostGame, new PostGameManager());
         stateManagers.Add(GameStates.LevelSelection, new LevelSelectionManager());
@@ -119,6 +133,11 @@ public class UberManager : MonoBehaviour {
         prevState = state;
         state = nextState;
         stateManagers.Get(state).Start();
+    }
+
+    public void EndTutorial() {
+        tutorial = false;
+        tutorialManager = null;
     }
 
     public static T PerformRandomRoll<T>(Dictionary<T, int> possibilities) 

@@ -177,12 +177,16 @@ public class LevelManager
             if (!GameManager.Instance.GameOn) yield break;
         }
 
+        if(UberManager.Instance.Tutorial) UberManager.Instance.TutorialManager.Next();
+
         // switch turns
         yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
     }
 
     private IEnumerator HandleHumanWalking()
     {
+        if (UberManager.Instance.Tutorial) yield break;
+
         foreach (Human h in humans)
         {
             if (GameManager.Instance.Paused) yield break;
@@ -223,6 +227,12 @@ public class LevelManager
 
         // show banner
         if(!GameManager.Instance.Paused) yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
+
+        if (UberManager.Instance.Tutorial)
+        {
+            othersTurn = false;
+            yield break;
+        }
 
         // start players turn
         player.StartPlayerTurn();

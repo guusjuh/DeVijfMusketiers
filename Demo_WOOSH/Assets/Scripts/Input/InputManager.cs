@@ -160,6 +160,8 @@ public class InputManager
 
     private bool CatchZoomInput()
     {
+        if (UberManager.Instance.Tutorial) return false;
+
         zoomVelocity = Input.GetAxis("Mouse ScrollWheel");
 
         if (Input.touchCount == 2)
