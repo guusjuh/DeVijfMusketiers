@@ -127,7 +127,6 @@ public class InGameUIManager : SubUIManager {
             spellButtons = null;
         }
 
-        teleportButtons = new List<SurroundingPushButton>();
         InitializeTeleportButtons();
 
         spellButtons = new Dictionary<GameManager.SpellType, SpellButton>();
@@ -179,7 +178,10 @@ public class InGameUIManager : SubUIManager {
         if (!UberManager.Instance.Tutorial && !initializedInGame)
         {
             InitializeInGame();
+            return;
         }
+
+        InitializeTeleportButtons();
 
         enemyInfoUI.Restart();
 
@@ -210,7 +212,7 @@ public class InGameUIManager : SubUIManager {
         teleportButtons.Clear();
         teleportButtons = null;
 
-        DeactivateNoClickPanel();
+        if(UberManager.Instance.Tutorial) DeactivateNoClickPanel();
 
         base.Clear();
     }
@@ -247,6 +249,8 @@ public class InGameUIManager : SubUIManager {
 
     public void InitializeTeleportButtons()
     {
+        teleportButtons = new List<SurroundingPushButton>();
+
         for (int x = 0; x < GameManager.Instance.TileManager.Rows; x++)
         {
             for (int y = 0; y < GameManager.Instance.TileManager.Columns; y++)

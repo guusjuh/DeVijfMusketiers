@@ -33,7 +33,7 @@ public class LevelManager
     public bool PlayersTurn { get { return playersTurn; } }
     private int extraPoints;
 
-    private int amountOfTurns = 1;
+    private int amountOfTurns = 0;
     public int AmountOfTurns { get { return amountOfTurns; } }
 
     private float delay = 0.5f;
@@ -71,7 +71,7 @@ public class LevelManager
         player = new Player();
         player.Initialize();
 
-        amountOfTurns = 1;
+        amountOfTurns = 0;
         
         if (UberManager.Instance.DevelopersMode) SpawnEmptyLevel();
         else SpawnLevel();
@@ -132,6 +132,9 @@ public class LevelManager
     protected IEnumerator HandleOtherTurn()
     {
         othersTurn = true;
+
+        // increase amnt of turns
+        amountOfTurns++;
 
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
@@ -221,9 +224,6 @@ public class LevelManager
         // make hoomans move
         humans.HandleAction(h => h.StartTurn());
         yield return UberManager.Instance.StartCoroutine(HandleHumanWalking());
-
-        // increase amnt of turns
-        amountOfTurns++;
 
         // show banner
         if(!GameManager.Instance.Paused) yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));

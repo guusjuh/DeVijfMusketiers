@@ -108,7 +108,7 @@ public class PreGameUIManager : SubUIManager {
 
         CanStart(false);
 
-        DeactivateNoClickPanel();
+        if (UberManager.Instance.Tutorial) DeactivateNoClickPanel();
 
         base.Clear();
     }

@@ -126,11 +126,10 @@ public class LevelSelectUIManager : SubUIManager
         if (UberManager.Instance.Tutorial)
         {
             tutorialPath.Clear();
+            DeactivateNoClickPanel();
         }
 
         cities.HandleAction(c => c.Clear());
-
-        DeactivateNoClickPanel();
 
         base.Clear();
     }

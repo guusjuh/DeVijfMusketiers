@@ -96,7 +96,7 @@ public class PostGameUIManager : SubUIManager
     public override void Clear()
     {
         postGameInfoPanel.Clear();
-        DeactivateNoClickPanel();
+        if (UberManager.Instance.Tutorial) DeactivateNoClickPanel();
         base.Clear();
     }
 
