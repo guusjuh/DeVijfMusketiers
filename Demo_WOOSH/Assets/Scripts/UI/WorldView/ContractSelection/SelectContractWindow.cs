@@ -65,7 +65,7 @@ public class SelectContractWindow
             this.city = city;
             this.destination = destination;
             ShowContracts();
-            city.MyContractState = City.ContractState.Seen;
+            if (city.MyContractState != City.ContractState.Nothing) city.MyContractState = City.ContractState.Seen;
             SetInteractable();
         }
         else

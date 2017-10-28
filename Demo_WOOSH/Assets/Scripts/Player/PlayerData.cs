@@ -11,12 +11,20 @@ public class PlayerData {
     // Reputation
     [SerializeField] private float reputation = 100;
 
-    public int Reputation
+    public int ReputationLevel
     {
         get
         {
             int rep = (int)Mathf.Floor(reputation / 100.0f);
             return rep;
+        }
+    }
+    
+    public float Reputation
+    {
+        get
+        {
+            return reputation;
         }
     }
 
