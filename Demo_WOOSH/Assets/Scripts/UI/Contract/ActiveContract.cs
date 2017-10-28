@@ -22,6 +22,7 @@ public class ActiveContract : ContractButton
                 //TODO: reset sprite to default sprite (to be made)
                 contractRef = null;
                 ClearStars();
+                ClearHappiness();
             }
             else
             {
