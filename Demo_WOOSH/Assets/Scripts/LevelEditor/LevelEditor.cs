@@ -172,6 +172,8 @@ public class LevelEditor : MonoBehaviour
         GameManager.Instance.TileManager.CreateGridDEVMODE(levelData.grid);
 
         GameManager.Instance.LevelManager.SpawnLevelDEVMODE(levelData.spawnNodes);
+
+        GameManager.Instance.CameraManager.ResetDEVMODE();
     }
 
     public void Pause(bool gamePaused)
