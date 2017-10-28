@@ -70,7 +70,7 @@ public class FloatingIndicator
         uiPosition.z = 0;
 
         // Set it's transform. 
-        parentGO.anchoredPosition = uiPosition;
+        parentGO.position = uiPosition;
         parentGO.localScale = new Vector3(1, 1, 1);
 
         // Set damage text. 
@@ -80,7 +80,42 @@ public class FloatingIndicator
         parentGO.gameObject.SetActive(true);
 
         // Start the coroutine to make the number float up. 
-        floatUp = UberManager.Instance.StartCoroutine(FloatUp());
+        floatUp = UberManager.Instance.StartCoroutine(FloatUpUI());
+    }
+
+    /// <summary>
+    /// Make the number float up. 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator FloatUpUI()
+    {
+        // While lifetime is not passed. 
+        while (lifeTime > 0)
+        {
+            // Get delta time. 
+            float deltaTime = Time.deltaTime;
+
+            // Decrease lifetime by delta time. 
+            lifeTime -= deltaTime;
+
+            offsetYaxis += moveSpeed;
+
+            Vector3 uiPosition = startPos;
+            uiPosition.y += offsetYaxis;
+            uiPosition.z = 0;
+
+            // Go up at the speed of moveSpeed.
+            parentGO.position = new Vector3(uiPosition.x, uiPosition.y);
+
+            // Wait delta time. 
+            yield return new WaitForSeconds(deltaTime);
+        }
+
+        // After lifetime has passed, set the object to non-active. 
+        parentGO.gameObject.SetActive(false);
+        Destroy();
+
+        yield break;
     }
 
     /// <summary>
