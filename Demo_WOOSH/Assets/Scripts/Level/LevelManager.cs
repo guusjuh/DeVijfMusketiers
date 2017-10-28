@@ -284,11 +284,23 @@ public class LevelManager
 
             GameManager.Instance.CameraManager.LockTarget(chosenGap.Hexagon.transform);
 
-            yield return new WaitForSeconds(delay);
+            yield return UberManager.Instance.StartCoroutine(BreakTile(chosenGap));
 
             chosenGap.CreateHexagon(SecTileType.Gap);
 
             if (!GameManager.Instance.GameOn || GameManager.Instance.Paused) break;
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator BreakTile(TileNode chosenGap)
+    {
+        while (chosenGap.Hexagon.transform.localScale.magnitude > 0.1f)
+        {
+            chosenGap.Hexagon.transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f);
+            yield return new WaitForSeconds(0.02f);
+            chosenGap.GetContent().HandleAction(c => c.transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f));
         }
 
         yield return null;
