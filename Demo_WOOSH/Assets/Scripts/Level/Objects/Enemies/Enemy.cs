@@ -91,6 +91,12 @@ public class Enemy : WorldObject
         currentActionPoints = calculatedTotalAP;
         health = startHealth;
 
+        if (UberManager.Instance.Tutorial)
+        {
+            possibleSpellTypes.Add(GameManager.SpellType.Attack);
+            return;
+        }
+
         possibleSpellTypes.Add(GameManager.SpellType.Attack);
         possibleSpellTypes.Add(GameManager.SpellType.FrostBite);
         possibleSpellTypes.Add(GameManager.SpellType.Fireball);

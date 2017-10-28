@@ -17,6 +17,8 @@ public class LevelSelectionManager : StateManager {
 
     public override void Update()
     {
+        if(UberManager.Instance.Tutorial) return;
+        
         UberManager.Instance.ContractManager.UpdateContractTimer();
     }
 }

@@ -25,7 +25,7 @@ public class WorldObject : MonoBehaviour
 
     public virtual void Click()
     { 
-        if (!GameManager.Instance.LevelManager.PlayersTurn) return;
+        if (!GameManager.Instance.LevelManager.PlayersTurn && !UberManager.Instance.Tutorial) return;
 
         if (!IsMonster()) UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 

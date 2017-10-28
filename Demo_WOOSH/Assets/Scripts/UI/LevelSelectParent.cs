@@ -5,9 +5,12 @@ using UnityEngine.UI;
 public class LevelSelectParent : MonoBehaviour
 {
     private LevelSelectButton levelSelectButton;
+    public Image levelSelectButtonImage { get { return levelSelectButton.GetComponentInChildren<Image>(); } }
+
     private GridLayoutGroup gridParent;
     private GameObject contractIndicatorPrefab;
     private List<ContractIndicator> contractIndicators;
+    public Image firstContractIndicator { get { return contractIndicators[0].GetComponent<Image>(); } }
 
     [SerializeField]private int levelID;
     public int LevelID { get { return levelID; } }

@@ -46,6 +46,11 @@ public class ContractButton : MonoBehaviour
                                                new Vector2(45.0f, 45.0f), this.transform);
     }
 
+    protected void ClearHappiness()
+    {
+        Destroy(happinessIndicator);
+    }
+
     protected void ClearStars()
     {
         while (stars.Count > 0)

@@ -13,6 +13,12 @@ public class PreGameUIManager : SubUIManager {
 
     private GameObject startButton;
     private GameObject backButton;
+    public Vector2 BackButtonPos { get { return backButton.GetComponent<RectTransform>().anchoredPosition; } }
+
+    //------------------ TUTORIAL VARS ------------------------
+    private GameObject guidanceArrow;
+    private Text guidanceText;
+    //---------------------------------------------------------
 
     protected override void Initialize()
     {
@@ -32,10 +38,68 @@ public class PreGameUIManager : SubUIManager {
         startButton.GetComponent<Button>().interactable = false;
 
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/BackButton", new Vector2(75, -75), anchorTopRight);
+
+        if (!UberManager.Instance.Tutorial && !initializedInGame)
+        {
+            InitializeInGame();
+            initializedInGame = true;
+        }
+        else
+        {
+            InitializeTutorial();
+        }
+    }
+
+    protected override void InitializeTutorial()
+    {
+        noClickPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/NoClickPanel", Vector2.zero, canvas.transform).GetComponent<RectTransform>();
+        onlyButton = noClickPanel.Find("OnlyButton").GetComponent<Button>();
+        clickToContinue = noClickPanel.Find("ClickToContinue").GetComponent<Button>();
+        onlyButton.gameObject.SetActive(false);
+        clickToContinue.gameObject.SetActive(false);
+
+        backButton.gameObject.SetActive(false);
+
+        guidanceArrow = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceArrow", Vector2.zero, canvas.transform);
+        guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
+    }
+
+    protected override void InitializeInGame()
+    {
+        backButton.gameObject.SetActive(true);
+    }
+
+    public void SetArrow(Vector2 centerPos, float zRotation, float radius, string text)
+    {
+        guidanceArrow.SetActive(true);
+        guidanceText.gameObject.SetActive(true);
+        guidanceText.text = text;
+
+        guidanceArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+        Quaternion q = Quaternion.AngleAxis(zRotation, Vector3.forward);
+        guidanceArrow.GetComponent<RectTransform>().Rotate(Vector3.forward, zRotation);
+
+        guidanceArrow.GetComponent<RectTransform>().anchoredPosition = centerPos + (Vector2)(q * Vector2.right * radius);
+        guidanceText.GetComponent<RectTransform>().anchoredPosition = centerPos + (Vector2)(q * Vector2.right * (radius + 75.0f));
+    }
+
+    public override void DeactivateNoClickPanel()
+    {
+        base.DeactivateNoClickPanel();
+
+        guidanceArrow.SetActive(false);
+        guidanceArrow.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
+        guidanceText.gameObject.SetActive(false);
     }
 
     protected override void Restart()
     {
+        if (!UberManager.Instance.Tutorial && !initializedInGame)
+        {
+            InitializeInGame();
+        }
+
         preGameInfoPanel.Restart();
     }
 
@@ -44,6 +108,8 @@ public class PreGameUIManager : SubUIManager {
         preGameInfoPanel.Clear();
 
         CanStart(false);
+
+        if (UberManager.Instance.Tutorial) DeactivateNoClickPanel();
 
         base.Clear();
     }

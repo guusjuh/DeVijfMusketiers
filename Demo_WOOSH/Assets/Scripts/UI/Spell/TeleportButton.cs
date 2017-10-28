@@ -25,6 +25,8 @@ public class TeleportButton : SpellButton
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
 
+        if(UberManager.Instance.Tutorial) UberManager.Instance.TutorialManager.Next();
+
         yield return null;
     }
 

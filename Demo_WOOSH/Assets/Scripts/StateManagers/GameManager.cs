@@ -108,6 +108,14 @@ public class GameManager : StateManager {
 
         if (LevelManager.Humans.Count > 0) won = true;
 
+        UIManager.Instance.InGameUI.DeactivateBanners();
+
+        if (UberManager.Instance.Tutorial)
+        {
+            UberManager.Instance.TutorialManager.Next();
+            return;
+        }
+
         // Switch game state
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
     }

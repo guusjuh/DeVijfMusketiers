@@ -33,7 +33,7 @@ public class LevelManager
     public bool PlayersTurn { get { return playersTurn; } }
     private int extraPoints;
 
-    private int amountOfTurns = 1;
+    private int amountOfTurns = 0;
     public int AmountOfTurns { get { return amountOfTurns; } }
 
     private float delay = 0.5f;
@@ -71,7 +71,7 @@ public class LevelManager
         player = new Player();
         player.Initialize();
 
-        amountOfTurns = 1;
+        amountOfTurns = 0;
         
         if (UberManager.Instance.DevelopersMode) SpawnEmptyLevel();
         else SpawnLevel();
@@ -133,6 +133,9 @@ public class LevelManager
     {
         othersTurn = true;
 
+        // increase amnt of turns
+        amountOfTurns++;
+
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -177,12 +180,16 @@ public class LevelManager
             if (!GameManager.Instance.GameOn) yield break;
         }
 
+        if(UberManager.Instance.Tutorial) UberManager.Instance.TutorialManager.Next();
+
         // switch turns
         yield return UberManager.Instance.StartCoroutine(BeginPlayerTurn());
     }
 
     private IEnumerator HandleHumanWalking()
     {
+        if (UberManager.Instance.Tutorial) yield break;
+
         foreach (Human h in humans)
         {
             if (GameManager.Instance.Paused) yield break;
@@ -218,11 +225,14 @@ public class LevelManager
         humans.HandleAction(h => h.StartTurn());
         yield return UberManager.Instance.StartCoroutine(HandleHumanWalking());
 
-        // increase amnt of turns
-        amountOfTurns++;
-
         // show banner
         if(!GameManager.Instance.Paused) yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(true));
+
+        if (UberManager.Instance.Tutorial)
+        {
+            othersTurn = false;
+            yield break;
+        }
 
         // start players turn
         player.StartPlayerTurn();
