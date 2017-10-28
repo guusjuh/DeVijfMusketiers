@@ -90,6 +90,7 @@ public class PreGameUIManager : SubUIManager {
 
         guidanceArrow.SetActive(false);
         guidanceArrow.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
+        guidanceText.gameObject.SetActive(false);
     }
 
     protected override void Restart()
