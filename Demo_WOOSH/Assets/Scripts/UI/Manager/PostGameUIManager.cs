@@ -8,6 +8,7 @@ public class PostGameUIManager : SubUIManager
     private RectTransform anchorCenter;
     private RectTransform anchorTopMid;
     private RectTransform anchorBottomRight;
+    public RectTransform AnchorCenter { get { return anchorCenter;} }
 
     private PostGameInfoPanel postGameInfoPanel;
     private GameObject backButton;

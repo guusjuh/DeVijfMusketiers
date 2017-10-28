@@ -19,7 +19,9 @@ public class PostGameInfoReputation : MonoBehaviour {
         repBar.Initialize();
 
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
-	}
+        FloatingIndicator fi = new FloatingIndicator();
+        fi.Initialize((end - start).ToString(), (end > start)? Color.green:Color.red, 0.5f, 5.0f, repBar.transform.position, false);
+    }
 
     public void Restart(float start, float end)
     {

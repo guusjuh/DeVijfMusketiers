@@ -26,7 +26,7 @@ public class FloatingIndicator
     /// <summary>
     /// Initializes the floating number.
     /// </summary>
-    public void Initialize(string text, Color color, float moveSpeed, float lifeTime, Vector3 startPos)
+    public void Initialize(string text, Color color, float moveSpeed, float lifeTime, Vector3 startPos, bool inGame = true)
     {
         this.moveSpeed = moveSpeed;
         this.lifeTime = lifeTime;
@@ -38,7 +38,11 @@ public class FloatingIndicator
         floatingText = parentGO.transform.Find("Child").GetComponent<Text>();
         floatingText.color = color;
 
-        parentGO.transform.SetParent(UIManager.Instance.InGameUI.AnchorCenter);
+        if (inGame)
+            parentGO.transform.SetParent(UIManager.Instance.InGameUI.AnchorCenter);
+        else
+            parentGO.transform.SetParent(UIManager.Instance.PostGameUI.AnchorCenter);
+
         parentGO.anchoredPosition = Vector3.zero;
 
         // Set the object to non-active. 
@@ -47,7 +51,36 @@ public class FloatingIndicator
         // Start at only a tiny bit offset, increase over time. 
         offsetYaxis = 0.05f;
 
-        Activate(text, color);
+        if (inGame)
+            Activate(text, color);
+        else
+            ActivateUI(text, color);
+    }
+
+    /// <summary>
+    /// Activates the floating number.
+    /// </summary>
+    /// <param name="text">The taken damage.</param>
+    /// <param name="startPos">The position the number starts floating up. </param>
+    public void ActivateUI(string text, Color color)
+    {
+        // Calculate the position based on the camera. 
+        Vector3 uiPosition = startPos;
+        uiPosition.y += offsetYaxis;
+        uiPosition.z = 0;
+
+        // Set it's transform. 
+        parentGO.anchoredPosition = uiPosition;
+        parentGO.localScale = new Vector3(1, 1, 1);
+
+        // Set damage text. 
+        floatingText.text = text;
+
+        // Set the gameobject to active. 
+        parentGO.gameObject.SetActive(true);
+
+        // Start the coroutine to make the number float up. 
+        floatUp = UberManager.Instance.StartCoroutine(FloatUp());
     }
 
     /// <summary>
