@@ -137,7 +137,8 @@ public class SpellButton : MonoBehaviour
                 -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI));
 
             GameObject APPoint = Resources.Load<GameObject>("Prefabs/UI/SpellButton/APIndicator");
-            apIndicator.Add(Instantiate(APPoint, -pos + new Vector2(Screen.currentResolution.height, Screen.currentResolution.width) / 2.0f, Quaternion.identity, this.transform));
+            apIndicator.Add(Instantiate(APPoint, -pos, Quaternion.identity, this.transform));
+            apIndicator[i].transform.position = transform.position - new Vector3(pos.x, pos.y, 0);
         }
     }
 }

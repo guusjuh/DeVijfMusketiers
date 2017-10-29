@@ -75,7 +75,7 @@ public class InGameUIManager : SubUIManager {
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
-        wizard = UIManager.Instance.CreateUIElement("Prefabs/WizardUI", new Vector2(-25.0f, -60.0f), anchorBottomRight).gameObject;
+        wizard = UIManager.Instance.CreateUIElement("Prefabs/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
         wizardAnimController = wizard.GetComponent<Animator>();
 
         teleportButtonsOn = false;
@@ -133,6 +133,11 @@ public class InGameUIManager : SubUIManager {
         CreateSpellButton(GameManager.SpellType.FrostBite, "Prefabs/UI/SpellButton/FrostBiteButton");
         CreateSpellButton(GameManager.SpellType.Fireball, "Prefabs/UI/SpellButton/FireballButton");
         CreateSpellButton(GameManager.SpellType.Teleport, "Prefabs/UI/SpellButton/TeleportButton");
+
+        enemyInfoUI.Restart();
+
+        playerActionPoints.gameObject.SetActive(true);
+        wizard.gameObject.SetActive(true);
     }
 
     public void SetArrow(Vector2 centerPos, float zRotation, float radius, string text)
