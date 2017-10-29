@@ -36,6 +36,11 @@ public class SelectContractWindow
         Interactable = PathHasSpace();
     }
 
+    public void DisableButtons()
+    {
+        Interactable = false;
+    }
+
     public SelectContractWindow(GameObject selectionWindow)
     {
         this.selectionWindow = selectionWindow;

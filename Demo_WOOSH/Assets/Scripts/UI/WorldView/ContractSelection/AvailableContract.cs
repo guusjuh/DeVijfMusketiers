@@ -24,7 +24,8 @@ public class AvailableContract : ContractButton {
     public override void OnClick()
     {
         GameObject acceptWindow = UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SelectionWindow.transform.Find("AcceptContract").gameObject;
-        AcceptButton ab = new AcceptButton(acceptWindow, SelectContract);
+        UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.DisableButtons();
+        AcceptButton ab = new AcceptButton(acceptWindow, SelectContract, "", UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SetInteractable);
     }
 
     public void SelectContract()
