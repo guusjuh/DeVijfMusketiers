@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Xml.Schema;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class Enemy : WorldObject
@@ -150,7 +147,7 @@ public class Enemy : WorldObject
         return false;
     }
 
-    protected virtual bool Hit(int dmg)
+    protected override bool Hit(int dmg)
     {
         health -= dmg;
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);

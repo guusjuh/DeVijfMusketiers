@@ -55,7 +55,7 @@ public class LevelSelectUIManager : SubUIManager
     protected override void InitializeTutorial()
     {
         tutorialPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/TutorialPanel", Vector2.zero, anchorCenter);
-        tutorialPath = new Path(tutorialPanel.transform.Find("Path"), new City(), -1, Destination.Red);
+        tutorialPath = new Path(tutorialPanel.transform.Find("Path"), new City(), Destination.Red);
         tutorialPath.SpawnContract(UberManager.Instance.ContractManager.GenerateRandomContract(tutorialPath));
 
         wizardsHat = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/Hat", Vector2.zero, anchorCenter).gameObject;

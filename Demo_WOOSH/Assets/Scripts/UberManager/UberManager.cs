@@ -29,8 +29,10 @@ public class UberManager : MonoBehaviour {
     private bool selectedDevMode;
     public bool DevelopersMode { get { return selectedDevMode; } }
 
+#if UNITY_EDITOR
     private LevelEditor levelEditor;
     public LevelEditor LevelEditor { get { return levelEditor;  } }
+#endif
 
     private Dictionary<GameStates, StateManager> stateManagers = new Dictionary<GameStates, StateManager>();
     public LevelSelectionManager LevelSelectionManager { get { return (LevelSelectionManager)stateManagers.Get(GameStates.LevelSelection); } }
@@ -81,14 +83,16 @@ public class UberManager : MonoBehaviour {
 
         selectedDevMode = developersMode;
 
+#if UNITY_EDITOR
         if (developersMode) StartDevMode();
-        else StartGameMode();
+#endif
+        if (!developersMode) StartGameMode();
     }
 
 #if UNITY_EDITOR
     private void StartDevMode()
     {
-        tutorial = false;
+        tutorial = true;
 
         levelEditor = gameObject.AddComponent<LevelEditor>();
         levelEditor.Initialize();

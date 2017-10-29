@@ -592,7 +592,6 @@ public class LevelManager
             for (int i = 0; i < humans.Count; i++)
             {
                 humans[i].ContractRef.MakeHappy();
-                Debug.Log("Mii so happy :D");
             }
         }
     }

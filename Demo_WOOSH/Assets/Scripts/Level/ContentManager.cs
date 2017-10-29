@@ -309,7 +309,7 @@ public class ContentManager {
 
         for (int i = 0; i < validFiles.Count; i++)
         {
-            TextAsset file = Resources.Load("Levels/level" + validFiles[i]) as TextAsset;
+            TextAsset file = Resources.Load(path + validFiles[i]) as TextAsset;
             TextReader textReader = new StringReader(file.text);
 
             levelDataContainer.AddLevel((LevelData)serializer.Deserialize(textReader));

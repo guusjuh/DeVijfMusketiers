@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using Microsoft.Win32.SafeHandles;
 using UnityEditor;
 using UnityEngine;
 
@@ -248,7 +246,7 @@ public class LevelEditor : MonoBehaviour
 
     public bool CurrentLevelIsPausable()
     {
-        if (GameManager.Instance.TileManager.NoMoreThanOneAtATile())
+        if (GameManager.Instance.TileManager.NoMoreThanOneAtATileDEVMODE())
         {
             Debug.LogError("Current level is not pausable (More than one object on a tile)");
 
@@ -446,7 +444,7 @@ public class LevelEditor : MonoBehaviour
         Texture2D newCursor = pencilCursor;
         if (newType == ToolType.Fill) newCursor = fillCursor;
         if (newType == ToolType.Eraser) newCursor = eraserCursor;
-        Cursor.SetCursor(newCursor, new Vector2(40, 40), CursorMode.Auto);
+        Cursor.SetCursor(newCursor, cursorOffset, CursorMode.Auto);
     }
 
     public void SetSelectedObject(SecTileType secondairyType)
@@ -791,3 +789,4 @@ public class LevelEditor : MonoBehaviour
         fs.Close();
     }
 }
+#endif

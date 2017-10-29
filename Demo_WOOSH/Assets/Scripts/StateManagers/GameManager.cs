@@ -93,6 +93,7 @@ public class GameManager : StateManager {
 
     public void GameOver()
     {
+#if UNITY_EDITOR
         if (UberManager.Instance.DevelopersMode)
         {
             gameOn = false;
@@ -102,6 +103,7 @@ public class GameManager : StateManager {
 
             return;
         }
+#endif
 
         pause = false;
         gameOn = false;
@@ -121,7 +123,7 @@ public class GameManager : StateManager {
         // Switch game state
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
     }
-
+#if UNITY_EDITOR
     public void RestartDEVMODE()
     {
         if (!UberManager.Instance.DevelopersMode) return;
@@ -131,11 +133,14 @@ public class GameManager : StateManager {
         TileManager.FindNeighboursDEVMODE();
         gameOn = true;
     }
+#endif
 
     // update is called every frame
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) Pause(!pause);
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.P)) PauseDEVMODE(!pause);
+#endif
 
         if (pause)
         {
@@ -156,7 +161,8 @@ public class GameManager : StateManager {
         this.selectedContracts = selectedContracts;
     }
 
-    public void Pause(bool on)
+#if UNITY_EDITOR
+    public void PauseDEVMODE(bool on)
     {
         // currently paused, trying to unpause and level isn't playable
         // or currently unpaused, trying to pause and level isn't pausable
@@ -180,4 +186,5 @@ public class GameManager : StateManager {
 
         TileManager.FindNeighboursDEVMODE();
     }
+#endif
 }

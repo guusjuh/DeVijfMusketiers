@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿#if UNITY_EDITOR
+using System;
 using UnityEngine;
 
 public class GridOverlay : MonoBehaviour
@@ -72,3 +70,4 @@ public class GridOverlay : MonoBehaviour
         }
     }
 }
+#endif

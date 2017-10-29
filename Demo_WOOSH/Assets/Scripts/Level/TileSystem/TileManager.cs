@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TileManager
 {
-    private int debugCounter = 0;
     private static Coordinate[] directionsEven = new Coordinate[] {
             /*right up*/ new Coordinate(1, 0),
             /*left up*/ new Coordinate(-1, 0),
@@ -81,8 +79,10 @@ public class TileManager
     public void Initialize()
     {
         gridParent = new GameObject("Grid Parent");
+#if UNITY_EDITOR
         if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
-        else SetUpGrid();
+#endif
+        if (!UberManager.Instance.DevelopersMode) SetUpGrid();
 
         corners = new Coordinate[4]
         {
@@ -95,8 +95,10 @@ public class TileManager
 
     public void Restart()
     {
+#if UNITY_EDITOR
         if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
-        else SetUpGrid();
+#endif
+        if (!UberManager.Instance.DevelopersMode) SetUpGrid();
     }
 
     private void SetUpGrid()
@@ -179,8 +181,6 @@ public class TileManager
 
         dist[source] = 0;
         prev[source] = null;
-
-        bool targetFound = false;
 
         //initialize everything to have infinity distance 
         foreach (TileNode v in grid)
@@ -599,6 +599,7 @@ public class TileManager
         }
     }
 
+#if UNITY_EDITOR
     private void SetUpEmptyGridDEVMODE()
     {
         if (!UberManager.Instance.DevelopersMode) return;
@@ -612,9 +613,6 @@ public class TileManager
     public void AdjustGridSizeDEVMODE()
     {
         if (!UberManager.Instance.DevelopersMode) return;
-
-        int oldRows = rows;
-        int oldColumns = columns;
 
         rows = UberManager.Instance.LevelEditor.Rows;
         columns = UberManager.Instance.LevelEditor.Columns;
@@ -755,7 +753,7 @@ public class TileManager
         return true;
     }
 
-    public bool NoMoreThanOneAtATile()
+    public bool NoMoreThanOneAtATileDEVMODE()
     {
         if (!UberManager.Instance.DevelopersMode) return false;
 
@@ -771,4 +769,5 @@ public class TileManager
 
         return false;
     }
+#endif
 }

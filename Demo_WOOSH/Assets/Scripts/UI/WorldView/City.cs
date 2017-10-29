@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,8 +31,6 @@ public class City : MonoBehaviour {
     public Dictionary<Destination, List<Contract>> AvailableContracts { get { return availableContracts;} }
 
     public List<Path> Paths { get { return paths; } }
-    private int cityId;
-    public int CityId { get { return cityId; } }
 
     public void Initiliaze()
     {
@@ -42,7 +39,7 @@ public class City : MonoBehaviour {
 
         for (int i = 1; i < transform.childCount; i++)
         {
-            paths.Add(new Path(transform.GetChild(i), this, i - 1, destination));
+            paths.Add(new Path(transform.GetChild(i), this, destination));
             availableContracts.Add(destination, new List<Contract>());
         }
         gameObject.GetComponent<Button>().onClick.AddListener( delegate{ UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination); });

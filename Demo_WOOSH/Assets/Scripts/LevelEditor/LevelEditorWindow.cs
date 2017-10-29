@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +14,6 @@ public class LevelEditorWindow : EditorWindow
     private bool showHotKeys;
 
     private int rows = 3;
-    private float textureWidth;
 
     private Vector2 scrollPos = Vector2.zero;
 
@@ -38,7 +37,6 @@ public class LevelEditorWindow : EditorWindow
             if (levelEditorRef != null)
             {
                 levelSize = new Vector2(levelEditorRef.Rows, levelEditorRef.Columns);
-                textureWidth = ContentManager.Instance.TileTextures[TileType.Dangerous][0].width;
             }
         }
         Repaint();
@@ -277,3 +275,4 @@ public class LevelEditorWindow : EditorWindow
         GUILayout.EndVertical();
     }
 }
+#endif
