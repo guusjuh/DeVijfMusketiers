@@ -298,14 +298,6 @@
       <type>Environment</type>
       <secType>Shrine</secType>
       <position>
-        <x>2</x>
-        <y>11</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Shrine</secType>
-      <position>
         <x>6</x>
         <y>11</y>
       </position>
