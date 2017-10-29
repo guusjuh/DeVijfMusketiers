@@ -364,6 +364,8 @@ public class TutorialManager
     // goto next state
     private void Step20()
     {
+        Time.timeScale = 1.0f;
+
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
 
         UIManager.Instance.PostGameUI.DeactivateNoClickPanel();
@@ -375,8 +377,6 @@ public class TutorialManager
     private void Step21()
     {
         UIManager.Instance.PostGameUI.DeactivateNoClickPanel();
-
-        Time.timeScale = 1.0f;
 
         UIManager.Instance.LevelSelectUI.ActivateNoClickPanel();
 
