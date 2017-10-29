@@ -9,19 +9,17 @@ public class Path {
     private Destination destination;
     public Destination Destination {get {return destination;} }
 
-    private int pathId;
     private City city;
     private City MyCity { get { return city; } }
 
     private Transform pathObject;
     public Transform PathObject { get { return pathObject; } }
 
-    public Path(Transform pathObject, City city, int pathId, Destination destination)
+    public Path(Transform pathObject, City city, Destination destination)
     {
         this.pathObject = pathObject;
         this.city = city;
         this.destination = destination;
-        this.pathId = pathId;
         levels = new List<LevelSelectParent>(pathObject.GetComponentsInChildren<LevelSelectParent>());
         
         int levelCount = 0;

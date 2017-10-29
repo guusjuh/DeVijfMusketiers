@@ -6,16 +6,12 @@ public class ReputationBar : MonoBehaviour
 {
 
     private RectTransform transformForeground;
-    private float minFromRight;
     private float maxFromRight;
-    private float height;
 
     public void Initialize()
     {
         transformForeground = transform.Find("Foreground").GetComponent<RectTransform>();
-        minFromRight = 0;
         maxFromRight = transform.GetComponent<RectTransform>().sizeDelta.x;
-        height = transform.GetComponent<RectTransform>().sizeDelta.y;
     }
 
     // Sets health immediately (when other enemy clicked) 

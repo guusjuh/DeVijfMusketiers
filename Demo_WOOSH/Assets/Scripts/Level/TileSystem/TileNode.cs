@@ -12,9 +12,6 @@ public class TileNode {
     private List<TileNode> neighbours;
     public List<TileNode> NeightBours { get { return neighbours; } }
 
-    private bool instantiated;
-    public bool Instantiated { get { return instantiated; } }
-
     private GameObject hexagon;
     public GameObject Hexagon { get { return hexagon; } }
 
