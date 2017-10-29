@@ -148,10 +148,9 @@ public class InputManager
         // or if the ui objects were tagged as status icon
         bool noUIClicked = results.Count <= 0;
         bool onlyStatusIconClicked = (results.Count > 0 &&
-                                      results.FindAll(r => r.gameObject.transform.tag == "StatusIcon").Count != 0);
+                                      results.FindAll(r => r.gameObject.transform.tag == "StatusIcon").Count == results.Count);
         bool onlyFloatingIndicatorsClicked = (results.Count > 0 &&
-                                              results.FindAll(r => r.gameObject.transform.tag == "FloatingIndicator")
-                                                  .Count != 0);
+                                              results.FindAll(r => r.gameObject.transform.tag == "FloatingIndicator").Count == results.Count);
         bool closeSkipButton = (results.FindAll(r => r.gameObject.transform.tag == "APSkip-indicator")).Count == 0;
         if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerActionPoints.CloseSkipButton();
 
