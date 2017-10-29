@@ -63,10 +63,10 @@ public class SpellButton : MonoBehaviour
             yield break;
         }
 
-        ApplyEffect();
-
         GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
+
+        ApplyEffect();
 
         UIManager.Instance.InGameUI.CastingSpell = -1;
 

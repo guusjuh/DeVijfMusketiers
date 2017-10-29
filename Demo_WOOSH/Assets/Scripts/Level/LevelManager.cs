@@ -73,8 +73,7 @@ public class LevelManager
 
         amountOfTurns = 0;
         
-        if (UberManager.Instance.DevelopersMode) SpawnEmptyLevel();
-        else SpawnLevel();
+        if (!UberManager.Instance.DevelopersMode) SpawnLevel();
 
         // start with other turn
         playersTurn = false;
@@ -314,11 +313,6 @@ public class LevelManager
         }
 
         yield return null;
-    }
-
-    private void SpawnEmptyLevel()
-    {
-        
     }
 
     public void SpawnObjectDEVMODE(SpawnNode s)

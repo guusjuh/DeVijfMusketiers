@@ -106,6 +106,8 @@ public class GameManager : StateManager {
         pause = false;
         gameOn = false;
 
+        LevelManager.Player.EndPlayerMove(0, true);
+
         if (LevelManager.Humans.Count > 0) won = true;
 
         UIManager.Instance.InGameUI.DeactivateBanners();
