@@ -1,4 +1,4 @@
-WindowsStandalone
+Android
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SelectableContract
 11c1ad8498a32dbf6b3c2e0fda823d74 Assembly-CSharp.dll:.UberManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GridOverlay
@@ -42,6 +42,7 @@ d5d56cca6bd276d462378b7016d15837 Assembly-CSharp.dll:.Sketta
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackToLevelSelectButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LifeTime
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ActiveContract
+32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer

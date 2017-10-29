@@ -293,23 +293,14 @@ public class ContentManager {
         levelDataContainer = null;
         levelDataContainer = new LevelDataContainer();
 
-        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/Levels");
-        FileInfo[] allFiles = dir.GetFiles("*.txt");
-        List<int> validFiles = new List<int>();
-
-        foreach (FileInfo f in allFiles)
-        {
-            Match match = Regex.Match(f.Name, @"\d+");//"[0-9]*");
-
-            validFiles.Add(int.Parse(match.Value));
-        }
-
         XmlSerializer serializer = new XmlSerializer(typeof(LevelData));
-        string path = "Levels/level";
+        string path = "Levels";
 
-        for (int i = 0; i < validFiles.Count; i++)
+        UnityEngine.Object[] jsonObjects = Resources.LoadAll(path);
+
+        for (int i = 0; i < jsonObjects.Length; i++)
         {
-            TextAsset file = Resources.Load(path + validFiles[i]) as TextAsset;
+            TextAsset file = (TextAsset)jsonObjects[i];
             TextReader textReader = new StringReader(file.text);
 
             levelDataContainer.AddLevel((LevelData)serializer.Deserialize(textReader));
