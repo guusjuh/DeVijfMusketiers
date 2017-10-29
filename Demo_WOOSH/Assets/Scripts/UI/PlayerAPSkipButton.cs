@@ -45,6 +45,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
 
         normalColorPlayerAP = playerAPBackground.color;
         dissabledColorPlayerAP = Color.grey;
+        playerAPBackground.color = dissabledColorPlayerAP;
 
         myButton = gameObject.GetComponent<Button>();
         myButton.onClick.AddListener(OnClick);

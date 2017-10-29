@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Player
 {
@@ -50,6 +51,8 @@ public class Player
     {
         currentActionPoints = endTurn ? 0 : currentActionPoints - cost;
         UIManager.Instance.InGameUI.PlayerActionPoints.SetAPText();
+
+        Debug.Log("current AP: " + currentActionPoints);
 
         if (currentActionPoints <= 0)
         {

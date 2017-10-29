@@ -202,6 +202,7 @@ public class InGameUIManager : SubUIManager {
 
         // clear player ap elements
         playerActionPoints.gameObject.SetActive(false);
+        playerActionPoints.SetAPText();
         wizard.gameObject.SetActive(false);
 
         // hide spell buttons 
