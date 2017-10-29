@@ -241,7 +241,7 @@ public class Enemy : WorldObject
             slowed = true;
             calculatedTotalAP--;
             currentActionPoints = calculatedTotalAP;
-            ShowPossibleRoads();
+            if(GameManager.Instance.LevelManager.PlayersTurn) ShowPossibleRoads();
         }
         else
         {

@@ -482,7 +482,6 @@ public class TileManager
     public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
     {
         highlightedNodes = new List<TileNode>();
-
         // add yourself
         TileNode hisNode = GetNodeReference(gridPos);
 

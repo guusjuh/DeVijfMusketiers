@@ -92,7 +92,7 @@ public class UberManager : MonoBehaviour {
 #if UNITY_EDITOR
     private void StartDevMode()
     {
-        tutorial = true;
+        tutorial = false;
 
         levelEditor = gameObject.AddComponent<LevelEditor>();
         levelEditor.Initialize();
@@ -110,7 +110,7 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
-        tutorial = true;
+        tutorial = false;
 
         if (tutorial)
         {
