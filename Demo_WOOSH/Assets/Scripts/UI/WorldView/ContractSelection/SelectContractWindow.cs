@@ -15,6 +15,13 @@ public class SelectContractWindow
     private GameObject contractPrefab;
     private List<AvailableContract> availableContractIndicators;
 
+    private AcceptButton acceptButton;
+    public AcceptButton MyAcceptButton
+    {
+        get {return acceptButton;}
+        set { acceptButton = value; }
+    }
+
     private bool active;
     private City city;
     private Destination destination;
@@ -91,7 +98,17 @@ public class SelectContractWindow
         add4Add = selectionWindow.transform.Find("Add4Add").GetComponent<Button>();
 
         close = selectionWindow.transform.Find("Close").GetComponent<Button>();
+        close.onClick.AddListener(DisableAcceptButton);
         close.onClick.AddListener(Deactivate);
+    }
+
+    private void DisableAcceptButton()
+    {
+        if (acceptButton != null)
+        {
+            acceptButton.DisableWindow();
+            SetInteractable();
+        }
     }
 
     public void Refresh(City city, Destination destination)
