@@ -20,6 +20,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
     private float speed = 10.5f;
 
     private bool active = false;
+    private Coroutine rotateCoroutine;
 
     public bool Active
     {
@@ -62,8 +63,10 @@ public class PlayerAPSkipButton : MonoBehaviour {
             SkipTurn();
             return;
         }
-        
-        StartCoroutine(RotateButton(speed, true)); //rotate the button towards the skip side
+        if (rotateCoroutine == null)
+        {
+            rotateCoroutine = StartCoroutine(RotateButton(speed, true)); //rotate the button towards the skip side
+        }
     }
 
     public void CloseSkipButton()
@@ -74,7 +77,10 @@ public class PlayerAPSkipButton : MonoBehaviour {
         }
         else
         {
-            StartCoroutine(RotateButton(speed, false));
+            if (rotateCoroutine == null)
+            {
+                rotateCoroutine = StartCoroutine(RotateButton(speed, false));
+            }
             skipOpen = false;
         }
     }
@@ -96,6 +102,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
         }
 
         skipOpen = toSkip;
+        rotateCoroutine = null;
     }
 
     private IEnumerator SmoothRotate(RectTransform rt, Text t, float speed, bool grow)
