@@ -28,6 +28,7 @@ public class EnemyTarget : WorldObject {
     public override void Reset()
     {
         canBeTargeted = true;
+        transform.localScale = new Vector3(1, 1, 1);
     }
 
 }

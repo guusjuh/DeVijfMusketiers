@@ -13,7 +13,6 @@ public class Sketta : Enemy {
 
         Shield.SetActive(false);
 
-        totalActionPoints++;
         hasSpecial = false;
         viewDistance = 3;
 

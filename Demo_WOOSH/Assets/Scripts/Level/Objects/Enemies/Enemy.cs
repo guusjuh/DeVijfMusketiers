@@ -116,6 +116,7 @@ public class Enemy : WorldObject
         burnCount = 0;
         burning = false;
         ShowStatusEffects();
+        transform.localScale = new Vector3(1, 1, 1);
     }
 
     public override void ResetToInitDEVMODE(Coordinate startPos)

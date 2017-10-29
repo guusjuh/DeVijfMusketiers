@@ -293,6 +293,15 @@ public class LevelEditor : MonoBehaviour
         GameManager.Instance.CameraManager.ResetDEVMODE();
         UIManager.Instance.InGameUI.InitializeTeleportButtons();
         BuildNewLevelDataGrid();
+
+        for (int i = 0; i < levelData.spawnNodes.Count; i++)
+        {
+            if (levelData.spawnNodes[i].position.x > Rows || levelData.spawnNodes[i].position.y > Columns)
+            {
+                levelData.spawnNodes.RemoveAt(i);
+                i--;
+            }
+        }
     }
 
     public void AdjustDangerStartTurn(int newValue)

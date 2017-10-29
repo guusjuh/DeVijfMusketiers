@@ -335,14 +335,6 @@
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Human</type>
-      <secType>Human</secType>
-      <position>
-        <x>3</x>
-        <y>10</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
       <type>Minion</type>
       <secType>Wolf</secType>
       <position>
@@ -364,6 +356,14 @@
       <position>
         <x>8</x>
         <y>2</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Human</type>
+      <secType>Human</secType>
+      <position>
+        <x>0</x>
+        <y>9</y>
       </position>
     </SpawnNode>
   </spawnNodes>
