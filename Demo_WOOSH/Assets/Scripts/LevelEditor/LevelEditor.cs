@@ -74,6 +74,8 @@ public class LevelEditor : MonoBehaviour
     public int Columns { get { return levelData.columns; } }
     public int LevelID { get { return levelData.id; } }
     public int DangerStartTurn { get { return levelData.dangerStartGrow; } }
+    public SecTileTypeRow[] Grid { get { return levelData.grid; } }
+    public List<SpawnNode> SpawnNodes { get { return levelData.spawnNodes; } }
 
     // ---------------------------------------------------------------
 
@@ -628,7 +630,7 @@ public class LevelEditor : MonoBehaviour
             if (existingNode.GetAmountOfContent() == 0)
             {
                 SpawnNode s = new SpawnNode();
-                s.type = selectedData.selectedContent.Key;
+                 s.type = selectedData.selectedContent.Key;
                 s.secType = selectedData.selectedContent.Value;
                 s.position = coord;
 
