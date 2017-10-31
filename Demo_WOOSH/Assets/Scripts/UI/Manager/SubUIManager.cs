@@ -56,6 +56,7 @@ public class SubUIManager
         onlyButton.GetComponent<RectTransform>().anchoredPosition = onlyButtonPos;
         onlyButton.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
         onlyButton.onClick.AddListener(UberManager.Instance.TutorialManager.Next);
+        onlyButton.onClick.AddListener(UberManager.Instance.SoundManager.PlaySoundEffect);
     }
 
     public void ActivateNoClickPanel()
@@ -67,6 +68,7 @@ public class SubUIManager
         clickToContinue.gameObject.SetActive(true);
 
         clickToContinue.onClick.AddListener(UberManager.Instance.TutorialManager.Next);
+        clickToContinue.onClick.AddListener(UberManager.Instance.SoundManager.PlaySoundEffect);
     }
 
     public virtual void DeactivateNoClickPanel()

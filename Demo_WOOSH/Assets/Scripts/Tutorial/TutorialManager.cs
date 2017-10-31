@@ -231,7 +231,6 @@ public class TutorialManager
             GameManager.Instance.LevelManager.Enemies[0].GetComponent<SpriteRenderer>().sprite);
 
         UIManager.Instance.InGameUI.SetArrow(wolfPos, 100.0f, 100.0f, "The enemy goes first. Click to start.");
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     // do enemy turn

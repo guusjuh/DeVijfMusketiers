@@ -45,11 +45,11 @@ public class SoundManager {
 
     public void SetBackGroundMusic(string file)
     {
-        AudioClip backgroundMusic = Resources.Load(file) as AudioClip;
+        /*AudioClip backgroundMusic = Resources.Load(file) as AudioClip;
         source.Stop();
         source.clip = backgroundMusic;
         source.loop = true;
-        source.Play();
+        source.Play();*/
     }
 
     public void PlaySoundEffect(GameManager.SpellType effect)
@@ -74,5 +74,10 @@ public class SoundManager {
     public void PlaySoundEffect(SoundEffect effect)
     {
         source.PlayOneShot(soundEffects[effect]);
+    }
+
+    public void PlaySoundEffect()
+    {
+        PlaySoundEffect(SoundEffect.ButtonClick);
     }
 }
