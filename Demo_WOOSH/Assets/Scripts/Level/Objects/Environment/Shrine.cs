@@ -15,10 +15,11 @@ public class Shrine : EnemyTarget
     public bool Active {
         get { return active; }
         private set {
+            if(value != active && value){
+                UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
+            }
             active = value;
             sprRender.color = value ? activeColor : normalColor;
-
-            UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
         }
     }
 
