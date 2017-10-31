@@ -26,6 +26,8 @@ public class LevelEditor : MonoBehaviour
     private const KeyCode FILL = KeyCode.Q;
     private const KeyCode PENCIL = KeyCode.W;
     private const KeyCode ERASER = KeyCode.E;
+    private const KeyCode UNDO = KeyCode.Z;
+    private const KeyCode REDO = KeyCode.Y;
     private const KeyCode SWITCH_TILE_CONTENT = KeyCode.Tab;
 
     public const string FILL_HK        = "Q \t- Fill";
@@ -33,6 +35,8 @@ public class LevelEditor : MonoBehaviour
     public const string ERASER_HK      = "E \t- Eraser";
     public const string TOGGLE_HK      = "TAB \t- Toggle between content/tile";
     public const string SWITCH_PRIM_HK = "1-9 \t- Switch primary type";
+    public const string UNDO_HK        = "Z \t- Undo last tool action";
+    public const string REDO_HK        = "Y \t- Redo last tool action";
 
     private GridOverlay gridOverlay;
 
@@ -66,6 +70,11 @@ public class LevelEditor : MonoBehaviour
     // preview objects
     private GameObject highlightPreviewObject;
     private Transform previewObject; // the preview stuck on the mouse
+
+    // linked list for undo / redo (linked list so we can also empty from the other side when count grows to high)
+    private LinkedList<EditorCommand> undoActions = new LinkedList<EditorCommand>();
+    private LinkedList<EditorCommand> redoActions = new LinkedList<EditorCommand>();
+    private const int MAX_ACTIONS_TO_SAVE = 1000;
 
     // ---------------------------------------------------------------
     private LevelData levelData;
@@ -127,6 +136,8 @@ public class LevelEditor : MonoBehaviour
 
     public void StartNew()
     {
+        EmptyActionList();
+
         //clear grid
         GameManager.Instance.TileManager.ClearGridDEVMODE();
 
@@ -157,6 +168,8 @@ public class LevelEditor : MonoBehaviour
 
     public void LoadLevel(int id)
     {
+        EmptyActionList();
+
         //clear grid
         GameManager.Instance.TileManager.ClearGridDEVMODE();
 
@@ -281,6 +294,17 @@ public class LevelEditor : MonoBehaviour
         return true;
     }
 
+    private void EmptyActionList()
+    {
+        undoActions.Clear();
+        undoActions = null;
+        undoActions = new LinkedList<EditorCommand>();
+
+        redoActions.Clear();
+        redoActions = null;
+        redoActions = new LinkedList<EditorCommand>();
+    }
+
     // ---------- VARS THAT CAN BE CHANGED IN LEVEL EDITOR WINDOW -----------
     public void AdjustSize(Vector2 newSize)
     {
@@ -302,6 +326,8 @@ public class LevelEditor : MonoBehaviour
                 i--;
             }
         }
+
+        EmptyActionList();
     }
 
     public void AdjustDangerStartTurn(int newValue)
@@ -324,6 +350,56 @@ public class LevelEditor : MonoBehaviour
         HandlePrimaryTypeSwitch();
         HandlePlacementSwitch();
         HandeToolSwitch();
+
+        // undo
+        if (Input.GetKeyDown(UNDO))
+        {
+            if (undoActions.Count <= 0)
+            {
+                Debug.Log("no actions to undo");
+                return;
+            }
+
+            if (undoActions.Count > MAX_ACTIONS_TO_SAVE)
+            {
+                undoActions.RemoveFirst();
+            }
+
+            // execute undo
+            undoActions.Last.Value.undoMethod();
+
+            // add the last undo action to the redo stack
+            redoActions.AddLast(undoActions.Last.Value);
+
+            // remove the last undo action
+            undoActions.RemoveLast();
+            Debug.Log("undo"); 
+        }
+        // redo
+        else if (Input.GetKeyDown(REDO))
+        {
+            if (redoActions.Count <= 0)
+            {
+                Debug.Log("no actions to redo");
+                return;
+            }
+
+            if (redoActions.Count > MAX_ACTIONS_TO_SAVE)
+            {
+                redoActions.RemoveFirst();
+            }
+
+            // execute redo
+            redoActions.Last.Value.redoMethod();
+
+            // add the last redo action to the undo stack
+            undoActions.AddLast(redoActions.Last.Value);
+
+            // remove the last redo action
+            redoActions.RemoveLast();
+
+            Debug.Log("redo");
+        }
     }
 
     private int NumberKeyPressed()
@@ -368,22 +444,30 @@ public class LevelEditor : MonoBehaviour
         UpdateObjectPreview();
 
         // left click is tool
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
+            // happy 420!
         {
-            if (toolType == ToolType.Brush) PencilClicked(coordinateMousePosition);
+            if (toolType == ToolType.Brush)
+            {
+                PencilCommand newCommand = new PencilCommand(coordinateMousePosition);
+                if (newCommand.Execute(coordinateMousePosition)) undoActions.AddLast(newCommand);
+            }
             if (toolType == ToolType.Fill)
             {
-                if (placableType == PlacableType.Content)
-                    FillClicked(coordinateMousePosition);
-                else if (placableType == PlacableType.Tile)
-                    FillClicked(coordinateMousePosition, GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition) == null ? SecTileType.Unknown : GameManager.Instance.TileManager.GetNodeReference(coordinateMousePosition).GetSecType());
+                FillCommand newCommand = new FillCommand(coordinateMousePosition);
+                if (newCommand.Execute(coordinateMousePosition)) undoActions.AddLast(newCommand);
             }
-            if(toolType == ToolType.Eraser) ErasorClicked(coordinateMousePosition);
+            if (toolType == ToolType.Eraser)
+            {
+                DeleteCommand newCommand = new DeleteCommand(coordinateMousePosition);
+                if (newCommand.Execute(coordinateMousePosition)) undoActions.AddLast(newCommand);
+            }
         }
         // right click is delete
-        else if (Input.GetMouseButton(1))
+        else if (Input.GetMouseButtonDown(1))
         {
-            DeleteClicked(coordinateMousePosition);
+            DeleteCommand newCommand = new DeleteCommand(coordinateMousePosition);
+            if (newCommand.Execute(coordinateMousePosition)) undoActions.AddLast(newCommand);
         }
     }
 
@@ -525,164 +609,6 @@ public class LevelEditor : MonoBehaviour
         }
     }
 
-    private void FillClicked(Coordinate coord)
-    {
-        if (placableType != PlacableType.Content) return;
-
-        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
-
-        bool alreadyContent = existingNode != null && existingNode.GetAmountOfContent() > 0;
-        bool cannotPlaceContent = (existingNode != null && existingNode.GetType() == TileType.Dangerous) || existingNode == null;
-
-        bool occupied = alreadyContent || cannotPlaceContent;
-
-        if (!ValidPosition(coord) || occupied) return;
-
-        PlaceContent(coord);
-
-        Coordinate[] directions = GameManager.Instance.TileManager.Directions(coord);
-
-        for (int i = 0; i < directions.Length; i++)
-        {
-            FillClicked(coord + directions[i]);
-        }
-    }
-
-    private void FillClicked(Coordinate coord, SecTileType initialType)
-    {
-        if (placableType != PlacableType.Tile) return;
-
-        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
-
-        bool alreadyThisTileType = existingNode != null && existingNode.GetSecType() == selectedData.selectedTile.Value;
-        bool sameTypeAsInitial = true;
-
-        if (initialType == SecTileType.Unknown && existingNode == null)
-            sameTypeAsInitial = true;
-        else if (existingNode != null && existingNode.GetSecType() == initialType)
-            sameTypeAsInitial = true;
-        else
-            sameTypeAsInitial = false;
-
-        bool noContentWillBeDeleted = existingNode == null ||
-                                      (existingNode.GetAmountOfContent() <= 0 &&
-                                      selectedData.selectedTile.Key == TileType.Dangerous) ||
-                                      selectedData.selectedTile.Key != TileType.Dangerous;
-
-        if (!ValidPosition(coord) || alreadyThisTileType || !sameTypeAsInitial || !noContentWillBeDeleted) return;
-
-        PlaceTile(coord);
-
-        Coordinate[] directions = GameManager.Instance.TileManager.Directions(coord);
-
-        for (int i = 0; i < directions.Length; i++)
-        {
-            FillClicked(coord + directions[i], initialType);
-        }
-    }
-
-    private void PencilClicked(Coordinate coord)
-    {
-        if (placableType == PlacableType.Tile) PlaceTile(coord);
-        else PlaceContent(coord);
-    }
-
-    private void ErasorClicked(Coordinate coord)
-    {
-        DeleteClicked(coord);
-    }
-
-    private void PlaceTile(Coordinate coord)
-    {
-        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
-
-        bool notThisType = existingNode == null ||
-                           existingNode.GetSecType() != selectedData.selectedTile.Value;
-        bool noContentWillBeDeleted = existingNode == null ||
-                                      (existingNode.GetAmountOfContent() <= 0 &&
-                                      selectedData.selectedTile.Key == TileType.Dangerous) ||
-                                      selectedData.selectedTile.Key != TileType.Dangerous;
-
-        // if it's not already this tile type on this tile
-        if (notThisType && noContentWillBeDeleted)
-        {
-            //TODO: push to undo stack
-
-            GameManager.Instance.TileManager.SetTileTypeDEVMODE(selectedData.selectedTile.Value, coord);
-            levelData.grid[coord.x].row[coord.y] = selectedData.selectedTile.Value;
-        }
-        else if(!noContentWillBeDeleted)
-        {
-            Debug.LogError("Cannot place a dangerous tile underneath content");
-        }
-    }
-
-    private void PlaceContent(Coordinate coord)
-    {
-        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
-
-        // if the node is null, there cannot be placed anything
-        if (existingNode != null && existingNode.GetType() != TileType.Dangerous)
-        {
-            //TODO: push to undo stack
-
-            // cannot place content on top of each other!
-            if (existingNode.GetAmountOfContent() == 0)
-            {
-                SpawnNode s = new SpawnNode();
-                 s.type = selectedData.selectedContent.Key;
-                s.secType = selectedData.selectedContent.Value;
-                s.position = coord;
-
-                GameManager.Instance.LevelManager.SpawnObjectDEVMODE(s);
-                levelData.spawnNodes.Add(s);
-            }
-        }
-        else
-        {
-            if(existingNode == null) Debug.LogError("You cannot place content on a non-existing tile.");
-            else if(existingNode.GetType() == TileType.Dangerous) Debug.LogError("You cannot place content on a dangerous tile.");
-        }
-    }
-
-    private void DeleteClicked(Coordinate coord)
-    {
-        if(placableType == PlacableType.Tile) DeleteTile(coord);
-        else DeleteContent(coord);
-    }
-
-    private void DeleteTile(Coordinate coord)
-    {
-        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
-
-        // if the node actually exists, delete it
-        if (existingNode != null)
-        {
-            if (existingNode.GetAmountOfContent() <= 0)
-            {
-                GameManager.Instance.TileManager.RemoveTileDEVMODE(coord);
-                levelData.grid[coord.x].row[coord.y] = SecTileType.Unknown;
-            }
-            else
-            {
-                Debug.LogError("Cannot remove a tile with content on it.");
-            }
-        }
-    }
-
-    private void DeleteContent(Coordinate coord)
-    {
-        TileNode existingNode = GameManager.Instance.TileManager.GetNodeReference(coord);
-
-        // if the node actually exists, delete it
-        if (existingNode != null && existingNode.GetAmountOfContent() > 0)
-        {
-            SecContentType removedType = GameManager.Instance.TileManager.RemoveContentDEVMODE(existingNode);
-
-            levelData.spawnNodes.Remove(levelData.spawnNodes.Find(s => s.secType == removedType && s.position == coord));
-        }
-    }
-
     private bool ValidMousePosition(Vector2 worldPos, Coordinate coordPos)
     {
         if (UberManager.Instance.DoingSetup) return false;
@@ -695,7 +621,7 @@ public class LevelEditor : MonoBehaviour
         return true;
     }
 
-    private bool ValidPosition(Coordinate coord)
+    public bool ValidPosition(Coordinate coord)
     {
         // if the coord is outside the field, return false
         if (coord.x < 0 || coord.x >= Rows || coord.y < 0 || coord.y >= Columns)
@@ -720,6 +646,8 @@ public class LevelEditor : MonoBehaviour
 
     private void SetInGameLevelAsLevelData()
     {
+        EmptyActionList();
+
         // clear the current spawnnodes
         levelData.spawnNodes.Clear();
         levelData.spawnNodes = null;

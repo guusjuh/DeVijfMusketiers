@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EditorCommand : Command<Coordinate>
 {
+    protected TileNode tileNode;
     protected Coordinate coord;
     protected LevelEditor.PlacableType type;
 
