@@ -32,6 +32,8 @@ public class WorldObject : MonoBehaviour
         GameManager.Instance.CameraManager.LockTarget(this.transform);
 
         UIManager.Instance.InGameUI.ShowSpellButtons(this);
+
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     public virtual bool TryHit(int dmg)

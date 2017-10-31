@@ -126,6 +126,7 @@ public class PreGameUIManager : SubUIManager {
 
         preGameInfoPanel.GetSelectedContracts().HandleAction(c => c.SetActive(true));
 
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.InGame);
     }
 }

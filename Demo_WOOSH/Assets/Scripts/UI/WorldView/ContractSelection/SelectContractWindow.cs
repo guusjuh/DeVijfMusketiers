@@ -85,6 +85,7 @@ public class SelectContractWindow
             this.city = null;
         }
         selectionWindow.gameObject.SetActive(value);
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     private void Initialize()
@@ -143,6 +144,7 @@ public class SelectContractWindow
         active = false;
         city = null;
         selectionWindow.gameObject.SetActive(false);
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     public void SetTimer(TimeSpan remainingTime)

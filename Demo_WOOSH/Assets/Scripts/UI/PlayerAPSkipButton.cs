@@ -58,6 +58,8 @@ public class PlayerAPSkipButton : MonoBehaviour {
     {
         //only react in the player turn
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
+
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         
         if (skipOpen)
         {

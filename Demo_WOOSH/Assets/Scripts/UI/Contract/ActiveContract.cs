@@ -43,6 +43,7 @@ public class ActiveContract : ContractButton
 
     public override void OnClick()
     {
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         // deselect on click
         if (active)
         {

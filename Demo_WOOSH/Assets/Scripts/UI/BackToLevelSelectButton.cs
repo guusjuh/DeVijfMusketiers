@@ -5,6 +5,7 @@ using UnityEngine;
 public class BackToLevelSelectButton : MonoBehaviour {
     public void OnClick()
     {
+        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
     }
 }

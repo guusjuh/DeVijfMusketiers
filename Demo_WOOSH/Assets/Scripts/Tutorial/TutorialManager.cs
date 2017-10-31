@@ -400,6 +400,7 @@ public class TutorialManager
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(3);
         GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
+        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Teleport);
     }
 
     public void TutorialAttack()
@@ -409,5 +410,6 @@ public class TutorialManager
         UIManager.Instance.InGameUI.CastingSpell = -1;
 
         UIManager.Instance.InGameUI.HideSpellButtons();
+        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
     }
 }
