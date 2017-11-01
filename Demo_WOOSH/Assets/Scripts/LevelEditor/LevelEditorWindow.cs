@@ -21,6 +21,11 @@ public class LevelEditorWindow : EditorWindow
 
     private Vector2 levelSize = new Vector2(0,0);
 
+    public void SetLevelSize(Vector2 newSize)
+    {
+        levelSize = newSize;
+    }
+
     private int levelToLoadID = 1;
 
     [MenuItem("Window/Level Editor")]
@@ -46,8 +51,6 @@ public class LevelEditorWindow : EditorWindow
     {
         if (levelEditorRef != null && GameManager.Instance.Paused)
         {
-
-
             using (
                 var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(position.width - 5),
                     GUILayout.Height(position.height - 5)))
@@ -57,9 +60,12 @@ public class LevelEditorWindow : EditorWindow
                 // -------------- SAVE, LOAD, NEW ------------------------
 
                 NewLevel();
-                SaveLevel();
-                LoadLevel();
+                SeperationLine();
 
+                SaveLevel();
+                SeperationLine();
+
+                LoadLevel();
                 SeperationLine();
 
                 // -------------- TOOLS ------------------------

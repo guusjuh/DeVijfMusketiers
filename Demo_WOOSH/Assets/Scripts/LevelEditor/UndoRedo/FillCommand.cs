@@ -172,9 +172,9 @@ public class FillCommand : EditorCommand
         return true;
     }
 
-    private void PlaceContent(Coordinate coord)
+    private void PlaceContent(Coordinate newCoord)
     {
-        TileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(coord);
+        TileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
 
         // if the node is null, there cannot be placed anything
         if (nextTileNode != null && nextTileNode.GetType() != TileType.Dangerous)
@@ -185,7 +185,7 @@ public class FillCommand : EditorCommand
                 SpawnNode s = new SpawnNode();
                 s.type = ContentManager.GetPrimaryFromSecContent(currContentType);
                 s.secType = currContentType;
-                s.position = coord;
+                s.position = newCoord;
 
                 GameManager.Instance.LevelManager.SpawnObjectDEVMODE(s);
                 UberManager.Instance.LevelEditor.SpawnNodes.Add(s);
@@ -216,7 +216,8 @@ public class FillCommand : EditorCommand
             if (currentTileNode != null && currentTileNode.GetAmountOfContent() > 0)
             {
                 SecContentType removedType = GameManager.Instance.TileManager.RemoveContentDEVMODE(currentTileNode);
-                UberManager.Instance.LevelEditor.SpawnNodes.Remove(UberManager.Instance.LevelEditor.SpawnNodes.Find(s => s.secType == removedType && s.position == coord));
+                UberManager.Instance.LevelEditor.SpawnNodes.Remove(UberManager.Instance.LevelEditor.SpawnNodes.Find(s => s.secType == removedType && s.position == currentTileNode.GridPosition));
+                int hoi = 0;
             }
         }
 

@@ -39,6 +39,7 @@ public class LevelEditor : MonoBehaviour
     public const string REDO_HK        = "Y \t- Redo last tool action";
 
     private GridOverlay gridOverlay;
+    private LevelEditorWindow windowRef;
 
     // the current tool used
     private ToolType toolType = ToolType.Brush;
@@ -95,7 +96,7 @@ public class LevelEditor : MonoBehaviour
     public void Initialize()
     {
         levelData = new LevelData();
-        levelData.id = NewID();  // TODO: read from files
+        levelData.id = NewID(); // TODO: read from files
         levelData.spawnNodes = new List<SpawnNode>();
         levelData.rows = 7;
         levelData.columns = 9;
@@ -132,6 +133,9 @@ public class LevelEditor : MonoBehaviour
         selectedData.Initialize();
 
         SetSelectedObject(selectedData.selectedTile.Value);
+
+        windowRef = (LevelEditorWindow)EditorWindow.GetWindow(typeof(LevelEditorWindow), false, "Level Editor");
+        windowRef.SetLevelSize(new Vector2(Rows, Columns));
     }
 
     public void StartNew()
@@ -187,6 +191,8 @@ public class LevelEditor : MonoBehaviour
         GameManager.Instance.LevelManager.SpawnLevelDEVMODE(levelData.spawnNodes);
 
         GameManager.Instance.CameraManager.ResetDEVMODE();
+
+        windowRef.SetLevelSize(new Vector2(Rows, Columns));
     }
 
     public void Pause(bool gamePaused)
