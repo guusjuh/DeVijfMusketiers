@@ -65,6 +65,8 @@ public class InputManager
     {
         ClearOnClick();
 
+        GameManager.Instance.CameraManager.SetBouncyness();
+
         if (!stillTouching)
         {
             stillTouching = true;

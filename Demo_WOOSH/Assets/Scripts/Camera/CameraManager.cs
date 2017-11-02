@@ -10,6 +10,12 @@ public class CameraManager : MonoBehaviour
 
     private Vector2 bordersMin;
     private Vector2 bordersMax;
+    private float maxBouncyness = 2.0f;
+    private float bouncyness = -1.0f;
+    public void SetBouncyness()
+    {
+        bouncyness = maxBouncyness;
+    }
 
     private Vector2 curViewportMin;
     private Vector2 curViewportMax;
@@ -105,56 +111,68 @@ public class CameraManager : MonoBehaviour
         transform.Translate(translation);
     }
 
-    private void MoveCamera(Vector2 desiredVelocity, bool instant) {
+    private void MoveCamera(Vector2 desiredVelocity, bool instant, bool withBounds = false, bool dragging = false) {
         if (bordersMin == Vector2.zero && bordersMax == Vector2.zero) {
             Debug.LogError("Borders have not been set");
             LockLocation(transform.position);
         }
 
-        CalculateVelocity(desiredVelocity);
+        if (withBounds && !dragging)
+        {
+            bouncyness -= 1.0f * Time.deltaTime;
+        }
+
+        CalculateVelocity(desiredVelocity, withBounds);
 
         if (instant) transform.Translate(velocity);
         else transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime * 10; 
     }
 
-    private void CalculateVelocity(Vector2 desiredVelocity)
+    private void CalculateVelocity(Vector2 desiredVelocity, bool withBounds = false)
     {
         velocity = Vector2.zero;
 
         curViewportMin = (Vector3)desiredVelocity + Camera.main.ScreenToWorldPoint(viewportRect.min);
-        curViewportMax = (Vector3)desiredVelocity + Camera.main.ScreenToWorldPoint(viewportRect.max);
+        curViewportMax = (Vector3)desiredVelocity + Camera.main.ScreenToWorldPoint(viewportRect.max);        
 
         if (!lockedAxis[X_AXIS] || target != null)
-            CalculateXVelocity(desiredVelocity.x);
+            CalculateXVelocity(desiredVelocity.x, withBounds);
 
         if (!lockedAxis[Y_AXIS] || target != null)
-            CalculateYVelocity(desiredVelocity.y);
+            CalculateYVelocity(desiredVelocity.y, withBounds);
     }
 
-    private void CalculateXVelocity(float xVelocity) {
-        if (curViewportMin.x <= bordersMin.x && curViewportMax.x >= bordersMax.x) {
+    private void CalculateXVelocity(float xVelocity, bool withBounds = false)
+    {
+        float maxX = withBounds ? bordersMax.x + bouncyness : bordersMax.x;
+        float minX = withBounds ? bordersMin.x - bouncyness : bordersMin.x;
+
+        if (curViewportMin.x <= minX && curViewportMax.x >= maxX) {
             LockAxis(true, false, bordersMin + ((bordersMax - bordersMin) * 0.5f)); //split difference
         }
-        else if (curViewportMax.x >= bordersMax.x) {
-            velocity.x = bordersMax.x - Camera.main.ScreenToWorldPoint(viewportRect.max).x; //move to bordersmax
+        else if (curViewportMax.x >= maxX) {
+            velocity.x = maxX - Camera.main.ScreenToWorldPoint(viewportRect.max).x; //move to bordersmax
         }
-        else if (curViewportMin.x <= bordersMin.x) {
-            velocity.x = bordersMin.x - Camera.main.ScreenToWorldPoint(viewportRect.min).x; //move to bordermin
+        else if (curViewportMin.x <= minX) {
+            velocity.x = minX - Camera.main.ScreenToWorldPoint(viewportRect.min).x; //move to bordermin
         }
         else {
             velocity.x = xVelocity; //normal translation
         }
     }
 
-    private void CalculateYVelocity(float yVelocity) {
-        if (curViewportMin.y <= bordersMin.y && curViewportMax.y >= bordersMax.y) {
+    private void CalculateYVelocity(float yVelocity, bool withBounds = false) {
+        float maxY = withBounds ? bordersMax.y + bouncyness : bordersMax.y;
+        float minY = withBounds ? bordersMin.y - bouncyness : bordersMin.y;
+
+        if (curViewportMin.y <= minY && curViewportMax.y >= maxY) {
             LockAxis(false, true, bordersMin + ((bordersMax - bordersMin) * 0.5f)); //split difference
         }
-        else if (curViewportMax.y >= bordersMax.y) {
-            velocity.y = bordersMax.y - Camera.main.ScreenToWorldPoint(viewportRect.max).y; //move to bordersmax
+        else if (curViewportMax.y >= maxY) {
+            velocity.y = maxY - Camera.main.ScreenToWorldPoint(viewportRect.max).y; //move to bordersmax
         }
-        else if (curViewportMin.y <= bordersMin.y) {
-            velocity.y = bordersMin.y - Camera.main.ScreenToWorldPoint(viewportRect.min).y; //move to bordermin
+        else if (curViewportMin.y <= minY) {
+            velocity.y = minY - Camera.main.ScreenToWorldPoint(viewportRect.min).y; //move to bordermin
         }
         else {
             velocity.y = yVelocity; //normal translation
@@ -163,14 +181,25 @@ public class CameraManager : MonoBehaviour
 
     // Update is called once per frame
     public void UpdatePosition() {
-        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 10) {
+        if (UberManager.Instance.InputManager.DragVelocity.magnitude > 0.1f) {
             target = null;
             UnlockAxis();
-            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true);
+            MoveCamera(-UberManager.Instance.InputManager.DragVelocity * speedScalar, true, true, true);
             return;
         }
         else if (Mathf.Abs(UberManager.Instance.InputManager.ZoomVelocity) > 0.01f) {
             Zoom(-UberManager.Instance.InputManager.ZoomVelocity);
+        }
+
+        // if out of bounds, move back to bounds
+        if (OutOfBorders() && bouncyness >= 0.0f)
+        {
+            Vector3 toPosition =
+                new Vector3(bordersMin.x + ((bordersMax.x - bordersMin.x) / 2),
+                    bordersMin.y + ((bordersMax.y - bordersMin.y) / 2), transform.position.z) -
+                transform.position;
+
+            MoveCamera(toPosition.normalized * 1.0f, false, true);
         }
 
         // locked means either 
@@ -186,6 +215,20 @@ public class CameraManager : MonoBehaviour
                 MoveCamera(toPosition, false);
             }
         }
+    }
+
+    private bool OutOfBorders()
+    {
+        curViewportMin = Camera.main.ScreenToWorldPoint(viewportRect.min);
+        curViewportMax = Camera.main.ScreenToWorldPoint(viewportRect.max);
+
+        if (curViewportMax.x >= bordersMax.x || curViewportMin.x <= bordersMin.x ||
+            curViewportMax.y >= bordersMax.y || curViewportMin.y <= bordersMin.y)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     // Update is called once per frame
