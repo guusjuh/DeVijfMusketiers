@@ -44,8 +44,6 @@ public class InGameUIManager : SubUIManager {
     //------------------ TUTORIAL VARS ------------------------
     private GameObject guidanceArrow;
     private Text guidanceText;
-
-    public Button OnlyButton { get { return onlyButton; } }
     //---------------------------------------------------------
 
     protected override void Initialize()

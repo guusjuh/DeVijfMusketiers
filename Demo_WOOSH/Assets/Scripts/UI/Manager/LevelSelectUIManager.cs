@@ -16,13 +16,27 @@ public class LevelSelectUIManager : SubUIManager
     private ReputationUIManager reputationParent;
 
     private SelectContractWindow selectContractWindow;
-    public SelectContractWindow SelectContractWindow { get { return selectContractWindow;} }
+
+    public SelectContractWindow SelectContractWindow
+    {
+        get
+        {
+            if (UberManager.Instance.Tutorial) return tutorialSelectContractWindow;
+            else return selectContractWindow;
+        }
+    }
 
     private List<City> cities;
     public List<City> Cities { get { return cities; } }
 
     //------------------ TUTORIAL VARS ------------------------
     private GameObject tutorialPanel;
+
+    private SelectContractWindow tutorialSelectContractWindow;
+
+    private City tutorialCity;
+    public City TutorialCity { get { return tutorialCity; } }
+
     private Path tutorialPath;
     public Path TutorialPath { get { return tutorialPath; } }
 
@@ -55,10 +69,17 @@ public class LevelSelectUIManager : SubUIManager
     protected override void InitializeTutorial()
     {
         tutorialPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/TutorialPanel", Vector2.zero, anchorCenter);
-        tutorialPath = new Path(tutorialPanel.transform.Find("Path"), new City(), Destination.Red);
-        tutorialPath.SpawnContract(UberManager.Instance.ContractManager.GenerateRandomContract(tutorialPath));
 
-        wizardsHat = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/Hat", Vector2.zero, anchorCenter).gameObject;
+        tutorialSelectContractWindow = new SelectContractWindow(tutorialPanel.transform.Find("SelectContractMenu").gameObject);
+
+        tutorialCity = tutorialPanel.GetComponentInChildren<City>();
+        tutorialCity.Initiliaze();
+
+        tutorialPath = tutorialCity.Paths[0];
+        //tutorialPath.SpawnContract(UberManager.Instance.ContractManager.GenerateRandomContract(tutorialPath));
+
+        wizardsHat = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/Hat", new Vector2(0, -50.0f), tutorialPanel.transform).gameObject;
+        wizardsHat.transform.SetSiblingIndex(1);
 
         dialog = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/DialogPopup", Vector2.zero, anchorBottomCenter).GetComponent<DialogScript>();
         dialog.Initialize();
@@ -90,7 +111,7 @@ public class LevelSelectUIManager : SubUIManager
 
     public override void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, float width = 100, float height = 100)
     {
-        base.ActivateNoClickPanel(onlyButtonPos, buttonSprite);
+        base.ActivateNoClickPanel(onlyButtonPos, buttonSprite, width, height);
 
         tutorialIndicator.SetState(City.ContractState.New);
     }
