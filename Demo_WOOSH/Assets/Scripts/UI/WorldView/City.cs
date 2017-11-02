@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public enum Destination
 {
     Red,
-    Green
+    Green,
+    Tutorial
 }
 
 public class City : MonoBehaviour {
@@ -59,6 +60,12 @@ public class City : MonoBehaviour {
         {
             UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Refresh(this, destination);
         }
+    }
+
+    public void RefreshAvailableContracts(Contract newContract, Destination destination)
+    {
+        List<Contract> contracts = new List<Contract> {newContract};
+        RefreshAvailableContracts(contracts, destination);
     }
 
     private void AddAvailableContracts(List<Contract> newContracts, Destination destination)

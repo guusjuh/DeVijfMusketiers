@@ -32,6 +32,9 @@ public class LevelSelectUIManager : SubUIManager
     //------------------ TUTORIAL VARS ------------------------
     private GameObject tutorialPanel;
 
+    private GameObject guidanceArrow;
+    private Text guidanceText;
+
     private SelectContractWindow tutorialSelectContractWindow;
 
     private City tutorialCity;
@@ -92,6 +95,9 @@ public class LevelSelectUIManager : SubUIManager
         tutorialIndicator = new NewContractIndicator(onlyButton.transform.Find("Indicator").gameObject);
         tutorialIndicator.SetState(City.ContractState.Nothing);
 
+        guidanceArrow = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceArrow", Vector2.zero, canvas.transform);
+        guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
+        DeactivateNoClickPanel();
         ActivateNoClickPanel(wizardsHat.GetComponent<RectTransform>().anchoredPosition, wizardsHat.GetComponentInChildren<Image>().sprite);
     }
 
@@ -116,11 +122,37 @@ public class LevelSelectUIManager : SubUIManager
         tutorialIndicator.SetState(City.ContractState.New);
     }
 
+    public void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, bool indicatorOn, float width = 100, float height = 100)
+    {
+        base.ActivateNoClickPanel(onlyButtonPos, buttonSprite, width, height);
+
+        if (indicatorOn) tutorialIndicator.SetState(City.ContractState.New);
+        else tutorialIndicator.SetState(City.ContractState.Nothing);
+    }
+
     public override void DeactivateNoClickPanel()
     {
         base.DeactivateNoClickPanel();
 
         tutorialIndicator.SetState(City.ContractState.Nothing);
+        guidanceArrow.SetActive(false);
+        guidanceArrow.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
+        guidanceText.gameObject.SetActive(false);
+    }
+
+    public void SetArrow(Vector2 centerPos, float zRotation, float radius, string text)
+    {
+        guidanceArrow.SetActive(true);
+        guidanceText.gameObject.SetActive(true);
+        guidanceText.text = text;
+
+        guidanceArrow.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+        Quaternion q = Quaternion.AngleAxis(zRotation, Vector3.forward);
+        guidanceArrow.GetComponent<RectTransform>().Rotate(Vector3.forward, zRotation);
+
+        guidanceArrow.GetComponent<RectTransform>().anchoredPosition = centerPos + (Vector2)(q * Vector2.right * radius);
+        guidanceText.GetComponent<RectTransform>().anchoredPosition = centerPos + (Vector2)(q * Vector2.right * (radius + 75.0f));
     }
 
     protected override void Restart()

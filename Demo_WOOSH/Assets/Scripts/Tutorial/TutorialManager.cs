@@ -61,78 +61,81 @@ public class TutorialManager
                 StepSelectCity();
                 break;
             case 3:
-                UberManager.Instance.UiManager.LevelSelectUI.TutorialPath.SpawnContract(
-                    UberManager.Instance.ContractManager.GenerateRandomContract(
-                        UberManager.Instance.UiManager.LevelSelectUI.TutorialPath));
-                Next();//StepSelectContract();
+                StepSelectContract();
+                break;
+            case 4:
+                StepAcceptContract();
+                break;
+            case 5:
+                StepClickExit();
                 break;
             // first dialog with hat finished
-            case 4:
+            case 6:
                 Step2();
                 Debug.Log("Completed firt dialog");
                 break;
             // first dialog with human/head
-            case 5:
+            case 7:
                 Step3();
                 Debug.Log("Clicked human");
                 break;
-            case 6:
+            case 8:
                 Step4();
                 Debug.Log("Dialog with human & hat over");
                 break;
-            case 7:
+            case 9:
                 Step5();
                 break;
             // pre game
-            case 8:
+            case 10:
                 Step6();
                 break;
-            case 9:
+            case 11:
                 Step7();
                 break;
-            case 10:
+            case 12:
                 Step8();
                 break;
-            case 11:
+            case 13:
                 Step9();
                 break;
-            case 12:
+            case 14:
                 Step10();
                 break;
-            case 13:
+            case 15:
                 Step11();
                 break;
-            case 14:
+            case 16:
                 Step12();
                 break;
-            case 15:
+            case 17:
                 Step13();
                 break;
-            case 16:
+            case 18:
                 Step14();
                 break;
-            case 17:
+            case 19:
                 Step15();
                 break;
-            case 18:
+            case 20:
                 Step16();
                 break;
-            case 19:
+            case 21:
                 Step17();
                 break;
-            case 20:
+            case 22:
                 Step18();
                 break;
-            case 21:
+            case 23:
                 Step19();
                 break;
-            case 22:
+            case 24:
                 Step20();
                 break;
-            case 23:
+            case 25:
                 Step21();
                 break;
-            case 24:
+            case 26:
                 Step22();
                 break;
         }
@@ -158,19 +161,68 @@ public class TutorialManager
         UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(0, 126.0f), 
             UIManager.Instance.LevelSelectUI.TutorialCity.GetComponent<Image>().sprite, 260, 260);
 
+        //notice: this is special case code!!
+        //the selectcontractwindow.activate neeeeds to be called before the next step
+        //so we first remove the tutorialmanager.next listener, than add the selectcontractwindow.activate 
+        //and THAN add tutorialmanager.next again.. well hope u get the general idea. 
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.RemoveAllListeners();
+
         //TODO: on click open select contract window, next step select the contract, next step = 2
-        /*UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(
             delegate
             {
-                UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true,
-                    UIManager.Instance.LevelSelectUI.TutorialCity, Destination.Red);
-            });*/
+                UIManager.Instance.LevelSelectUI.SelectContractWindow.Activate(true,
+                    UIManager.Instance.LevelSelectUI.TutorialCity, Destination.Tutorial);
+            });
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(Next);
+
+        Contract contract = UberManager.Instance.ContractManager.GenerateRandomContract(
+                        UIManager.Instance.LevelSelectUI.TutorialPath);
+
+        UIManager.Instance.LevelSelectUI.TutorialCity.RefreshAvailableContracts(contract, Destination.Tutorial);     
     }
 
     private void StepSelectContract()
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-260.0f, 130.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AvailableContractButton"), false, 225, 225);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-260.0f, 130.0f), 280.0f, 180.0f, "Click this helpless human.");
+
+        //notice: this is special case code!!
+        //the selectcontractwindow.activate neeeeds to be called before the next step
+        //so we first remove the tutorialmanager.next listener, than add the selectcontractwindow.activate 
+        //and THAN add tutorialmanager.next again.. well hope u get the general idea. 
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.RemoveAllListeners();
+
+        //TODO: on click open select contract window, next step select the contract, next step = 2
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.AvailableContractIndicators[0].OnClick);
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(Next);
+    }
+
+    private void StepAcceptContract()
+    {
+        UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
+
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-175.0f, -85.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AcceptButton"), false, 155, 105);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-175.0f, -85.0f), 300.0f, 120.0f, "Accept to protect him on his journey.");
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.AvailableContractIndicators[0].SelectContract);
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.MyAcceptButton.DisableWindow);
+    }
+
+    private void StepClickExit()
+    {
+        UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
+
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(300.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/WorldView/CloseWindow"), false);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(300.0f, 355.0f), 260.0f, 100.0f, "Close the window.");
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.Deactivate);
     }
 
     // The clickable human

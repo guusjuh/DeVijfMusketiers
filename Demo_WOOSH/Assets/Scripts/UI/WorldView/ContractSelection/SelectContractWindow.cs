@@ -13,7 +13,9 @@ public class SelectContractWindow
     private Button add4Add;
     private GridLayoutGroup contractGrid;
     private GameObject contractPrefab;
+
     private List<AvailableContract> availableContractIndicators;
+    public List<AvailableContract> AvailableContractIndicators { get { return availableContractIndicators;} }
 
     private AcceptButton acceptButton;
     public AcceptButton MyAcceptButton
