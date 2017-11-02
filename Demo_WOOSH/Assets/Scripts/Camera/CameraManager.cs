@@ -10,11 +10,12 @@ public class CameraManager : MonoBehaviour
 
     private Vector2 bordersMin;
     private Vector2 bordersMax;
-    private float maxBouncyness = 2.0f;
-    private float bouncyness = -1.0f;
+    private float maxBouncynessFactor = 2.0f;
+    private float bouncynessFactor = -1.0f;
+    private float bouncynessSpeedScalar = 1.0f;
     public void SetBouncyness()
     {
-        bouncyness = maxBouncyness;
+        bouncynessFactor = maxBouncynessFactor;
     }
 
     private Vector2 curViewportMin;
@@ -119,7 +120,7 @@ public class CameraManager : MonoBehaviour
 
         if (withBounds && !dragging)
         {
-            bouncyness -= 1.0f * Time.deltaTime;
+            bouncynessFactor -= bouncynessSpeedScalar * Time.deltaTime;
         }
 
         CalculateVelocity(desiredVelocity, withBounds);
@@ -144,8 +145,8 @@ public class CameraManager : MonoBehaviour
 
     private void CalculateXVelocity(float xVelocity, bool withBounds = false)
     {
-        float maxX = withBounds ? bordersMax.x + bouncyness : bordersMax.x;
-        float minX = withBounds ? bordersMin.x - bouncyness : bordersMin.x;
+        float maxX = withBounds ? bordersMax.x + bouncynessFactor : bordersMax.x;
+        float minX = withBounds ? bordersMin.x - bouncynessFactor : bordersMin.x;
 
         if (curViewportMin.x <= minX && curViewportMax.x >= maxX) {
             LockAxis(true, false, bordersMin + ((bordersMax - bordersMin) * 0.5f)); //split difference
@@ -162,8 +163,8 @@ public class CameraManager : MonoBehaviour
     }
 
     private void CalculateYVelocity(float yVelocity, bool withBounds = false) {
-        float maxY = withBounds ? bordersMax.y + bouncyness : bordersMax.y;
-        float minY = withBounds ? bordersMin.y - bouncyness : bordersMin.y;
+        float maxY = withBounds ? bordersMax.y + bouncynessFactor : bordersMax.y;
+        float minY = withBounds ? bordersMin.y - bouncynessFactor : bordersMin.y;
 
         if (curViewportMin.y <= minY && curViewportMax.y >= maxY) {
             LockAxis(false, true, bordersMin + ((bordersMax - bordersMin) * 0.5f)); //split difference
@@ -192,14 +193,14 @@ public class CameraManager : MonoBehaviour
         }
 
         // if out of bounds, move back to bounds
-        if (OutOfBorders() && bouncyness >= 0.0f)
+        if (OutOfBorders() && bouncynessFactor >= 0.0f)
         {
             Vector3 toPosition =
                 new Vector3(bordersMin.x + ((bordersMax.x - bordersMin.x) / 2),
                     bordersMin.y + ((bordersMax.y - bordersMin.y) / 2), transform.position.z) -
                 transform.position;
 
-            MoveCamera(toPosition.normalized * 1.0f, false, true);
+            MoveCamera(toPosition.normalized * bouncynessSpeedScalar, false, true);
         }
 
         // locked means either 
