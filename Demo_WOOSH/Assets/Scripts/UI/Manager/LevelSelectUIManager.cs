@@ -103,16 +103,16 @@ public class LevelSelectUIManager : SubUIManager
 
     protected override void InitializeInGame()
     {
-        levelSelectPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/LevelSelectPanel", Vector2.zero, anchorCenter.transform);
+        levelSelectPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/LevelSelectScrollView", Vector2.zero, anchorCenter).transform.Find("LevelSelectPanel").gameObject;
         cities = new List<City>(levelSelectPanel.GetComponentsInChildren<City>());
         cities.HandleAction(c => c.Initiliaze());
 
         cities[0].Reached();
 
-        reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid.transform).GetComponent<ReputationUIManager>();
+        reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
 
-        selectContractWindow = new SelectContractWindow(levelSelectPanel.transform.Find("SelectContractMenu").gameObject);
+        selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenu", Vector2.zero, anchorCenter).gameObject);
 
         initializedInGame = true;
     }

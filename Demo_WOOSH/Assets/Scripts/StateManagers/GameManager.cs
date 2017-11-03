@@ -47,6 +47,8 @@ public class GameManager : StateManager {
     private List<Contract> selectedContracts;
     public List<Contract> SelectedContracts { get { return selectedContracts; } }
 
+    public const int AMOUNT_HUMANS_PER_LEVEL = 9;
+
     protected override void Initialize()
     {
         if (UberManager.Instance.DevelopersMode) pause = true;

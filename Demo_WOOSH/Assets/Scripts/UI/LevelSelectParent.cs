@@ -49,7 +49,7 @@ public class LevelSelectParent : MonoBehaviour
         bool nextLevelExists = path.hasNextLevel(levelInPathId);
         bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).amountOfHumans +
                                 UberManager.Instance.ContractManager.AmountOfContracts(path.GetNextLevelID(levelInPathId)) 
-                                <= 6;
+                                <= GameManager.AMOUNT_HUMANS_PER_LEVEL;
         bool hasEnoughHumans = UberManager.Instance.ContractManager.AmountOfContracts(levelID) >=
                                ContentManager.Instance.LevelData(levelID).amountOfHumans;
 

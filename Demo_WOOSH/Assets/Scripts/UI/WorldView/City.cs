@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 public enum Destination
 {
-    Red,
+    NoDestination = -1,
+    Red = 0,
     Green,
+    Blue,
     Tutorial
 }
 
@@ -27,7 +29,9 @@ public class City : MonoBehaviour {
     private NewContractIndicator nCI;
 
     //TODO: implement different destinations
+    [SerializeField] private Destination thisCity;
     [SerializeField] private Destination destination;
+    public Destination ThisCity { get { return thisCity; } }
     private Dictionary<Destination, List<Contract>> availableContracts;
     public Dictionary<Destination, List<Contract>> AvailableContracts { get { return availableContracts;} }
 
@@ -39,29 +43,49 @@ public class City : MonoBehaviour {
     public void Reached()
     {
         if (cityReached) return;
-
-        gameObject.GetComponent<Button>().enabled = true;
-        gameObject.GetComponent<Button>().onClick.AddListener(delegate
+        Debug.Log("Reached!");
+        if (destination != Destination.NoDestination)
         {
-            UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination); 
-        });
+            gameObject.GetComponent<Button>().interactable = true;
+            gameObject.GetComponent<Button>().onClick.AddListener(delegate
+            {
+                UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination);
+            });
+        }
+        else
+        {
+            gameObject.GetComponent<Button>().interactable = true;
+            gameObject.GetComponent<Button>().enabled = true;
+        }
+
         cityReached = true;
     } 
 
     public void Initiliaze()
     {
-        paths = new List<Path>();
-        availableContracts = new Dictionary<Destination, List<Contract>>();
-
-        for (int i = 1; i < transform.childCount; i++)
+        // any city with a path to a different destination
+        if (destination != Destination.NoDestination)
         {
-            paths.Add(new Path(transform.GetChild(i), this, destination));
-            availableContracts.Add(destination, new List<Contract>());
+            paths = new List<Path>();
+            availableContracts = new Dictionary<Destination, List<Contract>>();
+
+            for (int i = 1; i < transform.childCount; i++)
+            {
+                paths.Add(new Path(transform.GetChild(i), this, destination));
+                availableContracts.Add(destination, new List<Contract>());
+            }
+
+            gameObject.GetComponent<Button>().interactable = false;
+
+            nCI = new NewContractIndicator(transform.GetChild(0).gameObject);
+        }
+        // the last city in the game
+        else
+        {
+            // nothing for now
+            gameObject.GetComponent<Button>().interactable = false;
         }
 
-        gameObject.GetComponent<Button>().enabled = false;
-
-        nCI = new NewContractIndicator(transform.GetChild(0).gameObject);
         //TODO: find right path, by checking the contract destination
     }
 

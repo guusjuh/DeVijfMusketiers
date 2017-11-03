@@ -63,7 +63,7 @@ public class SelectContractWindow
     {
         if (!active) return false;
         Path thisPath = city.Paths.Find(p => p.Destination == destination);
-        return UberManager.Instance.ContractManager.AmountOfContracts(thisPath.Levels[0].LevelID) < 6;
+        return UberManager.Instance.ContractManager.AmountOfContracts(thisPath.Levels[0].LevelID) < GameManager.AMOUNT_HUMANS_PER_LEVEL;
     }
 
     public bool isCitySelected(City city)

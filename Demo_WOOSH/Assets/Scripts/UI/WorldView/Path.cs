@@ -33,7 +33,7 @@ public class Path {
     public bool SpawnContract(Contract contract)
     {
         //spawning a contract, so always level 0
-        bool spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(levels[0].LevelID) < 6;
+        bool spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(levels[0].LevelID) < GameManager.AMOUNT_HUMANS_PER_LEVEL;
 
         if (spaceInThisLevel)
         {
