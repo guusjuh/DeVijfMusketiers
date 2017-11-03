@@ -107,6 +107,8 @@ public class LevelSelectUIManager : SubUIManager
         cities = new List<City>(levelSelectPanel.GetComponentsInChildren<City>());
         cities.HandleAction(c => c.Initiliaze());
 
+        cities[0].Reached();
+
         reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid.transform).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
 

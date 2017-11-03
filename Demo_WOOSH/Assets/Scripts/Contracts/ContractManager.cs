@@ -91,6 +91,8 @@ public class ContractManager
 
         for (int i = 0; i < cities.Count; i++)
         {
+            if (!cities[i].CityReached) continue;
+
             for (int j = 0; j < cities[i].Paths.Count; j++)
             {
                 List<Contract> newContracts = new List<Contract>();

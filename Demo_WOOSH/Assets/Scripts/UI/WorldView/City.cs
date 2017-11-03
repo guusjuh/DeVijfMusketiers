@@ -33,6 +33,21 @@ public class City : MonoBehaviour {
 
     public List<Path> Paths { get { return paths; } }
 
+    // true when the player has reached the city for the first time
+    private bool cityReached = false;
+    public bool CityReached { get { return cityReached; } }
+    public void Reached()
+    {
+        if (cityReached) return;
+
+        gameObject.GetComponent<Button>().enabled = true;
+        gameObject.GetComponent<Button>().onClick.AddListener(delegate
+        {
+            UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination); 
+        });
+        cityReached = true;
+    } 
+
     public void Initiliaze()
     {
         paths = new List<Path>();
@@ -43,8 +58,9 @@ public class City : MonoBehaviour {
             paths.Add(new Path(transform.GetChild(i), this, destination));
             availableContracts.Add(destination, new List<Contract>());
         }
-        gameObject.GetComponent<Button>().onClick.AddListener( delegate{ UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination); });
-        
+
+        gameObject.GetComponent<Button>().enabled = false;
+
         nCI = new NewContractIndicator(transform.GetChild(0).gameObject);
         //TODO: find right path, by checking the contract destination
     }
