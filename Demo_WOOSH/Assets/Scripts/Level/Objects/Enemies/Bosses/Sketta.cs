@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Sketta : Enemy {
-    public GameObject Shield;
+    private GameObject shield;
 
     public override void Initialize(Coordinate startPos)
     {
@@ -11,7 +11,8 @@ public class Sketta : Enemy {
         blockChance = 0.3f;
         canBlock = true;
 
-        Shield.SetActive(false);
+        shield = transform.Find("Shield").gameObject;
+        shield.SetActive(false);
 
         hasSpecial = false;
         viewDistance = 3;
@@ -24,7 +25,7 @@ public class Sketta : Enemy {
     public override void Reset()
     {
         base.Reset();
-        Shield.SetActive(false);
+        shield.SetActive(false);
     }
 
     public override bool TryHit(int dmg)
@@ -45,12 +46,12 @@ public class Sketta : Enemy {
 
     protected IEnumerator ShieldVisual()
     {
-        Shield.SetActive(true);
-        Shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
+        shield.SetActive(true);
+        shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
 
         yield return new WaitForSeconds(0.5f);
 
-        Shield.SetActive(false);
+        shield.SetActive(false);
 
         yield break;
     }

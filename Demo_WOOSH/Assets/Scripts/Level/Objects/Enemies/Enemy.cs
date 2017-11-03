@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class Enemy : WorldObject
@@ -17,7 +18,10 @@ public class Enemy : WorldObject
     protected int burnModifier = 0;
     protected int burnCount = 0;
     private GameObject burnedIcon;
-    
+
+    protected Animator anim;
+    protected List<SpriteRenderer> sprRenders;
+
     protected int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
     protected int totalActionPoints = 3;        // total points
     protected int currentActionPoints;          // points left this turn
@@ -50,7 +54,8 @@ public class Enemy : WorldObject
     protected EnemyTarget prevTarget;
     protected List<TileNode> currentPath = null;
 
-    public Sprite SpellIconSprite;
+    private Sprite spellIconSprite;
+    public Sprite SpellIconSprite { get { return spellIconSprite; } protected set { spellIconSprite = value; } }
 
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
@@ -63,6 +68,9 @@ public class Enemy : WorldObject
     public override void Initialize(Coordinate startPos)
     {
         base.Initialize(startPos);
+
+        anim = gameObject.GetComponentInChildren<Animator>();
+        sprRenders = new List<SpriteRenderer>(gameObject.GetComponentsInChildren<SpriteRenderer>());
 
         Dead = false;
 
@@ -181,15 +189,13 @@ public class Enemy : WorldObject
 
     protected IEnumerator HitVisual()
     {
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, 1);
+        sprRenders.HandleAction(s => s.color = new Color(0.8f, 0, 0, 1));
 
         Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.35f);
 
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-
-        yield break;
+        sprRenders.HandleAction(s => s.color = new Color(1, 1, 1, 1));
     }
 
     private void NewFloatingDmgNumber(float dmg)

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Arnest : Enemy
 {
-    public GameObject heal;
+    private GameObject heal;
+
     public override void Initialize(Coordinate startPos)
     {
         //set boss specific health
@@ -19,6 +20,7 @@ public class Arnest : Enemy
 
         this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/Spells/enemyHeal");
 
+        heal = transform.Find("Heal").gameObject;
         heal.SetActive(false);
 
         base.Initialize(startPos);
