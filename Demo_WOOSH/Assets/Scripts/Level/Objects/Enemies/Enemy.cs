@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class Enemy : WorldObject
 {
+    protected const string MOVE_ANIM = "Moving";
+    protected const string HIT_ANIM = "Hurt";
+    protected const string ATTACK_ANIM = "Attack";
+    protected const string DIE_ANIM = "Dead";
+
     // spell effects
     protected bool slowed = false;
     protected int slowCount = 0; // for how many turns am I still slowed
@@ -128,6 +133,8 @@ public class Enemy : WorldObject
     {
         base.ResetToInitDEVMODE(startPos);
         Dead = false;
+        anim.SetBool(DIE_ANIM, false);
+        sprRenders.HandleAction(s => s.color = new Color(1, 1, 1, 1));
     }
 
     public override void Clear()
@@ -141,6 +148,7 @@ public class Enemy : WorldObject
     {
         // hit the other
         other.Hit();
+        anim.SetTrigger(ATTACK_ANIM);
     }
 
     public override bool TryHit(int dmg)
@@ -167,6 +175,7 @@ public class Enemy : WorldObject
         if (health <= 0)
         {
             Dead = true;
+            anim.SetBool(DIE_ANIM, true);
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
@@ -189,6 +198,8 @@ public class Enemy : WorldObject
 
     protected IEnumerator HitVisual()
     {
+        anim.SetTrigger(HIT_ANIM);
+
         sprRenders.HandleAction(s => s.color = new Color(0.8f, 0, 0, 1));
 
         Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
@@ -477,6 +488,8 @@ public class Enemy : WorldObject
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
+        anim.SetBool(MOVE_ANIM, true);
+
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
@@ -496,6 +509,8 @@ public class Enemy : WorldObject
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
+
+        anim.SetBool(MOVE_ANIM, false);
     }
 
     public void SelectTarget()
