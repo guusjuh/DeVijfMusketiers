@@ -585,7 +585,7 @@ public class LevelEditor : MonoBehaviour
         if(ValidMousePosition(worldMousePosition, coordinateMousePosition)) highlightPreviewObject.SetActive(true);
 
         previewObject = Instantiate(prefab, Vector3.zero, Quaternion.identity).transform;
-        previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
+        //previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
         previewObject.parent = highlightPreviewObject.transform;
         previewObject.localPosition = Vector3.zero;
     }

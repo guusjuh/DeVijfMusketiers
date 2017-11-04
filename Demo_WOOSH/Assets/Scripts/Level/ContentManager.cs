@@ -26,6 +26,8 @@ public enum SecTileType
     Unknown = -1,
     Dirt,
     Grass,
+    Rocky,
+    RockyRoad,
     Gap,
 }
 
@@ -90,7 +92,6 @@ public class ContentManager {
     //TODO: you dont need this in this form, store it just like valid content types to obtain all textures from one prime type
     private Dictionary<TileType, Texture[]> tileTextures = new Dictionary<TileType, Texture[]>();
     public Dictionary<TileType, Texture[]> TileTextures { get { return tileTextures; } }
-
 
     //TODO: same as content but for tiles
     public GameObject Gap { get; private set; }
@@ -255,6 +256,8 @@ public class ContentManager {
         List<SecTileType> normals = new List<SecTileType>();
         normals.Add(SecTileType.Dirt);
         normals.Add(SecTileType.Grass);
+        normals.Add(SecTileType.Rocky);
+        normals.Add(SecTileType.RockyRoad);
 
         validTileTypes.Add(TileType.Dangerous, dangerZones);
         validTileTypes.Add(TileType.Normal, normals);
