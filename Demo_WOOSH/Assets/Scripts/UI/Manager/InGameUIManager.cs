@@ -187,7 +187,7 @@ public class InGameUIManager : SubUIManager {
 
         enemyInfoUI.Restart();
 
-        playerActionPoints.gameObject.SetActive(true);
+        playerActionPoints.Reset();
         wizard.gameObject.SetActive(true);
 
         if (UberManager.Instance.DevelopersMode) Pause(true);

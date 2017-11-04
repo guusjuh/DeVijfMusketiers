@@ -45,14 +45,14 @@ public class Contract
 
         humanIndex = UnityEngine.Random.Range(0, type.HumanAssets.Count);
 
-        happiness = type.TotalHappiness;
+        happiness = Mathf.CeilToInt((type.TotalHappiness / 50.0f) * 40.0f);
     }
 
     public void MakeHappy()
     {
         if (happiness < TotalHappiness)
         {
-            happiness++;
+            happiness += 5;
         }
     }
 
@@ -69,7 +69,7 @@ public class Contract
     public void Die()
     {
         diedLastLevel = true;
-        happiness--;
+        happiness -= 10;
     }
 
     public bool EndLevel()
@@ -77,8 +77,6 @@ public class Contract
         if (diedLastLevel)
         {
             diedLastLevel = false;
-
-            //TODO: animation for losing happiness
 
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.NegativeRepPerLevel);
 
@@ -91,8 +89,6 @@ public class Contract
         }
         else
         {
-            //TODO: animation for walking to next level
-
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepPerLevel);
 
             //TODO:fix this
