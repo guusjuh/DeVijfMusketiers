@@ -10,7 +10,6 @@ public class SelectContractWindow
 
     private Text timerfield;
     private Button close;
-    private Button add4Add;
     private GridLayoutGroup contractGrid;
     private GameObject contractPrefab;
 
@@ -98,8 +97,6 @@ public class SelectContractWindow
         contractGrid = selectionWindow.transform.Find("ContractGrid").GetComponent<GridLayoutGroup>();
         contractPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelSelect/SelectContract/AvailableContractButton").gameObject;
 
-        add4Add = selectionWindow.transform.Find("Add4Add").GetComponent<Button>();
-
         close = selectionWindow.transform.Find("Close").GetComponent<Button>();
         close.onClick.AddListener(DisableAcceptButton);
         close.onClick.AddListener(Deactivate);
@@ -151,7 +148,7 @@ public class SelectContractWindow
 
     public void SetTimer(TimeSpan remainingTime)
     {
-        timerfield.text = " Refresh: " + remainingTime.Hours.ToString("00") + ":" + remainingTime.Minutes.ToString("00") + ":" + remainingTime.Seconds.ToString("00");
+        timerfield.text = " Refresh: " + remainingTime.Hours.ToString("00") + " : " + remainingTime.Minutes.ToString("00") + " : " + remainingTime.Seconds.ToString("00");
     }
 
     private void ClearContracts()
