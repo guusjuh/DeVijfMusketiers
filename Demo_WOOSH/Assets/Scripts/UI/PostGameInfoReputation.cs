@@ -8,10 +8,12 @@ public class PostGameInfoReputation : MonoBehaviour
     private RectTransform maskPanel;
 
     private float maxWidth = 900;
-    private float growSpeed = 0.05f;
+
+    private float growSpeed = 0.2f;
+
 	// Use this for initialization
     public void Initialize(float start, float end)
-    {
+    {      
         maskPanel = transform.Find("Panel").GetComponent<RectTransform>();
 
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
@@ -21,7 +23,7 @@ public class PostGameInfoReputation : MonoBehaviour
     }
 
     public void Restart(float start, float end)
-    { 
+    {
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();

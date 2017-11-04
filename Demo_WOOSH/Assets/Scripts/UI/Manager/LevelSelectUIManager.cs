@@ -29,6 +29,9 @@ public class LevelSelectUIManager : SubUIManager
     private List<City> cities;
     public List<City> Cities { get { return cities; } }
 
+    private ReputationUpUI repUpUI;
+    private int lastRep = 1;            //TODO: get from player account
+
     //------------------ TUTORIAL VARS ------------------------
     private GameObject tutorialPanel;
 
@@ -116,6 +119,9 @@ public class LevelSelectUIManager : SubUIManager
 
         selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenu", Vector2.zero, anchorCenter).gameObject);
 
+        repUpUI = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/RepUpPanel", Vector2.zero, canvas.transform).GetComponent<ReputationUpUI>();
+        repUpUI.Initialze();
+
         initializedInGame = true;
     }
 
@@ -170,6 +176,11 @@ public class LevelSelectUIManager : SubUIManager
         {
             cities.HandleAction(c => c.Restart());
             reputationParent.SetStars();
+            if (lastRep != UberManager.Instance.PlayerData.ReputationLevel)
+            {
+                lastRep = UberManager.Instance.PlayerData.ReputationLevel;
+                repUpUI.Activate();
+            }
         }
 
         if (UberManager.Instance.Tutorial)
