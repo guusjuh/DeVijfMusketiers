@@ -174,8 +174,7 @@ public class TutorialManager
 
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(Next);
 
-        Contract contract = UberManager.Instance.ContractManager.GenerateRandomContract(
-                        UIManager.Instance.LevelSelectUI.TutorialPath);
+        Contract contract = UberManager.Instance.ContractManager.GenerateContract(UIManager.Instance.LevelSelectUI.TutorialPath, 1, 1);
 
         UIManager.Instance.LevelSelectUI.TutorialCity.RefreshAvailableContracts(contract, Destination.Tutorial);     
     }
@@ -312,9 +311,9 @@ public class TutorialManager
 
         Time.timeScale = 0;
 
-        wolfPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.LevelManager.Enemies[0].transform.position);
+        wolfPos = new Vector2(0, 180);
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"));
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), 120, 110);
 
         UIManager.Instance.InGameUI.SetArrow(wolfPos, 100.0f, 100.0f, "The enemy goes first. Click to start.");
     }
@@ -337,8 +336,7 @@ public class TutorialManager
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(humanPos,
-            GameManager.Instance.LevelManager.Humans[0].GetComponent<SpriteRenderer>().sprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(humanPos, GameManager.Instance.LevelManager.Humans[0].ContractRef.InWorldSprite);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Humans[0].Click);
 
@@ -396,12 +394,12 @@ public class TutorialManager
     {
         Time.timeScale = 0;
 
-        wolfPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.LevelManager.Enemies[0].transform.position);
+        wolfPos = new Vector2(-108, -258);
 
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"));
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), 120, 110);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Enemies[0].Click);
 

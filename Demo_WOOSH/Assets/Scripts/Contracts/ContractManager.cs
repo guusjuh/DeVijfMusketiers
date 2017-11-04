@@ -141,8 +141,20 @@ public class ContractManager
         List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
 
         Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
-        //AddContract(newContract);
         
+        return newContract;
+    }
+
+    public Contract GenerateContract(Path path, int rep, int index = -1)
+    {
+        int id = AmountOfContracts();
+
+        // get random type   
+        HumanTypes type = (HumanTypes)(rep-1);
+        ContractType matchingContractType = ContractTypes.Find(c => c.HumanType == type);
+
+        Contract newContract = new Contract(id, matchingContractType, path, index);
+
         return newContract;
     }
 }

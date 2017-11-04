@@ -3,49 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PostGameInfoReputation : MonoBehaviour {
-    private ReputationBar repBar;
-    private Text star1;
-    private Text star2;
+public class PostGameInfoReputation : MonoBehaviour
+{
+    private RectTransform maskPanel;
 
-
+    private float maxWidth = 900;
+    private float growSpeed = 0.05f;
 	// Use this for initialization
     public void Initialize(float start, float end)
     {
-        star1 = transform.Find("Star1").Find("Text").GetComponent<Text>();
-        star2 = transform.Find("Star2").Find("Text").GetComponent<Text>();
-
-        repBar = transform.Find("ReputationBar").GetComponent<ReputationBar>();
-        repBar.Initialize();
+        maskPanel = transform.Find("Panel").GetComponent<RectTransform>();
 
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();
-        fi.Initialize((end - start).ToString(), (end >= start)? Color.green:Color.red, 1.5f, 3.0f, repBar.transform.position, false);
+        fi.Initialize((end >= start ? "+" : "-") + (end - start), (end >= start)? Color.green : Color.red, 0.0f, 10.0f, maskPanel.transform.position + new Vector3(maxWidth / 2.0f, 125, 0), false);
     }
 
     public void Restart(float start, float end)
-    {
+    { 
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();
-        fi.Initialize((end - start).ToString(), (end >= start) ? Color.green : Color.red, 1.5f, 3.0f, repBar.transform.position, false);
+        fi.Initialize((end >= start ? "+" : "-") + (end - start), (end >= start) ? Color.green : Color.red, 0.0f, 10.0f, maskPanel.transform.position + new Vector3(maxWidth / 2.0f, 125, 0), false);
     }
 
     private IEnumerator gainReputation(float start, float end)
     {
-
         while(Mathf.Abs(start - end) > 1){
             if(start < end){
-                start++;
+                start += growSpeed;
             }
             else if (start > end)
             {
-                start--;
+                start -= growSpeed;
             }
             setElements(start);
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
         } 
         setElements(end);
 
@@ -54,10 +49,7 @@ public class PostGameInfoReputation : MonoBehaviour {
 
     private void setElements(float value)
     {
-        int level = (int)(value / 100.0f);
-        star1.text = "" + level;
-        star2.text = "" + (level + 1);
-
-        repBar.SetBar(value % 100);
+        maskPanel.sizeDelta = new Vector2((900.0f / 500.0f) * value, maskPanel.sizeDelta.y);
+        //repBar.SetBar(value % 100);
     }
 }

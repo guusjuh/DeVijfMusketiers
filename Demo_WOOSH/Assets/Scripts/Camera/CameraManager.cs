@@ -219,8 +219,6 @@ public class CameraManager : MonoBehaviour
 
             MoveCamera(toPosition.normalized * bouncynessSpeedScalar, false, true);
         }
-
-        
     }
 
     private bool OutOfBorders()

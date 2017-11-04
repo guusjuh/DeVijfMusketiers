@@ -35,7 +35,7 @@ public class Contract
     private bool diedLastLevel = false;
     public bool Died { get { return diedLastLevel;} }
 
-    public Contract(int id, ContractType type, Path path)
+    public Contract(int id, ContractType type, Path path, int index = -1)
     {
         this.id = id;
         this.type = type;
@@ -43,7 +43,7 @@ public class Contract
         if(path != null) currentLevel = path.Levels[0].LevelID;
         this.path = path;
 
-        humanIndex = UnityEngine.Random.Range(0, type.HumanAssets.Count);
+        humanIndex = index == -1 ? UnityEngine.Random.Range(0, type.HumanAssets.Count) : index;
 
         happiness = Mathf.CeilToInt((type.TotalHappiness / 50.0f) * 40.0f);
     }

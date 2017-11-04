@@ -50,7 +50,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
         playerAPBackground.color = dissabledColorPlayerAP;
 
         rtAP.sizeDelta = new Vector2(size, size);
-        rtSkip.sizeDelta = new Vector2(-size, size);
+        rtSkip.sizeDelta = new Vector2(0, size);
         playerAPText.transform.localScale = new Vector3(1,1,1);
         playerSkipText.transform.localScale = new Vector3(0,1,1);
         skipOpen = false;
