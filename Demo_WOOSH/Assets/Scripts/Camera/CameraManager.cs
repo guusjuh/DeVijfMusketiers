@@ -192,6 +192,23 @@ public class CameraManager : MonoBehaviour
             Zoom(-UberManager.Instance.InputManager.ZoomVelocity);
         }
 
+        // locked means either 
+        // enemy turn OR 
+        // having a target OR 
+        // too big for the level
+        if (lockedAxis[X_AXIS] && lockedAxis[Y_AXIS])
+        {
+            // we have a target, go follow it
+            if (target != null)
+            {
+                // keep moving
+                Vector3 toPosition = new Vector3(target.position.x, target.position.y, transform.position.z) -
+                                     transform.position;
+                MoveCamera(toPosition, false);
+                return;
+            }
+        }
+        
         // if out of bounds, move back to bounds
         if (OutOfBorders() && bouncynessFactor >= 0.0f)
         {
@@ -203,19 +220,7 @@ public class CameraManager : MonoBehaviour
             MoveCamera(toPosition.normalized * bouncynessSpeedScalar, false, true);
         }
 
-        // locked means either 
-        // enemy turn OR 
-        // having a target OR 
-        // too big for the level
-        if (lockedAxis[X_AXIS] && lockedAxis[Y_AXIS]) {
-            // we have a target, go follow it
-            if (target != null) {
-                // keep moving
-                Vector3 toPosition = new Vector3(target.position.x, target.position.y, transform.position.z) -
-                                     transform.position;
-                MoveCamera(toPosition, false);
-            }
-        }
+        
     }
 
     private bool OutOfBorders()
