@@ -114,7 +114,7 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
-        tutorial = true;
+        tutorial = false;
 
         if (tutorial)
         {

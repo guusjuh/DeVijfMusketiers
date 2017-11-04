@@ -15,8 +15,11 @@ public class ContractType
     [SerializeField] private int totalHappiness;
     public int TotalHappiness { get { return totalHappiness; } }
 
-    [SerializeField] private Sprite inWorld;
-    public Sprite InWorld { get { return inWorld; } }
+    [SerializeField] private List<GameObject> inWorld;
+    public List<GameObject> InWorld { get { return inWorld; } }
+
+    [SerializeField] private Sprite inWorldSprite;
+    public Sprite InWorldSprite { get { return inWorldSprite; } }
 
     [SerializeField] private Sprite portrait;
     public Sprite Portrait { get { return portrait; } }

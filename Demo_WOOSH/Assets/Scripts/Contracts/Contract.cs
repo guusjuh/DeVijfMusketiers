@@ -15,12 +15,14 @@ public class Contract
     public Path MyPath { get { return path; } }
 
     private int levelInPath;
-    
+
     private ContractType type;
+    private int humanIndex = 0;
     public HumanTypes HumanType { get { return type.HumanType; } }
     public int Reputation { get { return type.Reputation; } }
     public int TotalHappiness { get { return type.TotalHappiness; } }
-    public Sprite InWorld { get { return type.InWorld; } }
+    public GameObject InWorld { get { return type.InWorld[humanIndex]; } }
+    public Sprite InWorldSprite { get { return type.InWorldSprite; } }
     public Sprite Portrait { get { return type.Portrait; } }
     public Rewards Rewards { get { return type.Rewards; } }
 
@@ -40,6 +42,9 @@ public class Contract
         levelInPath = 0;
         if(path != null) currentLevel = path.Levels[0].LevelID;
         this.path = path;
+
+        //TODO: replace count with 'amount of types' or something like that
+        humanIndex = UnityEngine.Random.Range(0, type.InWorld.Count);
 
         happiness = type.TotalHappiness;
     }
