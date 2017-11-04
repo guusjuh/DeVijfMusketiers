@@ -138,10 +138,12 @@ public class LevelEditorWindow : EditorWindow
                     EditorGUILayout.TextArea(LevelEditor.FILL_HK + "\n" +
                                              LevelEditor.PENCIL_HK + "\n" +
                                              LevelEditor.ERASER_HK + "\n" +
+                                             LevelEditor.DELETE_HK + "\n" +
                                              LevelEditor.UNDO_HK + "\n" +
                                              LevelEditor.REDO_HK + "\n" +
                                              LevelEditor.TOGGLE_HK + "\n" +
-                                             LevelEditor.SWITCH_PRIM_HK);
+                                             LevelEditor.SWITCH_PRIM_HK + "\n" +
+                                             LevelEditor.PAUSE_HK);
 
                     GUILayout.EndVertical();
                 }

@@ -30,13 +30,15 @@ public class LevelEditor : MonoBehaviour
     private const KeyCode REDO = KeyCode.Y;
     private const KeyCode SWITCH_TILE_CONTENT = KeyCode.Tab;
 
-    public const string FILL_HK        = "Q \t- Fill";
-    public const string PENCIL_HK      = "W \t- Pencil";
-    public const string ERASER_HK      = "E \t- Eraser";
+    public const string FILL_HK        = "Q \t- Fill tool";
+    public const string PENCIL_HK      = "W \t- Pencil tool";
+    public const string ERASER_HK      = "E \t- Eraser tool";
+    public const string DELETE_HK      = "R Mouse \t- Delete";
     public const string TOGGLE_HK      = "TAB \t- Toggle between content/tile";
     public const string SWITCH_PRIM_HK = "1-9 \t- Switch primary type";
     public const string UNDO_HK        = "Z \t- Undo last tool action";
     public const string REDO_HK        = "Y \t- Redo last tool action";
+    public const string PAUSE_HK       = "P \t- Pause/unpause the game";
 
     private GridOverlay gridOverlay;
     private LevelEditorWindow windowRef;
