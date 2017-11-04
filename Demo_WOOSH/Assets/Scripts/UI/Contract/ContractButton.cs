@@ -20,7 +20,7 @@ public class ContractButton : MonoBehaviour
         this.contractRef = contractRef;
 
         starGrid = transform.Find("StarParent").GetComponent<GridLayoutGroup>();
-        starPrefab = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/StarImg");
+        starPrefab = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/Star");
     }
 
     public virtual void OnClick() { }

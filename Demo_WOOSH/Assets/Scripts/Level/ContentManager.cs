@@ -93,9 +93,6 @@ public class ContentManager {
     private Dictionary<TileType, Texture[]> tileTextures = new Dictionary<TileType, Texture[]>();
     public Dictionary<TileType, Texture[]> TileTextures { get { return tileTextures; } }
 
-    //TODO: same as content but for tiles
-    public GameObject Gap { get; private set; }
-
     private LevelDataContainer levelDataContainer = new LevelDataContainer();
 
     public LevelData LevelData(int id)
@@ -107,8 +104,6 @@ public class ContentManager {
     public int AmountOfLevels { get { return levelDataContainer.LevelData.Count; } }
 
     public void Initialize() {
-        Gap = Resources.Load<GameObject>("Prefabs/Hole");
-
         SetValidTypes();
 
         LoadPrefabsForContentType("Prefabs/Bosses", ContentType.Boss);

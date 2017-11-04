@@ -79,12 +79,12 @@ public class Enemy : WorldObject
 
         Dead = false;
 
-        burnedIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/BurnedIcon"),
+        burnedIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/InGame/StatusEffects/BurnedIcon"),
             Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
         burnedIcon.SetActive(false);
         burnedIcon.transform.SetAsFirstSibling();
 
-        frozenIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/FrozenIcon"),
+        frozenIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/InGame/StatusEffects/FrozenIcon"),
             Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
         frozenIcon.SetActive(false);
         frozenIcon.transform.SetAsFirstSibling();

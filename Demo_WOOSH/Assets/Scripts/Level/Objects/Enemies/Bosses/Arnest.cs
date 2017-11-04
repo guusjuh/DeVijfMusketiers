@@ -18,7 +18,7 @@ public class Arnest : Enemy
         this.specialCost = 1;
         this.hasSpecial = true;
 
-        this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/Spells/enemyHeal");
+        this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyHeal");
 
         heal = transform.Find("Heal").gameObject;
         heal.SetActive(false);
