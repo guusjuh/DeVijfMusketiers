@@ -17,7 +17,7 @@ public class InputManager
 
     public void CatchInput()
     {
-        if (UIManager.Instance.InGameUI.CastingSpell >= 0) return;
+        if (UIManager.Instance.InGameUI.CastingSpell >= 0 && UIManager.Instance.InGameUI.CastingSpell != 3) return;
 
         if (CatchZoomInput()) return;
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
@@ -35,6 +35,21 @@ public class InputManager
                     StartDrag();
                 }
             }
+            else
+            {
+                PointerEventData pointerData = new PointerEventData(EventSystem.current);
+
+                // use the position from controller as start of raycast instead of mousePosition.
+                pointerData.position = Input.mousePosition;
+
+                List<RaycastResult> results = new List<RaycastResult>();
+                EventSystem.current.RaycastAll(pointerData, results);
+
+                bool onlyStatusIconClicked = (results.Count > 0 &&
+                                      results.FindAll(r => r.gameObject.transform.tag == "SurroundingPushButton").Count == results.Count);
+
+                if(onlyStatusIconClicked) StartDrag();
+            }
         }
         else if (Input.GetMouseButton(LEFT_MOUSE_BUTTON))
         {
@@ -49,6 +64,8 @@ public class InputManager
     private void StartDrag()
     {
         ClearOnClick();
+
+        GameManager.Instance.CameraManager.SetBouncyness();
 
         if (!stillTouching)
         {
@@ -86,6 +103,8 @@ public class InputManager
     private void HandleActionOnClickedObject(WorldObject worldObject)
     {
         ClearOnClick();
+
+        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
 
         worldObject.Click();
     }
@@ -129,7 +148,6 @@ public class InputManager
     private void ClearOnClick()
     {
         UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
         GameManager.Instance.TileManager.HidePossibleRoads();
     }
@@ -155,7 +173,7 @@ public class InputManager
         if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerActionPoints.CloseSkipButton();
 
         return !(noUIClicked || onlyStatusIconClicked || onlyFloatingIndicatorsClicked);
-}
+    }
 
     private bool CatchZoomInput()
     {
