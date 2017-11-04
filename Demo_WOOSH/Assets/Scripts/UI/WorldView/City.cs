@@ -43,7 +43,7 @@ public class City : MonoBehaviour {
     public void Reached()
     {
         if (cityReached) return;
-        Debug.Log("Reached!");
+
         if (destination != Destination.NoDestination)
         {
             gameObject.GetComponent<Button>().interactable = true;
@@ -69,7 +69,7 @@ public class City : MonoBehaviour {
             paths = new List<Path>();
             availableContracts = new Dictionary<Destination, List<Contract>>();
 
-            for (int i = 1; i < transform.childCount; i++)
+            for (int i = 2; i < transform.childCount; i++)
             {
                 paths.Add(new Path(transform.GetChild(i), this, destination));
                 availableContracts.Add(destination, new List<Contract>());
@@ -77,7 +77,7 @@ public class City : MonoBehaviour {
 
             gameObject.GetComponent<Button>().interactable = false;
 
-            nCI = new NewContractIndicator(transform.GetChild(0).gameObject);
+            nCI = new NewContractIndicator(transform.GetChild(1).gameObject);
         }
         // the last city in the game
         else
