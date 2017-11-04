@@ -78,6 +78,8 @@ public class LevelSelectUIManager : SubUIManager
         tutorialCity = tutorialPanel.GetComponentInChildren<City>();
         tutorialCity.Initiliaze();
 
+        tutorialCity.Reached();
+
         tutorialPath = tutorialCity.Paths[0];
         //tutorialPath.SpawnContract(UberManager.Instance.ContractManager.GenerateRandomContract(tutorialPath));
 

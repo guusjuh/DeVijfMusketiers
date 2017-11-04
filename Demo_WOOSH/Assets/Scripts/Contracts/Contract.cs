@@ -96,7 +96,7 @@ public class Contract
             {
                 UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepCompleted);
 
-                UIManager.Instance.LevelSelectUI.Cities.Find(c => path.Destination == c.ThisCity).Reached();
+                if(!UberManager.Instance.Tutorial) UIManager.Instance.LevelSelectUI.Cities.Find(c => path.Destination == c.ThisCity).Reached();
 
                 BreakContract();
                 return false;

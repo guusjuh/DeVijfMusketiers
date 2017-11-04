@@ -45,7 +45,6 @@ public class TutorialManager
         {
             // continue dialog
             UIManager.Instance.LevelSelectUI.Dialog.Next();
-            Debug.Log("next dialog");
             if (UIManager.Instance.LevelSelectUI.Dialog.On) return;
         }
 
@@ -72,16 +71,13 @@ public class TutorialManager
             // first dialog with hat finished
             case 6:
                 Step2();
-                Debug.Log("Completed firt dialog");
                 break;
             // first dialog with human/head
             case 7:
                 Step3();
-                Debug.Log("Clicked human");
                 break;
             case 8:
                 Step4();
-                Debug.Log("Dialog with human & hat over");
                 break;
             case 9:
                 Step5();
@@ -318,8 +314,7 @@ public class TutorialManager
 
         wolfPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.LevelManager.Enemies[0].transform.position);
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, 
-            GameManager.Instance.LevelManager.Enemies[0].GetComponent<SpriteRenderer>().sprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"));
 
         UIManager.Instance.InGameUI.SetArrow(wolfPos, 100.0f, 100.0f, "The enemy goes first. Click to start.");
     }
@@ -406,8 +401,7 @@ public class TutorialManager
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos,
-            GameManager.Instance.LevelManager.Enemies[0].GetComponent<SpriteRenderer>().sprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"));
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Enemies[0].Click);
 
@@ -461,7 +455,7 @@ public class TutorialManager
 
         UIManager.Instance.PostGameUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.PostGameUI.SetArrow(new Vector2(-105, 345), 110.0f, 100.0f, "Your human made it!");
+        UIManager.Instance.PostGameUI.SetArrow(new Vector2(-110, -605), 110.0f, 100.0f, "You gain reputation if your humans makes it.");
     }
 
     // in level select again
