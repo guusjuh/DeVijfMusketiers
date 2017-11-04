@@ -8,6 +8,7 @@ public enum Destination
     Red = 0,
     Green,
     Blue,
+    Purple,
     Tutorial
 }
 
