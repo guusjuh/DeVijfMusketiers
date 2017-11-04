@@ -107,7 +107,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>0</x>
         <y>4</y>
@@ -115,7 +115,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>1</x>
         <y>4</y>
@@ -123,7 +123,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>2</x>
         <y>4</y>
@@ -131,7 +131,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>4</x>
         <y>4</y>
@@ -139,7 +139,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>5</x>
         <y>4</y>
@@ -147,7 +147,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>6</x>
         <y>4</y>
@@ -163,7 +163,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>4</x>
         <y>1</y>
@@ -171,7 +171,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>4</x>
         <y>2</y>
@@ -179,7 +179,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>5</x>
         <y>2</y>
@@ -187,7 +187,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>6</x>
         <y>2</y>

@@ -97,7 +97,7 @@ public class InputManager
             if (worldObjects.Count > 1)
             {
                 if (!(worldObjects[i].IsBarrel() &&
-                    worldObjects[i].GetComponent<Barrel>().Destroyed))
+                    worldObjects[i].GetComponent<Rock>().Destroyed))
                 {
                     HandleActionOnClickedObject(worldObjects[i]);
                     break;

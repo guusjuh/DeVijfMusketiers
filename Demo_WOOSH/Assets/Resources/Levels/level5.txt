@@ -69,7 +69,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>0</x>
         <y>1</y>

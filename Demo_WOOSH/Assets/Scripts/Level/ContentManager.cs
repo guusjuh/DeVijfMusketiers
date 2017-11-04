@@ -48,7 +48,7 @@ public enum SecContentType
     Arnest,
     Sketta,
     Wolf,
-    Barrel,
+    Rock,
     Shrine
 }
 
@@ -237,7 +237,7 @@ public class ContentManager {
         bosses.Add(SecContentType.Dodin);
         bosses.Add(SecContentType.Sketta);
         List<SecContentType> environmentals = new List<SecContentType>();
-        environmentals.Add(SecContentType.Barrel);
+        environmentals.Add(SecContentType.Rock);
         environmentals.Add(SecContentType.Shrine);
         List<SecContentType> humans = new List<SecContentType>();
         humans.Add(SecContentType.Human);

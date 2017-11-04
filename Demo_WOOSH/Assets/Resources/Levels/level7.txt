@@ -160,7 +160,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>3</x>
         <y>2</y>
@@ -168,7 +168,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>4</x>
         <y>2</y>
@@ -176,7 +176,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>5</x>
         <y>2</y>
@@ -184,7 +184,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>3</x>
         <y>0</y>
@@ -192,7 +192,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>5</x>
         <y>0</y>
@@ -232,7 +232,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>5</x>
         <y>5</y>
@@ -240,7 +240,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>5</x>
         <y>6</y>
@@ -248,7 +248,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>6</x>
         <y>7</y>
@@ -256,7 +256,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>7</x>
         <y>11</y>
@@ -264,7 +264,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>7</x>
         <y>10</y>
@@ -272,7 +272,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>1</x>
         <y>11</y>
@@ -280,7 +280,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>1</x>
         <y>10</y>
@@ -288,7 +288,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>2</x>
         <y>10</y>
@@ -336,7 +336,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>2</x>
         <y>8</y>
@@ -344,7 +344,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>2</x>
         <y>7</y>
@@ -352,7 +352,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>2</x>
         <y>6</y>
@@ -360,7 +360,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>3</x>
         <y>5</y>
@@ -368,7 +368,7 @@
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Barrel</secType>
+      <secType>Rock</secType>
       <position>
         <x>8</x>
         <y>10</y>

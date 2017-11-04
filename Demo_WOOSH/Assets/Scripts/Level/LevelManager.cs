@@ -13,8 +13,8 @@ public class LevelManager
     private List<Human> humans;
     public List<Human> Humans { get { return humans; } }
 
-    private List<Barrel> barrels; 
-    public List<Barrel> Barrels { get { return barrels; } }
+    private List<Rock> barrels; 
+    public List<Rock> Barrels { get { return barrels; } }
 
     private List<Shrine> shrines; 
     public List<Shrine> Shrines { get { return shrines; } }
@@ -64,7 +64,7 @@ public class LevelManager
         humansInstantiated = 0;
 
         humans = new List<Human>();
-        barrels = new List<Barrel>();
+        barrels = new List<Rock>();
         shrines = new List<Shrine>();
         enemies = new List<Enemy>();
         removedObjects = new List<WorldObject>();
@@ -110,7 +110,7 @@ public class LevelManager
     public void RestartDEVMODE()
     {
         humans = new List<Human>();
-        barrels = new List<Barrel>();
+        barrels = new List<Rock>();
         shrines = new List<Shrine>();
         enemies = new List<Enemy>();
         removedObjects = new List<WorldObject>();
@@ -469,13 +469,13 @@ public class LevelManager
 
         switch (s.secType)
         {
-            case SecContentType.Barrel:
+            case SecContentType.Rock:
                 prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
-                                                               (ContentType.Environment, SecContentType.Barrel)];
+                                                               (ContentType.Environment, SecContentType.Rock)];
 
                 barrels.Add(GameObject.Instantiate(prefab,
                                                    GameManager.Instance.TileManager.GetWorldPosition(s.position),
-                                                   Quaternion.identity).GetComponent<Barrel>());
+                                                   Quaternion.identity).GetComponent<Rock>());
                 barrels.Last().Initialize(s.position);
                 return barrels.Last();
 
@@ -544,7 +544,7 @@ public class LevelManager
 
         if (toRemove.IsBarrel())
         {
-            barrels.Remove((Barrel)toRemove);
+            barrels.Remove((Rock)toRemove);
         }
         else if (toRemove.IsHuman())
         {
@@ -605,7 +605,7 @@ public class LevelManager
 
         if (toRemove.IsBarrel())
         {
-            barrels.Remove((Barrel)toRemove);
+            barrels.Remove((Rock)toRemove);
         }
         else if (toRemove.IsHuman())
         {
@@ -687,8 +687,8 @@ public class LevelManager
                                 enemies.Add((Enemy)w);
                                 break;
                             case ContentType.Environment:
-                                if (w.Type == SecContentType.Barrel)
-                                    barrels.Add((Barrel) w);
+                                if (w.Type == SecContentType.Rock)
+                                    barrels.Add((Rock) w);
                                 else if(w.Type == SecContentType.Shrine)
                                     shrines.Add((Shrine)w);
                                 else

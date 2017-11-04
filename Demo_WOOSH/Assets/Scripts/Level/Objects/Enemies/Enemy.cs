@@ -425,7 +425,7 @@ public class Enemy : WorldObject
 
     protected virtual void PathBlocked(Transform other)
     {
-        if (other.GetComponent<Barrel>() != null) Attack(other.GetComponent<Barrel>());
+        if (other.GetComponent<Rock>() != null) Attack(other.GetComponent<Rock>());
     }
 
     // called walk, since 'move' is the complete turn of an enemy
