@@ -82,6 +82,25 @@ public class ContractManager
         }
     }
 
+    public void RefreshCityContracts(City city)
+    {
+        if (city.Paths != null)
+        {
+            for (int j = 0; j < city.Paths.Count; j++)
+            {
+                List<Contract> newContracts = new List<Contract>();
+
+                //generate x new contracts, for each destination
+                for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                {
+                    newContracts.Add(GenerateRandomContract(city.Paths[j]));
+                }
+                //pass contracts to right cities including destination
+                city.RefreshAvailableContracts(newContracts, city.Paths[j].Destination);
+            }
+        }
+    }
+
     private void RefreshContracts()
     {
         Debug.Log("new contracts");
