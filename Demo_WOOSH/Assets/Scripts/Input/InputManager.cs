@@ -8,6 +8,7 @@ public class InputManager
 
     private Vector2 previousPosition;
     private bool stillTouching = false;
+    public bool StillTouching { get { return stillTouching; } }
 
     private Vector2 dragVelocity;
     public Vector2 DragVelocity { get { return dragVelocity; } }

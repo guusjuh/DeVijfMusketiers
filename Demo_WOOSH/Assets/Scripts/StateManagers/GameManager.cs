@@ -61,6 +61,7 @@ public class GameManager : StateManager {
 
         gameOn = true;
         won = false;
+        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.InGame);
     }
 
     protected override void Restart()
@@ -74,6 +75,7 @@ public class GameManager : StateManager {
 
         gameOn = true;
         won = false;
+        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.InGame);
     }
 
     public override void Clear()

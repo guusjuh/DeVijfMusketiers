@@ -212,12 +212,20 @@ public class CameraManager : MonoBehaviour
         // if out of bounds, move back to bounds
         if (OutOfBorders() && bouncynessFactor >= 0.0f)
         {
-            Vector3 toPosition =
-                new Vector3(bordersMin.x + ((bordersMax.x - bordersMin.x) / 2),
-                    bordersMin.y + ((bordersMax.y - bordersMin.y) / 2), transform.position.z) -
-                transform.position;
+            Vector3 toPosition;
 
-            MoveCamera(toPosition.normalized * bouncynessSpeedScalar, false, true);
+            if (!UberManager.Instance.InputManager.StillTouching)
+            {
+                toPosition = new Vector3(bordersMin.x + ((bordersMax.x - bordersMin.x) / 2),
+                                 bordersMin.y + ((bordersMax.y - bordersMin.y) / 2), transform.position.z) -
+                             transform.position;
+            }
+            else
+            {
+                toPosition = transform.position;
+            }
+
+            MoveCamera(toPosition.normalized * bouncynessSpeedScalar, false, true, UberManager.Instance.InputManager.StillTouching);
         }
     }
 
