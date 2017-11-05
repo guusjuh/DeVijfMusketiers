@@ -9,7 +9,7 @@ public class PlayerData {
     //public List<Contract> ContractsRef { get { return contractsRef; } }
 
     // Reputation
-    private float reputation = 101;
+    private float reputation = 112;
     public float Reputation { get { return reputation; } }
 
     private float toNext = 0;

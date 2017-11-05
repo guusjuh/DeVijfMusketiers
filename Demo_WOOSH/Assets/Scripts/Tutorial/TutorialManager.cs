@@ -280,7 +280,7 @@ public class TutorialManager
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
         // start tutorial level
-        UberManager.Instance.PreGameManager.SelectedLevel = 5;
+        UberManager.Instance.PreGameManager.SelectedLevel = 0;
         UberManager.Instance.GotoState(UberManager.GameStates.PreGame);
 
         UIManager.Instance.PreGameUI.DeactivateNoClickPanel();

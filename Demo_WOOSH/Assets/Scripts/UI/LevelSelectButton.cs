@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LevelSelectButton : MonoBehaviour
 {
-    [SerializeField]private int levelID;
+    private int levelID;
 
     public void Initialize(int id)
     {

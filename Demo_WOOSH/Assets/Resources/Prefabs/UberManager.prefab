@@ -56,7 +56,7 @@ MonoBehaviour:
     contractTypes:
     - type: 0
       reputation: 1
-      totalHappiness: 5
+      totalHappiness: 50
       humanAssets:
       - inWorld: {fileID: 1894720331165500, guid: d5cd104630c61164d8bc30fde96f58bf,
           type: 2}
@@ -74,7 +74,7 @@ MonoBehaviour:
           type: 3}
         portrait: {fileID: 21300000, guid: c4cd97fdc252d9c4b927ecb4375043e9, type: 3}
       rewards:
-        positiveRepPerLevel: 50
+        positiveRepPerLevel: 2.5
         negativeRepPerLevel: -2.5
         positiveRepCompleted: 5
         negativeRepCompleted: -5
