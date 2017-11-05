@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LevelSelectUIManager : SubUIManager
 {
     private RectTransform anchorCenter;
+    public RectTransform AnchorCenter {get { return anchorCenter; } }
     private RectTransform anchorBottomRight;
     private RectTransform anchorTopMid;
     private RectTransform anchorBottomCenter;
@@ -14,6 +15,7 @@ public class LevelSelectUIManager : SubUIManager
     private GameObject levelSelectPanel;
 
     private ReputationUIManager reputationParent;
+    public ReputationUIManager ReputationParent { get { return reputationParent; } }
 
     private SelectContractWindow selectContractWindow;
 
@@ -183,6 +185,7 @@ public class LevelSelectUIManager : SubUIManager
             }
             else
             {
+                // the rep parent will be updated by repupui if rep up
                 reputationParent.SetStars();
             }
         }

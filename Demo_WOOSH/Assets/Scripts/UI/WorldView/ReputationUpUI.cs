@@ -11,8 +11,11 @@ public class ReputationUpUI : MonoBehaviour
     private List<Vector2> originalScales;
 
     private float startSize = 3000.0f;
-    private float shrinkSize = 35.0f;
-    private bool doneShrinking = false;
+    private float shrinkSpeed = 35.0f;
+
+    private float moveSpeed = 15.0f;
+    private float transSpeed = 0.01f;
+    private bool done = false;
 
     public void Initialze()
     {
@@ -47,7 +50,7 @@ public class ReputationUpUI : MonoBehaviour
 
     private IEnumerator ScaleDown(int indexStar)
     {
-        doneShrinking = false;
+        done = false;
 
         float currentSize = startSize;
         float endSize = originalScales[indexStar].x;
@@ -56,21 +59,50 @@ public class ReputationUpUI : MonoBehaviour
 
         while (currentSize > endSize)
         {
-            currentSize -= shrinkSize;
+            currentSize -= shrinkSpeed;
             filledStars[indexStar].sizeDelta = new Vector2(currentSize, currentSize);
 
             yield return new WaitForEndOfFrame();
         }
 
         filledStars[indexStar].sizeDelta = new Vector2(endSize, endSize);
-        doneShrinking = true;
+
+        yield return UberManager.Instance.StartCoroutine(MoveToRepBar(indexStar));
+
+        done = true;
+
+        yield return null;
+    }
+
+    private IEnumerator MoveToRepBar(int indexStar)
+    {
+        Vector2 startPos = Vector2.zero;
+        Vector2 endPos = new Vector2(300, 960);
+        Vector2 direction = (endPos - startPos).normalized; 
+
+        Vector2 currentPos = startPos;
+        RectTransform tempStar = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ExtraStar",
+            currentPos, UIManager.Instance.LevelSelectUI.AnchorCenter).GetComponent<RectTransform>();
+
+        Image tempStarImag = tempStar.GetComponent<Image>();
+
+        while ((currentPos - endPos).magnitude > 1.0f && currentPos.x < endPos.x & currentPos.y < endPos.y)
+        {
+            currentPos += direction * moveSpeed;
+            tempStar.anchoredPosition = currentPos;
+            tempStarImag.color -= new Color(0, 0, 0, transSpeed);
+            yield return new WaitForEndOfFrame();
+        }
+
+        Destroy(tempStar.gameObject);
+        UIManager.Instance.LevelSelectUI.ReputationParent.SetStars();
 
         yield return null;
     }
 
     public void OnClick()
     {
-        if (!doneShrinking) return;
+        if (!done) return;
         gameObject.SetActive(false);
     }
 }
