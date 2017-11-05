@@ -92,18 +92,20 @@ public class ContractManager
         for (int i = 0; i < cities.Count; i++)
         {
             if (!cities[i].CityReached) continue;
-
-            for (int j = 0; j < cities[i].Paths.Count; j++)
+            if (cities[i].Paths != null)
             {
-                List<Contract> newContracts = new List<Contract>();
-                
-                //generate x new contracts, for each destination
-                for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                for (int j = 0; j < cities[i].Paths.Count; j++)
                 {
-                    newContracts.Add(GenerateRandomContract(cities[i].Paths[j]));
+                    List<Contract> newContracts = new List<Contract>();
+
+                    //generate x new contracts, for each destination
+                    for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                    {
+                        newContracts.Add(GenerateRandomContract(cities[i].Paths[j]));
+                    }
+                    //pass contracts to right cities including destination
+                    cities[i].RefreshAvailableContracts(newContracts, cities[i].Paths[j].Destination);
                 }
-                //pass contracts to right cities including destination
-                cities[i].RefreshAvailableContracts(newContracts, cities[i].Paths[j].Destination);
             }
         }
 
