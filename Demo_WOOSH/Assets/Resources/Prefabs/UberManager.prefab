@@ -74,13 +74,13 @@ MonoBehaviour:
           type: 3}
         portrait: {fileID: 21300000, guid: c4cd97fdc252d9c4b927ecb4375043e9, type: 3}
       rewards:
-        positiveRepPerLevel: 2.5
+        positiveRepPerLevel: 50
         negativeRepPerLevel: -2.5
         positiveRepCompleted: 5
         negativeRepCompleted: -5
     - type: 1
       reputation: 2
-      totalHappiness: 4
+      totalHappiness: 40
       humanAssets:
       - inWorld: {fileID: 1476290074547812, guid: 7977b968ff3be0e48ac9bb06437b3241,
           type: 2}
@@ -104,7 +104,7 @@ MonoBehaviour:
         negativeRepCompleted: -10
     - type: 2
       reputation: 3
-      totalHappiness: 4
+      totalHappiness: 40
       humanAssets:
       - inWorld: {fileID: 1413002196608516, guid: 8a64ec7d140408042ad79cf9f2125e68,
           type: 2}
@@ -128,7 +128,7 @@ MonoBehaviour:
         negativeRepCompleted: -17.5
     - type: 3
       reputation: 4
-      totalHappiness: 3
+      totalHappiness: 30
       humanAssets:
       - inWorld: {fileID: 1157671330803606, guid: 094cc4e4a881b514198d92d6cbd39f3d,
           type: 2}
@@ -152,7 +152,7 @@ MonoBehaviour:
         negativeRepCompleted: -25
     - type: 4
       reputation: 5
-      totalHappiness: 2
+      totalHappiness: 20
       humanAssets:
       - inWorld: {fileID: 1928984699880332, guid: b365acc376500fe4c97f2f1cd87c1ffc,
           type: 2}

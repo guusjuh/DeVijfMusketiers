@@ -8,6 +8,7 @@ public class PostGameInfoReputation : MonoBehaviour
     private RectTransform maskPanel;
 
     private float maxWidth = 900;
+    float sizeOneStar = 100.0f;
 
     private float growSpeed = 0.2f;
 
@@ -32,26 +33,45 @@ public class PostGameInfoReputation : MonoBehaviour
 
     private IEnumerator gainReputation(float start, float end)
     {
-        while(Mathf.Abs(start - end) > 1){
-            if(start < end){
-                start += growSpeed;
+        int startCompletedStars = UberManager.Instance.PlayerData.LevelForRep(start);
+
+        float startNextRep = UberManager.Instance.PlayerData.ReqRep(startCompletedStars + 1);
+        float startLastRep = UberManager.Instance.PlayerData.ReqRep(startCompletedStars);
+
+        float startPercentInThis = ((start - startLastRep) / (startNextRep - startLastRep)) * 100.0f;
+        float startSize = (startCompletedStars*sizeOneStar) + startPercentInThis;
+
+        // -----
+
+        int endCompletedStars = UberManager.Instance.PlayerData.LevelForRep(end);
+
+        float endNextRep = UberManager.Instance.PlayerData.ReqRep(endCompletedStars + 1);
+        float endLastRep = UberManager.Instance.PlayerData.ReqRep(endCompletedStars);
+
+        float endPercentInThis = ((end - endLastRep) / (endNextRep - endLastRep)) * 100.0f;
+        float endSize = (endCompletedStars * sizeOneStar) + endPercentInThis;
+
+        // -----
+
+        while (Mathf.Abs(startSize - endSize) > 1){
+            if(startSize < endSize){
+                startSize += growSpeed;
             }
-            else if (start > end)
+            else if (startSize > endSize)
             {
-                start -= growSpeed;
+                startSize -= growSpeed;
             }
-            setElements(start);
+            SetElements(startSize);
 
             yield return new WaitForEndOfFrame();
-        } 
-        setElements(end);
+        }
+        SetElements(startSize);
 
         yield return null;
     }
 
-    private void setElements(float value)
+    private void SetElements(float value)
     {
-        maskPanel.sizeDelta = new Vector2((900.0f / 500.0f) * value, maskPanel.sizeDelta.y);
-        //repBar.SetBar(value % 100);
+        maskPanel.sizeDelta = new Vector2((900 / 500.0f) * value, maskPanel.sizeDelta.y);
     }
 }

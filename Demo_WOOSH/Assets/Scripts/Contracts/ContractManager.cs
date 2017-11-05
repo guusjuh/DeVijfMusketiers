@@ -10,7 +10,7 @@ public class ContractManager
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
     public List<ContractType> ContractTypes { get { return contractTypes; } }
 
-    public const double CONTRACT_REFRESH_RATE = 30.0d;//261.0d; //refresh rate in seconds
+    public const double CONTRACT_REFRESH_RATE = 5.0d;//261.0d; //refresh rate in seconds
     private const int CONTRACTS_PER_DESTINATION = 6;
     private DateTime contractRefreshDate;
     public DateTime ContractRefreshDate { get {return contractRefreshDate;} }
@@ -126,7 +126,7 @@ public class ContractManager
         // one start above the player rep as a prob of 10
         for (int i = 0; i < maxReputation; i++)
         {
-            possibleTypes.Add((HumanTypes) i, i < maxReputation - 1 ? 100 : 10);
+            possibleTypes.Add((HumanTypes) i, i < maxReputation - 1 ? 50 * (i+1) : 10);
         }
         
         return UberManager.PerformRandomRoll<HumanTypes>(possibleTypes);

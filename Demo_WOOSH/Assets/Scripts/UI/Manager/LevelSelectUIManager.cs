@@ -123,6 +123,7 @@ public class LevelSelectUIManager : SubUIManager
 
         repUpUI = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/RepUpPanel", Vector2.zero, canvas.transform).GetComponent<ReputationUpUI>();
         repUpUI.Initialze();
+        lastRep = UberManager.Instance.PlayerData.ReputationLevel;
 
         initializedInGame = true;
     }

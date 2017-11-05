@@ -80,6 +80,8 @@ public class UberManager : MonoBehaviour {
 
         Application.targetFrameRate = 60;
 
+        playerData.Initialize();
+
         contentManager.Initialize();
         contractManager.Initialize();
         uiManager.Initialize();
