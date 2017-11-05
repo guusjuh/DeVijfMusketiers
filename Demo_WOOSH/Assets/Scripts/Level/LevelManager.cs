@@ -135,6 +135,8 @@ public class LevelManager
         // increase amnt of turns
         amountOfTurns++;
 
+        yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
+
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -263,7 +265,6 @@ public class LevelManager
                 shrines.HandleAction(s => s.EndPlayerTurn());
 
                 UIManager.Instance.InGameUI.EndPlayerTurn();
-                UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
             }
         }
     }
