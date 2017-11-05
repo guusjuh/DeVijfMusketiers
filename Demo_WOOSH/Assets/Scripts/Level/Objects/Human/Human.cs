@@ -128,7 +128,7 @@ public class Human : MovableObject {
             // 2. not towards an enemy
             // find all enemies in view distance
             List<Enemy> closeEnemies = GameManager.Instance.LevelManager.Enemies.FindAll(
-                e => GameManager.Instance.TileManager.InRange(viewDistance, this, e));
+                e => GameManager.Instance.TileManager.InRange((int)Mathf.Floor(viewDistance / 2.0f), this, e));
 
             // if the distance between my tile and the enemy is greater than the distance betweent the neighbouring tile and the enemy
             // the hooman will be getting closer, so don't go to that tile
@@ -146,7 +146,7 @@ public class Human : MovableObject {
             }
 
             // 3. not directly next to a hole
-            // find all holes in view distance
+/*            // find all holes in view distance
             List<TileNode> closeHoles = GameManager.Instance.TileManager.GetNodeWithGapReferences().FindAll(
                 n => GameManager.Instance.TileManager.InRange((int)Mathf.Floor(viewDistance/2.0f), this.GridPosition, n.GridPosition));
 
@@ -160,7 +160,7 @@ public class Human : MovableObject {
                 {
                     goto NOT_THIS_NEIGHBOUR;
                 }
-            }
+            }*/
 
             // if we get to this point, add to the possible flee tiles
             fleeNodes.Add(neighbours[i]);

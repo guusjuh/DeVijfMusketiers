@@ -6,81 +6,65 @@
   <grid>
     <SecTileTypeRow>
       <row>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
-        <SecTileType>Gap</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
-        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Gap</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
       </row>
     </SecTileTypeRow>
@@ -89,27 +73,43 @@
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Gap</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
@@ -119,33 +119,33 @@
     <SecTileTypeRow>
       <row>
         <SecTileType>Gap</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Gap</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
       </row>
     </SecTileTypeRow>
   </grid>

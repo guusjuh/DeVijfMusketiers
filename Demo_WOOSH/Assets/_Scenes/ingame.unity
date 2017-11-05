@@ -279,6 +279,11 @@ Prefab:
       propertyPath: contractManager.contractTypes.Array.data[0].totalHappiness
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: developersMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0297a9676d7bc36409d4e133d72722b5, type: 2}
   m_IsPrefabParent: 0

@@ -119,7 +119,7 @@ public class LevelEditor : MonoBehaviour
         CursorButtons[1] = Resources.Load<Texture2D>("Sprites/LevelEditor/pencilBttn");
         CursorButtons[2] = Resources.Load<Texture2D>("Sprites/LevelEditor/eraserBttn");
 
-        highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/LevelEditor/PreviewHighlight"));
+        highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelEditor/PreviewHighlight"));
         highlightPreviewObject.SetActive(false);
 
         // set intial tooltype
