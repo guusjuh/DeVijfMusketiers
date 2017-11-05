@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class Enemy : WorldObject
 {
+    protected const string MOVE_ANIM = "Moving";
+    protected const string HIT_ANIM = "Hurt";
+    protected const string ATTACK_ANIM = "Attack";
+    protected const string DIE_ANIM = "Dead";
+
     // spell effects
     protected bool slowed = false;
     protected int slowCount = 0; // for how many turns am I still slowed
@@ -17,7 +23,10 @@ public class Enemy : WorldObject
     protected int burnModifier = 0;
     protected int burnCount = 0;
     private GameObject burnedIcon;
-    
+
+    protected Animator anim;
+    protected List<SpriteRenderer> sprRenders;
+
     protected int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
     protected int totalActionPoints = 3;        // total points
     protected int currentActionPoints;          // points left this turn
@@ -50,7 +59,8 @@ public class Enemy : WorldObject
     protected EnemyTarget prevTarget;
     protected List<TileNode> currentPath = null;
 
-    public Sprite SpellIconSprite;
+    private Sprite spellIconSprite;
+    public Sprite SpellIconSprite { get { return spellIconSprite; } protected set { spellIconSprite = value; } }
 
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
@@ -64,14 +74,17 @@ public class Enemy : WorldObject
     {
         base.Initialize(startPos);
 
+        anim = gameObject.GetComponentInChildren<Animator>();
+        sprRenders = new List<SpriteRenderer>(gameObject.GetComponentsInChildren<SpriteRenderer>());
+
         Dead = false;
 
-        burnedIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/BurnedIcon"),
+        burnedIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/InGame/StatusEffects/BurnedIcon"),
             Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
         burnedIcon.SetActive(false);
         burnedIcon.transform.SetAsFirstSibling();
 
-        frozenIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/StatusEffects/FrozenIcon"),
+        frozenIcon = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/InGame/StatusEffects/FrozenIcon"),
             Vector3.zero, Quaternion.identity, UIManager.Instance.InGameUI.AnchorCenter);
         frozenIcon.SetActive(false);
         frozenIcon.transform.SetAsFirstSibling();
@@ -120,6 +133,8 @@ public class Enemy : WorldObject
     {
         base.ResetToInitDEVMODE(startPos);
         Dead = false;
+        anim.SetBool(DIE_ANIM, false);
+        sprRenders.HandleAction(s => s.color = new Color(1, 1, 1, 1));
     }
 
     public override void Clear()
@@ -133,6 +148,7 @@ public class Enemy : WorldObject
     {
         // hit the other
         other.Hit();
+        anim.SetTrigger(ATTACK_ANIM);
     }
 
     public override bool TryHit(int dmg)
@@ -159,6 +175,7 @@ public class Enemy : WorldObject
         if (health <= 0)
         {
             Dead = true;
+            anim.SetBool(DIE_ANIM, true);
             GameManager.Instance.TileManager.HidePossibleRoads();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
@@ -181,15 +198,15 @@ public class Enemy : WorldObject
 
     protected IEnumerator HitVisual()
     {
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0, 0, 1);
+        anim.SetTrigger(HIT_ANIM);
+
+        sprRenders.HandleAction(s => s.color = new Color(0.8f, 0, 0, 1));
 
         Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.35f);
 
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-
-        yield break;
+        sprRenders.HandleAction(s => s.color = new Color(1, 1, 1, 1));
     }
 
     private void NewFloatingDmgNumber(float dmg)
@@ -408,7 +425,7 @@ public class Enemy : WorldObject
 
     protected virtual void PathBlocked(Transform other)
     {
-        if (other.GetComponent<Barrel>() != null) Attack(other.GetComponent<Barrel>());
+        if (other.GetComponent<Rock>() != null) Attack(other.GetComponent<Rock>());
     }
 
     // called walk, since 'move' is the complete turn of an enemy
@@ -471,6 +488,8 @@ public class Enemy : WorldObject
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
+        anim.SetBool(MOVE_ANIM, true);
+
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
@@ -490,6 +509,8 @@ public class Enemy : WorldObject
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
+
+        anim.SetBool(MOVE_ANIM, false);
     }
 
     public void SelectTarget()

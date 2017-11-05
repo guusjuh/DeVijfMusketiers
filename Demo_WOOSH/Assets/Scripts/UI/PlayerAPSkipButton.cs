@@ -19,18 +19,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
     private float size;
     private float speed = 10.5f;
 
-    private bool active = false;
     private Coroutine rotateCoroutine;
-
-    public bool Active
-    {
-        get { return active; }
-        set
-        {
-            if (active == value) return;
-            active = value;
-        }
-    }
 
     public void Initialize()
     {
@@ -52,6 +41,20 @@ public class PlayerAPSkipButton : MonoBehaviour {
         myButton.onClick.AddListener(OnClick);
 
         size = rtAP.sizeDelta.x;
+    }
+
+    public void Reset()
+    {
+        gameObject.SetActive(true);
+
+        playerAPBackground.color = dissabledColorPlayerAP;
+
+        rtAP.sizeDelta = new Vector2(size, size);
+        rtSkip.sizeDelta = new Vector2(0, size);
+        playerAPText.transform.localScale = new Vector3(1,1,1);
+        playerSkipText.transform.localScale = new Vector3(0,1,1);
+        skipOpen = false;
+        rotateCoroutine = null;
     }
 
     public void OnClick()

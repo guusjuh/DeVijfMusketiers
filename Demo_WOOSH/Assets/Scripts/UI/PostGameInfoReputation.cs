@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PostGameInfoReputation : MonoBehaviour {
-    private ReputationBar repBar;
-    private Text star1;
-    private Text star2;
+public class PostGameInfoReputation : MonoBehaviour
+{
+    private RectTransform maskPanel;
 
+    private float maxWidth = 900;
+    float sizeOneStar = 100.0f;
+
+    private float growSpeed = 0.2f;
 
 	// Use this for initialization
     public void Initialize(float start, float end)
-    {
-        star1 = transform.Find("Star1").Find("Text").GetComponent<Text>();
-        star2 = transform.Find("Star2").Find("Text").GetComponent<Text>();
-
-        repBar = transform.Find("ReputationBar").GetComponent<ReputationBar>();
-        repBar.Initialize();
+    {      
+        maskPanel = transform.Find("Panel").GetComponent<RectTransform>();
 
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();
-        fi.Initialize((end - start).ToString(), (end >= start)? Color.green:Color.red, 1.5f, 3.0f, repBar.transform.position, false);
+        fi.Initialize((end >= start ? "+" : "-") + (end - start), (end >= start)? Color.green : Color.red, 0.0f, 10.0f, maskPanel.transform.position + new Vector3(maxWidth / 2.0f, 125, 0), false);
     }
 
     public void Restart(float start, float end)
@@ -29,35 +28,50 @@ public class PostGameInfoReputation : MonoBehaviour {
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();
-        fi.Initialize((end - start).ToString(), (end >= start) ? Color.green : Color.red, 1.5f, 3.0f, repBar.transform.position, false);
+        fi.Initialize((end >= start ? "+" : "-") + (end - start), (end >= start) ? Color.green : Color.red, 0.0f, 10.0f, maskPanel.transform.position + new Vector3(maxWidth / 2.0f, 125, 0), false);
     }
 
     private IEnumerator gainReputation(float start, float end)
     {
+        int startCompletedStars = UberManager.Instance.PlayerData.LevelForRep(start);
 
-        while(Mathf.Abs(start - end) > 1){
-            if(start < end){
-                start++;
+        float startNextRep = UberManager.Instance.PlayerData.ReqRep(startCompletedStars + 1);
+        float startLastRep = UberManager.Instance.PlayerData.ReqRep(startCompletedStars);
+
+        float startPercentInThis = ((start - startLastRep) / (startNextRep - startLastRep)) * 100.0f;
+        float startSize = (startCompletedStars*sizeOneStar) + startPercentInThis;
+
+        // -----
+
+        int endCompletedStars = UberManager.Instance.PlayerData.LevelForRep(end);
+
+        float endNextRep = UberManager.Instance.PlayerData.ReqRep(endCompletedStars + 1);
+        float endLastRep = UberManager.Instance.PlayerData.ReqRep(endCompletedStars);
+
+        float endPercentInThis = ((end - endLastRep) / (endNextRep - endLastRep)) * 100.0f;
+        float endSize = (endCompletedStars * sizeOneStar) + endPercentInThis;
+
+        // -----
+
+        while (Mathf.Abs(startSize - endSize) > 1){
+            if(startSize < endSize){
+                startSize += growSpeed;
             }
-            else if (start > end)
+            else if (startSize > endSize)
             {
-                start--;
+                startSize -= growSpeed;
             }
-            setElements(start);
+            SetElements(startSize);
 
-            yield return new WaitForSeconds(0.1f);
-        } 
-        setElements(end);
+            yield return new WaitForEndOfFrame();
+        }
+        SetElements(startSize);
 
         yield return null;
     }
 
-    private void setElements(float value)
+    private void SetElements(float value)
     {
-        int level = (int)(value / 100.0f);
-        star1.text = "" + level;
-        star2.text = "" + (level + 1);
-
-        repBar.SetBar(value % 100);
+        maskPanel.sizeDelta = new Vector2((900 / 500.0f) * value, maskPanel.sizeDelta.y);
     }
 }

@@ -91,17 +91,21 @@ public class ContractManager
 
         for (int i = 0; i < cities.Count; i++)
         {
-            for (int j = 0; j < cities[i].Paths.Count; j++)
+            if (!cities[i].CityReached) continue;
+            if (cities[i].Paths != null)
             {
-                List<Contract> newContracts = new List<Contract>();
-                
-                //generate x new contracts, for each destination
-                for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                for (int j = 0; j < cities[i].Paths.Count; j++)
                 {
-                    newContracts.Add(GenerateRandomContract(cities[i].Paths[j]));
+                    List<Contract> newContracts = new List<Contract>();
+
+                    //generate x new contracts, for each destination
+                    for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                    {
+                        newContracts.Add(GenerateRandomContract(cities[i].Paths[j]));
+                    }
+                    //pass contracts to right cities including destination
+                    cities[i].RefreshAvailableContracts(newContracts, cities[i].Paths[j].Destination);
                 }
-                //pass contracts to right cities including destination
-                cities[i].RefreshAvailableContracts(newContracts, cities[i].Paths[j].Destination);
             }
         }
 
@@ -124,7 +128,7 @@ public class ContractManager
         // one start above the player rep as a prob of 10
         for (int i = 0; i < maxReputation; i++)
         {
-            possibleTypes.Add((HumanTypes) i, i < maxReputation - 1 ? 100 : 10);
+            possibleTypes.Add((HumanTypes) i, i < maxReputation - 1 ? 50 * (i+1) : 10);
         }
         
         return UberManager.PerformRandomRoll<HumanTypes>(possibleTypes);
@@ -139,8 +143,20 @@ public class ContractManager
         List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
 
         Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
-        //AddContract(newContract);
         
+        return newContract;
+    }
+
+    public Contract GenerateContract(Path path, int rep, int index = -1)
+    {
+        int id = AmountOfContracts();
+
+        // get random type   
+        HumanTypes type = (HumanTypes)(rep-1);
+        ContractType matchingContractType = ContractTypes.Find(c => c.HumanType == type);
+
+        Contract newContract = new Contract(id, matchingContractType, path, index);
+
         return newContract;
     }
 }

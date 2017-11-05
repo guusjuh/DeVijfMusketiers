@@ -10,7 +10,10 @@ public class SubUIManager
 
     protected RectTransform noClickPanel;
     private Color panelDissabledColor = new Color(0.37f, 0.37f, 0.37f, 0.57f);
+
     protected Button onlyButton;
+    public Button OnlyButton { get { return onlyButton; } }
+
     protected Button clickToContinue;
     protected NewContractIndicator tutorialIndicator;
 

@@ -21,7 +21,6 @@ public class TeleportButton : SpellButton
                 GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
 
         target.GetComponent<Human>().ActivateTeleportButtons();
-        UIManager.Instance.InGameUI.CastingSpell = -1;
 
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
@@ -54,7 +53,7 @@ public class TeleportButton : SpellButton
             Vector2 pos = new Vector2(RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI),
                 -RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)i / divider + offSetCircle * Mathf.PI));
 
-            GameObject APPoint = Resources.Load<GameObject>("Prefabs/UI/SpellButton/APIndicator");
+            GameObject APPoint = Resources.Load<GameObject>("Prefabs/UI/InGame/SpellButton/APIndicator");
             apIndicator.Add(Instantiate(APPoint, -pos, Quaternion.identity, this.transform));
             apIndicator[i].transform.position = transform.position - new Vector3(pos.x, pos.y, 0);
         }

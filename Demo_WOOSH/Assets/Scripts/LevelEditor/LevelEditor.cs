@@ -122,7 +122,7 @@ public class LevelEditor : MonoBehaviour
         CursorButtons[1] = Resources.Load<Texture2D>("Sprites/LevelEditor/pencilBttn");
         CursorButtons[2] = Resources.Load<Texture2D>("Sprites/LevelEditor/eraserBttn");
 
-        highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/PreviewHighlight"));
+        highlightPreviewObject = Instantiate(Resources.Load<GameObject>("Prefabs/UI/LevelEditor/PreviewHighlight"));
         highlightPreviewObject.SetActive(false);
 
         // set intial tooltype
@@ -593,7 +593,7 @@ public class LevelEditor : MonoBehaviour
         if(ValidMousePosition(worldMousePosition, coordinateMousePosition)) highlightPreviewObject.SetActive(true);
 
         previewObject = Instantiate(prefab, Vector3.zero, Quaternion.identity).transform;
-        previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
+        //previewObject.GetComponent<SpriteRenderer>().color *= new Color(1, 1, 1, 0.5f);
         previewObject.parent = highlightPreviewObject.transform;
         previewObject.localPosition = Vector3.zero;
     }

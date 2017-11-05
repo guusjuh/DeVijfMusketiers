@@ -1,14 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Human : MovableObject {
+    protected const string MOVE_ANIM = "Moving";
+    protected const string CHEER_ANIM = "Cheer";
+    protected const string DIE_ANIM = "Dead";
+    protected const string PANIC_ANIM = "Panic";
+
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
     private float inverseMoveTime;          //Used to make movement more efficient.
 
-    private SpriteRenderer sprRender;
+    private GameObject childGO;
+    private Animator anim;
+    private List<SpriteRenderer> sprRenders;
 
     private int totalFleePoints = 2;
     private int currentFleePoints;
@@ -33,7 +41,13 @@ public class Human : MovableObject {
         set
         {
             contractRef = value;
-            sprRender.sprite = contractRef.InWorld;
+
+            if(childGO != null) Destroy(childGO);
+            childGO = Instantiate(contractRef.InWorld, Vector3.zero, Quaternion.identity, this.transform);
+            childGO.transform.localPosition = new Vector2(0.0f, -0.4f);
+
+            anim = gameObject.GetComponentInChildren<Animator>();
+            sprRenders = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>());
         }
     }
 
@@ -46,8 +60,6 @@ public class Human : MovableObject {
         inverseMoveTime = 1f / moveTime;
         rb2D = GetComponent<Rigidbody2D>();
 
-        sprRender = GetComponent<SpriteRenderer>();
-
         currentFleePoints = totalFleePoints;
         possibleSpellTypes.Add(GameManager.SpellType.Teleport);
     }
@@ -57,6 +69,19 @@ public class Human : MovableObject {
         base.Reset();
         currentFleePoints = totalFleePoints;
         inPanic = false;
+        anim.SetBool(PANIC_ANIM, false);
+    }
+
+    public override void ResetToInitDEVMODE(Coordinate startPos)
+    {
+        base.ResetToInitDEVMODE(startPos);
+        anim.SetBool(DIE_ANIM, false);
+        sprRenders.HandleAction(s => s.color = new Color(1, 1, 1, 1));
+    }
+
+    public void Cheer()
+    {
+        anim.SetTrigger(CHEER_ANIM);
     }
 
     public void StartTurn()
@@ -76,11 +101,13 @@ public class Human : MovableObject {
             if (GameManager.Instance.TileManager.InRange(viewDistance, this, enemies[i]))
             {
                 inPanic = true;
+                anim.SetBool(PANIC_ANIM, true);
                 return;
             }
         }
 
         inPanic = false;
+        anim.SetBool(PANIC_ANIM, false);
     }
 
     public IEnumerator Flee()
@@ -119,7 +146,7 @@ public class Human : MovableObject {
             }
 
             // 3. not directly next to a hole
-            // find all holes in view distance
+/*            // find all holes in view distance
             List<TileNode> closeHoles = GameManager.Instance.TileManager.GetNodeWithGapReferences().FindAll(
                 n => GameManager.Instance.TileManager.InRange((int)Mathf.Floor(viewDistance/2.0f), this.GridPosition, n.GridPosition));
 
@@ -133,7 +160,7 @@ public class Human : MovableObject {
                 {
                     goto NOT_THIS_NEIGHBOUR;
                 }
-            }
+            }*/
 
             // if we get to this point, add to the possible flee tiles
             fleeNodes.Add(neighbours[i]);
@@ -195,6 +222,8 @@ public class Human : MovableObject {
         canBeTargeted = false;
 
         Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
+
+        anim.SetBool(DIE_ANIM, true);
 
         contractRef.Die();
 

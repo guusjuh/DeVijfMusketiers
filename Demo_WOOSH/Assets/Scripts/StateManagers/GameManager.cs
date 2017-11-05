@@ -47,6 +47,8 @@ public class GameManager : StateManager {
     private List<Contract> selectedContracts;
     public List<Contract> SelectedContracts { get { return selectedContracts; } }
 
+    public const int AMOUNT_HUMANS_PER_LEVEL = 8;
+
     protected override void Initialize()
     {
         if (UberManager.Instance.DevelopersMode) pause = true;
@@ -59,6 +61,7 @@ public class GameManager : StateManager {
 
         gameOn = true;
         won = false;
+        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.InGame);
     }
 
     protected override void Restart()
@@ -72,6 +75,7 @@ public class GameManager : StateManager {
 
         gameOn = true;
         won = false;
+        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.InGame);
     }
 
     public override void Clear()

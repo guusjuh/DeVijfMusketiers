@@ -26,6 +26,8 @@ public enum SecTileType
     Unknown = -1,
     Dirt,
     Grass,
+    Rocky,
+    RockyRoad,
     Gap,
 }
 
@@ -46,7 +48,7 @@ public enum SecContentType
     Arnest,
     Sketta,
     Wolf,
-    Barrel,
+    Rock,
     Shrine
 }
 
@@ -91,10 +93,6 @@ public class ContentManager {
     private Dictionary<TileType, Texture[]> tileTextures = new Dictionary<TileType, Texture[]>();
     public Dictionary<TileType, Texture[]> TileTextures { get { return tileTextures; } }
 
-
-    //TODO: same as content but for tiles
-    public GameObject Gap { get; private set; }
-
     private LevelDataContainer levelDataContainer = new LevelDataContainer();
 
     public LevelData LevelData(int id)
@@ -106,8 +104,6 @@ public class ContentManager {
     public int AmountOfLevels { get { return levelDataContainer.LevelData.Count; } }
 
     public void Initialize() {
-        Gap = Resources.Load<GameObject>("Prefabs/Hole");
-
         SetValidTypes();
 
         LoadPrefabsForContentType("Prefabs/Bosses", ContentType.Boss);
@@ -236,7 +232,7 @@ public class ContentManager {
         bosses.Add(SecContentType.Dodin);
         bosses.Add(SecContentType.Sketta);
         List<SecContentType> environmentals = new List<SecContentType>();
-        environmentals.Add(SecContentType.Barrel);
+        environmentals.Add(SecContentType.Rock);
         environmentals.Add(SecContentType.Shrine);
         List<SecContentType> humans = new List<SecContentType>();
         humans.Add(SecContentType.Human);
@@ -255,6 +251,8 @@ public class ContentManager {
         List<SecTileType> normals = new List<SecTileType>();
         normals.Add(SecTileType.Dirt);
         normals.Add(SecTileType.Grass);
+        normals.Add(SecTileType.Rocky);
+        normals.Add(SecTileType.RockyRoad);
 
         validTileTypes.Add(TileType.Dangerous, dangerZones);
         validTileTypes.Add(TileType.Normal, normals);

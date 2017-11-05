@@ -9,7 +9,7 @@ public class ContractIndicator : MonoBehaviour
     {
         image = GetComponent<Image>();
 
-        image.sprite = contractRef.InWorld;
+        image.sprite = contractRef.InWorldSprite;
     }
 
     public void Clear()

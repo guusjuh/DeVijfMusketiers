@@ -158,7 +158,7 @@ public class TileNode {
 
     public bool ContainsBrokenBarrel()
     {
-        return content.ContentTypes.Find(c => c.IsBarrel() && c.GetComponent<Barrel>().Destroyed) != null;
+        return content.ContentTypes.Find(c => c.IsBarrel() && c.GetComponent<Rock>().Destroyed) != null;
     }
 
     public bool CompletelyEmpty()
@@ -170,7 +170,7 @@ public class TileNode {
     {
         bool containsBrokenBarrel = content.ContentTypes.Count == 1 &&
                                     content.ContentTypes[0].IsBarrel() &&
-                                    content.ContentTypes[0].GetComponent<Barrel>().Destroyed &&
+                                    content.ContentTypes[0].GetComponent<Rock>().Destroyed &&
                                     ContentManager.GetPrimaryFromSecTile(content.SecTileType) != TileType.Dangerous;
 
         return CompletelyEmpty() || containsBrokenBarrel;

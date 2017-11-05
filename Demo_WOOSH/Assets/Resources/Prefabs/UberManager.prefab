@@ -56,9 +56,23 @@ MonoBehaviour:
     contractTypes:
     - type: 0
       reputation: 1
-      totalHappiness: 5
-      inWorld: {fileID: 21300000, guid: bff08925aa6789040ad30790227ecdf8, type: 3}
-      portrait: {fileID: 21300000, guid: 51b033a5daf4a854b8f846280f668f2d, type: 3}
+      totalHappiness: 50
+      humanAssets:
+      - inWorld: {fileID: 1894720331165500, guid: d5cd104630c61164d8bc30fde96f58bf,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: f053813b637055d439adf18f48a57892,
+          type: 3}
+        portrait: {fileID: 21300000, guid: f62b8989115609e4593ece7b2cdc306c, type: 3}
+      - inWorld: {fileID: 1916503311227268, guid: dc3d109feb47f96408f4d852db34878a,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 07bae4f4fe11a184bbfbc652059eeeef,
+          type: 3}
+        portrait: {fileID: 21300000, guid: f1788cd060eced540a28f05d95897cdc, type: 3}
+      - inWorld: {fileID: 1791249000900626, guid: ac6354682980e8f4ab359f06abb3798b,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: bc39c0d91d51fda41a65f63daed610a1,
+          type: 3}
+        portrait: {fileID: 21300000, guid: c4cd97fdc252d9c4b927ecb4375043e9, type: 3}
       rewards:
         positiveRepPerLevel: 2.5
         negativeRepPerLevel: -2.5
@@ -66,9 +80,23 @@ MonoBehaviour:
         negativeRepCompleted: -5
     - type: 1
       reputation: 2
-      totalHappiness: 4
-      inWorld: {fileID: 21300000, guid: b30642bb05b59134197144bbdeeab4e4, type: 3}
-      portrait: {fileID: 21300000, guid: 03329e2c9944b694ab24207a4a33a6bd, type: 3}
+      totalHappiness: 40
+      humanAssets:
+      - inWorld: {fileID: 1476290074547812, guid: 7977b968ff3be0e48ac9bb06437b3241,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 536c3c5330eeae94296a187b6920ab9c,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 1da7c050ed6f30b4189e1f57bde5360c, type: 3}
+      - inWorld: {fileID: 1082059210942930, guid: 1c002be536026fe48b4ba2985dda9d68,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 27a23f22fc3e23942bcb108f9d50629b,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 8ab80fff3b6630a48a053900ea58ff82, type: 3}
+      - inWorld: {fileID: 1621857528099676, guid: fca3b7768d0f78643bd469569b7320e8,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 32a519a7329598947b71f3099e2b2dcd,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 8df39ba6298958548a5fe4517980ba88, type: 3}
       rewards:
         positiveRepPerLevel: 5
         negativeRepPerLevel: -5
@@ -76,9 +104,23 @@ MonoBehaviour:
         negativeRepCompleted: -10
     - type: 2
       reputation: 3
-      totalHappiness: 4
-      inWorld: {fileID: 21300000, guid: bfa9a8ffb0fc9ab438880f7c3e424ef5, type: 3}
-      portrait: {fileID: 21300000, guid: fb5896a3354ff7045a87f061fb3e146c, type: 3}
+      totalHappiness: 40
+      humanAssets:
+      - inWorld: {fileID: 1413002196608516, guid: 8a64ec7d140408042ad79cf9f2125e68,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: ec8866c6058c7ff43a36f4610d3da098,
+          type: 3}
+        portrait: {fileID: 21300000, guid: e9dab246e7fc358468a8e549eaaf8a7d, type: 3}
+      - inWorld: {fileID: 1648976975581360, guid: 6dfc1925b739c6a4caa94d6a30bac660,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: f8386c6040a1f9a4aab1fe8454e43461,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 50f863e37936a734790bdf2aad12bb5f, type: 3}
+      - inWorld: {fileID: 1137031241717684, guid: 4011f414f49768f40a656d0aad9f8fa2,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: b23be28c1029d6b4caec23cc961df3e3,
+          type: 3}
+        portrait: {fileID: 21300000, guid: c658314f0d7a40a4b8dfd4d2c6fbf125, type: 3}
       rewards:
         positiveRepPerLevel: 10
         negativeRepPerLevel: -10
@@ -86,9 +128,23 @@ MonoBehaviour:
         negativeRepCompleted: -17.5
     - type: 3
       reputation: 4
-      totalHappiness: 3
-      inWorld: {fileID: 21300000, guid: c7cb70a0baebe5643b241789ba9063c1, type: 3}
-      portrait: {fileID: 21300000, guid: aefa8a5e816be1b44887315cd3d2d837, type: 3}
+      totalHappiness: 30
+      humanAssets:
+      - inWorld: {fileID: 1157671330803606, guid: 094cc4e4a881b514198d92d6cbd39f3d,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 919bda49790501d40b23d6ff25ffb23f,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 686fd2eb83f869448bbef8aab1940f0c, type: 3}
+      - inWorld: {fileID: 1403390368300508, guid: e8c8704a28e0a2340aaff4ecb8cf0da1,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 75f6a4f199d00c644af00e5b9077da1b,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 353b1d93fe6c87d4280994fd118e6f15, type: 3}
+      - inWorld: {fileID: 1935644604177472, guid: fbda1b402c3892c4fa5cd17b7af708c9,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 5d82e46fe7440ad458d0250b4e352c94,
+          type: 3}
+        portrait: {fileID: 21300000, guid: dcdcbe53da3e2e04bb6de1b7f46f281f, type: 3}
       rewards:
         positiveRepPerLevel: 15
         negativeRepPerLevel: -15
@@ -96,9 +152,23 @@ MonoBehaviour:
         negativeRepCompleted: -25
     - type: 4
       reputation: 5
-      totalHappiness: 2
-      inWorld: {fileID: 21300000, guid: cad990d295e529d4280822c601c64073, type: 3}
-      portrait: {fileID: 21300000, guid: 8b1a7a1e770d5a240aa3e0b261a86550, type: 3}
+      totalHappiness: 20
+      humanAssets:
+      - inWorld: {fileID: 1928984699880332, guid: b365acc376500fe4c97f2f1cd87c1ffc,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: b06c66862e8332e4299047a0872d2d15,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 598acce26a0f3bd418a612d655eafcf7, type: 3}
+      - inWorld: {fileID: 1100098754165502, guid: a7f3f81f07d9a164db8184a2fb30a694,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: e5ede5f6d45436e4994552c7c49a3935,
+          type: 3}
+        portrait: {fileID: 21300000, guid: 656c7050c3e23ce46be297ae4e5ac689, type: 3}
+      - inWorld: {fileID: 1110205676111366, guid: 1ece5f423c012154ebc5fa40836793f4,
+          type: 2}
+        inWorldSprite: {fileID: 21300000, guid: 0d6a88420647f6c48baae370bcd39ae9,
+          type: 3}
+        portrait: {fileID: 21300000, guid: c9416041b0daaa947ba0d42987f896a3, type: 3}
       rewards:
         positiveRepPerLevel: 20
         negativeRepPerLevel: -20

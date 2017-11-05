@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class AttackButton : SpellButton
 {
-
     public override void Initialize()
     {
         base.Initialize();

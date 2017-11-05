@@ -10,10 +10,11 @@ public class SelectContractWindow
 
     private Text timerfield;
     private Button close;
-    private Button add4Add;
     private GridLayoutGroup contractGrid;
     private GameObject contractPrefab;
+
     private List<AvailableContract> availableContractIndicators;
+    public List<AvailableContract> AvailableContractIndicators { get { return availableContractIndicators;} }
 
     private AcceptButton acceptButton;
     public AcceptButton MyAcceptButton
@@ -61,7 +62,7 @@ public class SelectContractWindow
     {
         if (!active) return false;
         Path thisPath = city.Paths.Find(p => p.Destination == destination);
-        return UberManager.Instance.ContractManager.AmountOfContracts(thisPath.Levels[0].LevelID) < 6;
+        return UberManager.Instance.ContractManager.AmountOfContracts(thisPath.Levels[0].LevelID) < GameManager.AMOUNT_HUMANS_PER_LEVEL;
     }
 
     public bool isCitySelected(City city)
@@ -95,8 +96,6 @@ public class SelectContractWindow
 
         contractGrid = selectionWindow.transform.Find("ContractGrid").GetComponent<GridLayoutGroup>();
         contractPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelSelect/SelectContract/AvailableContractButton").gameObject;
-
-        add4Add = selectionWindow.transform.Find("Add4Add").GetComponent<Button>();
 
         close = selectionWindow.transform.Find("Close").GetComponent<Button>();
         close.onClick.AddListener(DisableAcceptButton);
@@ -149,7 +148,7 @@ public class SelectContractWindow
 
     public void SetTimer(TimeSpan remainingTime)
     {
-        timerfield.text = " Refresh: " + remainingTime.Hours.ToString("00") + ":" + remainingTime.Minutes.ToString("00") + ":" + remainingTime.Seconds.ToString("00");
+        timerfield.text = " Refresh: " + remainingTime.Hours.ToString("00") + " : " + remainingTime.Minutes.ToString("00") + " : " + remainingTime.Seconds.ToString("00");
     }
 
     private void ClearContracts()

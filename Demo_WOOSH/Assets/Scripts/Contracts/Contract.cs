@@ -15,13 +15,15 @@ public class Contract
     public Path MyPath { get { return path; } }
 
     private int levelInPath;
-    
+
     private ContractType type;
+    private int humanIndex = 0;
     public HumanTypes HumanType { get { return type.HumanType; } }
     public int Reputation { get { return type.Reputation; } }
     public int TotalHappiness { get { return type.TotalHappiness; } }
-    public Sprite InWorld { get { return type.InWorld; } }
-    public Sprite Portrait { get { return type.Portrait; } }
+    public GameObject InWorld { get { return type.HumanAssets[humanIndex].InWorld; } }
+    public Sprite InWorldSprite { get { return type.HumanAssets[humanIndex].InWorldSprite; } }
+    public Sprite Portrait { get { return type.HumanAssets[humanIndex].Portrait; } }
     public Rewards Rewards { get { return type.Rewards; } }
 
     private int currentLevel;
@@ -33,7 +35,7 @@ public class Contract
     private bool diedLastLevel = false;
     public bool Died { get { return diedLastLevel;} }
 
-    public Contract(int id, ContractType type, Path path)
+    public Contract(int id, ContractType type, Path path, int index = -1)
     {
         this.id = id;
         this.type = type;
@@ -41,14 +43,16 @@ public class Contract
         if(path != null) currentLevel = path.Levels[0].LevelID;
         this.path = path;
 
-        happiness = type.TotalHappiness;
+        humanIndex = index == -1 ? UnityEngine.Random.Range(0, type.HumanAssets.Count) : index;
+
+        happiness = Mathf.CeilToInt((type.TotalHappiness / 50.0f) * 40.0f);
     }
 
     public void MakeHappy()
     {
         if (happiness < TotalHappiness)
         {
-            happiness++;
+            happiness += 5;
         }
     }
 
@@ -65,7 +69,7 @@ public class Contract
     public void Die()
     {
         diedLastLevel = true;
-        happiness--;
+        happiness -= 10;
     }
 
     public bool EndLevel()
@@ -73,8 +77,6 @@ public class Contract
         if (diedLastLevel)
         {
             diedLastLevel = false;
-
-            //TODO: animation for losing happiness
 
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.NegativeRepPerLevel);
 
@@ -87,14 +89,14 @@ public class Contract
         }
         else
         {
-            //TODO: animation for walking to next level
-
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepPerLevel);
 
             //TODO:fix this
             if (levelInPath + 1 >= path.Levels.Count)
             {
                 UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepCompleted);
+
+                if(!UberManager.Instance.Tutorial) UIManager.Instance.LevelSelectUI.Cities.Find(c => path.Destination == c.ThisCity).Reached();
 
                 BreakContract();
                 return false;

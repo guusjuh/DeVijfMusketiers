@@ -16,23 +16,25 @@ public class TutorialManager
         tutorialText = new List<string[]>();
         tutorialText.Add(new string[]
         {
-            "Wizards Hat: Hi you there! I can feel some magic around you...",
-            "Wizards Hat: I believe we should work together to achieve great things!",
+            "Wizards Hat: Hi you there! I can feel some powerful magic around you...",
+            "Wizards Hat: Every hat needs a wizard to be able to work... So I can't do anything.",
+            "Wizards Hat: Would you like to be my wizard?",
+            "Wizards Hat: Awesome! Thank you so much, we will achieve great things.",
+            "Wizards Hat: ...",
             "Wizards Hat: Travelers often seek the help of wizards to stay safe on the roads.",
-            "Wizards Hat: You see that human over there? That's our first training!",
+            "Wizards Hat: I will help you understand the basics of the art of Human-Saving.",
         });
         tutorialText.Add(new string[]
         {
             "Random Traveler: Help, help! I'm in great danger.",
-            "Wizards Hat: Quick, clike me to put me on your head and start an epic adventure."
+            "Wizards Hat: Quick, click me to put me on your head and start this epic adventure."
         });
         tutorialText.Add(new string[]
         {
             "Wizards Hat: That's basically all there's to it! Simple right?",
             "Wizards Hat: You can now call yourself a wizard of W.O.O.S.H.",
-            "Wizards Hat: That stands for WIZARDS ORDER OF STRATEGIC HUMAN-SAVING ofcourse!"
+            "Wizards Hat: That stands for WIZARDS ORDER OF STRATEGIC HUMAN-SAVING!"
         });
-
 
         counter = 0;
     }
@@ -43,7 +45,6 @@ public class TutorialManager
         {
             // continue dialog
             UIManager.Instance.LevelSelectUI.Dialog.Next();
-            Debug.Log("next dialog");
             if (UIManager.Instance.LevelSelectUI.Dialog.On) return;
         }
 
@@ -53,76 +54,84 @@ public class TutorialManager
         {
             // wizards hat clicked, show first hat dialog
             case 1:
-                Step1();
-                Debug.Log("Completed clicking on wizards hat");
+                StepSelectHat();
                 break;
-            // first dialog with hat finished
             case 2:
-                Step2();
-                Debug.Log("Completed firt dialog");
+                StepSelectCity();
                 break;
-            // first dialog with human/head
             case 3:
-                Step3();
-                Debug.Log("Clicked human");
+                StepSelectContract();
                 break;
             case 4:
-                Step4();
-                Debug.Log("Dialog with human & hat over");
+                StepAcceptContract();
                 break;
             case 5:
+                StepClickExit();
+                break;
+            // first dialog with hat finished
+            case 6:
+                Step2();
+                break;
+            // first dialog with human/head
+            case 7:
+                Step3();
+                break;
+            case 8:
+                Step4();
+                break;
+            case 9:
                 Step5();
                 break;
             // pre game
-            case 6:
+            case 10:
                 Step6();
                 break;
-            case 7:
+            case 11:
                 Step7();
                 break;
-            case 8:
+            case 12:
                 Step8();
                 break;
-            case 9:
+            case 13:
                 Step9();
                 break;
-            case 10:
+            case 14:
                 Step10();
                 break;
-            case 11:
+            case 15:
                 Step11();
                 break;
-            case 12:
+            case 16:
                 Step12();
                 break;
-            case 13:
+            case 17:
                 Step13();
                 break;
-            case 14:
+            case 18:
                 Step14();
                 break;
-            case 15:
+            case 19:
                 Step15();
                 break;
-            case 16:
+            case 20:
                 Step16();
                 break;
-            case 17:
+            case 21:
                 Step17();
                 break;
-            case 18:
+            case 22:
                 Step18();
                 break;
-            case 19:
+            case 23:
                 Step19();
                 break;
-            case 20:
+            case 24:
                 Step20();
                 break;
-            case 21:
+            case 25:
                 Step21();
                 break;
-            case 22:
+            case 26:
                 Step22();
                 break;
         }
@@ -130,7 +139,7 @@ public class TutorialManager
     }
 
     // The first dialog with the hat
-    private void Step1()
+    private void StepSelectHat()
     {
         // deactivate no click panel and only button (op zn minst kleur uit)
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
@@ -141,6 +150,76 @@ public class TutorialManager
         UIManager.Instance.LevelSelectUI.ActivateDialog(tutorialText[0]);
     }
 
+    private void StepSelectCity()
+    {
+        UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
+
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(0, 126.0f), 
+            UIManager.Instance.LevelSelectUI.TutorialCity.GetComponent<Image>().sprite, 260, 260);
+
+        //notice: this is special case code!!
+        //the selectcontractwindow.activate neeeeds to be called before the next step
+        //so we first remove the tutorialmanager.next listener, than add the selectcontractwindow.activate 
+        //and THAN add tutorialmanager.next again.. well hope u get the general idea. 
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.RemoveAllListeners();
+
+        //TODO: on click open select contract window, next step select the contract, next step = 2
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(
+            delegate
+            {
+                UIManager.Instance.LevelSelectUI.SelectContractWindow.Activate(true,
+                    UIManager.Instance.LevelSelectUI.TutorialCity, Destination.Tutorial);
+            });
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(Next);
+
+        Contract contract = UberManager.Instance.ContractManager.GenerateContract(UIManager.Instance.LevelSelectUI.TutorialPath, 1, 1);
+
+        UIManager.Instance.LevelSelectUI.TutorialCity.RefreshAvailableContracts(contract, Destination.Tutorial);     
+    }
+
+    private void StepSelectContract()
+    {
+        UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
+
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-260.0f, 130.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AvailableContractButton"), false, 225, 225);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-260.0f, 130.0f), 280.0f, 180.0f, "Click this helpless human.");
+
+        //notice: this is special case code!!
+        //the selectcontractwindow.activate neeeeds to be called before the next step
+        //so we first remove the tutorialmanager.next listener, than add the selectcontractwindow.activate 
+        //and THAN add tutorialmanager.next again.. well hope u get the general idea. 
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.RemoveAllListeners();
+
+        //TODO: on click open select contract window, next step select the contract, next step = 2
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.AvailableContractIndicators[0].OnClick);
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(Next);
+    }
+
+    private void StepAcceptContract()
+    {
+        UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
+
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-175.0f, -85.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AcceptButton"), false, 155, 105);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-175.0f, -85.0f), 300.0f, 120.0f, "Accept to protect him on his journey.");
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.AvailableContractIndicators[0].SelectContract);
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.MyAcceptButton.DisableWindow);
+    }
+
+    private void StepClickExit()
+    {
+        UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
+
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(300.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/WorldView/CloseWindow"), false);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(300.0f, 355.0f), 260.0f, 100.0f, "Close the window.");
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.Deactivate);
+    }
+
     // The clickable human
     private void Step2()
     {
@@ -148,7 +227,7 @@ public class TutorialManager
 
         Vector2 pos = (Vector2)UIManager.Instance.LevelSelectUI.TutorialPath.Levels[0].GetComponent<RectTransform>().localPosition +
                       (Vector2)UIManager.Instance.LevelSelectUI.TutorialPath.PathObject.GetComponent<RectTransform>().localPosition +
-                      new Vector2(-45, 30);
+                      new Vector2(-45, 150);
 
         // human clickable
         UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(pos, UIManager.Instance.LevelSelectUI.TutorialPath.Levels[0].firstContractIndicator.sprite);
@@ -174,6 +253,12 @@ public class TutorialManager
         // human clickable
         UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(UIManager.Instance.LevelSelectUI.WizardsHat.GetComponent<RectTransform>().anchoredPosition,
                                                               UIManager.Instance.LevelSelectUI.WizardsHat.GetComponentInChildren<Image>().sprite);
+
+        UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(
+            delegate
+            {
+                GameObject.Destroy(UIManager.Instance.LevelSelectUI.WizardsHat);
+            }); 
     }
 
     // Clicking the level
@@ -181,8 +266,9 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        float posY = UIManager.Instance.LevelSelectUI.TutorialPath.Levels[0].GetComponent<RectTransform>().localPosition.y +
-                      UIManager.Instance.LevelSelectUI.TutorialPath.PathObject.GetComponent<RectTransform>().localPosition.y;
+        float posY =
+            UIManager.Instance.LevelSelectUI.TutorialPath.Levels[0].GetComponent<RectTransform>().localPosition.y +
+            UIManager.Instance.LevelSelectUI.TutorialPath.PathObject.GetComponent<RectTransform>().localPosition.y + 125;
 
         UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(0, posY), UIManager.Instance.LevelSelectUI.TutorialPath.Levels[0].levelSelectButtonImage.sprite);
     }
@@ -194,7 +280,7 @@ public class TutorialManager
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
         // start tutorial level
-        UberManager.Instance.PreGameManager.SelectedLevel = 5;
+        UberManager.Instance.PreGameManager.SelectedLevel = 0;
         UberManager.Instance.GotoState(UberManager.GameStates.PreGame);
 
         UIManager.Instance.PreGameUI.DeactivateNoClickPanel();
@@ -225,10 +311,9 @@ public class TutorialManager
 
         Time.timeScale = 0;
 
-        wolfPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.LevelManager.Enemies[0].transform.position);
+        wolfPos = new Vector2(0, 180);
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, 
-            GameManager.Instance.LevelManager.Enemies[0].GetComponent<SpriteRenderer>().sprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), 120, 110);
 
         UIManager.Instance.InGameUI.SetArrow(wolfPos, 100.0f, 100.0f, "The enemy goes first. Click to start.");
     }
@@ -251,8 +336,7 @@ public class TutorialManager
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(humanPos,
-            GameManager.Instance.LevelManager.Humans[0].GetComponent<SpriteRenderer>().sprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(humanPos, GameManager.Instance.LevelManager.Humans[0].ContractRef.InWorldSprite);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Humans[0].Click);
 
@@ -310,13 +394,12 @@ public class TutorialManager
     {
         Time.timeScale = 0;
 
-        wolfPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.LevelManager.Enemies[0].transform.position);
+        wolfPos = new Vector2(-108, -258);
 
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos,
-            GameManager.Instance.LevelManager.Enemies[0].GetComponent<SpriteRenderer>().sprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), 120, 110);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Enemies[0].Click);
 
@@ -370,7 +453,7 @@ public class TutorialManager
 
         UIManager.Instance.PostGameUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.PostGameUI.SetArrow(new Vector2(-105, 345), 110.0f, 100.0f, "Your human made it!");
+        UIManager.Instance.PostGameUI.SetArrow(new Vector2(-110, -605), 110.0f, 100.0f, "You gain reputation if your humans makes it.");
     }
 
     // in level select again
