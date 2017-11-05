@@ -24,7 +24,7 @@ public class PreGameInfoPanel : MonoBehaviour
         levelID = UberManager.Instance.PreGameManager.SelectedLevel;
 
         levelText = transform.Find("StatusText").GetComponent<Text>();
-        levelText.text = LEVEL_TEXT + (levelID + 1);
+        levelText.text = UberManager.Instance.Tutorial ? "Tutorial level"  : LEVEL_TEXT + (levelID + 1);
 
         gridContracts = transform.Find("GridContracts").GetComponent<GridLayoutGroup>();
         gridActiveContracts = transform.Find("GridActiveContracts").GetComponent<GridLayoutGroup>();
@@ -39,7 +39,7 @@ public class PreGameInfoPanel : MonoBehaviour
     {
         levelID = UberManager.Instance.PreGameManager.SelectedLevel;
         BuildGrids();
-        levelText.text = LEVEL_TEXT + (levelID + 1);
+        levelText.text = UberManager.Instance.Tutorial ? "Tutorial level" : LEVEL_TEXT + (levelID + 1);
     }
 
     public void Clear()
