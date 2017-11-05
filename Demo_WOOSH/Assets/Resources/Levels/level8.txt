@@ -9,125 +9,13 @@
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Gap</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Gap</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Gap</SecTileType>
-        <SecTileType>Gap</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
-        <SecTileType>Rocky</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Rocky</SecTileType>
       </row>
@@ -140,10 +28,122 @@
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
         <SecTileType>Gap</SecTileType>
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Gap</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>RockyRoad</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Rocky</SecTileType>
+        <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
         <SecTileType>Rocky</SecTileType>
       </row>
@@ -151,75 +151,19 @@
   </grid>
   <spawnNodes>
     <SpawnNode>
-      <type>Boss</type>
-      <secType>Sketta</secType>
+      <type>Environment</type>
+      <secType>Rock</secType>
       <position>
-        <x>4</x>
-        <y>8</y>
+        <x>8</x>
+        <y>1</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
-        <x>3</x>
-        <y>7</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>4</x>
-        <y>7</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>5</x>
-        <y>7</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>4</x>
-        <y>6</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>1</x>
-        <y>8</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>2</x>
-        <y>9</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>3</x>
-        <y>9</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>3</x>
-        <y>10</y>
+        <x>6</x>
+        <y>2</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -228,14 +172,6 @@
       <position>
         <x>5</x>
         <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>6</x>
-        <y>3</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -250,48 +186,40 @@
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
-        <x>5</x>
-        <y>1</y>
+        <x>6</x>
+        <y>5</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
-        <x>0</x>
-        <y>2</y>
+        <x>8</x>
+        <y>7</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
-        <x>1</x>
-        <y>1</y>
+        <x>7</x>
+        <y>6</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
-        <x>2</x>
-        <y>1</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>2</x>
+        <x>4</x>
         <y>0</y>
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Human</type>
-      <secType>Human</secType>
+      <type>Environment</type>
+      <secType>Rock</secType>
       <position>
-        <x>0</x>
-        <y>1</y>
+        <x>5</x>
+        <y>3</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -299,22 +227,46 @@
       <secType>Human</secType>
       <position>
         <x>6</x>
-        <y>2</y>
+        <y>1</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Human</type>
       <secType>Human</secType>
       <position>
-        <x>1</x>
+        <x>7</x>
+        <y>4</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>6</x>
         <y>11</y>
       </position>
     </SpawnNode>
     <SpawnNode>
       <type>Environment</type>
-      <secType>Shrine</secType>
+      <secType>Rock</secType>
       <position>
-        <x>2</x>
+        <x>6</x>
+        <y>10</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>7</x>
+        <y>9</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Human</type>
+      <secType>Human</secType>
+      <position>
+        <x>8</x>
         <y>10</y>
       </position>
     </SpawnNode>
@@ -322,8 +274,8 @@
       <type>Environment</type>
       <secType>Shrine</secType>
       <position>
-        <x>5</x>
-        <y>6</y>
+        <x>7</x>
+        <y>11</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -331,7 +283,15 @@
       <secType>Wolf</secType>
       <position>
         <x>5</x>
-        <y>5</y>
+        <y>11</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Minion</type>
+      <secType>Wolf</secType>
+      <position>
+        <x>4</x>
+        <y>10</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -339,15 +299,143 @@
       <secType>Wolf</secType>
       <position>
         <x>2</x>
+        <y>11</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>0</x>
+        <y>5</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>2</x>
+        <y>5</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>2</x>
         <y>4</y>
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Minion</type>
-      <secType>Wolf</secType>
+      <type>Environment</type>
+      <secType>Rock</secType>
       <position>
-        <x>8</x>
+        <x>3</x>
+        <y>3</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>3</x>
+        <y>2</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>1</x>
+        <y>1</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>2</x>
+        <y>2</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>4</x>
+        <y>4</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>4</x>
+        <y>6</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>3</x>
+        <y>1</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>1</x>
+        <y>8</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>3</x>
+        <y>8</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>5</x>
+        <y>7</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>5</x>
+        <y>8</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>3</x>
         <y>9</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Shrine</secType>
+      <position>
+        <x>0</x>
+        <y>3</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Boss</type>
+      <secType>Sketta</secType>
+      <position>
+        <x>1</x>
+        <y>3</y>
       </position>
     </SpawnNode>
   </spawnNodes>
