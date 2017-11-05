@@ -951,8 +951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0783739e59b1b4d8530c3dbcb02170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisCity: 3
-  destination: 3
+  thisCity: 4
+  destination: 4
 --- !u!114 &114810803803118300
 MonoBehaviour:
   m_ObjectHideFlags: 1
