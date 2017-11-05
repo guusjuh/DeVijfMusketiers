@@ -128,7 +128,7 @@ public class Human : MovableObject {
             // 2. not towards an enemy
             // find all enemies in view distance
             List<Enemy> closeEnemies = GameManager.Instance.LevelManager.Enemies.FindAll(
-                e => GameManager.Instance.TileManager.InRange((int)Mathf.Floor(viewDistance / 2.0f), this, e));
+                e => GameManager.Instance.TileManager.InRange(viewDistance, this, e));
 
             // if the distance between my tile and the enemy is greater than the distance betweent the neighbouring tile and the enemy
             // the hooman will be getting closer, so don't go to that tile

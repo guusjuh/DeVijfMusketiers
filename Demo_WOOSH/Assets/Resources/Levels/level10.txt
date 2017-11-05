@@ -170,14 +170,6 @@
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
-        <x>8</x>
-        <y>3</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
         <x>5</x>
         <y>2</y>
       </position>
@@ -311,14 +303,6 @@
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Boss</type>
-      <secType>Arnest</secType>
-      <position>
-        <x>1</x>
-        <y>3</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
@@ -443,6 +427,14 @@
       <secType>Shrine</secType>
       <position>
         <x>0</x>
+        <y>3</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Boss</type>
+      <secType>Sketta</secType>
+      <position>
+        <x>1</x>
         <y>3</y>
       </position>
     </SpawnNode>
