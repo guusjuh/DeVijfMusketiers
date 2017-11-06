@@ -67,9 +67,9 @@ public class VersusPanel : MonoBehaviour
         }
 
         // set boss
-        bool arnest = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Arnest).Count < 0;
-        bool dodin = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Dodin).Count < 0;
-        bool sketta = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Sketta).Count < 0;
+        bool arnest = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Arnest).Count > 0;
+        bool dodin = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Dodin).Count > 0;
+        bool sketta = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Sketta).Count > 0;
 
         //note: assumed that there can be only one boss!
         if (arnest)
