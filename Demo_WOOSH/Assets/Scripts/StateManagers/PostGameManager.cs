@@ -5,12 +5,12 @@ using UnityEngine;
 public class PostGameManager : StateManager {
     protected override void Initialize() {
         UIManager.Instance.RestartUI();
-        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.LevelSelection);
+        SetSounds();
     }
 
     protected override void Restart() {
         UIManager.Instance.RestartUI();
-        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.LevelSelection);
+        SetSounds();
     }
 
     public override void Clear() {
@@ -18,4 +18,10 @@ public class PostGameManager : StateManager {
     }
 
     public override void Update() { }
+
+    private void SetSounds()
+    {
+        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.Instance.Won ? SoundManager.SoundEffect.Victory : SoundManager.SoundEffect.Defeat);
+        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.LevelSelection);
+    }
 }
