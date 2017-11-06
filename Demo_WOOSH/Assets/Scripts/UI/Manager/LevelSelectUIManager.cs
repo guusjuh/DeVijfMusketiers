@@ -187,7 +187,7 @@ public class LevelSelectUIManager : SubUIManager
         if (!UberManager.Instance.Tutorial && initializedInGame)
         {
             cities.HandleAction(c => c.Restart());
-            if (lastRep != UberManager.Instance.PlayerData.ReputationLevel)
+            if (lastRep > UberManager.Instance.PlayerData.ReputationLevel)
             {
                 lastRep = UberManager.Instance.PlayerData.ReputationLevel;
                 repUpUI.gameObject.SetActive(true);

@@ -103,6 +103,7 @@ public class ReputationUpUI : MonoBehaviour
     public void OnClick()
     {
         if (!done) return;
+        filledStars.HandleAction(s => s.gameObject.SetActive(true));
         gameObject.SetActive(false);
     }
 }
