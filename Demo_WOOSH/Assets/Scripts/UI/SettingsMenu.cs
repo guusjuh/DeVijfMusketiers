@@ -11,6 +11,8 @@ public class SettingsMenu : MonoBehaviour
     private Image musicStatusImg;
     private Image fxStatusImg;
 
+    private GameObject creditsPanel;
+
     public void Initialize()
     {
         onSprite = Resources.Load<Sprite>("Sprites/UI/Settings/On");
@@ -25,6 +27,8 @@ public class SettingsMenu : MonoBehaviour
         fxButton.onClick.AddListener(SwitchSoundeffects);
         fxStatusImg = fxButton.transform.Find("Image").GetComponent<Image>();
         fxStatusImg.sprite = UberManager.Instance.SoundManager.FXOn ? onSprite : offSprite;
+
+        creditsPanel = transform.Find("CreditsPanel").gameObject;
 
         gameObject.SetActive(false);
     }
@@ -51,5 +55,15 @@ public class SettingsMenu : MonoBehaviour
     {
         UberManager.Instance.SoundManager.FXOn = !UberManager.Instance.SoundManager.FXOn;
         fxStatusImg.sprite = UberManager.Instance.SoundManager.FXOn ? onSprite : offSprite;
+    }
+
+    public void OpenCredits()
+    {
+        creditsPanel.gameObject.SetActive(true);
+    }
+
+    public void CloseCredits()
+    {
+        creditsPanel.gameObject.SetActive(false);
     }
 }
