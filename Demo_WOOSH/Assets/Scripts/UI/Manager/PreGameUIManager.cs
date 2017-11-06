@@ -11,6 +11,8 @@ public class PreGameUIManager : SubUIManager {
     private PreGameInfoPanel preGameInfoPanel;
     public PreGameInfoPanel PreGameInfoPanel { get { return preGameInfoPanel; } }
 
+    private VersusPanel versusPanel;
+
     private GameObject startButton;
     private GameObject backButton;
     public Vector2 BackButtonPos { get { return backButton.GetComponent<RectTransform>().anchoredPosition; } }
@@ -34,8 +36,6 @@ public class PreGameUIManager : SubUIManager {
 
         startButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
         startButton.GetComponentInChildren<Text>().text = "Start level";
-        startButton.GetComponent<Button>().onClick.AddListener(StartGame);
-        startButton.GetComponent<Button>().interactable = false;
 
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/BackButton", new Vector2(75, -75), anchorTopRight);
 
@@ -60,12 +60,22 @@ public class PreGameUIManager : SubUIManager {
 
         backButton.gameObject.SetActive(false);
 
+        startButton.GetComponent<Button>().onClick.AddListener(StartGame);
+        startButton.GetComponent<Button>().interactable = false;
+
         guidanceArrow = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceArrow", Vector2.zero, canvas.transform);
         guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
     }
 
     protected override void InitializeInGame()
     {
+        versusPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/VersusPanel", Vector2.zero, canvas.transform).GetComponent<VersusPanel>();
+        versusPanel.Initialize();
+
+        startButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        startButton.GetComponent<Button>().onClick.AddListener(versusPanel.Activate);
+        startButton.GetComponent<Button>().interactable = false;
+
         backButton.gameObject.SetActive(true);
     }
 

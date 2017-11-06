@@ -213,7 +213,7 @@ public class LevelSelectUIManager : SubUIManager
             tutorialPath.Clear();
             DeactivateNoClickPanel();
         }
-        else if (tutorialPanel.activeInHierarchy)
+        else if (tutorialPanel != null && tutorialPanel.activeInHierarchy)
         {
             tutorialPanel.SetActive(false);
         }
