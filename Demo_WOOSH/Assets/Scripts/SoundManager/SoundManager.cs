@@ -9,6 +9,28 @@ public class SoundManager {
     private Dictionary<SoundEffect, AudioClip> soundEffects = new Dictionary<SoundEffect, AudioClip>();
     private Dictionary<Background, AudioClip> backgroundMusic = new Dictionary<Background, AudioClip>();
 
+    private bool musicOn = true;
+    public bool MusicOn
+    {
+        get { return musicOn; }
+        set
+        {
+            musicOn = value;
+            backgroundSource.mute = !musicOn;
+        }
+    }
+
+    private bool fxOn = true;
+    public bool FXOn
+    {
+        get { return fxOn; }
+        set
+        {
+            fxOn = value;
+            soundEffectSource.mute = !fxOn;
+        }
+    }
+
     public enum Background
     {
         InGame = 0,

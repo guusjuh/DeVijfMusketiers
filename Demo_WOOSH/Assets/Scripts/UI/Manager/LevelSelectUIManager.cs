@@ -17,6 +17,10 @@ public class LevelSelectUIManager : SubUIManager
     private ReputationUIManager reputationParent;
     public ReputationUIManager ReputationParent { get { return reputationParent; } }
 
+    private GameObject settingsButton;
+    private SettingsMenu settingsMenu;
+    public SettingsMenu SettingsMenu { get { return settingsMenu; } }
+
     private SelectContractWindow selectContractWindow;
 
     public SelectContractWindow SelectContractWindow
@@ -117,6 +121,12 @@ public class LevelSelectUIManager : SubUIManager
 
         reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
+
+        settingsMenu = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsMenuPanel", Vector2.zero, canvas.transform).GetComponent<SettingsMenu>();
+        settingsMenu.Initialize();
+
+        settingsButton = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsButton", new Vector2(20, -20), anchorTopMid).gameObject;
+        settingsButton.GetComponentInChildren<Button>().onClick.AddListener(settingsMenu.Activate);
 
         selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform).transform.GetChild(0).gameObject);
 
