@@ -25,14 +25,14 @@ public class SoundManager {
         DyingHuman,
         Gap,
         Shrine,
-        Burn
+        Burn,
+        Victory,
+        Defeat
     }
     /*
      * heal
      * block
      * firebal dodin
-     * victory
-     * defeat
      */
 
     public void Initialize()
@@ -52,6 +52,8 @@ public class SoundManager {
         soundEffects.Add(SoundEffect.Gap, Resources.Load("Sound/SoundEffects/gap") as AudioClip);
         soundEffects.Add(SoundEffect.Shrine, Resources.Load("Sound/SoundEffects/shrine") as AudioClip);
         soundEffects.Add(SoundEffect.Burn, Resources.Load("Sound/SoundEffects/burn") as AudioClip);
+        soundEffects.Add(SoundEffect.Victory, Resources.Load("Sound/SoundEffects/victory") as AudioClip);
+        soundEffects.Add(SoundEffect.Defeat, Resources.Load("Sound/SoundEffects/defeat") as AudioClip);
 
         SetBackGroundMusic(Background.LevelSelection);
     }
