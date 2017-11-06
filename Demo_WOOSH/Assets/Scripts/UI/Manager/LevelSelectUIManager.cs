@@ -17,6 +17,10 @@ public class LevelSelectUIManager : SubUIManager
     private ReputationUIManager reputationParent;
     public ReputationUIManager ReputationParent { get { return reputationParent; } }
 
+    private GameObject settingsButton;
+    private SettingsMenu settingsMenu;
+    public SettingsMenu SettingsMenu { get { return settingsMenu; } }
+
     private SelectContractWindow selectContractWindow;
 
     public SelectContractWindow SelectContractWindow
@@ -118,6 +122,12 @@ public class LevelSelectUIManager : SubUIManager
         reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
 
+        settingsMenu = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsMenuPanel", Vector2.zero, canvas.transform).GetComponent<SettingsMenu>();
+        settingsMenu.Initialize();
+
+        settingsButton = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsButton", new Vector2(20, -20), anchorTopMid).gameObject;
+        settingsButton.GetComponentInChildren<Button>().onClick.AddListener(settingsMenu.Activate);
+
         selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform).transform.GetChild(0).gameObject);
 
         repUpUI = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/RepUpPanel", Vector2.zero, canvas.transform).GetComponent<ReputationUpUI>();
@@ -177,9 +187,8 @@ public class LevelSelectUIManager : SubUIManager
         if (!UberManager.Instance.Tutorial && initializedInGame)
         {
             cities.HandleAction(c => c.Restart());
-            if (lastRep != UberManager.Instance.PlayerData.ReputationLevel)
+            if (lastRep < UberManager.Instance.PlayerData.ReputationLevel)
             {
-                lastRep = UberManager.Instance.PlayerData.ReputationLevel;
                 repUpUI.gameObject.SetActive(true);
                 repUpUI.Activate();
             }
@@ -188,6 +197,7 @@ public class LevelSelectUIManager : SubUIManager
                 // the rep parent will be updated by repupui if rep up
                 reputationParent.SetStars();
             }
+            lastRep = UberManager.Instance.PlayerData.ReputationLevel;
         }
 
         if (UberManager.Instance.Tutorial)
@@ -203,7 +213,7 @@ public class LevelSelectUIManager : SubUIManager
             tutorialPath.Clear();
             DeactivateNoClickPanel();
         }
-        else if (tutorialPanel.activeInHierarchy)
+        else if (tutorialPanel != null && tutorialPanel.activeInHierarchy)
         {
             tutorialPanel.SetActive(false);
         }
