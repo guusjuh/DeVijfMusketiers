@@ -183,8 +183,8 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-260.0f, 130.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AvailableContractButton"), false, 225, 225);
-        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-260.0f, 130.0f), 280.0f, 180.0f, "Click this helpless human.");
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-245.0f, 130.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AvailableContractButton"), false, 225, 225);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-245.0f, 130.0f), 280.0f, 180.0f, "Click this helpless human.");
 
         //notice: this is special case code!!
         //the selectcontractwindow.activate neeeeds to be called before the next step
@@ -203,8 +203,8 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-175.0f, -85.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AcceptButton"), false, 155, 105);
-        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-175.0f, -85.0f), 300.0f, 120.0f, "Accept to protect him on his journey.");
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-160.0f, -85.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AcceptButton"), false, 155, 105);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-150.0f, -85.0f), 300.0f, 120.0f, "Accept to protect him on his journey.");
 
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.AvailableContractIndicators[0].SelectContract);
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.MyAcceptButton.DisableWindow);
@@ -214,8 +214,8 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(300.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/WorldView/CloseWindow"), false);
-        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(300.0f, 355.0f), 260.0f, 100.0f, "Close the window.");
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(315.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/WorldView/CloseWindow"), false);
+        UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(315.0f, 355.0f), 260.0f, 100.0f, "Close the window.");
 
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.Deactivate);
     }

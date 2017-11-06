@@ -78,7 +78,7 @@ public class LevelSelectUIManager : SubUIManager
     {
         tutorialPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/TutorialPanel", Vector2.zero, anchorCenter);
 
-        tutorialSelectContractWindow = new SelectContractWindow(tutorialPanel.transform.Find("SelectContractMenu").gameObject);
+        tutorialSelectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform).transform.GetChild(0).gameObject);
 
         tutorialCity = tutorialPanel.GetComponentInChildren<City>();
         tutorialCity.Initiliaze();
@@ -86,7 +86,6 @@ public class LevelSelectUIManager : SubUIManager
         tutorialCity.Reached();
 
         tutorialPath = tutorialCity.Paths[0];
-        //tutorialPath.SpawnContract(UberManager.Instance.ContractManager.GenerateRandomContract(tutorialPath));
 
         wizardsHat = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/Hat", new Vector2(0, -50.0f), tutorialPanel.transform).gameObject;
         wizardsHat.transform.SetSiblingIndex(1);
@@ -119,7 +118,7 @@ public class LevelSelectUIManager : SubUIManager
         reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
 
-        selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenu", Vector2.zero, anchorCenter).gameObject);
+        selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform).transform.GetChild(0).gameObject);
 
         repUpUI = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/RepUpPanel", Vector2.zero, canvas.transform).GetComponent<ReputationUpUI>();
         repUpUI.Initialze();
@@ -203,6 +202,10 @@ public class LevelSelectUIManager : SubUIManager
         {
             tutorialPath.Clear();
             DeactivateNoClickPanel();
+        }
+        else if (tutorialPanel.activeInHierarchy)
+        {
+            tutorialPanel.SetActive(false);
         }
 
         cities.HandleAction(c => c.Clear());
