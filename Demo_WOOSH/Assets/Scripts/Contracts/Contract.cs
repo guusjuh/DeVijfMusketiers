@@ -53,6 +53,7 @@ public class Contract
         if (happiness < TotalHappiness)
         {
             happiness += 5;
+            if (happiness > TotalHappiness) happiness = TotalHappiness;
         }
     }
 
