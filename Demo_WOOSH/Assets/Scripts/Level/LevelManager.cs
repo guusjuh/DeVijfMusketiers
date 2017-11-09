@@ -38,11 +38,10 @@ public class LevelManager
 
     private float delay = 0.5f;
     private int startGapTurn = 2;
+    private Dictionary<TileNode, int> possibleGapReferences;
 
-    public int StartGapTurn
-    {
-        set
-        {
+    public int StartGapTurn {
+        set {
             if(!UberManager.Instance.DevelopersMode) return;
             startGapTurn = value;
         }
@@ -282,15 +281,21 @@ public class LevelManager
 
         if (amountOfTurns == startGapTurn)
             yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.WarningText());
-        else if(amountOfTurns > startGapTurn)
+        else if(amountOfTurns > startGapTurn) { }
             yield return UberManager.Instance.StartCoroutine(SpawnGap());
+
     }
 
     private IEnumerator SpawnGap()
     {
+        possibleGapReferences = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
+
         for (int i = 0; i < amountOfTurns - startGapTurn; i++)
         {
-            TileNode chosenGap = GameManager.Instance.TileManager.GetPossibleGapNodeReferences();
+            if (possibleGapReferences.Count <= 0) break;
+
+            TileNode chosenGap = UberManager.PerformRandomRoll<TileNode>(possibleGapReferences);
+            possibleGapReferences.Remove(chosenGap);
 
             GameManager.Instance.CameraManager.LockTarget(chosenGap.Hexagon.transform);
 
@@ -300,6 +305,8 @@ public class LevelManager
 
             if (!GameManager.Instance.GameOn || GameManager.Instance.Paused) break;
         }
+
+        possibleGapReferences = null;
 
         yield return null;
     }

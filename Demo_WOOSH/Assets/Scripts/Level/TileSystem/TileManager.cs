@@ -447,7 +447,7 @@ public class TileManager
         return gapNodes;
     }
 
-    public TileNode GetPossibleGapNodeReferences()
+    public Dictionary<TileNode, int> GetPossibleGapNodeReferences()
     {
         List<TileNode> gapNodes = GetNodeWithGapReferences();
         Dictionary<TileNode, int> possGapNodes = new Dictionary<TileNode, int>();
@@ -469,14 +469,14 @@ public class TileManager
                 }
                 else
                 {
-                    possGapNodes.Add(GetNodeReference(currPos), 
+                    possGapNodes.Add(GetNodeReference(currPos),
                                      GetNodeReference(currPos).NeightBours.FindAll(
                                          n => n.GetSecType() == SecTileType.Gap).Count);
                 }
             }
         }
 
-        return UberManager.PerformRandomRoll<TileNode>(possGapNodes);
+        return new Dictionary<TileNode, int>(possGapNodes); 
     }
 
     public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
