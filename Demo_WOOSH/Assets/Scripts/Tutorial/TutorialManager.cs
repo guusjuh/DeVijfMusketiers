@@ -16,24 +16,24 @@ public class TutorialManager
         tutorialText = new List<string[]>();
         tutorialText.Add(new string[]
         {
-            "Wizards Hat: Hi you there! I can feel some powerful magic around you...",
-            "Wizards Hat: Every hat needs a wizard to be able to work... So I can't do anything.",
-            "Wizards Hat: Would you like to be my wizard?",
-            "Wizards Hat: Awesome! Thank you so much, we will achieve great things.",
-            "Wizards Hat: ...",
-            "Wizards Hat: Travelers often seek the help of wizards to stay safe on the roads.",
-            "Wizards Hat: I will help you understand the basics of the art of Human-Saving.",
+            "Wizards Hat: \nHi you there! I can feel some powerful magic around you...",
+            "Wizards Hat: \nEvery hat needs a wizard to be able to work... So I can't do anything.",
+            "Wizards Hat: \nWould you like to be my wizard?",
+            "Wizards Hat: \nAwesome! Thank you so much, we will achieve great things.",
+            "Wizards Hat: \n...",
+            "Wizards Hat: \nTravelers often seek the help of wizards to stay safe on the roads.",
+            "Wizards Hat: \nI will help you understand the basics of the art of Human-Saving.",
         });
         tutorialText.Add(new string[]
         {
-            "Random Traveler: Help, help! I'm in great danger.",
-            "Wizards Hat: Quick, click me to put me on your head and start this epic adventure."
+            "Random Traveler: \nHelp, help! I'm in great danger.",
+            "Wizards Hat: \nQuick, click me to put me on your head and start this epic adventure."
         });
         tutorialText.Add(new string[]
         {
-            "Wizards Hat: That's basically all there's to it! Simple right?",
-            "Wizards Hat: You can now call yourself a wizard of W.O.O.S.H.",
-            "Wizards Hat: That stands for WIZARDS ORDER OF STRATEGIC HUMAN-SAVING!"
+            "Wizards Hat: \nThat's basically all there's to it! Simple right?",
+            "Wizards Hat: \nYou can now call yourself a wizard of W.O.O.S.H.",
+            "Wizards Hat: \nThat stands for WIZARDS ORDER OF STRATEGIC HUMAN-SAVING!"
         });
 
         counter = 0;
@@ -288,7 +288,7 @@ public class TutorialManager
         UIManager.Instance.PreGameUI.PreGameInfoPanel.FirstSelectableContract.transform.parent.GetComponent<Button>().onClick.AddListener(Next);
 
         // set arrow
-        UIManager.Instance.PreGameUI.SetArrow(new Vector2(-330, -280), 70.0f, 200.0f, "Select the human for this level.");
+        UIManager.Instance.PreGameUI.SetArrow(new Vector2(-320, -280), 70.0f, 200.0f, "Select the human for this level.");
     }
 
     // Clicking the start level button
@@ -453,7 +453,7 @@ public class TutorialManager
 
         UIManager.Instance.PostGameUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.PostGameUI.SetArrow(new Vector2(-110, -605), 110.0f, 100.0f, "You gain reputation if your humans makes it.");
+        UIManager.Instance.PostGameUI.SetArrow(new Vector2(-110, -605), 80.0f, 100.0f, "You gain reputation if your human survives.");
     }
 
     // in level select again
