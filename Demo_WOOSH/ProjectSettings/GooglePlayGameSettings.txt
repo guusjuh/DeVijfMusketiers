@@ -1,0 +1,9 @@
+lastUpgrade=00942
+proj.pluginVersion=0.9.42
+proj.AppId=335332462082
+and.BundleId=com.buffybeans.woosh
+proj.classDir=Assets%2fScripts
+proj.ConstantsClassName=GooglePlayIds
+and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--%0d%0aGoogle+Play+game+services+IDs.%0d%0aSave+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.%0d%0a--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--+app_id+--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e335332462082%3c%2fstring%3e%0d%0a++%3c%21--+package_name+--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.buffybeans.woosh%3c%2fstring%3e%0d%0a++%3c%21--+achievement+Knowing+exactly+what+to+do+--%3e%0d%0a++%3cstring+name%3d%22achievement_knowing_exactly_what_to_do%22+translatable%3d%22false%22%3eCgkIgpz9muEJEAIQAQ%3c%2fstring%3e%0d%0a++%3c%21--+achievement+First+blood+--%3e%0d%0a++%3cstring+name%3d%22achievement_first_blood%22+translatable%3d%22false%22%3eCgkIgpz9muEJEAIQAg%3c%2fstring%3e%0d%0a++%3c%21--+achievement+Burn+baby+burn+--%3e%0d%0a++%3cstring+name%3d%22achievement_burn_baby_burn%22+translatable%3d%22false%22%3eCgkIgpz9muEJEAIQAw%3c%2fstring%3e%0d%0a++%3c%21--+achievement+The+coolest+guy+in+town+--%3e%0d%0a++%3cstring+name%3d%22achievement_the_coolest_guy_in_town%22+translatable%3d%22false%22%3eCgkIgpz9muEJEAIQBA%3c%2fstring%3e%0d%0a++%3c%21--+achievement+Reached+city+--%3e%0d%0a++%3cstring+name%3d%22achievement_reached_city%22+translatable%3d%22false%22%3eCgkIgpz9muEJEAIQBQ%3c%2fstring%3e%0d%0a%3c%2fresources%3e
+and.ClientId=335332462082-23q00b04otj554oq6usrdhfj472dbih6.apps.googleusercontent.com
+android.SetupDone=true

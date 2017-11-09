@@ -66,4 +66,9 @@ public class SettingsMenu : MonoBehaviour
     {
         creditsPanel.gameObject.SetActive(false);
     }
+
+    public void OpenAchievements()
+    {
+        GooglePlayScript.ShowAchievmentUI();
+    }
 }
