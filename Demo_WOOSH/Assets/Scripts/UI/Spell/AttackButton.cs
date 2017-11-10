@@ -10,7 +10,7 @@ public class AttackButton : SpellButton
         base.Initialize();
         cost = 1;
         type = GameManager.SpellType.Attack;
-        spellDamage = 10;
+        spellDamage = 100;
         SpawnAP();
     }
 

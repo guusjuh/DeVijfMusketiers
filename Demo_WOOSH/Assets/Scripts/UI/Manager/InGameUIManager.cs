@@ -60,6 +60,8 @@ public class InGameUIManager : SubUIManager {
 
         playerActionPoints = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft).GetComponent<PlayerAPSkipButton>();
         playerActionPoints.Initialize();
+        wizard = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
+        wizardAnimController = wizard.GetComponent<Animator>();
 
         playerTurnBanner = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/YourTurn", new Vector2(0, 500), anchorCenter);
         playerTurnBanner.SetActive(false);
@@ -73,9 +75,7 @@ public class InGameUIManager : SubUIManager {
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
-        wizard = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
-        wizardAnimController = wizard.GetComponent<Animator>();
-
+ 
         teleportButtonsOn = false;
         teleportButtons = new List<SurroundingPushButton>();
         InitializeTeleportButtons();

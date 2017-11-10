@@ -12,6 +12,9 @@ public class PreGameUIManager : SubUIManager {
     public PreGameInfoPanel PreGameInfoPanel { get { return preGameInfoPanel; } }
 
     private VersusPanel versusPanel;
+    private const float TOTAL_VS_TIMER = 3.0f;
+    private float versusPanelTimer = 0.0f;
+    public void SetVersusPanelTimer() { versusPanelTimer = TOTAL_VS_TIMER; }
 
     private GameObject startButton;
     private GameObject backButton;
@@ -138,5 +141,20 @@ public class PreGameUIManager : SubUIManager {
 
         UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.InGame);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (versusPanelTimer > 0.0f)
+        {
+            versusPanelTimer -= Time.deltaTime;
+
+            if (versusPanelTimer <= 0.0f)
+            {
+                versusPanel.Deactivate();
+            }
+        }
     }
 }

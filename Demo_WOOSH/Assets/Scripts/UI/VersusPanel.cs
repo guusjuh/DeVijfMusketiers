@@ -72,12 +72,9 @@ public class VersusPanel : MonoBehaviour
         bool sketta = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Sketta).Count > 0;
 
         //note: assumed that there can be only one boss!
-        if (arnest)
-            bossImg.sprite = enemySprites[SecContentType.Arnest];
-        else if (dodin)
-            bossImg.sprite = enemySprites[SecContentType.Dodin];
-        else if (sketta)
-            bossImg.sprite = enemySprites[SecContentType.Sketta];
+        if (arnest) bossImg.sprite = enemySprites[SecContentType.Arnest];
+        else if (dodin) bossImg.sprite = enemySprites[SecContentType.Dodin];
+        else if (sketta) bossImg.sprite = enemySprites[SecContentType.Sketta];
 
         // find amount of minions
         int amountOfMinions = leveldataRef.spawnNodes.FindAll(s => s.secType == SecContentType.Wolf).Count;
@@ -98,6 +95,7 @@ public class VersusPanel : MonoBehaviour
         }
 
         gameObject.SetActive(true);
+        UIManager.Instance.PreGameUI.SetVersusPanelTimer();
     }
 
     public void Deactivate()
