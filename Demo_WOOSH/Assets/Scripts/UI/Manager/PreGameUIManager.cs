@@ -119,6 +119,7 @@ public class PreGameUIManager : SubUIManager {
     public override void Clear()
     {
         preGameInfoPanel.Clear();
+        versusPanelTimer = -1.0f;
 
         CanStart(false);
 
