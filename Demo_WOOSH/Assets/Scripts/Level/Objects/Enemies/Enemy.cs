@@ -173,6 +173,8 @@ public class Enemy : WorldObject
 
         if (health <= 0)
         {
+            GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_first_blood);
+
             Dead = true;
             anim.SetBool(DIE_ANIM, true);
             GameManager.Instance.TileManager.HidePossibleRoads();

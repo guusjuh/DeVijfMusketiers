@@ -20,5 +20,7 @@ public class FireballButton : SpellButton
     {
         target.GetComponent<Enemy>().Burn(duration, fireDamage);
         target.GetComponent<Enemy>().TryHit(spellDamage);
+
+        GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_burn_baby_burn);
     }
 }

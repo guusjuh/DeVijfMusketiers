@@ -101,6 +101,9 @@ public class Contract
                 {
                     City city = UIManager.Instance.LevelSelectUI.Cities.Find(c => path.Destination == c.ThisCity);
                     city.Reached();
+
+                    GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_reached_city);
+
                     UberManager.Instance.ContractManager.RefreshCityContracts(city);
                 }
 

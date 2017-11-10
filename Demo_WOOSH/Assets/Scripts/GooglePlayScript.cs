@@ -29,14 +29,15 @@ public class GooglePlayScript : MonoBehaviour {
 
     #region Achievements
 
-    public static void UnlockAchievemnt(string id)
+    public static void UnlockAchievement(string id)
     {
-        Social.ReportProgress(id, 1.0d, succes => { UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Victory); });
+        //note: if all is right, there shouldnt be a boolean check
+
+        Social.ReportProgress(id, 100, succes => {  });
     }
 
     public static void ShowAchievmentUI()
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Victory);
         Social.ShowAchievementsUI();
     }
     #endregion
