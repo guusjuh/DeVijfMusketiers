@@ -13,6 +13,8 @@ public enum Destination
 }
 
 public class City : MonoBehaviour {
+    private Button bttn;
+
     private List<Path> paths;
     
     private ContractState contractState = ContractState.Nothing;
@@ -44,19 +46,20 @@ public class City : MonoBehaviour {
     public void Reached()
     {
         if (cityReached) return;
+        if (bttn == null) bttn = gameObject.GetComponentInChildren<Button>();
 
         if (destination != Destination.NoDestination)
         {
-            gameObject.GetComponent<Button>().interactable = true;
-            gameObject.GetComponent<Button>().onClick.AddListener(delegate
+            bttn.interactable = true;
+            bttn.onClick.AddListener(delegate
             {
                 UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination);
             });
         }
         else
         {
-            gameObject.GetComponent<Button>().interactable = true;
-            gameObject.GetComponent<Button>().enabled = true;
+            bttn.interactable = true;
+            bttn.enabled = true;
         }
 
         cityReached = true;
@@ -64,6 +67,8 @@ public class City : MonoBehaviour {
 
     public void Initiliaze()
     {
+        bttn = gameObject.GetComponentInChildren<Button>();
+
         // any city with a path to a different destination
         if (destination != Destination.NoDestination)
         {
@@ -76,7 +81,7 @@ public class City : MonoBehaviour {
                 availableContracts.Add(destination, new List<Contract>());
             }
 
-            gameObject.GetComponent<Button>().interactable = false;
+            bttn.interactable = false;
 
             nCI = new NewContractIndicator(transform.GetChild(1).gameObject);
         }
@@ -84,7 +89,7 @@ public class City : MonoBehaviour {
         else
         {
             // nothing for now
-            gameObject.GetComponent<Button>().interactable = false;
+            bttn.interactable = false;
         }
 
         //TODO: find right path, by checking the contract destination
