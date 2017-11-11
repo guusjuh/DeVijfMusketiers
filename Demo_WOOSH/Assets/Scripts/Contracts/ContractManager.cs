@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class ContractManager
 {
+    private static int contentCounter = 0;
+
     //all active contracts
     private List<Contract> contracts = new List<Contract>();
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
@@ -155,7 +157,8 @@ public class ContractManager
 
     public Contract GenerateRandomContract(Path path)
     {
-        int id = AmountOfContracts();
+        contentCounter++;
+        int id = contentCounter;
 
         // get random type   
         HumanTypes type = GetRandomHumanType();
@@ -168,7 +171,8 @@ public class ContractManager
 
     public Contract GenerateContract(Path path, int rep, int index = -1)
     {
-        int id = AmountOfContracts();
+        contentCounter++;
+        int id = contentCounter;
 
         // get random type   
         HumanTypes type = (HumanTypes)(rep-1);

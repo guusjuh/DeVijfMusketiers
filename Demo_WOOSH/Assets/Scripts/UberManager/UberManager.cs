@@ -80,6 +80,9 @@ public class UberManager : MonoBehaviour {
 
         Application.targetFrameRate = 60;
 
+        SavedPlayerData savedPlayerData = new SavedPlayerData();
+        savedPlayerData.Initialize();
+
         GetComponent<GooglePlayScript>().Initialize();
 
         playerData.Initialize();
@@ -113,6 +116,8 @@ public class UberManager : MonoBehaviour {
         stateManagers.Get(state).Start();
 
         GameManager.CameraManager.ResetDEVMODE();
+
+        //SavedPlayerData.Instance.UpdateIngame();
     }
 #endif
 
@@ -133,6 +138,11 @@ public class UberManager : MonoBehaviour {
 
         state = GameStates.LevelSelection;
         stateManagers.Get(state).Start();
+
+        SavedPlayerData.Instance.UpdateIngame();
+
+        Debug.Log("rep"+PlayerData.Reputation);
+        Debug.Log("tut"+ Tutorial);
     } 
 
     public void Update() {

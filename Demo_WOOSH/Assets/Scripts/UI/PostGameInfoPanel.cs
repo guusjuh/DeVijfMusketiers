@@ -47,6 +47,9 @@ public class PostGameInfoPanel : MonoBehaviour
         calculateRep();
         float endRep = UberManager.Instance.PlayerData.Reputation;
         reputation.Initialize(startRep, endRep);
+
+        SavedPlayerData.Instance.UpdateSaved();
+        GooglePlayScript.Instance.SaveData();
     }
 
     public void Restart()
@@ -64,6 +67,9 @@ public class PostGameInfoPanel : MonoBehaviour
         calculateRep();
         float endRep = UberManager.Instance.PlayerData.Reputation;
         reputation.Restart(startRep, endRep);
+
+        SavedPlayerData.Instance.UpdateSaved();
+        GooglePlayScript.Instance.SaveData();
     }
 
     private void SetText()

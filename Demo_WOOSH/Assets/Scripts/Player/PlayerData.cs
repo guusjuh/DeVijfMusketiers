@@ -12,8 +12,6 @@ public class PlayerData {
     private float reputation = 112;
     public float Reputation { get { return reputation; } set { reputation = value; } }
 
-    private float toNext = 0;
-
     private int reputationLevel = 1;
     public int ReputationLevel { get { return reputationLevel < 1 ? 1 : reputationLevel; } }    
 
@@ -40,8 +38,6 @@ public class PlayerData {
         {
             reputationLevel = LevelForRep(reputation);
         }
-
-        GooglePlayScript.Instance.SaveData();
     }
 
     public float ReqRep(int level)

@@ -30,15 +30,15 @@ public class Path {
         });
     }
 
-    public bool SpawnContract(Contract contract)
+    public bool SpawnContract(Contract contract, int levelid = 0)
     {
         //spawning a contract, so always level 0
-        bool spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(levels[0].LevelID) < GameManager.AMOUNT_HUMANS_PER_LEVEL;
+        bool spaceInThisLevel = UberManager.Instance.ContractManager.AmountOfContracts(levels[levelid].LevelID) < GameManager.AMOUNT_HUMANS_PER_LEVEL;
 
         if (spaceInThisLevel)
         {
             UberManager.Instance.ContractManager.AddContract(contract);
-            levels[0].AddHuman();
+            levels[levelid].AddHuman();
             levels.HandleAction(l => l.CheckActiveForButton());
 
             return true;
