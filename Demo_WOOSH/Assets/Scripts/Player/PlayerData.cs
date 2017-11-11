@@ -10,7 +10,7 @@ public class PlayerData {
 
     // Reputation
     private float reputation = 112;
-    public float Reputation { get { return reputation; } }
+    public float Reputation { get { return reputation; } set { reputation = value; } }
 
     private float toNext = 0;
 
@@ -30,9 +30,6 @@ public class PlayerData {
         // check for reputationlevel matching curr rep
         reputationLevel = LevelForRep(reputation);
 
-        Debug.Log("current replvl: " +reputationLevel);
-        Debug.Log("current rep: " +reputation);
-
         // adjust
         reputation += adjustment;
         reputation = Mathf.Clamp(reputation, minRep, maxRep);
@@ -44,13 +41,7 @@ public class PlayerData {
             reputationLevel = LevelForRep(reputation);
         }
 
-
-        Debug.Log("-------------------------------------------");
-        Debug.Log("adjusted with: " + adjustment);
-        Debug.Log("new replvl: " + reputationLevel);
-        Debug.Log("new rep: " + reputation);
-        Debug.Log("-------------------------------------------");
-
+        GooglePlayScript.Instance.SaveData();
     }
 
     public float ReqRep(int level)

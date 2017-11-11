@@ -80,6 +80,8 @@ public class UberManager : MonoBehaviour {
 
         Application.targetFrameRate = 60;
 
+        GetComponent<GooglePlayScript>().Initialize();
+
         playerData.Initialize();
 
         contentManager.Initialize();
@@ -116,7 +118,7 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
-        tutorial = true;
+        tutorial = false;
 
         if (tutorial)
         {
