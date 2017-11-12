@@ -21,13 +21,23 @@ public class SavedPlayerData
         activeContractsPerLevel = new List<Contract>[9];
     }
 
+    public void InitializeInGame()
+    {
+        UpdateIngame();
+        UIManager.Instance.LevelSelectUI.UpdateLastRep();
+        UIManager.Instance.LevelSelectUI.ReputationParent.SetStars();
+
+    }
+
     public void UpdateIngame()
     {
         // tutorial
         if (tutorialFinsihed) UberManager.Instance.EndTutorial();
 
         // rep 
-        UberManager.Instance.PlayerData.Reputation = reputation;
+        UberManager.Instance.PlayerData.SetReputation(reputation);
+
+        if (!tutorialFinsihed) return;
 
         // active cities
         // posssibly errors since the UI isn't instantiated yet
@@ -65,6 +75,8 @@ public class SavedPlayerData
 
         // rep
         reputation = UberManager.Instance.PlayerData.Reputation;
+
+        if (!tutorialFinsihed) return;
 
         // active cities
         bool[] tempActiveCities = new bool[3];

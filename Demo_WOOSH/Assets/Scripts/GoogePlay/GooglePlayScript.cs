@@ -4,7 +4,6 @@ using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using System.Text;
 using System.Xml.Serialization;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class GooglePlayScript : MonoBehaviour {

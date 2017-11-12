@@ -123,7 +123,7 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
-        tutorial = false;
+        tutorial = !SavedPlayerData.Instance.tutorialFinsihed;
 
         if (tutorial)
         {
@@ -139,7 +139,7 @@ public class UberManager : MonoBehaviour {
         state = GameStates.LevelSelection;
         stateManagers.Get(state).Start();
 
-        SavedPlayerData.Instance.UpdateIngame();
+        SavedPlayerData.Instance.InitializeInGame();
 
         Debug.Log("rep"+PlayerData.Reputation);
         Debug.Log("tut"+ Tutorial);
@@ -157,6 +157,9 @@ public class UberManager : MonoBehaviour {
         prevState = state;
         state = nextState;
         stateManagers.Get(state).Start();
+
+        SavedPlayerData.Instance.UpdateSaved();
+        GooglePlayScript.Instance.SaveData();
     }
 
     public void EndTutorial() {

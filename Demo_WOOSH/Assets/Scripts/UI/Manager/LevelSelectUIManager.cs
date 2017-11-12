@@ -37,6 +37,7 @@ public class LevelSelectUIManager : SubUIManager
 
     private ReputationUpUI repUpUI;
     private int lastRep = 1;            //TODO: get from player account
+    public void UpdateLastRep() { lastRep = UberManager.Instance.PlayerData.ReputationLevel; }
 
     //------------------ TUTORIAL VARS ------------------------
     private GameObject tutorialPanel;

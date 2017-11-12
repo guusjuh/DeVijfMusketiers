@@ -475,7 +475,7 @@ public class TutorialManager
         UberManager.Instance.EndTutorial();
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_knowing_exactly_what_to_do);
-
+        
         UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
     }
 

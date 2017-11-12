@@ -23,6 +23,19 @@ public class PlayerData {
         reputationLevel = LevelForRep(reputation);
     }
 
+    public void SetReputation(float newRep)
+    {
+        reputationLevel = LevelForRep(reputation);
+
+        reputation = newRep;
+        reputation = Mathf.Clamp(reputation, minRep, maxRep);
+
+        if (reputation > ReqRep(reputationLevel + 1) || reputation < ReqRep(reputationLevel))
+        {
+            reputationLevel = LevelForRep(reputation);
+        }
+    }
+
     public void AdjustReputation(float adjustment)
     {
         // check for reputationlevel matching curr rep

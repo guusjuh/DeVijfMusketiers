@@ -21,8 +21,10 @@ public class ReputationUIManager : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            if (i < UberManager.Instance.PlayerData.ReputationLevel) stars[i].sprite = fullStar;
-            else stars[i].sprite = emptyStar; 
+            if (i < UberManager.Instance.PlayerData.ReputationLevel)
+                stars[i].sprite = fullStar;
+            else
+                stars[i].sprite = emptyStar; 
         }
     }
 }
