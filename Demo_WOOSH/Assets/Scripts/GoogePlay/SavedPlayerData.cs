@@ -24,9 +24,11 @@ public class SavedPlayerData
     public void InitializeInGame()
     {
         UpdateIngame();
-        UIManager.Instance.LevelSelectUI.UpdateLastRep();
-        UIManager.Instance.LevelSelectUI.ReputationParent.SetStars();
-
+        if (tutorialFinsihed)
+        {
+            UIManager.Instance.LevelSelectUI.UpdateLastRep();
+            UIManager.Instance.LevelSelectUI.ReputationParent.SetStars();
+        }
     }
 
     public void UpdateIngame()
