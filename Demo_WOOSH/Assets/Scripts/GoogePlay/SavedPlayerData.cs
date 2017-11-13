@@ -13,7 +13,7 @@ public class SavedPlayerData
     [SerializeField] public bool[] activeCities;
 
     [SerializeField] public DateTime contractRefreshTime;
-    [SerializeField] public List<Contract>[] generatedContracts;
+    [SerializeField] public List<Contract>[] availableContractsPerCity;
 
     [SerializeField] public List<Contract>[] activeContractsPerLevel;
 
@@ -21,7 +21,7 @@ public class SavedPlayerData
     {
         Instance = this;
 
-        generatedContracts = new List<Contract>[3];
+        availableContractsPerCity = new List<Contract>[3];
 
         activeCities = new bool[3];
         activeContractsPerLevel = new List<Contract>[9];
@@ -59,13 +59,13 @@ public class SavedPlayerData
 
         // available contracts
         List<Contract> tempGeneratedContracts = new List<Contract>();
-        for (int i = 0; i < generatedContracts.Length; i++)
+        for (int i = 0; i < availableContractsPerCity.Length; i++)
         {
-            if (!activeCities[i]) return;
+            if (!activeCities[i]) continue;
 
-            for (int j = 0; j < generatedContracts[i].Count; j++)
+            for (int j = 0; j < availableContractsPerCity[i].Count; j++)
             {
-                Contract temp = generatedContracts[i][j];
+                Contract temp = availableContractsPerCity[i][j];
 
                 if (!UIManager.Instance.LevelSelectUI.Cities[i].AvailableContracts[UIManager.Instance.LevelSelectUI.Cities[i].Destination].Contains(temp))
                 {
@@ -121,7 +121,7 @@ public class SavedPlayerData
             tempAvailableContractsPerCity[i] = UIManager.Instance.LevelSelectUI.Cities[i].AvailableContracts
                                                 [UIManager.Instance.LevelSelectUI.Cities[i].Destination];
         }
-        generatedContracts = tempAvailableContractsPerCity;
+        availableContractsPerCity = tempAvailableContractsPerCity;
 
         // active contracts
         List<Contract>[] tempActiveContractsPerLevel = new List<Contract>[9];
@@ -141,7 +141,7 @@ public class SavedPlayerData
         spd.reputation = 112.0f;
         spd.activeCities = new bool[3] {true, false, false};
         spd.contractRefreshTime = System.DateTime.Now.AddSeconds(ContractManager.CONTRACT_REFRESH_RATE);
-        spd.generatedContracts = new List<Contract>[3];
+        spd.availableContractsPerCity = new List<Contract>[3];
         spd.activeContractsPerLevel = new List<Contract>[9];
 
         return spd;

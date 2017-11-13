@@ -60,7 +60,7 @@ public class ContractManager
     private void SetContractTimer()
     {
         contractRefreshDate = System.DateTime.Now.AddSeconds(CONTRACT_REFRESH_RATE);
-        SavedPlayerData.Instance.UpdateSaved();
+        //TODO: SavedPlayerData.Instance.UpdateSaved();
     }
 
     public void UpdateContractTimer()
@@ -70,6 +70,8 @@ public class ContractManager
         {
             RefreshContracts();
             SetContractTimer();
+
+            GooglePlayScript.Instance.SaveData();
         }
     }
 
@@ -93,9 +95,7 @@ public class ContractManager
     }
 
     private void RefreshContracts()
-    {
-        Debug.Log("new contracts");
-        
+    {        
         //find all cities and paths
         List<City> cities = UberManager.Instance.UiManager.LevelSelectUI.Cities;
 

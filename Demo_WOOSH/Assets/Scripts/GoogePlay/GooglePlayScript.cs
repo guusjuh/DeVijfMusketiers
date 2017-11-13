@@ -17,7 +17,7 @@ public class GooglePlayScript : MonoBehaviour {
     {
         Instance = this;
 
-        if(!PlayerPrefs.HasKey(SAVE_NAME)) PlayerPrefs.SetString(SAVE_NAME, InitialPlayerDataToString()); //TODO: set to init values
+        if(!PlayerPrefs.HasKey(SAVE_NAME)) PlayerPrefs.SetString(SAVE_NAME, InitialPlayerDataToString()); 
         if(!PlayerPrefs.HasKey("IsFirstTime")) PlayerPrefs.SetInt("IsFirstTime", 1); // 1 for true since booleans dont exist in playerprefs
 
         LoadLocal();
@@ -94,37 +94,60 @@ public class GooglePlayScript : MonoBehaviour {
 
     public void StringToPlayerData(string cloudData, string localData)
     {
-        SavedPlayerData tempData = null;
+        SavedPlayerData cloudPlayerData = null;
+        SavedPlayerData localPlayerData = null;
 
-        // first time playing on this device?
-        if (PlayerPrefs.GetInt("IsFirstTime") == 1)
+        if (cloudData != null)
         {
-            PlayerPrefs.SetInt("IsFirstTime", 0);
-
-            PlayerPrefs.SetString(SAVE_NAME, cloudData);
+            XmlSerializer serializer = new XmlSerializer(typeof(SavedPlayerData));
+            using (MemoryStream m = new MemoryStream(Encoding.UTF8.GetBytes(cloudData)))
+            {
+                cloudPlayerData = (SavedPlayerData)serializer.Deserialize(m);
+            }
         }
-
-        //TODO: add timestamp to SavedPlayerData and make sure the localdata is more up to date
-        PlayerPrefs.SetString(SAVE_NAME, localData);
-
-        SaveData();
 
         if (localData != null)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(SavedPlayerData));
             using (MemoryStream m = new MemoryStream(Encoding.UTF8.GetBytes(localData)))
             {
-                tempData = (SavedPlayerData)serializer.Deserialize(m);
+                localPlayerData = (SavedPlayerData)serializer.Deserialize(m);
             }
         }
 
-        if (tempData != null)
+        // first time playing on this device?
+        if (PlayerPrefs.GetInt("IsFirstTime") == 1)
         {
-            SavedPlayerData.Instance = tempData;
+            PlayerPrefs.SetInt("IsFirstTime", 0);
+
+            if (cloudPlayerData != null && localPlayerData != null &&
+                cloudPlayerData.timeStamp > localPlayerData.timeStamp)
+            {
+                PlayerPrefs.SetString(SAVE_NAME, cloudData);
+            }
+        }
+        else
+        {
+            // update ingame to local data if its the newst
+            if (localPlayerData != null && cloudPlayerData != null &&
+                localPlayerData.timeStamp > cloudPlayerData.timeStamp)
+            {
+                SavedPlayerData.Instance = localPlayerData;
+                if (!UberManager.Instance.DoingSetup) SavedPlayerData.Instance.UpdateIngame();
+
+                isCloudDataLoaded = true;
+
+                SaveData();
+                return;
+            }
+        }
+
+        if (cloudPlayerData != null)
+        {
+            SavedPlayerData.Instance = cloudPlayerData;
             if (!UberManager.Instance.DoingSetup) SavedPlayerData.Instance.UpdateIngame();
         }
 
-        //UberManager.Instance.PlayerData.Reputation = int.Parse(cloudData);
         isCloudDataLoaded = true;
     }
 
@@ -172,6 +195,8 @@ public class GooglePlayScript : MonoBehaviour {
 
     public void SaveData()
     {
+        SavedPlayerData.Instance.UpdateSaved();
+
         if (!isCloudDataLoaded)
         {
             SaveLocal();
@@ -202,7 +227,6 @@ public class GooglePlayScript : MonoBehaviour {
         else if (unmerged == null) resolver.ChooseMetadata(origin);
         else
         {
-            //TODO: compare timestamps
             resolver.ChooseMetadata(unmerged);
             return;
         }

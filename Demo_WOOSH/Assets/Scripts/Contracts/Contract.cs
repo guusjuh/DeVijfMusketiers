@@ -144,6 +144,8 @@ public class Contract
                     GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_reached_city);
 
                     UberManager.Instance.ContractManager.RefreshCityContracts(city);
+
+                    GooglePlayScript.Instance.SaveData();
                 }
 
                 BreakContract();
