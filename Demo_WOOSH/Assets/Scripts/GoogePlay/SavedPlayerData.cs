@@ -17,6 +17,9 @@ public class SavedPlayerData
 
     [SerializeField] public List<Contract>[] activeContractsPerLevel;
 
+    [SerializeField] public bool musicOn;
+    [SerializeField] public bool fxOn;
+
     public void Initialize()
     {
         Instance = this;
@@ -29,7 +32,14 @@ public class SavedPlayerData
 
     public void InitializeInGame()
     {
+        if (tutorialFinsihed)
+        {
+            if (UberManager.Instance.SoundManager.MusicOn != musicOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchMusic();
+            if (UberManager.Instance.SoundManager.FXOn != fxOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchSoundeffects();
+        }
+
         UpdateIngame();
+
         if (tutorialFinsihed)
         {
             UIManager.Instance.LevelSelectUI.UpdateLastRep();
@@ -91,6 +101,10 @@ public class SavedPlayerData
                 }
             }
         }
+
+        // music & sounds
+        UberManager.Instance.SoundManager.MusicOn = musicOn;
+        UberManager.Instance.SoundManager.FXOn = fxOn;
     }
 
     public void UpdateSaved()
@@ -130,6 +144,10 @@ public class SavedPlayerData
             tempActiveContractsPerLevel[i] = UberManager.Instance.ContractManager.ContractsInLevel(i + 1);
         }
         activeContractsPerLevel = tempActiveContractsPerLevel;
+
+        // music & sounds
+        musicOn = UberManager.Instance.SoundManager.MusicOn;
+        fxOn = UberManager.Instance.SoundManager.FXOn;
     }
 
     public static SavedPlayerData InitialData()
@@ -143,6 +161,8 @@ public class SavedPlayerData
         spd.contractRefreshTime = System.DateTime.Now.AddSeconds(ContractManager.CONTRACT_REFRESH_RATE);
         spd.availableContractsPerCity = new List<Contract>[3];
         spd.activeContractsPerLevel = new List<Contract>[9];
+        spd.musicOn = true;
+        spd.fxOn = true;
 
         return spd;
     }

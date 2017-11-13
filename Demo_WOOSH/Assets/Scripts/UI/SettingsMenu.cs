@@ -41,6 +41,8 @@ public class SettingsMenu : MonoBehaviour
 
     public void Deactivate()
     {
+        GooglePlayScript.Instance.SaveData();
+
         UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         gameObject.SetActive(false);
     }
