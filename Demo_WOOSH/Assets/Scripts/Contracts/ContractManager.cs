@@ -12,7 +12,7 @@ public class ContractManager
     [SerializeField] private List<ContractType> contractTypes = new List<ContractType>();
     public List<ContractType> ContractTypes { get { return contractTypes; } }
 
-    public const double CONTRACT_REFRESH_RATE = 261.0d;//261.0d; //refresh rate in seconds
+    public const double CONTRACT_REFRESH_RATE = 3600.0d;//261.0d; //refresh rate in seconds
     private const int CONTRACTS_PER_DESTINATION = 6;
     private DateTime contractRefreshDate;
     public DateTime ContractRefreshDate { get {return contractRefreshDate;} }
@@ -20,11 +20,6 @@ public class ContractManager
     public void Initialize()
     {
         contracts.HandleAction(c => c.Initialize());
-
-        //TODO: in tutorial? set one hooman in -1
-
-        //TODO: ensure that refreshdate is saved, so that it does not reset on restart
-        LoadContractTimer();
     }
 
     public void AddContract(Contract contract)
@@ -57,21 +52,15 @@ public class ContractManager
         return contracts.FindAll(c => c.CurrentLevel == level);
     }
 
-    private void SaveContractTimer()
+    public void SetContractTimer(DateTime value)
     {
-        //TODO: save contract timer in file
-    }
-
-    private void LoadContractTimer()
-    {
-        //TODO: load contract timer from file
-        contractRefreshDate = System.DateTime.Now.AddSeconds(2.0d);
+        contractRefreshDate = value;
     }
 
     private void SetContractTimer()
     {
         contractRefreshDate = System.DateTime.Now.AddSeconds(CONTRACT_REFRESH_RATE);
-        SaveContractTimer();
+        SavedPlayerData.Instance.UpdateSaved();
     }
 
     public void UpdateContractTimer()

@@ -35,6 +35,7 @@ public class City : MonoBehaviour {
     [SerializeField] private Destination thisCity;
     [SerializeField] private Destination destination;
     public Destination ThisCity { get { return thisCity; } }
+    public Destination Destination { get { return destination; } }
     private Dictionary<Destination, List<Contract>> availableContracts;
     public Dictionary<Destination, List<Contract>> AvailableContracts { get { return availableContracts;} }
 

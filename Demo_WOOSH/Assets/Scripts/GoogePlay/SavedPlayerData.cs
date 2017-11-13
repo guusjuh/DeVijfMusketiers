@@ -11,11 +11,17 @@ public class SavedPlayerData
     [SerializeField] public bool tutorialFinsihed = false;
     [SerializeField] public float reputation;
     [SerializeField] public bool[] activeCities;
+
+    [SerializeField] public DateTime contractRefreshTime;
+    [SerializeField] public List<Contract>[] generatedContracts;
+
     [SerializeField] public List<Contract>[] activeContractsPerLevel;
 
     public void Initialize()
     {
         Instance = this;
+
+        generatedContracts = new List<Contract>[3];
 
         activeCities = new bool[3];
         activeContractsPerLevel = new List<Contract>[9];
@@ -48,6 +54,29 @@ public class SavedPlayerData
             if(activeCities[i]) UIManager.Instance.LevelSelectUI.Cities[i].Reached();
         }
 
+        // refresh contracts timer
+        UberManager.Instance.ContractManager.SetContractTimer(contractRefreshTime);
+
+        // available contracts
+        List<Contract> tempGeneratedContracts = new List<Contract>();
+        for (int i = 0; i < generatedContracts.Length; i++)
+        {
+            if (!activeCities[i]) return;
+
+            for (int j = 0; j < generatedContracts[i].Count; j++)
+            {
+                Contract temp = generatedContracts[i][j];
+
+                if (!UIManager.Instance.LevelSelectUI.Cities[i].AvailableContracts[UIManager.Instance.LevelSelectUI.Cities[i].Destination].Contains(temp))
+                {
+                    tempGeneratedContracts.Add(new Contract(temp.id_att, temp.happiness_att, temp.type_att, temp.human_index_att, i * 3));
+                }
+            }
+
+            UIManager.Instance.LevelSelectUI.Cities[i].RefreshAvailableContracts(tempGeneratedContracts, UIManager.Instance.LevelSelectUI.Cities[i].Destination);
+            tempGeneratedContracts.Clear();
+        }
+
         // active contracts
         for (int i = 0; i < activeContractsPerLevel.Length; i++)
         {
@@ -59,10 +88,7 @@ public class SavedPlayerData
                 {
                     Contract newContract = new Contract(temp.id_att, temp.happiness_att, temp.type_att, temp.human_index_att, i);
                     newContract.MyPath.SpawnContract(newContract, (newContract.CurrentLevel - 1) % 3);
-
                 }
-
-                //TODO: do we need to update happiness? guess not
             }
         }
     }
@@ -85,6 +111,18 @@ public class SavedPlayerData
         for (int i = 0; i < 3; i++) tempActiveCities[i] = UIManager.Instance.LevelSelectUI.Cities[i].CityReached;
         activeCities = tempActiveCities;
 
+        // refresh contracts timer
+        contractRefreshTime = UberManager.Instance.ContractManager.ContractRefreshDate;
+
+        // available contracts per city
+        List<Contract>[] tempAvailableContractsPerCity = new List<Contract>[3];
+        for (int i = 0; i < 3; i++)
+        {
+            tempAvailableContractsPerCity[i] = UIManager.Instance.LevelSelectUI.Cities[i].AvailableContracts
+                                                [UIManager.Instance.LevelSelectUI.Cities[i].Destination];
+        }
+        generatedContracts = tempAvailableContractsPerCity;
+
         // active contracts
         List<Contract>[] tempActiveContractsPerLevel = new List<Contract>[9];
         for (int i = 0; i < 9; i++)
@@ -102,6 +140,8 @@ public class SavedPlayerData
         spd.tutorialFinsihed = false;
         spd.reputation = 112.0f;
         spd.activeCities = new bool[3] {true, false, false};
+        spd.contractRefreshTime = System.DateTime.Now.AddSeconds(ContractManager.CONTRACT_REFRESH_RATE);
+        spd.generatedContracts = new List<Contract>[3];
         spd.activeContractsPerLevel = new List<Contract>[9];
 
         return spd;
