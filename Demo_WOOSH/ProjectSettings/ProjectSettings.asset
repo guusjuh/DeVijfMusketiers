@@ -24,8 +24,8 @@ PlayerSettings:
   m_SplashScreenDrawMode: 1
   m_SplashScreenBackgroundAnimationZoom: 1
   m_SplashScreenLogoAnimationZoom: 1
-  m_SplashScreenBackgroundLandscapeAspect: 1
-  m_SplashScreenBackgroundPortraitAspect: 1
+  m_SplashScreenBackgroundLandscapeAspect: 0.5625
+  m_SplashScreenBackgroundPortraitAspect: 0.5625
   m_SplashScreenBackgroundLandscapeUvs:
     serializedVersion: 2
     x: 0
@@ -43,8 +43,10 @@ PlayerSettings:
     duration: 2
   - logo: {fileID: 21300000, guid: 42c6a98ed12a34d43a4d93ae41f864b6, type: 3}
     duration: 2
-  m_SplashScreenBackgroundLandscape: {fileID: 0}
-  m_SplashScreenBackgroundPortrait: {fileID: 0}
+  m_SplashScreenBackgroundLandscape: {fileID: 1, guid: 00000000000000000000000000000000,
+    type: 0}
+  m_SplashScreenBackgroundPortrait: {fileID: 1, guid: 00000000000000000000000000000000,
+    type: 0}
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
@@ -126,7 +128,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.1.26
+  bundleVersion: 1.1.28
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -148,7 +150,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.buffybeans.woosh
   buildNumber: {}
-  AndroidBundleVersionCode: 9
+  AndroidBundleVersionCode: 11
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0

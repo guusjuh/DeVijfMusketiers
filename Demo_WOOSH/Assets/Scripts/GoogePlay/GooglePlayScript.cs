@@ -215,6 +215,21 @@ public class GooglePlayScript : MonoBehaviour {
         }
     }
 
+    public void DeleteProgress()
+    {
+        PlayerPrefs.SetString(SAVE_NAME, InitialPlayerDataToString());
+
+        if (Social.localUser.authenticated)
+        {
+            isSaving = true;
+
+            (Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
+                DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
+        }
+
+        LoadData();
+    }
+
     private void SaveLocal()
     {
         PlayerPrefs.SetString(SAVE_NAME, PlayerDataToString());
