@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ActiveContract : ContractButton
 {
     private Image iconImage;
+    private Sprite emptySprite;
     private Color nonActiveColor = new Color(1.0f, 1.0f, 1.0f, 0.25f);
     private Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     private bool active = false;
@@ -21,6 +22,7 @@ public class ActiveContract : ContractButton
             {
                 //TODO: reset sprite to default sprite (to be made)
                 contractRef = null;
+                iconImage.sprite = emptySprite;
                 ClearStars();
                 ClearHappiness();
             }
@@ -37,6 +39,7 @@ public class ActiveContract : ContractButton
     {
         iconImage = transform.Find("Image").GetComponent<Image>();
         iconImage.color = nonActiveColor;
+        emptySprite = iconImage.sprite;
 
         base.Initialize();
     }
