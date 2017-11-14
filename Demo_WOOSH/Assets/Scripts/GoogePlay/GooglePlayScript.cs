@@ -71,8 +71,6 @@ public class GooglePlayScript : MonoBehaviour {
 
             return Encoding.UTF8.GetString(m.GetBuffer());
         }
-
-        //return "112";
     }
 
     public string PlayerDataToString()
@@ -88,8 +86,6 @@ public class GooglePlayScript : MonoBehaviour {
 
             return Encoding.UTF8.GetString(m.GetBuffer());
         }
-
-        //return UberManager.Instance.PlayerData.Reputation.ToString();
     }
 
     public void StringToPlayerData(string cloudData, string localData)

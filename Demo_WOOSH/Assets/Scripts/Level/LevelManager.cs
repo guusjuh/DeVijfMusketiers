@@ -451,7 +451,7 @@ public class LevelManager
     {
         if (!exitstingContract && !UberManager.Instance.DevelopersMode)
         {
-            Debug.Log("You have to assign a contract in game mode");
+            Debug.LogError("You have to assign a contract in game mode");
             exitstingContract = true;
         }
 

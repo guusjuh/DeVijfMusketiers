@@ -381,7 +381,6 @@ public class LevelEditor : MonoBehaviour
 
             // remove the last undo action
             undoActions.RemoveLast();
-            Debug.Log("undo"); 
         }
         // redo
         else if (Input.GetKeyDown(REDO))
@@ -405,8 +404,6 @@ public class LevelEditor : MonoBehaviour
 
             // remove the last redo action
             redoActions.RemoveLast();
-
-            Debug.Log("redo");
         }
     }
 
