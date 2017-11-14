@@ -71,7 +71,7 @@ public class SavedPlayerData
         List<Contract> tempGeneratedContracts = new List<Contract>();
         for (int i = 0; i < availableContractsPerCity.Length; i++)
         {
-            if (!activeCities[i]) continue;
+            if (!activeCities[i] || availableContractsPerCity[i].Count == 0) continue;
 
             for (int j = 0; j < availableContractsPerCity[i].Count; j++)
             {
