@@ -42,6 +42,10 @@ public class PreGameUIManager : SubUIManager {
 
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/BackButton", new Vector2(75, -75), anchorTopRight);
 
+        GameObject background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/PreGame/BackgroundPreGame"), Vector2.zero, canvas.transform);
+
+        background.transform.SetAsFirstSibling();
+
         if (!UberManager.Instance.Tutorial && !initializedInGame)
         {
             InitializeInGame();

@@ -39,8 +39,11 @@ public class LevelSelectUIManager : SubUIManager
     private int lastRep = 1;            //TODO: get from player account
     public void UpdateLastRep() { lastRep = UberManager.Instance.PlayerData.ReputationLevel; }
 
+    private GameObject background;
+
     //------------------ TUTORIAL VARS ------------------------
     private GameObject tutorialPanel;
+    private GameObject tutorialBackground;
 
     private GameObject guidanceArrow;
     private Text guidanceText;
@@ -67,6 +70,10 @@ public class LevelSelectUIManager : SubUIManager
         anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
         anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
         anchorBottomCenter = canvas.gameObject.transform.Find("Anchor_BottomCenter").GetComponent<RectTransform>();
+
+        background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/BackgroundLevelSelect"), Vector2.zero, canvas.transform);
+
+        background.transform.SetAsFirstSibling();
 
         if (!UberManager.Instance.Tutorial && !initializedInGame)
         {
@@ -110,6 +117,10 @@ public class LevelSelectUIManager : SubUIManager
         guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
         DeactivateNoClickPanel();
         ActivateNoClickPanel(wizardsHat.GetComponent<RectTransform>().anchoredPosition, wizardsHat.GetComponentInChildren<Image>().sprite);
+
+        //tutorialBackground = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/Tutorial/BackgroundTutorial"), Vector2.zero, canvas.transform);
+        //tutorialBackground.transform.SetAsFirstSibling();
+        //background.transform.SetAsFirstSibling();
     }
 
     protected override void InitializeInGame()
@@ -214,9 +225,15 @@ public class LevelSelectUIManager : SubUIManager
             tutorialPath.Clear();
             DeactivateNoClickPanel();
         }
-        else if (tutorialPanel != null && tutorialPanel.activeInHierarchy)
-        {
-            tutorialPanel.SetActive(false);
+        else {
+            if (tutorialPanel != null && tutorialPanel.activeInHierarchy) { 
+                tutorialPanel.SetActive(false);
+            }
+            if (tutorialBackground != null)
+            {
+                GameObject.Destroy(tutorialBackground);
+                tutorialBackground = null;
+            }
         }
 
         cities.HandleAction(c => c.Clear());

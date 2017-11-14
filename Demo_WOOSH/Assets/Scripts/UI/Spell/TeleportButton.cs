@@ -55,7 +55,7 @@ public class TeleportButton : SpellButton
 
             GameObject APPoint = Resources.Load<GameObject>("Prefabs/UI/InGame/SpellButton/APIndicator");
             apIndicator.Add(Instantiate(APPoint, -pos, Quaternion.identity, this.transform));
-            apIndicator[i].transform.position = transform.position - new Vector3(pos.x, pos.y, 0);
+            apIndicator[i].GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition - new Vector2(pos.x, pos.y);
         }
     }
 }

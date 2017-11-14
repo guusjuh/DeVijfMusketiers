@@ -13,6 +13,7 @@ public class PostGameUIManager : SubUIManager
     private PostGameInfoPanel postGameInfoPanel;
     private GameObject backButton;
     private GameObject nextButton;
+    private GameObject background;
 
     //------------------ TUTORIAL VARS ------------------------
     private GameObject guidanceArrow;
@@ -34,6 +35,9 @@ public class PostGameUIManager : SubUIManager
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
         backButton.GetComponentInChildren<Text>().text = "Back to level select";
         backButton.GetComponent<Button>().onClick.AddListener(BackToWorld);
+
+        background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/PostGame/BackgroundPostGame"), Vector2.zero, canvas.transform);
+        background.transform.SetAsFirstSibling();
 
         if (!UberManager.Instance.Tutorial && !initializedInGame)
         {

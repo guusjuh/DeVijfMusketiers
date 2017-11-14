@@ -20,7 +20,7 @@ public class PostGameInfoReputation : MonoBehaviour
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();
-        fi.Initialize((end >= start ? "+" : "") + (end - start), (end >= start)? Color.green : Color.red, 0.0f, 10.0f, maskPanel.transform.position + new Vector3(maxWidth / 2.0f, 125, 0), false);
+        fi.Initialize((end >= start ? "+" : "") + (end - start), (end >= start)? Color.green : Color.red, 0.0f, 10.0f, new Vector2(0.0f, 125.0f), false, transform);
     }
 
     public void Restart(float start, float end)
@@ -28,7 +28,7 @@ public class PostGameInfoReputation : MonoBehaviour
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
         FloatingIndicator fi = new FloatingIndicator();
-        fi.Initialize((end >= start ? "+" : "") + (end - start), (end >= start) ? Color.green : Color.red, 0.0f, 10.0f, maskPanel.transform.position + new Vector3(maxWidth / 2.0f, 125, 0), false);
+        fi.Initialize((end >= start ? "+" : "") + (end - start), (end >= start) ? Color.green : Color.red, 0.0f, 10.0f, new Vector2(0.0f, 125.0f), false, transform);
     }
 
     private IEnumerator gainReputation(float start, float end)

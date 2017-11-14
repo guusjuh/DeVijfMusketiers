@@ -26,7 +26,7 @@ public class FloatingIndicator
     /// <summary>
     /// Initializes the floating number.
     /// </summary>
-    public void Initialize(string text, Color color, float moveSpeed, float lifeTime, Vector3 startPos, bool inGame = true)
+    public void Initialize(string text, Color color, float moveSpeed, float lifeTime, Vector3 startPos, bool inGame = true, Transform parent = null)
     {
         this.moveSpeed = moveSpeed;
         this.lifeTime = lifeTime;
@@ -38,10 +38,8 @@ public class FloatingIndicator
         floatingText = parentGO.transform.Find("Child").GetComponent<Text>();
         floatingText.color = color;
 
-        if (inGame)
-            parentGO.transform.SetParent(UIManager.Instance.InGameUI.AnchorCenter);
-        else
-            parentGO.transform.SetParent(UIManager.Instance.PostGameUI.AnchorCenter);
+        if (parent == null) parent = UIManager.Instance.InGameUI.AnchorCenter;
+        parentGO.transform.SetParent(parent);
 
         parentGO.anchoredPosition = Vector3.zero;
 
@@ -70,7 +68,7 @@ public class FloatingIndicator
         uiPosition.z = 0;
 
         // Set it's transform. 
-        parentGO.position = uiPosition;
+        parentGO.anchoredPosition = uiPosition;
         parentGO.localScale = new Vector3(1, 1, 1);
 
         // Set damage text. 
@@ -105,7 +103,7 @@ public class FloatingIndicator
             uiPosition.z = 0;
 
             // Go up at the speed of moveSpeed.
-            parentGO.position = new Vector3(uiPosition.x, uiPosition.y);
+            parentGO.anchoredPosition = new Vector3(uiPosition.x, uiPosition.y);
 
             // Wait delta time. 
             yield return new WaitForSeconds(deltaTime);
