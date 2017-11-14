@@ -17,6 +17,7 @@ public class PreGameUIManager : SubUIManager {
     public void SetVersusPanelTimer() { versusPanelTimer = TOTAL_VS_TIMER; }
 
     private GameObject startButton;
+    public RectTransform StartButton { get { return startButton.GetComponent<RectTransform>(); } }
     private GameObject backButton;
     public Vector2 BackButtonPos { get { return backButton.GetComponent<RectTransform>().anchoredPosition; } }
 

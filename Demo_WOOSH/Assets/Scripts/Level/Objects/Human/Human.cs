@@ -16,6 +16,7 @@ public class Human : MovableObject {
     private GameObject childGO;
     private Animator anim;
     private List<SpriteRenderer> sprRenders;
+    public List<SpriteRenderer> SprRenders { get { return sprRenders; } }
 
     private int totalFleePoints = 2;
     private int currentFleePoints;

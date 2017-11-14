@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SubUIManager
 {
     protected Canvas canvas;
+    public Canvas Canvas { get { return canvas; } }
     protected bool first = true;
 
     protected RectTransform noClickPanel;
@@ -60,6 +61,11 @@ public class SubUIManager
         onlyButton.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
         onlyButton.onClick.AddListener(UberManager.Instance.TutorialManager.Next);
         onlyButton.onClick.AddListener(UberManager.Instance.SoundManager.PlaySoundEffect);
+    }
+
+    public virtual void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, Vector2 size)
+    {
+        ActivateNoClickPanel(onlyButtonPos, buttonSprite, size.x, size.y);
     }
 
     public void ActivateNoClickPanel()

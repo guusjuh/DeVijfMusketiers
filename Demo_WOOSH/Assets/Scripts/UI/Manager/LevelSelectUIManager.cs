@@ -156,12 +156,24 @@ public class LevelSelectUIManager : SubUIManager
         tutorialIndicator.SetState(City.ContractState.New);
     }
 
+    public override void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, Vector2 size)
+    {
+        base.ActivateNoClickPanel(onlyButtonPos, buttonSprite, size.x, size.y);
+
+        tutorialIndicator.SetState(City.ContractState.New);
+    }
+
     public void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, bool indicatorOn, float width = 100, float height = 100)
     {
         base.ActivateNoClickPanel(onlyButtonPos, buttonSprite, width, height);
 
         if (indicatorOn) tutorialIndicator.SetState(City.ContractState.New);
         else tutorialIndicator.SetState(City.ContractState.Nothing);
+    }
+
+    public void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, bool indicatorOn, Vector2 size)
+    {
+        ActivateNoClickPanel(onlyButtonPos, buttonSprite, indicatorOn, size.x, size.y);
     }
 
     public override void DeactivateNoClickPanel()

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class AcceptButton
 {
     private Button accept;
+    public RectTransform Accept { get { return accept.GetComponent<RectTransform>(); } }
     private Button decline;
     private GameObject acceptWindow;
 

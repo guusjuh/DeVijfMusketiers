@@ -154,8 +154,8 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(0, 126.0f), 
-            UIManager.Instance.LevelSelectUI.TutorialCity.GetComponent<Image>().sprite, 260, 260);
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(GetRootUIPosition(UIManager.Instance.LevelSelectUI.TutorialCity.GetComponent<RectTransform>(), UIManager.Instance.LevelSelectUI.Canvas.GetComponent<RectTransform>()), 
+            UIManager.Instance.LevelSelectUI.TutorialCity.GetComponent<Image>().sprite, GetRootUISize(UIManager.Instance.LevelSelectUI.TutorialCity.GetComponent<RectTransform>(), UIManager.Instance.LevelSelectUI.Canvas.GetComponent<RectTransform>()));
 
         //notice: this is special case code!!
         //the selectcontractwindow.activate neeeeds to be called before the next step
@@ -183,6 +183,7 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
+        RectTransform activeContractButton = UIManager.Instance.LevelSelectUI.SelectContractWindow.AvailableContractIndicators[0].GetComponent<RectTransform>();
         UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(-245.0f, 130.0f), Resources.Load<Sprite>("Sprites/UI/Tutorial/AvailableContractButton"), false, 225, 225);
         UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(-245.0f, 130.0f), 280.0f, 180.0f, "Click this helpless human.");
 
@@ -298,9 +299,12 @@ public class TutorialManager
 
         UIManager.Instance.PreGameUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.PreGameUI.ActivateNoClickPanel(new Vector2(365, -910), Resources.Load<Sprite>("Sprites/UI/Tutorial/StartLevel"), 240, 240);
+        RectTransform startLevelBttn = UIManager.Instance.PreGameUI.StartButton;
+        Vector2 position = GetRootUIPosition(startLevelBttn, UIManager.Instance.PreGameUI.Canvas.GetComponent<RectTransform>());
+        Vector2 size = GetRootUISize(startLevelBttn, UIManager.Instance.PreGameUI.Canvas.GetComponent<RectTransform>());
+        UIManager.Instance.PreGameUI.ActivateNoClickPanel(position, Resources.Load<Sprite>("Sprites/UI/Tutorial/StartLevel"), size);
 
-        UIManager.Instance.PreGameUI.SetArrow(new Vector2(365, -910), 120.0f, 75.0f, "Now start the level.");
+        UIManager.Instance.PreGameUI.SetArrow(position, 120.0f, 75.0f, "Now start the level.");
     }
 
     // Goto ingame and
@@ -311,9 +315,11 @@ public class TutorialManager
 
         Time.timeScale = 0;
 
-        wolfPos = new Vector2(0, 180);
+        Enemy enemy = GameManager.Instance.LevelManager.Enemies[0];
+        wolfPos = GetRootUIPosition(enemy.SprRenders, UIManager.Instance.InGameUI);//new Vector2(0, 180);
+        Vector2 size = GetRootUISize(enemy.SprRenders, UIManager.Instance.InGameUI);
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), 120, 110);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), size);
 
         UIManager.Instance.InGameUI.SetArrow(wolfPos, 100.0f, 100.0f, "The enemy goes first. Click to start.");
     }
@@ -331,16 +337,20 @@ public class TutorialManager
     {
         Time.timeScale = 0;
 
-        Vector2 humanPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.LevelManager.Humans[0].transform.position);
+        Human human = GameManager.Instance.LevelManager.Humans[0];
+        Vector2 position = GetRootUIPosition(human.SprRenders, UIManager.Instance.InGameUI);//new Vector2(0, 180);
+        Vector2 size = GetRootUISize(human.SprRenders, UIManager.Instance.InGameUI);
 
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(humanPos, GameManager.Instance.LevelManager.Humans[0].ContractRef.InWorldSprite);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(position, GameManager.Instance.LevelManager.Humans[0].ContractRef.InWorldSprite, size);
 
+        UIManager.Instance.InGameUI.OnlyButton.onClick.RemoveAllListeners();
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Humans[0].Click);
+        UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(Next);
 
-        UIManager.Instance.InGameUI.SetArrow(humanPos, 110.0f, 100.0f, "Now it's your turn. Click the human first.");
+        UIManager.Instance.InGameUI.SetArrow(position, 110.0f, 100.0f, "Now it's your turn. Click the human first.");
     }
 
     // select teleport button
@@ -348,9 +358,11 @@ public class TutorialManager
     {
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
 
-        Vector2 teleportButtonPos = new Vector2(0, -115);
+        RectTransform rect = UIManager.Instance.InGameUI.TeleportButton.GetComponent<RectTransform>();
+        Vector2 teleportButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        Vector2 teleportButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), 125, 125);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), teleportButtonSize);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.TeleportButton.Click);
 
@@ -372,9 +384,14 @@ public class TutorialManager
 
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
 
-        Vector2 highlightPos = UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(0, 0)));
+        GameObject tile = GameManager.Instance.TileManager.GetNodeReference(new Coordinate(0, 0)).Hexagon;
+        List<SpriteRenderer> sprRenders = new List<SpriteRenderer>();
+        sprRenders.Add(tile.GetComponent<SpriteRenderer>());
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(highlightPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/HighHex"), 150, 130);
+        Vector2 highlightPos = GetRootUIPosition(sprRenders, UIManager.Instance.InGameUI);//UIManager.Instance.InGameUI.WorldToCanvas(GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(0, 0)));
+        Vector2 highlightSize = GetRootUISize(sprRenders, UIManager.Instance.InGameUI);
+
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(highlightPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/HighHex"), highlightSize);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(TutorialTeleport);
 
@@ -394,14 +411,18 @@ public class TutorialManager
     {
         Time.timeScale = 0;
 
-        wolfPos = new Vector2(-108, -258);
-
         GameManager.Instance.LevelManager.Player.StartPlayerTurn();
         UIManager.Instance.InGameUI.BeginPlayerTurn();
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), 120, 110);
+        Enemy enemy = GameManager.Instance.LevelManager.Enemies[0];
+        wolfPos = GetRootUIPosition(enemy.SprRenders, UIManager.Instance.InGameUI);//new Vector2(0, 180);
+        Vector2 size = GetRootUISize(enemy.SprRenders, UIManager.Instance.InGameUI);
 
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(wolfPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/Wolf"), size);
+
+        UIManager.Instance.InGameUI.OnlyButton.onClick.RemoveAllListeners();
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(GameManager.Instance.LevelManager.Enemies[0].Click);
+        UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(Next);
 
         UIManager.Instance.InGameUI.SetArrow(wolfPos, 70.0f, 100.0f, "Attack the enemy to save the human.");
     }
@@ -411,9 +432,11 @@ public class TutorialManager
     {
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
 
-        Vector2 attackButtonPos = new Vector2(-105, -50);
+        RectTransform rect = UIManager.Instance.InGameUI.AttackButton.GetComponent<RectTransform>();
+        Vector2 attackButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        Vector2 attackButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), 125, 125);
+        UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), attackButtonSize);
 
         UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.AttackButton.Click);
 
@@ -498,5 +521,97 @@ public class TutorialManager
 
         UIManager.Instance.InGameUI.HideSpellButtons();
         UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
+    }
+
+    public Vector2 GetRootUIPosition(RectTransform rect, RectTransform canvasRect)
+    {
+        Vector3[] fourCorners = new Vector3[4];
+        rect.GetWorldCorners(fourCorners);
+        for (int i = 0; i < fourCorners.Length; i+=2)
+        {
+            fourCorners[i] = canvasRect.InverseTransformPoint(fourCorners[i]);
+        }
+
+        float xPos = fourCorners[0].x + ((fourCorners[2].x - fourCorners[0].x) / 2.0f);
+        float yPos = fourCorners[0].y + ((fourCorners[2].y - fourCorners[0].y) / 2.0f);
+
+        return new Vector2(xPos, yPos);
+    }
+
+    // for enemies and humans
+    public Vector2 GetRootUIPosition(List<SpriteRenderer> sprRenders, SubUIManager uiManager)
+    {
+        Vector2 min = sprRenders[0].bounds.min;
+        Vector2 max = sprRenders[0].bounds.max;
+
+        for (int i = 1; i < sprRenders.Count; i++)
+        {
+            if (min.x > sprRenders[i].bounds.min.x)
+                min.x = sprRenders[i].bounds.min.x;
+            if (min.y > sprRenders[i].bounds.min.y)
+                min.y = sprRenders[i].bounds.min.y;
+            if (max.x < sprRenders[i].bounds.max.x)
+                max.x = sprRenders[i].bounds.max.x;
+            if (max.y < sprRenders[i].bounds.max.y)
+                max.y = sprRenders[i].bounds.max.y;
+        }
+
+        min = uiManager.WorldToCanvas(min);
+        max = uiManager.WorldToCanvas(max);
+
+        float xPos = min.x + ((max.x - min.x) / 2.0f);
+        float yPos = min.y + ((max.y - min.y) / 2.0f);
+
+        return new Vector2(xPos, yPos);
+    }
+
+    public Vector2 GetRootUISize(RectTransform rect, RectTransform canvasRect)
+    {
+        Vector3[] fourCorners = new Vector3[4];
+        rect.GetWorldCorners(fourCorners);
+        for (int i = 0; i < fourCorners.Length; i += 2)
+        {
+            fourCorners[i] = canvasRect.InverseTransformPoint(fourCorners[i]);
+        }
+
+        float xPos = (fourCorners[2].x - fourCorners[0].x);
+        float yPos = (fourCorners[2].y - fourCorners[0].y);
+
+        return new Vector2(xPos, yPos);
+    }
+
+    public Vector2 GetRootUISize(SpriteRenderer sprRender, SubUIManager uiManager)
+    {
+        Vector2 min = sprRender.bounds.min;
+        Vector2 max = sprRender.bounds.max;
+
+        min = uiManager.WorldToCanvas(min);
+        max = uiManager.WorldToCanvas(max);
+
+        return new Vector2(max.x - min.x, max.y - min.y);
+    }
+
+    // for enemies and humans
+    public Vector2 GetRootUISize(List<SpriteRenderer> sprRenders, SubUIManager uiManager)
+    {
+        Vector2 min = sprRenders[0].bounds.min;
+        Vector2 max = sprRenders[0].bounds.max;
+
+        for (int i = 1; i < sprRenders.Count; i++)
+        {
+            if (min.x > sprRenders[i].bounds.min.x)
+                min.x = sprRenders[i].bounds.min.x;
+            if (min.y > sprRenders[i].bounds.min.y)
+                min.y = sprRenders[i].bounds.min.y;
+            if (max.x < sprRenders[i].bounds.max.x)
+                max.x = sprRenders[i].bounds.max.x;
+            if (max.y < sprRenders[i].bounds.max.y)
+                max.y = sprRenders[i].bounds.max.y;
+        }
+
+        min = uiManager.WorldToCanvas(min);
+        max = uiManager.WorldToCanvas(max);
+
+        return new Vector2(max.x - min.x, max.y - min.y);
     }
 }

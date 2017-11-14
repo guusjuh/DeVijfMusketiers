@@ -25,6 +25,7 @@ public class Enemy : WorldObject
 
     protected Animator anim;
     protected List<SpriteRenderer> sprRenders;
+    public List<SpriteRenderer> SprRenders { get { return sprRenders; } }
 
     protected int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
     protected int totalActionPoints = 3;        // total points
