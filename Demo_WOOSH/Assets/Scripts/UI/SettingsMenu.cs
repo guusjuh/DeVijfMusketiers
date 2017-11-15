@@ -77,6 +77,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void OpenAchievements()
     {
+        Debug.Log("achievements");
         GooglePlayScript.ShowAchievmentUI();
     }
 

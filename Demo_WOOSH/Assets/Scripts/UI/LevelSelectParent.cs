@@ -46,7 +46,7 @@ public class LevelSelectParent : MonoBehaviour
         // if there is a next level
         // check for the amount of humans in the next level plus the humans traveling from this level
         // being smaller than 7
-        bool nextLevelExists = path.hasNextLevel(levelInPathId);
+        /* nextLevelExists = path.hasNextLevel(levelInPathId);
         bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).amountOfHumans +
                                 UberManager.Instance.ContractManager.AmountOfContracts(path.GetNextLevelID(levelInPathId)) 
                                 <= GameManager.AMOUNT_HUMANS_PER_LEVEL;
@@ -60,7 +60,7 @@ public class LevelSelectParent : MonoBehaviour
         else
         {
             levelSelectButton.GetComponent<Button>().interactable = true;
-        }
+        }*/
     }
 
     public void Clear()
