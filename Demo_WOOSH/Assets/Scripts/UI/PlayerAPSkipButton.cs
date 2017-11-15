@@ -17,7 +17,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
     private bool skipOpen = false;
 
     private float size;
-    private float speed = 10.5f;
+    private float speed = 15.0f;
 
     private Coroutine rotateCoroutine;
 
@@ -132,7 +132,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
                 scaledSize = size;
                 break;
             }
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
     }
 

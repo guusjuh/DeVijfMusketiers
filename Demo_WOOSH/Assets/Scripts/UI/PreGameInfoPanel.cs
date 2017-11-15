@@ -90,8 +90,12 @@ public class PreGameInfoPanel : MonoBehaviour
 
         reference.SetActive(true, contractRef);
 
+        bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).amountOfHumans +
+                                UberManager.Instance.ContractManager.AmountOfContracts(levelID + 1)
+                                <= GameManager.AMOUNT_HUMANS_PER_LEVEL;
         bool hasEnoughHoomans = GetSelectedContracts().Count >= ContentManager.Instance.LevelData(levelID).amountOfHumans;
-        if (hasEnoughHoomans)
+
+        if (spaceInNextLevel && hasEnoughHoomans)
         {
             UIManager.Instance.PreGameUI.CanStart(true);
         }
