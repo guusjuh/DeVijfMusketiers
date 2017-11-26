@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Enemy : WorldObject
 {
-    protected const string MOVE_ANIM = "Moving";
-    protected const string HIT_ANIM = "Hurt";
-    protected const string ATTACK_ANIM = "Attack";
-    protected const string DIE_ANIM = "Dead";
+    public const string MOVE_ANIM = "Moving";
+    public const string HIT_ANIM = "Hurt";
+    public const string ATTACK_ANIM = "Attack";
+    public const string DIE_ANIM = "Dead";
 
     // spell effects
     protected bool slowed = false;
@@ -23,7 +23,11 @@ public class Enemy : WorldObject
     protected int burnCount = 0;
     private GameObject burnedIcon;
 
-    protected Animator anim;
+    private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
+    private float inverseMoveTime;          //Used to make movement more efficient.
+    public float InverseMoveTime { get { return inverseMoveTime; } }
+
+    public Animator anim;
     protected List<SpriteRenderer> sprRenders;
     public List<SpriteRenderer> SprRenders { get { return sprRenders; } }
 
@@ -32,13 +36,7 @@ public class Enemy : WorldObject
     protected int currentActionPoints;          // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
-    protected bool hasSpecial = true;
-    public bool HasSpecial { get { return hasSpecial; } }
-
-    protected int specialCost = 3;
-    protected int specialCooldown = 0;
-    protected int totalSpecialCooldown = 3;
-    public int SpecialCooldown { get { return specialCooldown; } }
+    public List<TileNode> currentPath = null;
 
     protected int viewDistance = 1;
 
@@ -48,20 +46,9 @@ public class Enemy : WorldObject
     public float Health { get { return health; } }
     public float HealthPercentage { get { return (health / startHealth) * 100; } }
 
-    protected const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
-    protected float inverseMoveTime;          //Used to make movement more efficient.
-
-    protected LayerMask blockingLayer;         //Layer on which collision will be checked.
-    protected BoxCollider2D boxCollider;      //The BoxCollider2D component attached to this object.
-    protected Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
-
-    protected EnemyTarget target;
+    public EnemyTarget target;
     protected EnemyTarget prevTarget;
-    protected List<TileNode> currentPath = null;
-
-    private Sprite spellIconSprite;
-    public Sprite SpellIconSprite { get { return spellIconSprite; } protected set { spellIconSprite = value; } }
-
+    
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
 
@@ -89,11 +76,6 @@ public class Enemy : WorldObject
         frozenIcon.SetActive(false);
         frozenIcon.transform.SetAsFirstSibling();
 
-        // obtain components
-        blockingLayer = LayerMask.GetMask("BlockingLayer");
-        boxCollider = GetComponent<BoxCollider2D>();
-        rb2D = GetComponent<Rigidbody2D>();
-
         // bit optimized cuz no division
         inverseMoveTime = 1f / moveTime;
 
@@ -119,7 +101,6 @@ public class Enemy : WorldObject
         calculatedTotalAP = totalActionPoints;
         currentActionPoints = calculatedTotalAP;
         health = startHealth;
-        specialCooldown = 0;
 
         slowCount = 0;
         slowed = false;
@@ -144,11 +125,16 @@ public class Enemy : WorldObject
         GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
-    protected virtual void Attack(EnemyTarget other)
+    public void Attack(EnemyTarget other)
     {
         // hit the other
         other.Hit();
         anim.SetTrigger(ATTACK_ANIM);
+    }
+
+    public void UpdateGridPosition(Coordinate direction)
+    {
+        gridPosition += direction;
     }
 
     public override bool TryHit(int dmg)
@@ -217,7 +203,7 @@ public class Enemy : WorldObject
         newFloatingIndicator.Initialize(dmg.ToString(), Color.red, 4.0f, 0.5f, transform.position);
     }
 
-    protected virtual void Heal(int amount)
+    public void Heal(int amount)
     {
         if(Health + amount > startHealth){ health = startHealth; }
         else{ health += amount; }
@@ -327,10 +313,7 @@ public class Enemy : WorldObject
 
     public virtual void StartTurn()
     {
-        if (specialCooldown > 0)
-        {
-            specialCooldown--;
-        }
+
 
         GameManager.Instance.CameraManager.LockTarget(this.transform);
         SetUIInfo();
@@ -383,46 +366,6 @@ public class Enemy : WorldObject
 
         if(!CheckTarget()) return;
 
-        // do raycast to check for world objects
-        RaycastHit2D hit;
-
-        Coordinate direction = currentPath[1].GridPosition - gridPosition;
-
-        // can I move? 
-        bool canMove = CanMove(direction, out hit);
-
-        // either barrel on my way or target reached
-        if (!canMove)
-        {
-            CantMove(hit.transform);
-        }
-        // else: move
-        else
-        {
-            Walk(direction);
-        }
-
-        EndMove();
-    }
-
-    protected virtual void CantMove(Transform other)
-    {   
-        // target reached
-        if (currentPath.Count <= 2)
-        {
-            if (other.gameObject.transform == target.transform) TargetReached();
-        }
-        // barrel in my way
-        else
-            Attack(other.GetComponent<EnemyTarget>());
-    }
-
-    protected virtual void TargetReached()
-    {
-         Attack(target);
-
-        // set the target to null so the next turn, searching for new target
-        target = null;
     }
 
     protected virtual void PathBlocked(Transform other)
@@ -430,89 +373,15 @@ public class Enemy : WorldObject
         if (other.GetComponent<Rock>() != null) Attack(other.GetComponent<Rock>());
     }
 
-    // called walk, since 'move' is the complete turn of an enemy
-    protected virtual void Walk(Coordinate direction)
-    {
-        // update pos in tile map
-        GameManager.Instance.TileManager.MoveObject(gridPosition, gridPosition + direction, this);
-
-        // update x and y
-        gridPosition += direction;
-
-        // perform move
-        StartCoroutine(SmoothMovement(GameManager.Instance.TileManager.GetWorldPosition(gridPosition)));
-
-        // remove current path[0], e.g. node i was standing on
-        currentPath.RemoveAt(0);
-    }
-
-    protected virtual void EndMove()
+    public void EndMove(int cost)
     {
         // lose one action point
         if (currentActionPoints > 0)
         {
-            currentActionPoints--;
+            currentActionPoints -= cost;
         }
 
         SetUIInfo();
-    }
-
-    // note: works for everything nonflying!
-    protected virtual bool CanMove(Coordinate direction, out RaycastHit2D hit)
-    {
-        //Store start position to move from, based on objects current transform position.
-        Coordinate start = gridPosition;
-
-        // Calculate end position based on the direction parameters passed in when calling Move.
-        Coordinate end = start + direction;
-
-        //Disable the boxCollider so that linecast doesn't hit this object's own collider.
-        boxCollider.enabled = false;
-
-        //Cast a line from start point to end point checking collision on blockingLayer.
-        hit = Physics2D.Linecast(GameManager.Instance.TileManager.GetWorldPosition(start), 
-            GameManager.Instance.TileManager.GetWorldPosition(end), blockingLayer);
-
-        //Re-enable boxCollider after linecast
-        boxCollider.enabled = true;
-
-        //Check if anything was hit
-        if (hit.transform == null)
-        {
-            //Return true to say that it can move
-            return true;
-        }
-
-        //If something was hit, return false, cannot move.
-        return false;
-    }
-
-    // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
-    protected IEnumerator SmoothMovement(Vector3 end)
-    {
-        anim.SetBool(MOVE_ANIM, true);
-
-        //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
-        //Square magnitude is used instead of magnitude because it's computationally cheaper.
-        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-
-        //While that distance is greater than a very small amount (Epsilon, almost zero):
-        while (sqrRemainingDistance > float.Epsilon)
-        {
-            //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
-
-            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
-            rb2D.MovePosition(newPostion);
-
-            //Recalculate the remaining distance after moving.
-            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-            
-            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
-            yield return null;
-        }
-
-        anim.SetBool(MOVE_ANIM, false);
     }
 
     public void SelectTarget()
@@ -550,7 +419,6 @@ public class Enemy : WorldObject
             Debug.Log("No possible targets");
             target = null;
             prevTarget = null;
-            currentPath = null;
         }            
         // select a target
         else
@@ -698,6 +566,14 @@ public class Enemy : WorldObject
     protected void SetUIInfo()
     {
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(currentActionPoints <= 0 ? null : this);
+    }
+
+    public void TargetReached()
+    {
+        Attack(target);
+
+        // set the target to null so the next turn, searching for new target
+        target = null;
     }
 
     public override void Click()

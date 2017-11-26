@@ -1,10 +1,12 @@
 ﻿public class Action {
     protected int totalCooldown = 0;
     protected int currentCooldown = 0;
+    protected int cost = 0;
+    protected Enemy parent;
 
-    public virtual void Initialize()
+    public virtual void Initialize(Enemy parent)
     {
-
+        this.parent = parent;
     }
 
     public virtual void Reset()
@@ -34,8 +36,8 @@
         return true;
     }
 
-    public virtual void DoAction()
+    public virtual bool DoAction()
     {
-
+        return true;
     }
 }
