@@ -94,6 +94,7 @@ public class UberManager : MonoBehaviour {
         contractManager.Initialize();
         uiManager.Initialize();
         soundManager.Initialize();
+        particleManager.Initialize();
 
         selectedDevMode = developersMode;
 
