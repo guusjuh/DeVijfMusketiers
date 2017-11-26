@@ -6,6 +6,7 @@ using UnityEngine;
 public class Dodin : Enemy
 {
     private GameObject fireBall;
+    private float fireBallSpeed = 10f;
 
     //TODO: refactor while improveming enemies
     // not all specials are actually an attack, some are like spawns
@@ -20,8 +21,8 @@ public class Dodin : Enemy
         startHealth = 100;
 
         //disables the fireball
-        fireBall = transform.Find("FireBall").gameObject;
-        fireBall.SetActive(false);
+        //fireBall = transform.Find("FireBall").gameObject;
+        //fireBall.SetActive(false);
         viewDistance = 4;
 
         hasSpecial = true;
@@ -29,12 +30,6 @@ public class Dodin : Enemy
         this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyFire");
 
         base.Initialize(startPos);
-    }
-
-    public override void Reset()
-    {
-        base.Reset();
-        fireBall.SetActive(false);
     }
 
     public override bool CheckForSpell()
@@ -52,7 +47,7 @@ public class Dodin : Enemy
             specialCooldown = totalSpecialCooldown;
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
-            fireBall.transform.localPosition = Vector3.zero;
+            //fireBall.transform.localPosition = Vector3.zero;
             
             StartCoroutine(ShootFireBall(GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
             return true;
@@ -88,24 +83,24 @@ public class Dodin : Enemy
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator ShootFireBall(Vector3 end)
     {
-        fireBall.SetActive(true);
-        Rigidbody2D ball = fireBall.GetComponent<Rigidbody2D>();
+        fireBall = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.DodinParticle, transform.position, transform.rotation);
+        //Rigidbody2D ball = fireBall.GetComponent<Rigidbody2D>();
 
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
-        float sqrRemainingDistance = (ball.transform.position - end).sqrMagnitude;
+        float sqrRemainingDistance = (fireBall.transform.position - end).sqrMagnitude;
 
         //While that distance is greater than a very small amount (Epsilon, almost zero):
         while (sqrRemainingDistance > 0.0001f)
         {
             //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPostion = Vector3.MoveTowards(ball.position, end, inverseMoveTime * Time.deltaTime);
+            Vector3 newPostion = Vector3.MoveTowards(fireBall.transform.position, end, inverseMoveTime * Time.deltaTime);
 
             //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
-            ball.MovePosition(newPostion);
+            fireBall.transform.position = newPostion;
 
             //Recalculate the remaining distance after moving.
-            sqrRemainingDistance = (ball.transform.position - end).sqrMagnitude;
+            sqrRemainingDistance = (fireBall.transform.position - end).sqrMagnitude;
 
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;

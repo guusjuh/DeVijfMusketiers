@@ -6,6 +6,7 @@ public class Shrine : EnemyTarget
 {
     private bool active = false;
     private bool gaveAP = false;
+    private GameObject shrineParticle;
 
     private static Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     private static Color normalColor = new Color(0.55f, 0.55f, 0.55f, 1.0f);
@@ -17,6 +18,7 @@ public class Shrine : EnemyTarget
         private set {
             if(value != active && value){
                 UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
+                shrineParticle = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.ShrineParticle, transform.position, transform.rotation);
             }
             active = value;
             sprRender.color = value ? activeColor : normalColor;

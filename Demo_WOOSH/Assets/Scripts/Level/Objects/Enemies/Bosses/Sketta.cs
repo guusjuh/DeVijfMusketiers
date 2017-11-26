@@ -11,8 +11,8 @@ public class Sketta : Enemy {
         blockChance = 0.3f;
         canBlock = true;
 
-        shield = transform.Find("Shield").gameObject;
-        shield.SetActive(false);
+        //shield = transform.Find("Shield").gameObject;
+        //shield.SetActive(false);
 
         hasSpecial = false;
         viewDistance = 3;
@@ -46,12 +46,13 @@ public class Sketta : Enemy {
 
     protected IEnumerator ShieldVisual()
     {
-        shield.SetActive(true);
-        shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
+        //shield.SetActive(true);
+        //shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
+        shield = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.SkettaParticle, transform.position, transform.rotation);
 
         yield return new WaitForSeconds(0.5f);
 
-        shield.SetActive(false);
+        //shield.SetActive(false);
 
         yield break;
     }

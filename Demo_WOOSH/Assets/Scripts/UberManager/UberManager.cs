@@ -60,7 +60,10 @@ public class UberManager : MonoBehaviour {
     private SoundManager soundManager = new SoundManager();
     public SoundManager SoundManager { get { return soundManager; } }
 
-   //TODO: r/w from/to XML file
+    private ParticleManager particleManager = new ParticleManager();
+    public ParticleManager ParticleManager { get { return particleManager; } }
+
+    //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
     public PlayerData PlayerData { get { return playerData; } }
 
