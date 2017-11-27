@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+
 public class EnemyBlock : Action
 {
     private GameObject shield;
@@ -14,7 +15,7 @@ public class EnemyBlock : Action
         blockChance = 0.3f;
         canBlock = true;
 
-        shield = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/FireBall"), parent.transform);
+        shield = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/Shield"), parent.transform);
         shield.SetActive(false);
     }
 

@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 4768698803527160}
   - component: {fileID: 50377705986544802}
   - component: {fileID: 61539209895674480}
-  - component: {fileID: 114687053835795532}
+  - component: {fileID: 114042973621281980}
   m_Layer: 0
   m_Name: Sketta
   m_TagString: Untagged
@@ -666,7 +666,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114687053835795532
+--- !u!114 &114042973621281980
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -674,12 +674,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359677192400232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c4a5e28988ee134288852feea0edfff, type: 3}
+  m_Script: {fileID: 11500000, guid: f547ab4c68673a341b0e0275be0f5a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 95802935518674662}
-  totalActionPoints: 3
-  startHealth: 100
   target: {fileID: 0}
 --- !u!212 &212129169878161642
 SpriteRenderer:

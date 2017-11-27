@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4281428908887812}
   - component: {fileID: 61521735635187634}
   - component: {fileID: 50434696253506860}
-  - component: {fileID: 114313508581968312}
+  - component: {fileID: 114770125781958920}
   m_Layer: 0
   m_Name: Dodin
   m_TagString: Untagged
@@ -754,7 +754,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114313508581968312
+--- !u!114 &114770125781958920
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -762,12 +762,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1071830797002644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c4a5e28988ee134288852feea0edfff, type: 3}
+  m_Script: {fileID: 11500000, guid: c7f6cd65736560147861a5dc6c60a58c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 95308632966275252}
-  totalActionPoints: 3
-  startHealth: 100
   target: {fileID: 0}
 --- !u!212 &212008042081818800
 SpriteRenderer:

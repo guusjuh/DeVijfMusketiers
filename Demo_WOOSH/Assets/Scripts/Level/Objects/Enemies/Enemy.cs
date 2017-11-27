@@ -11,16 +11,16 @@ public class Enemy : WorldObject
     public const string DIE_ANIM = "Dead";
 
     // spell effects
-    protected bool slowed = false;
-    protected int slowCount = 0; // for how many turns am I still slowed
+    private bool slowed = false;
+    private int slowCount = 0; // for how many turns am I still slowed
     public bool Slowed { get { return slowed; } }
     private GameObject frozenIcon;
 
-    protected bool burning = false;
+    private bool burning = false;
     public bool Burning { get { return burning; } }
-    protected int burnDamage;
-    protected int burnModifier = 0;
-    protected int burnCount = 0;
+    private int burnDamage;
+    private int burnModifier = 0;
+    private int burnCount = 0;
     private GameObject burnedIcon;
 
     private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
@@ -28,33 +28,33 @@ public class Enemy : WorldObject
     public float InverseMoveTime { get { return inverseMoveTime; } }
 
     public Animator anim;
-    protected List<SpriteRenderer> sprRenders;
+    private List<SpriteRenderer> sprRenders;
     public List<SpriteRenderer> SprRenders { get { return sprRenders; } }
 
-    protected int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
-    public int totalActionPoints = 3;        // total points
-    protected int currentActionPoints;          // points left this turn
+    private int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
+    protected int totalActionPoints = 3;        // total points
+    private int currentActionPoints;          // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
     public List<TileNode> currentPath = null;
 
     protected int viewDistance = 1;
 
-    public float startHealth = 10;
+    protected float startHealth = 10;
     public float StartHealth { get { return startHealth; } }
-    protected float health;
+    private float health;
     public float Health { get { return health; } }
     public float HealthPercentage { get { return (health / startHealth) * 100; } }
 
     public EnemyTarget target;
-    protected EnemyTarget prevTarget;
+    private EnemyTarget prevTarget;
     
     private bool selectedInUI = true;
     public bool SelectedInUI { get { return selectedInUI; } }
 
     public bool Dead { get; private set; }
 
-    private bool canFly = false;
+    protected bool canFly = false;
     public bool CanFly { get { return canFly; } }
 
     public List<Action> actions = new List<Action>();
@@ -84,12 +84,6 @@ public class Enemy : WorldObject
         calculatedTotalAP = totalActionPoints;
         currentActionPoints = calculatedTotalAP;
         health = startHealth;
-
-        //add actions
-        actions.Add(new EnemyFireBall());
-        actions.Add(new EnemyBlock());
-        actions.Add(new EnemyHeal());
-        actions.Add(new EnemyMove());
 
         for (int i = 0; i < actions.Count; i++)
         {
@@ -157,6 +151,15 @@ public class Enemy : WorldObject
 
     public override bool TryHit(int dmg)
     {
+        for (int i = 0; i < actions.Count; i++)
+        {
+            if (!actions[i].TryHit())
+            {
+                NewFloatingDmgNumber(0);
+                return false;
+            }
+        }
+
         if (base.TryHit(dmg))
         {
             Hit(dmg);
@@ -202,7 +205,7 @@ public class Enemy : WorldObject
         return false;
     }
 
-    protected IEnumerator HitVisual()
+    private IEnumerator HitVisual()
     {
         anim.SetTrigger(HIT_ANIM);
 
@@ -246,7 +249,7 @@ public class Enemy : WorldObject
         return true;
     }
 
-    public virtual void ShowPossibleRoads()
+    public void ShowPossibleRoads()
     {
         GameManager.Instance.TileManager.HidePossibleRoads();
         GameManager.Instance.TileManager.ShowPossibleRoads(this, gridPosition, calculatedTotalAP);
@@ -329,7 +332,7 @@ public class Enemy : WorldObject
         }
     }
 
-    public virtual void StartTurn()
+    public void StartTurn()
     {
         for (int i = 0; i < actions.Count; i++)
         {
@@ -340,7 +343,7 @@ public class Enemy : WorldObject
         SetUIInfo();
     }
 
-    public virtual void EndTurn()
+    public void EndTurn()
     {
         HandleSlow();
         HandleBurn();
@@ -381,7 +384,7 @@ public class Enemy : WorldObject
         }
     }
 
-    public virtual void EnemyMove()
+    public void EnemyMove()
     {
         if(!CheckTarget()) return;
 
@@ -391,7 +394,7 @@ public class Enemy : WorldObject
         }
     }
 
-    protected virtual void PathBlocked(Transform other)
+    private void PathBlocked(Transform other)
     {
         if (other.GetComponent<Rock>() != null) Attack(other.GetComponent<Rock>());
     }
@@ -586,7 +589,7 @@ public class Enemy : WorldObject
         return false;
     }
 
-    protected void SetUIInfo()
+    private void SetUIInfo()
     {
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(currentActionPoints <= 0 ? null : this);
     }
@@ -610,4 +613,14 @@ public class Enemy : WorldObject
     }
 
     public override bool IsMonster() { return true; }
+
+    public override bool IsWalking()
+    {
+        return !canFly;
+    }
+
+    public override bool IsFlying()
+    {
+        return canFly;
+    }
 }
