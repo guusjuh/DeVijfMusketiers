@@ -8,6 +8,7 @@ public class EnemyMove : Action
     private BoxCollider2D boxCollider;      //The BoxCollider2D component attached to this object.
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
 
+    public List<TileNode> currentPath = null;
 
     public override void Initialize(Enemy parent)
     {
@@ -23,12 +24,36 @@ public class EnemyMove : Action
 
     }
 
+    public override void StartTurn()
+    {
+        if(parent.target == null)
+        {
+            parent.SelectTarget();
+        }
+
+        //generate path to chosen target
+        currentPath = GameManager.Instance.TileManager.GeneratePathTo(parent.GridPosition, parent.target.GridPosition, parent);
+
+        // if no path was found
+        if (currentPath == null)
+        {
+            // no other possible targets, skip turn
+            parent.target = null;
+        }
+    }
+
     public override bool DoAction()
     {
+        if(currentPath == null)
+        {
+            parent.EndMove(cost);
+            return true;
+        }
+
         // do raycast to check for world objects
         RaycastHit2D hit;
 
-        Coordinate direction = parent.currentPath[1].GridPosition - parent.GridPosition;
+        Coordinate direction = currentPath[1].GridPosition - parent.GridPosition;
 
         // can I move? 
         bool canMove = CanMove(direction, out hit);
@@ -51,7 +76,7 @@ public class EnemyMove : Action
     private void CantMove(Transform other)
     {
         // target reached
-        if (parent.currentPath.Count <= 2)
+        if (currentPath.Count <= 2)
         {
             if (other.gameObject.transform == parent.target.transform) parent.TargetReached();
         }
@@ -73,7 +98,7 @@ public class EnemyMove : Action
         UberManager.Instance.StartCoroutine(SmoothMovement(GameManager.Instance.TileManager.GetWorldPosition(parent.GridPosition)));
 
         // remove current path[0], e.g. node i was standing on
-        parent.currentPath.RemoveAt(0);
+        currentPath.RemoveAt(0);
     }
 
 

@@ -36,8 +36,6 @@ public class Enemy : WorldObject
     private int currentActionPoints;          // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
-    public List<TileNode> currentPath = null;
-
     protected int viewDistance = 1;
 
     protected float startHealth = 10;
@@ -470,7 +468,7 @@ public class Enemy : WorldObject
             }
 
             //generate path to chosen target
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, this);
+            List<TileNode> currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, this);
 
             // if no path was found
             if (currentPath == null)
@@ -542,7 +540,7 @@ public class Enemy : WorldObject
 
     public bool CheckTargetForSuperSafe()
     {
-        if (currentPath == null || target == null || prevTarget == null)
+        if (target == null || prevTarget == null)
         {/*
             if (currentPath == null && target == null && prevTarget == null)
             {*/
@@ -571,17 +569,6 @@ public class Enemy : WorldObject
         // do I have a target at all?
         if (target == null)
             SelectTarget(); // select a new target
-        else
-        {
-            // update the current path to the original OR nearby target
-            currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition,
-                            target.GridPosition,
-                            this);
-
-            // if there is no possible route to our target right now, select a new target. 
-            // if there are no other possiblities, the enemy will skip a turn.
-            if (currentPath == null) SelectTarget();
-        }
     }
 
     public bool TargetNearby()
