@@ -14,21 +14,11 @@
         currentCooldown = 0;
     }
 
-    public virtual void Clear()
-    {
-
-    }
-
     public virtual void StartTurn()
     {
         if(currentCooldown > 0){
             currentCooldown--;
         }
-    }
-
-    public virtual void EndTurn()
-    {
-
     }
 
     public virtual bool TryHit()
@@ -39,5 +29,10 @@
     public virtual bool DoAction()
     {
         return true;
+    }
+
+    public virtual void ShowPossibleRoads()
+    {
+
     }
 }

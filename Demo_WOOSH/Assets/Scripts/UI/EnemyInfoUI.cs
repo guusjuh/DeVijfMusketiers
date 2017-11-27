@@ -80,7 +80,7 @@ public class EnemyInfoUI : MonoBehaviour
     {
         healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
-
+        /*
         if (selectedEnemy.HasSpecial)
         {
             ActivateSpecialSpell(true);
@@ -89,7 +89,7 @@ public class EnemyInfoUI : MonoBehaviour
         else
         {
             ActivateSpecialSpell(false);
-        }
+        }*/
     }
 
     //TODO: has to animate!
@@ -97,11 +97,11 @@ public class EnemyInfoUI : MonoBehaviour
     {
         healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
-
+        /*
         if (selectedEnemy.HasSpecial)
         {
             SetCooldownText(selectedEnemy.SpecialCooldown);
-        }
+        }*/
     }
 
     public void SetAPText(int value)
@@ -117,7 +117,7 @@ public class EnemyInfoUI : MonoBehaviour
             {
                 specialAttack.SetActive(true);
             }
-            specialAttackIcon.GetComponent<Image>().sprite = selectedEnemy.SpellIconSprite;
+            //specialAttackIcon.GetComponent<Image>().sprite = selectedEnemy.SpellIconSprite;
         }
         else
         {

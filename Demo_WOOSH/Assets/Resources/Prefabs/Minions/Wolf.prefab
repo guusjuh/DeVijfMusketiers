@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 4109837732931068}
   - component: {fileID: 61118524889487558}
   - component: {fileID: 50013900606018640}
-  - component: {fileID: 114440587247766430}
+  - component: {fileID: 114334280175736114}
   m_Layer: 8
   m_Name: Wolf
   m_TagString: Creature
@@ -577,7 +577,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114440587247766430
+--- !u!114 &114334280175736114
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -585,9 +585,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1693563177285678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9aaa544711dfbd4dbd8a3526e804ffa, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c4a5e28988ee134288852feea0edfff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 95812799486127990}
+  startHealth: 30
+  target: {fileID: 0}
 --- !u!212 &212050527311446500
 SpriteRenderer:
   m_ObjectHideFlags: 1

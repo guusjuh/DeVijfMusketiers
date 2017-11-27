@@ -10,6 +10,8 @@ public class EnemyFireBall : Action
     {
         base.Initialize(parent);
 
+        cost = 3;
+
         //disables the fireball
         fireBall = parent.transform.Find("FireBall").gameObject;
         fireBall.SetActive(false);
@@ -78,4 +80,10 @@ public class EnemyFireBall : Action
         parent.TargetReached();
     }
 
+    public override void ShowPossibleRoads()
+    {
+        base.ShowPossibleRoads();
+
+        if (currentCooldown<= 0 && parent.CurrentActionPoints >= cost) GameManager.Instance.TileManager.ShowExtraTargetForSpecial(parent, parent.GridPosition, specialMaxDistance);
+    }
 }

@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 4182506505570184}
   - component: {fileID: 50050706597040196}
   - component: {fileID: 61044849154417462}
-  - component: {fileID: 114024203479300912}
+  - component: {fileID: 114469411767782454}
   m_Layer: 0
   m_Name: Arnest
   m_TagString: Untagged
@@ -698,7 +698,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114024203479300912
+--- !u!114 &114469411767782454
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -706,9 +706,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825962616161770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 817c9052c7fe3a34a9d9ee7051b44fe1, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c4a5e28988ee134288852feea0edfff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 95318247593439974}
+  startHealth: 100
+  target: {fileID: 0}
 --- !u!198 &198469418533198606
 ParticleSystem:
   m_ObjectHideFlags: 1

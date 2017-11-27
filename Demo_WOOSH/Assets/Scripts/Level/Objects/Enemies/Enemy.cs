@@ -40,7 +40,7 @@ public class Enemy : WorldObject
 
     protected int viewDistance = 1;
 
-    protected float startHealth = 10;
+    public float startHealth = 10;
     public float StartHealth { get { return startHealth; } }
     protected float health;
     public float Health { get { return health; } }
@@ -56,6 +56,8 @@ public class Enemy : WorldObject
 
     private bool canFly = false;
     public bool CanFly { get { return canFly; } }
+
+    public List<Action> actions = new List<Action>();
 
     public override void Initialize(Coordinate startPos)
     {
@@ -83,6 +85,15 @@ public class Enemy : WorldObject
         currentActionPoints = calculatedTotalAP;
         health = startHealth;
 
+        //add actions
+        actions.Add(new EnemyFireBall());
+        actions.Add(new EnemyMove());
+
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i].Initialize(this);
+        }
+
         if (UberManager.Instance.Tutorial)
         {
             possibleSpellTypes.Add(GameManager.SpellType.Attack);
@@ -108,6 +119,11 @@ public class Enemy : WorldObject
         burning = false;
         ShowStatusEffects();
         transform.localScale = new Vector3(1, 1, 1);
+
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i].Reset();
+        }
     }
 
     public override void ResetToInitDEVMODE(Coordinate startPos)
@@ -228,15 +244,15 @@ public class Enemy : WorldObject
         return true;
     }
 
-    public virtual bool CheckForSpell()
-    {
-        return false;
-    }
-
     public virtual void ShowPossibleRoads()
     {
         GameManager.Instance.TileManager.HidePossibleRoads();
         GameManager.Instance.TileManager.ShowPossibleRoads(this, gridPosition, calculatedTotalAP);
+
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i].ShowPossibleRoads();
+        }
     }
 
     public void Slow(int turns)
@@ -313,7 +329,10 @@ public class Enemy : WorldObject
 
     public virtual void StartTurn()
     {
-
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i].StartTurn();
+        }
 
         GameManager.Instance.CameraManager.LockTarget(this.transform);
         SetUIInfo();
@@ -362,10 +381,12 @@ public class Enemy : WorldObject
 
     public virtual void EnemyMove()
     {
-        if (CheckForSpell()) return;
-
         if(!CheckTarget()) return;
 
+        for (int i = 0; i < actions.Count; i++)
+        {
+            if (actions[i].DoAction()) return;
+        }
     }
 
     protected virtual void PathBlocked(Transform other)

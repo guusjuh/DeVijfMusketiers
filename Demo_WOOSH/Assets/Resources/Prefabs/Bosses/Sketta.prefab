@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 4768698803527160}
   - component: {fileID: 50377705986544802}
   - component: {fileID: 61539209895674480}
-  - component: {fileID: 114794381010700450}
+  - component: {fileID: 114687053835795532}
   m_Layer: 0
   m_Name: Sketta
   m_TagString: Untagged
@@ -698,7 +698,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114794381010700450
+--- !u!114 &114687053835795532
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -706,9 +706,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359677192400232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03de8f797d524ba43a28238b8a491072, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c4a5e28988ee134288852feea0edfff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 95802935518674662}
+  startHealth: 100
+  target: {fileID: 0}
 --- !u!198 &198688896664739238
 ParticleSystem:
   m_ObjectHideFlags: 1
