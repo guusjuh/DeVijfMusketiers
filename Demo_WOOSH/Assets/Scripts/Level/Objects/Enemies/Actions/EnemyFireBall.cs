@@ -13,7 +13,7 @@ public class EnemyFireBall : Action
         cost = 3;
 
         //disables the fireball
-        fireBall = parent.transform.Find("FireBall").gameObject;
+        fireBall = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/FireBall"), parent.transform);
         fireBall.SetActive(false);
 
         spellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyFire");
@@ -27,9 +27,6 @@ public class EnemyFireBall : Action
 
     public override bool DoAction()
     {
-        return base.DoAction();
-
-
         float distance = (parent.GridPosition.EuclideanDistance(parent.target.GridPosition));
         float maxDistance = specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;
         bool closeEnough = distance - maxDistance <= 0.01f;

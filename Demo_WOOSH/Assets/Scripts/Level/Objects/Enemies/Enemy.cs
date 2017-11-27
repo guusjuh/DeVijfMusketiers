@@ -32,7 +32,7 @@ public class Enemy : WorldObject
     public List<SpriteRenderer> SprRenders { get { return sprRenders; } }
 
     protected int calculatedTotalAP = 0;        // used to temporarily remove or add action points (for example slowed)
-    protected int totalActionPoints = 3;        // total points
+    public int totalActionPoints = 3;        // total points
     protected int currentActionPoints;          // points left this turn
     public int CurrentActionPoints { get { return currentActionPoints; } }
 
@@ -87,6 +87,8 @@ public class Enemy : WorldObject
 
         //add actions
         actions.Add(new EnemyFireBall());
+        actions.Add(new EnemyBlock());
+        actions.Add(new EnemyHeal());
         actions.Add(new EnemyMove());
 
         for (int i = 0; i < actions.Count; i++)

@@ -14,7 +14,7 @@ public class EnemyBlock : Action
         blockChance = 0.3f;
         canBlock = true;
 
-        shield = parent.transform.Find("Shield").gameObject;
+        shield = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/FireBall"), parent.transform);
         shield.SetActive(false);
     }
 

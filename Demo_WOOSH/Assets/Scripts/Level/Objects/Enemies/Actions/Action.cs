@@ -28,7 +28,7 @@
 
     public virtual bool DoAction()
     {
-        return true;
+        return false;
     }
 
     public virtual void ShowPossibleRoads()

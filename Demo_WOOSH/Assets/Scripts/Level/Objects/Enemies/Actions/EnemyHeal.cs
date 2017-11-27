@@ -15,7 +15,8 @@ public class EnemyHeal : Action
 
         spellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyHeal");
 
-        heal =  parent.transform.Find("Heal").gameObject;
+
+        heal = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/Heal"), parent.transform);
         heal.SetActive(false);
     }
 
