@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyFireBall : Action
 {
-    private Sprite spellIconSprite;
     private GameObject fireBall;
     private const int specialMaxDistance = 3;
 
@@ -18,6 +17,7 @@ public class EnemyFireBall : Action
         fireBall.SetActive(false);
 
         spellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyFire");
+        HasSpellIcon = true;
     }
 
     public override void Reset()

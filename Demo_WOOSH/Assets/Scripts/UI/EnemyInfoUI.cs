@@ -15,6 +15,7 @@ public class EnemyInfoUI : MonoBehaviour
 
     private bool active = false;
     private Enemy selectedEnemy;
+    private Action specialAction;
 
     public void Initialize()
     {
@@ -80,16 +81,21 @@ public class EnemyInfoUI : MonoBehaviour
     {
         healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
-        /*
-        if (selectedEnemy.HasSpecial)
+
+        specialAction = null;
+        for (int i = 0; i < selectedEnemy.actions.Count; i++)
         {
-            ActivateSpecialSpell(true);
-            SetCooldownText(selectedEnemy.SpecialCooldown);
+            if(selectedEnemy.actions[i].HasSpellIcon)
+            {
+                specialAction = selectedEnemy.actions[i];
+                ActivateSpecialSpell(true);
+                SetCooldownText(specialAction.CurrentCooldown);
+            }
         }
-        else
+        if(specialAction == null)
         {
             ActivateSpecialSpell(false);
-        }*/
+        }
     }
 
     //TODO: has to animate!
@@ -97,11 +103,11 @@ public class EnemyInfoUI : MonoBehaviour
     {
         healthBar.SetHealthbar(selectedEnemy);
         SetAPText(selectedEnemy.CurrentActionPoints);
-        /*
-        if (selectedEnemy.HasSpecial)
+
+        if (specialAction != null)
         {
-            SetCooldownText(selectedEnemy.SpecialCooldown);
-        }*/
+            SetCooldownText(specialAction.CurrentCooldown);
+        }
     }
 
     public void SetAPText(int value)
@@ -117,7 +123,8 @@ public class EnemyInfoUI : MonoBehaviour
             {
                 specialAttack.SetActive(true);
             }
-            //specialAttackIcon.GetComponent<Image>().sprite = selectedEnemy.SpellIconSprite;
+
+            specialAttackIcon.GetComponent<Image>().sprite = specialAction.SpellIconSprite;
         }
         else
         {

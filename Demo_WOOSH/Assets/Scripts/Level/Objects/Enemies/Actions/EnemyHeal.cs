@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyHeal : Action
 {
-    private Sprite spellIconSprite;
     private GameObject heal;
 
     public override void Initialize(Enemy parent)
