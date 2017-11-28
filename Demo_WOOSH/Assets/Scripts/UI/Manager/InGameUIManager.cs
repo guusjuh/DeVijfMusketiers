@@ -396,6 +396,7 @@ public class InGameUIManager : SubUIManager {
 
     public IEnumerator CastSpell(GameManager.SpellType type, Vector2 worldPos)
     {
+        //wizard.GetComponent<WizardInGame>().MyFunction();
         wizardAnimController.SetTrigger("CastSpell");
 
         yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, worldPos));
