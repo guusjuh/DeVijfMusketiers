@@ -26,22 +26,19 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: a3afcaecb84340f6ef5840ec584a15d3
+      Hash: 1775083a8a25a5652cc687f6166b11d9
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: a3afcaecb84340f6ef5840ec584a15d3
-    totalSpriteSurfaceArea: 5598280
+    hashString: 1775083a8a25a5652cc687f6166b11d9
+    totalSpriteSurfaceArea: 4958280
     packables:
-    - {fileID: 102900000, guid: 067480f9e3029594caeb3188c8779874, type: 3}
+    - {fileID: 102900000, guid: e66a7be0f78c90641ba729a913e54608, type: 3}
     - {fileID: 102900000, guid: 79ea675b4e47de04ca57d5aa8c212907, type: 3}
     - {fileID: 102900000, guid: e532a313bb8692d4b962f8ac9cc5cc10, type: 3}
-    - {fileID: 102900000, guid: e66a7be0f78c90641ba729a913e54608, type: 3}
+    - {fileID: 102900000, guid: 1d4e3a0bb17a3a5479ff273d789c6391, type: 3}
+    - {fileID: 102900000, guid: e252bef7aaefa7e4fa6f8e0b42e7260b, type: 3}
     packedSpriteRenderDataKeys:
-    - fccdda30971d7614ea784457f9f5d417: 21300000
-    - 11794bcd426ee3b4abff109aea57bde8: 21300000
-    - 6be242d46e65aff42b81c354dff7f265: 21300000
-    - 48f8231224c47214894af4efe64a5ebc: 21300000
     - b6e7ed240843eec4799de327c725e63a: 21300000
     - 451b49556bcef754098f782c718fff24: 21300000
     - a05f5e3e34ff68743b29872c3e51c507: 21300000
@@ -283,10 +280,6 @@ SpriteAtlas:
     - 6b4775bfa3f1b394cb3d8722c414f77a: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: fccdda30971d7614ea784457f9f5d417, type: 3}
-  - {fileID: 21300000, guid: 11794bcd426ee3b4abff109aea57bde8, type: 3}
-  - {fileID: 21300000, guid: 6be242d46e65aff42b81c354dff7f265, type: 3}
-  - {fileID: 21300000, guid: 48f8231224c47214894af4efe64a5ebc, type: 3}
   - {fileID: 21300000, guid: b6e7ed240843eec4799de327c725e63a, type: 3}
   - {fileID: 21300000, guid: 451b49556bcef754098f782c718fff24, type: 3}
   - {fileID: 21300000, guid: a05f5e3e34ff68743b29872c3e51c507, type: 3}
@@ -527,10 +520,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 1950e85e27d698a439e30d87ecdaeeda, type: 3}
   - {fileID: 21300000, guid: 6b4775bfa3f1b394cb3d8722c414f77a, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Arnest
-  - Wolf
-  - Dodin
-  - Sketta
   - Head
   - Head
   - Head
