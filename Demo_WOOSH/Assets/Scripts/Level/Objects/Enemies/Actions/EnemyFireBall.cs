@@ -11,6 +11,7 @@ public class EnemyFireBall : Action
         base.Initialize(parent);
 
         cost = 3;
+        totalCooldown = 2;
 
         //disables the fireball
         fireBall = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/FireBall"), parent.transform);

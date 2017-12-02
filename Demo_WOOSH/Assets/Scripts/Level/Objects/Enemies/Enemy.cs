@@ -390,6 +390,8 @@ public class Enemy : WorldObject
         {
             if (actions[i].DoAction()) return;
         }
+        
+        EndMove(1);
     }
 
     private void PathBlocked(Transform other)

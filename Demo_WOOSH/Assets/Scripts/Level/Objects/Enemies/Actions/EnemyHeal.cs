@@ -16,7 +16,9 @@ public class EnemyHeal : Action
 
 
         heal = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/Heal"), parent.transform);
+        heal.transform.localPosition = new Vector3(0, 0.5f, 0);
         heal.SetActive(false);
+        HasSpellIcon = true;
     }
 
     public override void Reset()

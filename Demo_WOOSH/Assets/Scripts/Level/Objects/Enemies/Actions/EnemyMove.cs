@@ -44,10 +44,9 @@ public class EnemyMove : Action
 
     public override bool DoAction()
     {
-        if(currentPath == null)
+        if(currentPath == null || parent.target == null)
         {
-            parent.EndMove(cost);
-            return true;
+            return false;
         }
 
         // do raycast to check for world objects
