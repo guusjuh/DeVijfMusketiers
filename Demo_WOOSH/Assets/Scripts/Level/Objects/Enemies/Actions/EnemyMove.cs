@@ -26,7 +26,12 @@ public class EnemyMove : Action
 
     public override void StartTurn()
     {
-        if(parent.target == null)
+        findPath();
+    }
+
+    private void findPath()
+    {
+        if (parent.target == null)
         {
             parent.SelectTarget();
         }
@@ -44,7 +49,7 @@ public class EnemyMove : Action
 
     public override bool DoAction()
     {
-        if(currentPath == null || parent.target == null)
+        if(currentPath == null || parent.target == null || currentPath.Count == 0 )
         {
             return false;
         }
@@ -77,7 +82,12 @@ public class EnemyMove : Action
         // target reached
         if (currentPath.Count <= 2)
         {
-            if (other.gameObject.transform == parent.target.transform) parent.TargetReached();
+            if (other.gameObject.transform == parent.target.transform)
+            {
+                parent.TargetReached();
+
+                findPath();
+            }
         }
         // barrel in my way
         else
