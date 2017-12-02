@@ -45,12 +45,16 @@ public class Player
     public void StartPlayerTurn(int extraAP = 0)
     {
         currentActionPoints = totalActionPoints + extraAP;
+
+        MetricsDataClass.StartAbleToDoAction();
     }
 
     public bool EndPlayerMove(int cost = 1, bool endTurn = false)
     {
         currentActionPoints = endTurn ? 0 : currentActionPoints - cost;
         UIManager.Instance.InGameUI.PlayerActionPoints.SetAPText();
+
+        MetricsDataClass.ActionExecuted();
 
         if (currentActionPoints <= 0)
         {
@@ -64,6 +68,8 @@ public class Player
 
             return true;
         }
+
+        MetricsDataClass.StartAbleToDoAction();
 
         return false;
     }

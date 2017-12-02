@@ -73,6 +73,9 @@ public class PostGameInfoPanel : MonoBehaviour
     private void SetText()
     {
         statusText.text = GameManager.Instance.Won ? WIN_STRING : LOSE_STRING;
+        if (GameManager.Instance.Won)
+            MetricsDataClass.Wins++;
+        else MetricsDataClass.Loses++;
     }
 
     public void Clear()

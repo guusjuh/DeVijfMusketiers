@@ -67,6 +67,8 @@ public class SurroundingPushButton : MonoBehaviour
         GameManager.Instance.LevelManager.EndPlayerMove(3);
         GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
         UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Teleport);
+
+        MetricsDataClass.UsedSpell(GameManager.SpellType.Teleport);
     }
 
     public void SetPosition(Vector3 worldPos)

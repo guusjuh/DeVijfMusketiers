@@ -184,4 +184,9 @@ public class UberManager : MonoBehaviour {
         Debug.LogError("Random roll has failed.");
         return default(T);
     }
+
+    public void OnApplicationQuit()
+    {
+        MetricsDataClass.WriteDataToCSV();
+    }
 }

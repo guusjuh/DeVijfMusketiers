@@ -124,6 +124,8 @@ public class GameManager : StateManager {
             return;
         }
 
+        MetricsDataClass.EndLevel();
+
         // Switch game state
         UberManager.Instance.GotoState(UberManager.GameStates.PostGame);
     }

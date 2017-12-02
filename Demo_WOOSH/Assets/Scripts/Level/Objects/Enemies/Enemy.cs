@@ -112,7 +112,6 @@ public class Enemy : WorldObject
         possibleSpellTypes.Add(GameManager.SpellType.Fireball);
     }
 
-
     public override void Reset()
     {
         base.Reset();
@@ -708,6 +707,8 @@ public class Enemy : WorldObject
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
         ShowPossibleRoads();
+
+        MetricsDataClass.EnemySelected();
     }
 
     public override bool IsMonster() { return true; }

@@ -140,6 +140,8 @@ public class PlayerAPSkipButton : MonoBehaviour {
     {
         GameManager.Instance.LevelManager.SkipPlayerTurn();
         CloseSkipButton();
+
+        MetricsDataClass.SkipTurnUsed++;
     }
 
     public void SetAPText()

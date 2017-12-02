@@ -26,5 +26,7 @@ public class FrostBiteButton : SpellButton
         target.GetComponent<Enemy>().Slow(duration);
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_the_coolest_guy_in_town);
+
+        MetricsDataClass.UsedSpell(GameManager.SpellType.FrostBite);
     }
 }

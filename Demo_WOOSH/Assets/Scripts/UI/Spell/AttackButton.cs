@@ -17,5 +17,6 @@ public class AttackButton : SpellButton
     public override void ApplyEffect()
     {
         target.GetComponent<Enemy>().TryHit(spellDamage);
+        MetricsDataClass.UsedSpell(GameManager.SpellType.Attack);
     }
 }

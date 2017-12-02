@@ -1,33 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using System.Security.Policy;
+using System.IO;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 public static class MetricsDataClass
 {
-    private static int acceptedContracts = 0;
-    public static int AcceptedContracts { get { return acceptedContracts; } set { acceptedContracts = value; } }
+    public static int AcceptedContracts { get; set; }
 
-    private static int wins = 0;
-    public static int Wins { get { return wins; } }
-    private static int loses = 0;
-    public static int Loses { get { return loses; } }
+    public static int Wins { get; set; }
+    public static int Loses { get; set; }
 
-    private static int[] timesStartedLevel = new int[3];
+    private static int[] timesStartedLevel = new int[]{0, 0, 0};
     public static void StartedLevel(int id)
     {
         if (id > timesStartedLevel.Length) return;
-        timesStartedLevel[id]++;
+        timesStartedLevel[id - 1]++;
     }
 
-    private static int humansStartedLevel = 0;
-    public static int HumansStartedLevel { get { return humansStartedLevel; } }
-    private static int humansContinued;
-    public static int HumansContinued { get { return humansContinued; } }
-    private static int humansStayed = 0;
-    public static int HumansStayed { get { return humansStayed; } }
-    private static int humansDied = 0;
-    public static int HumansDied { get { return humansDied; } }
+    public static int HumansStartedLevel { get; set; }
+    public static int HumansContinued { get; set; }
+    public static int HumansStayed { get; set; }
+    public static int HumansDied { get; set; }
 
     private static List<float> changesInReputation = new List<float>();
     public static void AddChangeInReputation(float changeInReputation)
@@ -62,16 +56,11 @@ public static class MetricsDataClass
         else changeInHappinessPerContract.Add(changedContract, changeInHappiness);
     }
 
-    private static int humansDiedByTiles = 0;
-    public static int HumansDiedByTiles { get { return humansDiedByTiles; } }
-    private static int humansDiedByEnemy = 0;
-    public static int HumansDiedByEnemy { get { return humansDiedByEnemy; } }
+    public static int HumansDiedByTiles { get; set; }
+    public static int HumansDiedByEnemy { get; set; }
 
-    private static int activatedShrines = 0;
-    public static int ActivatedShrines { get { return activatedShrines; } }
-
-    private static int skipTurnUsed = 0;
-    public static int SkipTurnUsed { get { return skipTurnUsed; } }
+    public static int ActivatedShrines { get; set; }
+    public static int SkipTurnUsed { get; set; }
 
     private static List<KeyValuePair<int, TimeSpan>> timePerLevel = new List<KeyValuePair<int, TimeSpan>>();
     private static int currentLevelID = 0;
@@ -83,7 +72,7 @@ public static class MetricsDataClass
     }
     public static void EndLevel()
     {
-        timePerLevel.Add(new KeyValuePair<int, TimeSpan>(currentLevelID, currentStartTimeLevel - System.DateTime.Now));
+        timePerLevel.Add(new KeyValuePair<int, TimeSpan>(currentLevelID, System.DateTime.Now - currentStartTimeLevel));
     }
 
     private static List<TimeSpan> timeInBetweenAction = new List<TimeSpan>();
@@ -94,11 +83,109 @@ public static class MetricsDataClass
     }
     public static void ActionExecuted()
     {
-        timeInBetweenAction.Add(currentStartTimeAction - System.DateTime.Now);
+        timeInBetweenAction.Add(System.DateTime.Now - currentStartTimeAction);
     }
 
     public static void WriteDataToCSV()
     {
-        
+        float changeInRep = 0;
+        changesInReputation.HandleAction(r => changeInRep += r);
+        changeInRep /= (float)changesInReputation.Count;
+
+        float averageEnemySelectionPerTurn = 0;
+        foreach (KeyValuePair<int, int> entry in selectedEnemyPerTurn)
+        {
+            averageEnemySelectionPerTurn += entry.Value;
+        }
+        averageEnemySelectionPerTurn /= (float)selectedEnemyPerTurn.Count;
+
+        float changeInHappiness = 0;
+        foreach (KeyValuePair<Contract, float> entry in changeInHappinessPerContract)
+        {
+            changeInHappiness += entry.Value;
+        }
+        changeInHappiness /= (float) changeInHappinessPerContract.Count;
+
+        float averageTimePerLevel = 0;
+        foreach (KeyValuePair<int, TimeSpan> entry in timePerLevel)
+        {
+            averageTimePerLevel += entry.Value.Seconds;
+        }
+        averageTimePerLevel /= timePerLevel.Count;
+
+        float averageTimeInBetweenActions = 0;
+        foreach (TimeSpan entry in timeInBetweenAction)
+        {
+            averageTimeInBetweenActions += entry.Seconds;
+        }
+        averageTimeInBetweenActions /= timeInBetweenAction.Count;
+
+        string columnNames = "AcceptedContracts" + ", " +
+                             "Wins" + ", " +
+                             "Loses" + ", " +
+                             "StartedLevel1" + ", " +
+                             "StartedLevel2" + ", " +
+                             "StartedLevel3" + ", " +
+                             "HumansStarted" + ", " +
+                             "HumansContinued" + ", " +
+                             "HumansStayed" + ", " +
+                             "HumansDied" + ", " +
+                             "ChangeInReputation" + ", " +
+                             "AttackSpellUsed" + ", " +
+                             "TeleportSpellUsed" + ", " +
+                             "FireballSpellUsed" + ", " +
+                             "FrostbiteSpellUsed" + ", " +
+                             "AverageSelectedEnemiesPerTurn" + ", " +
+                             "AverageChangeInHappiness" + ", " +
+                             "HumansDiedByTiles" + ", " +
+                             "HumansDiedByEnemy" + ", " +
+                             "ActivatedShrines" + ", " +
+                             "SkipTurnUsed" + ", " +
+                             "AverageTimePerLevel" + ", " +
+                             "AverageTimeInBetweenActions";
+
+        string generalData = AcceptedContracts.ToString() + ", " +
+                             Wins.ToString() + ", " +
+                             Loses.ToString() + ", " +
+                             timesStartedLevel[0].ToString() + ", " +
+                             timesStartedLevel[1].ToString() + ", " +
+                             timesStartedLevel[2].ToString() + ", " +
+                             HumansStartedLevel.ToString() + ", " +
+                             HumansContinued.ToString() + ", " +
+                             HumansStayed.ToString() + ", " +
+                             HumansDied.ToString() + ", " +
+                             changeInRep.ToString() + ", " +
+                             usedSpells[GameManager.SpellType.Attack].ToString() + ", " +
+                             usedSpells[GameManager.SpellType.Teleport].ToString() + ", " +
+                             usedSpells[GameManager.SpellType.Fireball].ToString() + ", " +
+                             usedSpells[GameManager.SpellType.FrostBite].ToString() + ", " +
+                             averageEnemySelectionPerTurn.ToString() + ", " +
+                             changeInHappiness.ToString() + ", " +
+                             HumansDiedByTiles.ToString() + ", " +
+                             HumansDiedByEnemy.ToString() + ", " +
+                             ActivatedShrines.ToString() + ", " +
+                             SkipTurnUsed.ToString() + ", " +
+                             averageTimePerLevel.ToString() + ", " +
+                             averageTimeInBetweenActions.ToString();
+
+        DirectoryInfo dir = new DirectoryInfo("Assets/CSV");
+        FileInfo[] allFiles = dir.GetFiles("*.csv");
+        List<int> validFiles = new List<int>();
+
+        foreach (FileInfo f in allFiles)
+        {
+            Match match = Regex.Match(f.Name, @"\d+");//"[0-9]*");
+
+            validFiles.Add(int.Parse(match.Value));
+        }
+
+        string fileName = "test" + validFiles.Count + ".csv";
+
+        string filePath = Application.dataPath + "/CSV/" + fileName;
+        StreamWriter writer = new StreamWriter(filePath);
+        writer.WriteLine(columnNames);
+        writer.WriteLine(generalData);
+        writer.Flush();
+        writer.Close();
     }
 }

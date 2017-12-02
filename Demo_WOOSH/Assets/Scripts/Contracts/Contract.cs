@@ -91,6 +91,8 @@ public class Contract
             if (happiness > TotalHappiness) happiness = TotalHappiness;
 
             this.happiness_att = happiness;
+            
+            MetricsDataClass.ChangeInHappiness(this, 5.0f);
         }
     }
 
@@ -110,6 +112,8 @@ public class Contract
         diedLastLevel = true;
         happiness -= 10;
         this.happiness_att = happiness;
+
+        MetricsDataClass.ChangeInHappiness(this, -10.0f);
     }
 
     public bool EndLevel()
@@ -124,12 +128,18 @@ public class Contract
             {
                 UberManager.Instance.PlayerData.AdjustReputation(Rewards.NegativeRepCompleted);
                 BreakContract();
+
+                MetricsDataClass.HumansDied++;
                 return false;
             }
+
+            MetricsDataClass.HumansStayed++;
         }
         else
         {
             UberManager.Instance.PlayerData.AdjustReputation(Rewards.PositiveRepPerLevel);
+
+            MetricsDataClass.HumansContinued++;
 
             //TODO:fix this
             if (levelInPath + 1 >= path.Levels.Count)

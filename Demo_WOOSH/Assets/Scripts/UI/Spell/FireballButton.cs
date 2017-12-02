@@ -22,5 +22,7 @@ public class FireballButton : SpellButton
         target.GetComponent<Enemy>().TryHit(spellDamage);
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_burn_baby_burn);
+
+        MetricsDataClass.UsedSpell(GameManager.SpellType.Fireball);
     }
 }

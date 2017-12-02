@@ -17,6 +17,7 @@ public class Shrine : EnemyTarget
         private set {
             if(value != active && value){
                 UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
+                MetricsDataClass.ActivatedShrines++;
             }
             active = value;
             sprRender.color = value ? activeColor : normalColor;

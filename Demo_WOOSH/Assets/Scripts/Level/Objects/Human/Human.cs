@@ -231,6 +231,8 @@ public class Human : MovableObject {
 
         GameManager.Instance.LevelManager.RemoveObject(this);
 
+        MetricsDataClass.HumansDiedByEnemy++;
+
         return true;
     }
 
@@ -238,6 +240,9 @@ public class Human : MovableObject {
     {
         UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
         contractRef.Die();
+
+        MetricsDataClass.HumansDiedByTiles++;
+
         base.DeadByGap();
     }
 

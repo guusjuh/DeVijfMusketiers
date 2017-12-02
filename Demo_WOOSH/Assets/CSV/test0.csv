@@ -1,0 +1,2 @@
+AcceptedContracts, Wins, Loses, StartedLevel1, StartedLevel2, StartedLevel3, HumansStarted, HumansContinued, HumansStayed, HumansDied, ChangeInReputation, AttackSpellUsed, TeleportSpellUsed, FireballSpellUsed, FrostbiteSpellUsed, AverageSelectedEnemiesPerTurn, AverageChangeInHappiness, HumansDiedByTiles, HumansDiedByEnemy, ActivatedShrines, SkipTurnUsed, AverageTimePerLevel, AverageTimeInBetweenActions
+5, 1, 0, 0, 0, 1, 3, 3, 0, 0, 6.25, 8, 2, 3, 2, 2.333333, NaN, 0, 0, 2, 0, 51, 2.277778
