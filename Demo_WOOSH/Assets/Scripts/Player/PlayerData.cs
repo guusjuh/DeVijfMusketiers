@@ -38,7 +38,7 @@ public class PlayerData {
 
     public void AdjustReputation(float adjustment)
     {
-        MetricsDataClass.AddChangeInReputation(adjustment);
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.AddChangeInReputation(adjustment);
 
         // check for reputationlevel matching curr rep
         reputationLevel = LevelForRep(reputation);

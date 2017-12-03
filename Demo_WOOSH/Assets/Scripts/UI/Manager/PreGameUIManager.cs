@@ -145,14 +145,14 @@ public class PreGameUIManager : SubUIManager {
 
         preGameInfoPanel.GetSelectedContracts().HandleAction(c => c.SetActive(true));
 
-        preGameInfoPanel.GetSelectedContracts().HandleAction(c => MetricsDataClass.HumansStartedLevel++);
+        if (!UberManager.Instance.Tutorial) preGameInfoPanel.GetSelectedContracts().HandleAction(c => MetricsDataClass.HumansStartedLevel++);
 
         UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.InGame);
 
+        if (UberManager.Instance.Tutorial) return;
         MetricsDataClass.StartedLevel(UberManager.Instance.PreGameManager.SelectedLevel);
         MetricsDataClass.StartLevel();
-
     }
 
     public override void Update()

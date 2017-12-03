@@ -27,6 +27,6 @@ public class FrostBiteButton : SpellButton
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_the_coolest_guy_in_town);
 
-        MetricsDataClass.UsedSpell(GameManager.SpellType.FrostBite);
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.UsedSpell(GameManager.SpellType.FrostBite);
     }
 }

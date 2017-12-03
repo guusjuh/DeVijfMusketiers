@@ -46,7 +46,7 @@ public class Player
     {
         currentActionPoints = totalActionPoints + extraAP;
 
-        MetricsDataClass.StartAbleToDoAction();
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.StartAbleToDoAction();
     }
 
     public bool EndPlayerMove(int cost = 1, bool endTurn = false)
@@ -54,7 +54,7 @@ public class Player
         currentActionPoints = endTurn ? 0 : currentActionPoints - cost;
         UIManager.Instance.InGameUI.PlayerActionPoints.SetAPText();
 
-        MetricsDataClass.ActionExecuted();
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.ActionExecuted();
 
         if (currentActionPoints <= 0)
         {
@@ -69,7 +69,7 @@ public class Player
             return true;
         }
 
-        MetricsDataClass.StartAbleToDoAction();
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.StartAbleToDoAction();
 
         return false;
     }

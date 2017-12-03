@@ -141,7 +141,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
         GameManager.Instance.LevelManager.SkipPlayerTurn();
         CloseSkipButton();
 
-        MetricsDataClass.SkipTurnUsed++;
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.SkipTurnUsed++;
     }
 
     public void SetAPText()

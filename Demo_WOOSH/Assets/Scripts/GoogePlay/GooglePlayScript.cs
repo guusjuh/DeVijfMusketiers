@@ -20,6 +20,7 @@ public class GooglePlayScript : MonoBehaviour {
         if(!PlayerPrefs.HasKey(SAVE_NAME)) PlayerPrefs.SetString(SAVE_NAME, InitialPlayerDataToString()); 
         if(!PlayerPrefs.HasKey("IsFirstTime")) PlayerPrefs.SetInt("IsFirstTime", 1); // 1 for true since booleans dont exist in playerprefs
 
+        ResetData();
         LoadLocal();
 
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
@@ -229,6 +230,11 @@ public class GooglePlayScript : MonoBehaviour {
     private void SaveLocal()
     {
         PlayerPrefs.SetString(SAVE_NAME, PlayerDataToString());
+    }
+
+    private void ResetData()
+    {
+        PlayerPrefs.SetString(SAVE_NAME, InitialPlayerDataToString());
     }
 
     // compare data and select the most up-to-date one 

@@ -23,6 +23,6 @@ public class FireballButton : SpellButton
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_burn_baby_burn);
 
-        MetricsDataClass.UsedSpell(GameManager.SpellType.Fireball);
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.UsedSpell(GameManager.SpellType.Fireball);
     }
 }

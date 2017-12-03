@@ -120,7 +120,8 @@ public static class MetricsDataClass
         }
         averageTimeInBetweenActions /= timeInBetweenAction.Count;
 
-        string columnNames = "AcceptedContracts" + ", " +
+        string columnNames = "TutorialPlayed" + ", " + 
+                             "AcceptedContracts" + ", " +
                              "Wins" + ", " +
                              "Loses" + ", " +
                              "StartedLevel1" + ", " +
@@ -144,7 +145,8 @@ public static class MetricsDataClass
                              "AverageTimePerLevel" + ", " +
                              "AverageTimeInBetweenActions";
 
-        string generalData = AcceptedContracts.ToString() + ", " +
+        string generalData = UberManager.Instance.TestWithTutorial.ToString() + ", " + 
+                             AcceptedContracts.ToString() + ", " +
                              Wins.ToString() + ", " +
                              Loses.ToString() + ", " +
                              timesStartedLevel[0].ToString() + ", " +

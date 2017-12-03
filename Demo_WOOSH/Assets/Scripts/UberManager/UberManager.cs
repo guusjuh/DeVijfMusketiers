@@ -67,6 +67,9 @@ public class UberManager : MonoBehaviour {
     private bool doingSetup = true;
     public bool DoingSetup { get { return doingSetup; } }
 
+    [SerializeField] private bool testWithTutorial = true;
+    public bool TestWithTutorial { get { return testWithTutorial; } }
+
     private bool tutorial = true;
     public bool Tutorial { get { return tutorial; } }
 
@@ -123,7 +126,10 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
-        tutorial = !SavedPlayerData.Instance.tutorialFinsihed;
+        //tutorial = !SavedPlayerData.Instance.tutorialFinsihed;
+
+        tutorial = testWithTutorial;
+        SavedPlayerData.Instance.tutorialFinsihed = !tutorial;
 
         if (tutorial)
         {

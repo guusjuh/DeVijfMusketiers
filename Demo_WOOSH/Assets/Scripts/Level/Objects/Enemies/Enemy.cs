@@ -708,7 +708,7 @@ public class Enemy : WorldObject
 
         ShowPossibleRoads();
 
-        MetricsDataClass.EnemySelected();
+        if (!UberManager.Instance.Tutorial) MetricsDataClass.EnemySelected();
     }
 
     public override bool IsMonster() { return true; }
