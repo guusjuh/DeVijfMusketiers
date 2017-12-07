@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: LevelSelectUISprites
+  m_EditorData:
+    textureSettings:
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 4096
+      textureCompression: 0
+      colorSpace: 1
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+    platformSettings: []
+    packingParameters:
+      paddingPower: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    packedHash:
+      serializedVersion: 2
+      Hash: 9ba4ce8e1b48a6a2e6e32bc6271a4416
+    variantMultiplier: 1
+    bindAsDefault: 1
+    finalFormat: 4
+    hashString: 9ba4ce8e1b48a6a2e6e32bc6271a4416
+    totalSpriteSurfaceArea: 4854056
+    packables:
+    - {fileID: 102900000, guid: e5e5fe5d28c12a149aa0721f60d1159c, type: 3}
+    - {fileID: 102900000, guid: 7661a95d84e8fd142a4d936d16297777, type: 3}
+    - {fileID: 2800000, guid: cc94b601743e6f04f8d6f067165aac5a, type: 3}
+    - {fileID: 2800000, guid: 2f0febfec1802ce49a5cf8695ca8ab4a, type: 3}
+    - {fileID: 102900000, guid: 29bc92213306d1f48b3b2c5692d1794d, type: 3}
+    packedSpriteRenderDataKeys:
+    - e02b7028d7af5ed47a48804f2c923711: 21300000
+    - 3ab69fb4cd2e09747ac52af3afb5686a: 21300000
+    - f8f3c9717b49783489635fc98e38d2c7: 21300000
+    - a47280e76bb5a7b4f95e251b1a60631d: 21300000
+    - 2f0febfec1802ce49a5cf8695ca8ab4a: 21300000
+    - 9d90cf4bd4e237042920a9ba41ab6da2: 21300000
+    - cc3ce164df017b047b72b5189e02b0d8: 21300000
+    - 71aa7ef9680f15b4c9b6002871d65fde: 21300000
+    - c0c11ecafddf8354786b0bf420b4887c: 21300000
+    - 27fac966fdba5be41b0cfa22d8374f51: 21300000
+    - b44b071a7cb13bd4d8db9796c6d48969: 21300000
+    - 81f966a422abfde4fafc024b63a75923: 21300000
+    - 260afef73b19eae4385a777f2ed58c7a: 21300000
+    - d42e06b8358edf3468462ca4942de2be: 21300000
+    - bf4a40023831e1448a7ea51f1a84eafd: 21300000
+    - 1a9fcb01192e6e946bfeec05da40470e: 21300000
+    - 135173bbb2fafa04c8f5da4a77329e94: 21300000
+    - 9902cd1eedc400b468dcab74885709a3: 21300000
+    - 2d851d678fd2359428777348c6d15789: 21300000
+    - 0e89b28577200b24484b1639c2d7dbc5: 21300000
+    - f71f01f88c96b194ea4ce488db59af4a: 21300000
+    - cc94b601743e6f04f8d6f067165aac5a: 21300000
+    - 55fbf5f1dc46a2e48afe7f59e6b2c429: 21300000
+    - 057ef08fa588f034c84484b34e5eb86c: 21300000
+    - a492a046e2f7ff743bca52b98c889ebc: 21300000
+    - e71a87edb6283ca489f2d5ce14e304ee: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e02b7028d7af5ed47a48804f2c923711, type: 3}
+  - {fileID: 21300000, guid: 3ab69fb4cd2e09747ac52af3afb5686a, type: 3}
+  - {fileID: 21300000, guid: f8f3c9717b49783489635fc98e38d2c7, type: 3}
+  - {fileID: 21300000, guid: a47280e76bb5a7b4f95e251b1a60631d, type: 3}
+  - {fileID: 21300000, guid: 2f0febfec1802ce49a5cf8695ca8ab4a, type: 3}
+  - {fileID: 21300000, guid: 9d90cf4bd4e237042920a9ba41ab6da2, type: 3}
+  - {fileID: 21300000, guid: cc3ce164df017b047b72b5189e02b0d8, type: 3}
+  - {fileID: 21300000, guid: 71aa7ef9680f15b4c9b6002871d65fde, type: 3}
+  - {fileID: 21300000, guid: c0c11ecafddf8354786b0bf420b4887c, type: 3}
+  - {fileID: 21300000, guid: 27fac966fdba5be41b0cfa22d8374f51, type: 3}
+  - {fileID: 21300000, guid: b44b071a7cb13bd4d8db9796c6d48969, type: 3}
+  - {fileID: 21300000, guid: 81f966a422abfde4fafc024b63a75923, type: 3}
+  - {fileID: 21300000, guid: 260afef73b19eae4385a777f2ed58c7a, type: 3}
+  - {fileID: 21300000, guid: d42e06b8358edf3468462ca4942de2be, type: 3}
+  - {fileID: 21300000, guid: bf4a40023831e1448a7ea51f1a84eafd, type: 3}
+  - {fileID: 21300000, guid: 1a9fcb01192e6e946bfeec05da40470e, type: 3}
+  - {fileID: 21300000, guid: 135173bbb2fafa04c8f5da4a77329e94, type: 3}
+  - {fileID: 21300000, guid: 9902cd1eedc400b468dcab74885709a3, type: 3}
+  - {fileID: 21300000, guid: 2d851d678fd2359428777348c6d15789, type: 3}
+  - {fileID: 21300000, guid: 0e89b28577200b24484b1639c2d7dbc5, type: 3}
+  - {fileID: 21300000, guid: f71f01f88c96b194ea4ce488db59af4a, type: 3}
+  - {fileID: 21300000, guid: cc94b601743e6f04f8d6f067165aac5a, type: 3}
+  - {fileID: 21300000, guid: 55fbf5f1dc46a2e48afe7f59e6b2c429, type: 3}
+  - {fileID: 21300000, guid: 057ef08fa588f034c84484b34e5eb86c, type: 3}
+  - {fileID: 21300000, guid: a492a046e2f7ff743bca52b98c889ebc, type: 3}
+  - {fileID: 21300000, guid: e71a87edb6283ca489f2d5ce14e304ee, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - levelSelectBackground
+  - City
+  - CityGrey
+  - CityColored
+  - UIBackground2
+  - ChooseContractWindow
+  - Level-1
+  - Level-2
+  - Level-3
+  - Level-4
+  - Level-5
+  - Level-6
+  - Level-7
+  - Level-8
+  - Level-9
+  - tutorial
+  - Off
+  - On
+  - Sound
+  - Music
+  - Settings
+  - UIBackground_0
+  - NewContractIndicator
+  - Ad4Ad
+  - AddContract
+  - CityMenu
+  m_Tag: LevelSelectUISprites
+  m_IsVariant: 0
