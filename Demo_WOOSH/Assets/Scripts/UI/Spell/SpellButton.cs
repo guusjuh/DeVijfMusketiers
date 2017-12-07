@@ -58,18 +58,18 @@ public class SpellButton : MonoBehaviour
 
         yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
                 GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
-
+        
         if (UberManager.Instance.Tutorial)
         {
             UberManager.Instance.TutorialManager.Next();
             yield break;
         }
-
+        
         GameManager.Instance.LevelManager.Player.SetCooldown(type);
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
-
+        
         ApplyEffect();
-
+        
         UIManager.Instance.InGameUI.CastingSpell = -1;
 
         UIManager.Instance.InGameUI.HideSpellButtons();

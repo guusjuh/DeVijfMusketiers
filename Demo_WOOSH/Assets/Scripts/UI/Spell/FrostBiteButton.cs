@@ -21,9 +21,9 @@ public class FrostBiteButton : SpellButton
         float chance = Random.Range(0.0f, 1.0f);
         if (chance < hitchance)
         {
-            target.GetComponent<Enemy>().TryHit(spellDamage);
+            ((Enemy)target).TryHit(spellDamage);
         }
-        target.GetComponent<Enemy>().Slow(duration);
+        ((Enemy)target).Slow(duration);
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_the_coolest_guy_in_town);
     }

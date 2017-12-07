@@ -78,7 +78,6 @@ public class InGameUIManager : SubUIManager {
  
         teleportButtonsOn = false;
         teleportButtons = new List<SurroundingPushButton>();
-        InitializeTeleportButtons();
 
         SpellColors = new Dictionary<GameManager.SpellType, Color>();
         SpellColors.Add(GameManager.SpellType.Attack, Color.white);
@@ -93,6 +92,8 @@ public class InGameUIManager : SubUIManager {
         }
         else
         {
+            //TODO: if teleportButtons are not working in tutorial uncomment line below
+            //InitializeTeleportButtons();
             InitializeTutorial();
         }
 
@@ -182,8 +183,10 @@ public class InGameUIManager : SubUIManager {
             InitializeInGame();
             return;
         }
-
-        InitializeTeleportButtons();
+        else
+        {
+            InitializeTeleportButtons();
+        }
 
         enemyInfoUI.Restart();
 
@@ -269,12 +272,13 @@ public class InGameUIManager : SubUIManager {
 
     public override void Update()
     {
+        bool zoomingOrDragging = (UberManager.Instance.InputManager.ZoomVelocity > 0.01f || UberManager.Instance.InputManager.ZoomVelocity < -0.01f) || UberManager.Instance.InputManager.DragVelocity.magnitude > 0;
         // update button positions every frame
         if (spellButtonsOn)
         {
             SetSpellButtonPositions();
         }
-        else if (teleportButtonsOn)
+        else if (teleportButtonsOn && zoomingOrDragging)
         {
             SetPushButtonPositions();
         }

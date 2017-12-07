@@ -6,7 +6,10 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class UberManager : MonoBehaviour { 
+public class UberManager : MonoBehaviour
+{
+
+    public bool catchInput = true;
 
     public enum GameStates {
         LevelSelection = 0,
@@ -142,7 +145,8 @@ public class UberManager : MonoBehaviour {
         SavedPlayerData.Instance.InitializeInGame();
     } 
 
-    public void Update() {
+    public void Update()
+    {
         doingSetup = false;
 
         stateManagers.Get(state).Update();

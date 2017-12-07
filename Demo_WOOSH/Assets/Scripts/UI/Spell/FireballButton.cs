@@ -18,8 +18,8 @@ public class FireballButton : SpellButton
 
     public override void ApplyEffect()
     {
-        target.GetComponent<Enemy>().Burn(duration, fireDamage);
-        target.GetComponent<Enemy>().TryHit(spellDamage);
+        ((Enemy)target).Burn(duration, fireDamage);
+        ((Enemy)target).TryHit(spellDamage);
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_burn_baby_burn);
     }

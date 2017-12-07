@@ -20,7 +20,7 @@ public class TeleportButton : SpellButton
         yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
                 GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
 
-        target.GetComponent<Human>().ActivateTeleportButtons();
+        ((Human)target).ActivateTeleportButtons();
 
         GameManager.Instance.LevelManager.EndPlayerMove(cost);
         UIManager.Instance.InGameUI.HideSpellButtons();
