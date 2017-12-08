@@ -23,9 +23,9 @@ public class GooglePlayScript : MonoBehaviour {
         ResetData();
         LoadLocal();
 
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
-        PlayGamesPlatform.InitializeInstance(config);
-        PlayGamesPlatform.Activate();
+        //PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
+        //PlayGamesPlatform.InitializeInstance(config);
+        //PlayGamesPlatform.Activate();
 
         SignIn();
     }
@@ -176,8 +176,8 @@ public class GooglePlayScript : MonoBehaviour {
         {
             isSaving = false;
 
-            (Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
-                DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
+            //(Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
+            //    DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
         }
         else
         {
@@ -203,8 +203,8 @@ public class GooglePlayScript : MonoBehaviour {
         {
             isSaving = true;
 
-            (Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
-                DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
+            //(Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
+            //    DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
         }
         else
         {
@@ -220,8 +220,8 @@ public class GooglePlayScript : MonoBehaviour {
         {
             isSaving = true;
 
-            (Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
-                DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
+            //(Social.Active as PlayGamesPlatform).SavedGame.OpenWithManualConflictResolution(SAVE_NAME,
+            //    DataSource.ReadCacheOrNetwork, true, ResolveConflict, OnSavedGameOpened);
         }
 
         LoadData();
@@ -265,7 +265,7 @@ public class GooglePlayScript : MonoBehaviour {
 
     private void LoadGame(ISavedGameMetadata game)
     {
-        (Social.Active as PlayGamesPlatform).SavedGame.ReadBinaryData(game, OnSavedGameDataRead);
+        //(Social.Active as PlayGamesPlatform).SavedGame.ReadBinaryData(game, OnSavedGameDataRead);
     }
 
     private void SaveGame(ISavedGameMetadata game)
@@ -276,7 +276,7 @@ public class GooglePlayScript : MonoBehaviour {
         byte[] dataToSave = Encoding.ASCII.GetBytes(stringToSave);
 
         SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder().Build();
-        (Social.Active as PlayGamesPlatform).SavedGame.CommitUpdate(game, update, dataToSave, OnSavedGameDataWritten);
+        //(Social.Active as PlayGamesPlatform).SavedGame.CommitUpdate(game, update, dataToSave, OnSavedGameDataWritten);
     }
 
     private void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] savedData)

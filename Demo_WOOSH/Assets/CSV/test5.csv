@@ -1,2 +1,2 @@
 TutorialPlayed, AcceptedContracts, Wins, Loses, StartedLevel1, StartedLevel2, StartedLevel3, HumansStarted, HumansContinued, HumansStayed, HumansDied, ChangeInReputation, AttackSpellUsed, TeleportSpellUsed, FireballSpellUsed, FrostbiteSpellUsed, AverageSelectedEnemiesPerTurn, AverageChangeInHappiness, HumansDiedByTiles, HumansDiedByEnemy, ActivatedShrines, SkipTurnUsed, AverageTimePerLevel, AverageTimeInBetweenActions
-True, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NaN, 0, 0, 0, 0, NaN, NaN, 0, 0, 0, 0, NaN, NaN
+False, 6, 8, 2, 5, 4, 1, 21, 11, 10, 0, 0.6521739, 30, 9, 40, 16, 14.42857, -9, 1, 9, 3, 0, 28.8, 4.372881

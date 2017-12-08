@@ -158,7 +158,7 @@ public class SavedPlayerData
         spd.tutorialFinsihed = false;
         spd.reputation = 112.0f;
         spd.activeCities = new bool[3] {true, false, false};
-        spd.contractRefreshTime = System.DateTime.Now.AddSeconds(ContractManager.CONTRACT_REFRESH_RATE);
+        spd.contractRefreshTime = System.DateTime.Now;//System.DateTime.Now.AddSeconds(ContractManager.CONTRACT_REFRESH_RATE);
         spd.availableContractsPerCity = new List<Contract>[3];
         spd.activeContractsPerLevel = new List<Contract>[9];
         spd.musicOn = true;
