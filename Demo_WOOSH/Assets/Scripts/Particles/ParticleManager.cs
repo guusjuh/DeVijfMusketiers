@@ -8,15 +8,14 @@ public class ParticleManager : MonoBehaviour {
 
         public enum Particles
     {
-        FireParticle = 0,
-        IceParticle,
-        LightParticle,
-        ShrineParticle,
-        TeleportInParticle,
-        TeleportOutParticle,
-        DodinParticle,
-        ArnestParticle,
-        SkettaParticle,
+        FireSpellParticle = 0,
+        FreezeSpellParticle,
+        LightSpellParticle,
+        ShrineIsOnparticle,
+        TeleportSpellParticle,
+        DodinFireballParticle,
+        ArnestSuperHealParticle,
+        SkettaShieldParticle,
         BurnedParticle,
         FrozenParticle,
         ReputationParticle
@@ -25,15 +24,14 @@ public class ParticleManager : MonoBehaviour {
 
 	public void Initialize()
     {
-        particles.Add(Particles.FireParticle, Resources.Load("Prefabs/Particles/PT_FIRESPELL") as GameObject);
-        particles.Add(Particles.IceParticle, Resources.Load("Prefabs/Particles/PT_ICESPELL_v2") as GameObject);
-        particles.Add(Particles.LightParticle, Resources.Load("Prefabs/Particles/PT_LIGHTSPELL_v2") as GameObject);
-        particles.Add(Particles.ShrineParticle, Resources.Load("Prefabs/Particles/PT_SHRINE") as GameObject);
-        particles.Add(Particles.TeleportInParticle, Resources.Load("Prefabs/Particles/PT_TELEPORT_v2-IN") as GameObject);
-        particles.Add(Particles.TeleportOutParticle, Resources.Load("Prefabs/Particles/PT_TELEPORT_v2-WEG") as GameObject);
-        particles.Add(Particles.DodinParticle, Resources.Load("Prefabs/Particles/PT_DODIN") as GameObject);
-        particles.Add(Particles.ArnestParticle, Resources.Load("Prefabs/Particles/PT_ARNEST") as GameObject);
-        particles.Add(Particles.SkettaParticle, Resources.Load("Prefabs/Particles/PT_SKETTA") as GameObject);
+        particles.Add(Particles.FireSpellParticle, Resources.Load("Prefabs/Particles/PT_FIRESPELL") as GameObject);
+        particles.Add(Particles.FreezeSpellParticle, Resources.Load("Prefabs/Particles/PT_ICESPELL_v2") as GameObject);
+        particles.Add(Particles.LightSpellParticle, Resources.Load("Prefabs/Particles/PT_LIGHTSPELL_v2") as GameObject);
+        particles.Add(Particles.ShrineIsOnparticle, Resources.Load("Prefabs/Particles/PT_SHRINE") as GameObject);
+        particles.Add(Particles.TeleportSpellParticle, Resources.Load("Prefabs/Particles/PT_TELEPORT_v2-IN") as GameObject);
+        particles.Add(Particles.DodinFireballParticle, Resources.Load("Prefabs/Particles/PT_DODIN") as GameObject);
+        particles.Add(Particles.ArnestSuperHealParticle, Resources.Load("Prefabs/Particles/PT_ARNEST") as GameObject);
+        particles.Add(Particles.SkettaShieldParticle, Resources.Load("Prefabs/Particles/PT_SKETTA") as GameObject);
         particles.Add(Particles.BurnedParticle, Resources.Load("Prefabs/Particles/PT_BURNED") as GameObject);
         particles.Add(Particles.FrozenParticle, Resources.Load("Prefabs/Particles/PT_FROZEN") as GameObject);
         particles.Add(Particles.ReputationParticle, Resources.Load("Prefabs/Particles/PT_REPUTATION") as GameObject);
@@ -44,16 +42,16 @@ public class ParticleManager : MonoBehaviour {
         switch (effect)
         {
             case GameManager.SpellType.Attack:
-                PlayParticle(Particles.LightParticle, position, rotation);
+                PlayParticle(Particles.LightSpellParticle, position, rotation);
                 break;
             case GameManager.SpellType.Fireball:
-                PlayParticle(Particles.FireParticle, position, rotation);
+                PlayParticle(Particles.FireSpellParticle, position, rotation);
                 break;
             case GameManager.SpellType.FrostBite:
-                PlayParticle(Particles.IceParticle, position, rotation);
+                PlayParticle(Particles.FreezeSpellParticle, position, rotation);
                 break;
             case GameManager.SpellType.Teleport:
-                PlayParticle(Particles.TeleportInParticle, position, rotation);
+                PlayParticle(Particles.TeleportSpellParticle, position, rotation);
                 break;
         }
     }

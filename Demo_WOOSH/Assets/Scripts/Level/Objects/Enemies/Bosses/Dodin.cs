@@ -83,7 +83,7 @@ public class Dodin : Enemy
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator ShootFireBall(Vector3 end)
     {
-        fireBall = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.DodinParticle, transform.position, transform.rotation);
+        fireBall = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.DodinFireballParticle, transform.position, transform.rotation);
         //Rigidbody2D ball = fireBall.GetComponent<Rigidbody2D>();
 
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.

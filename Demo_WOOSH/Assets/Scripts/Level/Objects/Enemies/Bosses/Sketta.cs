@@ -48,7 +48,7 @@ public class Sketta : Enemy {
     {
         //shield.SetActive(true);
         //shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
-        shield = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.SkettaParticle, transform.position, transform.rotation);
+        shield = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.SkettaShieldParticle, transform.position, transform.rotation);
 
         yield return new WaitForSeconds(0.5f);
 

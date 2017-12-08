@@ -18,7 +18,7 @@ public class Shrine : EnemyTarget
         private set {
             if(value != active && value){
                 UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
-                shrineParticle = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.ShrineParticle, transform.position, transform.rotation);
+                shrineParticle = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.ShrineIsOnparticle, transform.position, transform.rotation);
             }
             active = value;
             sprRender.color = value ? activeColor : normalColor;
