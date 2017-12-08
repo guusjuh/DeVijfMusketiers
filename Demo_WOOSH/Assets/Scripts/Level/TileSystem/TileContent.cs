@@ -54,7 +54,7 @@ public class TileContent
         KillTileContent();
     }
 
-    private void KillTileContent()
+    public void KillTileContent()
     {
         if (contentTypes.Find(c => c.IsBarrel())) GameManager.Instance.LevelManager.Barrels.Find(go => go.GridPosition == refNode.GridPosition).DeadByGap();
         if (contentTypes.Find(c => c.IsHuman())) GameManager.Instance.LevelManager.Humans.Find(go => go.GridPosition == refNode.GridPosition).DeadByGap();

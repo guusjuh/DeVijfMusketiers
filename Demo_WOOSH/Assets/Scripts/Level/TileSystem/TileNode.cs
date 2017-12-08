@@ -19,6 +19,7 @@ public class TileNode {
     public SpriteRenderer Highlight { get { return highlight; } }
 
     private TileContent content;
+    public TileContent Content { get { return content; } }
 
     /// <summary>
     /// Constructor.

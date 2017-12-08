@@ -169,6 +169,11 @@ public class Enemy : WorldObject
         return false;
     }
 
+    public void Kill()
+    {
+        Hit((int)Health);
+    }
+
     protected override bool Hit(int dmg)
     {
         health -= dmg;
