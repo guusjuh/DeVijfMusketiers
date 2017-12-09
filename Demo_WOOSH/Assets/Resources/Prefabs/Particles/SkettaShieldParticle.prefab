@@ -184,7 +184,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1760799961
+  randomSeed: 780822737
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3446,7 +3446,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1906805705
+  randomSeed: 1100761215
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4110,7 +4110,7 @@ ParticleSystem:
           outSlope: 3.2064862
           tangentMode: 0
         - serializedVersion: 2
-          time: 0.3025804
+          time: 0.17803815
           value: 0
           inSlope: 0
           outSlope: 0

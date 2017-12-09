@@ -204,7 +204,7 @@ public class Enemy : WorldObject
 
         sprRenders.HandleAction(s => s.color = new Color(0.8f, 0, 0, 1));
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
+        Instantiate(Resources.Load<GameObject>("Prefabs/Particles/BloodParticle"), transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.35f);
 

@@ -11,7 +11,7 @@ public class ParticleManager : MonoBehaviour {
         FireSpellParticle = 0,
         FreezeSpellParticle,
         LightSpellParticle,
-        ShrineIsOnparticle,
+        ShrineIsOnParticle,
         TeleportSpellParticle,
         DodinFireballParticle,
         ArnestSuperHealParticle,
@@ -19,22 +19,21 @@ public class ParticleManager : MonoBehaviour {
         BurnedParticle,
         FrozenParticle,
         ReputationParticle
-
     }
 
 	public void Initialize()
     {
-        particles.Add(Particles.FireSpellParticle, Resources.Load("Prefabs/Particles/PT_FIRESPELL") as GameObject);
-        particles.Add(Particles.FreezeSpellParticle, Resources.Load("Prefabs/Particles/PT_ICESPELL_v2") as GameObject);
-        particles.Add(Particles.LightSpellParticle, Resources.Load("Prefabs/Particles/PT_LIGHTSPELL_v2") as GameObject);
-        particles.Add(Particles.ShrineIsOnparticle, Resources.Load("Prefabs/Particles/PT_SHRINE") as GameObject);
-        particles.Add(Particles.TeleportSpellParticle, Resources.Load("Prefabs/Particles/PT_TELEPORT_v2-IN") as GameObject);
-        particles.Add(Particles.DodinFireballParticle, Resources.Load("Prefabs/Particles/PT_DODIN") as GameObject);
-        particles.Add(Particles.ArnestSuperHealParticle, Resources.Load("Prefabs/Particles/PT_ARNEST") as GameObject);
-        particles.Add(Particles.SkettaShieldParticle, Resources.Load("Prefabs/Particles/PT_SKETTA") as GameObject);
-        particles.Add(Particles.BurnedParticle, Resources.Load("Prefabs/Particles/PT_BURNED") as GameObject);
-        particles.Add(Particles.FrozenParticle, Resources.Load("Prefabs/Particles/PT_FROZEN") as GameObject);
-        particles.Add(Particles.ReputationParticle, Resources.Load("Prefabs/Particles/PT_REPUTATION") as GameObject);
+        particles.Add(Particles.FireSpellParticle, Resources.Load("Prefabs/Particles/FireSpellParticle") as GameObject);
+        particles.Add(Particles.FreezeSpellParticle, Resources.Load("Prefabs/Particles/FreezeSpellParticle") as GameObject);
+        particles.Add(Particles.LightSpellParticle, Resources.Load("Prefabs/Particles/LightSpellParticle") as GameObject);
+        particles.Add(Particles.ShrineIsOnParticle, Resources.Load("Prefabs/Particles/ShrineIsOnParticle") as GameObject);
+        particles.Add(Particles.TeleportSpellParticle, Resources.Load("Prefabs/Particles/TeleportSpellParticle") as GameObject);
+        particles.Add(Particles.DodinFireballParticle, Resources.Load("Prefabs/Particles/DodinFireballParticle") as GameObject);
+        particles.Add(Particles.ArnestSuperHealParticle, Resources.Load("Prefabs/Particles/ArnestSuperHealParticle") as GameObject);
+        particles.Add(Particles.SkettaShieldParticle, Resources.Load("Prefabs/Particles/SkettaShieldParticle") as GameObject);
+        particles.Add(Particles.BurnedParticle, Resources.Load("Prefabs/Particles/BurnedParticle") as GameObject);
+        particles.Add(Particles.FrozenParticle, Resources.Load("Prefabs/Particles/FrozenParticle") as GameObject);
+        particles.Add(Particles.ReputationParticle, Resources.Load("Prefabs/Particles/ReputationParticle") as GameObject);
     }
 
     public void PlayParticle(GameManager.SpellType effect, Vector3 position, Quaternion rotation)

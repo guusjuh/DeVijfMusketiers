@@ -15,6 +15,9 @@ TagManager:
   - APSkip-indicator
   - FloatingIndicator
   - SurroundingPushButton
+  - ConversationCanvas
+  - TalkBackgr
+  - ConversationText
   layers:
   - Default
   - TransparentFX

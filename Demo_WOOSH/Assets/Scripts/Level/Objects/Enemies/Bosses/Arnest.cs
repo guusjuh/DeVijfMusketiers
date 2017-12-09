@@ -20,8 +20,8 @@ public class Arnest : Enemy
 
         this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyHeal");
 
-        heal = transform.Find("Heal").gameObject;
-        heal.SetActive(false);
+        //heal = transform.Find("Heal").gameObject;
+        //heal.SetActive(false);
 
         base.Initialize(startPos);
     }
@@ -64,11 +64,11 @@ public class Arnest : Enemy
 
     protected IEnumerator HealVisual()
     {
-        heal.SetActive(true);
-
+        //heal.SetActive(true);
+        heal = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.ArnestSuperHealParticle, transform.position, transform.rotation);
         yield return new WaitForSeconds(0.5f);
 
-        heal.SetActive(false);
+        //heal.SetActive(false);
 
         yield break;
     }

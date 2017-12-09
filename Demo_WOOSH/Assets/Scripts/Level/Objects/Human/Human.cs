@@ -221,7 +221,7 @@ public class Human : MovableObject {
     {
         canBeTargeted = false;
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
+        Instantiate(Resources.Load<GameObject>("Prefabs/Particles/BloodParticle"), transform.position, Quaternion.identity);
 
         anim.SetBool(DIE_ANIM, true);
 

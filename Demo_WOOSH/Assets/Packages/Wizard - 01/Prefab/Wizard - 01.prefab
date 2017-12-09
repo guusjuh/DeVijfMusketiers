@@ -18372,11 +18372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d8dc87df01e4958ab48153b19f0ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DisplayedSprite: 0
-  Sprites:
-  - {fileID: 21300000, guid: e4f676cfb8ff2b643a4384001e10be31, type: 3}
-  - {fileID: 21300000, guid: f9b5571b08aa7724fbe5b986140c9177, type: 3}
-  - {fileID: 21300000, guid: cf7be7369289ad949923c0ff1e327bb0, type: 3}
 --- !u!114 &114427844005897750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -18388,8 +18383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e9dda14b6f34517a0d598d3320a902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 0
-  applySpriterZOrder: 0
 --- !u!212 &212373304661457068
 SpriteRenderer:
   m_ObjectHideFlags: 1

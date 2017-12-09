@@ -20,6 +20,7 @@ public class FireballButton : SpellButton
     {
         target.GetComponent<Enemy>().Burn(duration, fireDamage);
         target.GetComponent<Enemy>().TryHit(spellDamage);
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.BurnedParticle, target.transform.position, target.transform.rotation);
 
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_burn_baby_burn);
     }

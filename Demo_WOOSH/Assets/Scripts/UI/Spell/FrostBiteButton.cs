@@ -24,7 +24,7 @@ public class FrostBiteButton : SpellButton
             target.GetComponent<Enemy>().TryHit(spellDamage);
         }
         target.GetComponent<Enemy>().Slow(duration);
-
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.FrozenParticle, target.transform.position, target.transform.rotation);
         GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_the_coolest_guy_in_town);
     }
 }
