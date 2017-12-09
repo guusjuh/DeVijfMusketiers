@@ -215,7 +215,7 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(315.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/WorldView/CloseWindow"), false);
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(315.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/CloseWindow"), false);
         UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(315.0f, 355.0f), 260.0f, 100.0f, "Close the window.");
 
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.Deactivate);
