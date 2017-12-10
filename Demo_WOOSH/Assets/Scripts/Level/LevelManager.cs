@@ -516,23 +516,8 @@ public class LevelManager
 
     private WorldObject SpawnBoss(SpawnNode s)
     {
-        GameObject prefab = null;
-
-        switch (s.secType)
-        {
-            case SecContentType.Arnest:
-                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
-                                                                (ContentType.Boss, SecContentType.Arnest)];
-                break;
-            case SecContentType.Dodin:
-                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
-                                                                (ContentType.Boss, SecContentType.Dodin)];
-                break;
-            case SecContentType.Sketta:
-                prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
-                                                                (ContentType.Boss, SecContentType.Sketta)];
-                break;
-        }
+        GameObject prefab = ContentManager.Instance.ContentPrefabs[new KeyValuePair<ContentType, SecContentType>
+                                                                (ContentType.Boss, s.secType)];
 
         enemies.Add(GameObject.Instantiate(prefab,
                                            GameManager.Instance.TileManager.GetWorldPosition(s.position),
