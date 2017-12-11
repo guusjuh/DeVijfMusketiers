@@ -63,6 +63,8 @@ public class UberManager : MonoBehaviour
     private SoundManager soundManager = new SoundManager();
     public SoundManager SoundManager { get { return soundManager; } }
 
+    [SerializeField] private SpellManager spellManager = new SpellManager();
+
    //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
     public PlayerData PlayerData { get { return playerData; } }
@@ -94,6 +96,7 @@ public class UberManager : MonoBehaviour
         contractManager.Initialize();
         uiManager.Initialize();
         soundManager.Initialize();
+        spellManager.Initialize();
 
         selectedDevMode = developersMode;
 

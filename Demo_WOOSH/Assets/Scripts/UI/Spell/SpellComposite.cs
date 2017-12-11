@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpellComposite : ISpell
@@ -8,6 +9,52 @@ public class SpellComposite : ISpell
     public SpellComposite(List<SpellComponent> components)
     {
         this.components = components;
+    }
+
+    public SpellComposite AddComponent(SpellComponent component)
+    {
+        components.Add(component);
+        return this;
+    }
+
+    /// <summary>
+    /// deals the total damage to the target
+    /// </summary>
+    public void Execute(WorldObject target)
+    {
+        //TODO: check for hitchance
+        int damage = 0;
+        for (int i = 0; i < components.Count; i++)
+        {
+            damage += components[i].Damage();
+        }
+        target.TryHit(damage);
+    }
+
+    /// <summary>
+    /// activates the effects of each spell and prepares for execution
+    /// </summary>
+    public void CastSpell(WorldObject target)
+    {
+        for(int i = 0; i < components.Count; i++)
+        {
+            components[i].ApplyEffects(target);
+        }
+        if (IsDirect())
+            Execute(target);
+    }
+
+    public bool ApplyEffects(WorldObject target)
+    {
+        bool totalSucces = true;
+        for(int i =0; i<components.Count; i++)
+        {
+            if (!components[i].ApplyEffects(target))
+            {
+                totalSucces = false;
+            }
+        }
+        return totalSucces;
     }
 
     public int Damage()
@@ -67,31 +114,5 @@ public class SpellComposite : ISpell
             range += components[i].Range();
 
         return range;
-    }
-
-    public bool Excecute()
-    {
-        if(IsDirect())
-            HighlightTiles();
-
-        float rnd = Random.Range(0.0f, 1.0f);
-        if (rnd > HitChance() && !IsDirect())
-        {
-            Debug.Log("I execute spell now comrade!");
-            CastSpell();
-            return true;
-        }
-        return false;
-    }
-
-    public void CastSpell()
-    {
-        Debug.Log("I cast spell now comrade!");
-    }
-
-    public void HighlightTiles()
-    {
-        Debug.Log("I highlight tiles now comrade! [" + Range() + "]");
-        //TODO: wait for indirect stuff
     }
 }

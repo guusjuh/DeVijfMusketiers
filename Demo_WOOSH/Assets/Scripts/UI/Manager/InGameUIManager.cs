@@ -38,7 +38,8 @@ public class InGameUIManager : SubUIManager {
     public int CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
     public Dictionary<GameManager.SpellType, Color> SpellColors;
 
-    private List<SurroundingPushButton> teleportButtons = new List<SurroundingPushButton>();
+    //TODO:implement new spellsystem
+    //private List<SurroundingPushButton> teleportButtons = new List<SurroundingPushButton>();
     private bool teleportButtonsOn = false;
 
     //------------------ TUTORIAL VARS ------------------------
@@ -75,9 +76,10 @@ public class InGameUIManager : SubUIManager {
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
- 
-        teleportButtonsOn = false;
-        teleportButtons = new List<SurroundingPushButton>();
+
+        //TODO: implement new spellsystem
+        //teleportButtonsOn = false;
+        //teleportButtons = new List<SurroundingPushButton>();
 
         SpellColors = new Dictionary<GameManager.SpellType, Color>();
         SpellColors.Add(GameManager.SpellType.Attack, Color.white);
@@ -171,9 +173,10 @@ public class InGameUIManager : SubUIManager {
 
     private void CreateSpellButton(GameManager.SpellType type, string prefabPath)
     {
-        spellButtons.Add(type, UIManager.Instance.CreateUIElement(prefabPath, Vector2.zero, anchorCenter).GetComponent<SpellButton>());
-        spellButtons.Get(type).Initialize();
-        spellButtons.Get(type).gameObject.SetActive(false);
+        //TODO: implement new spellsystem
+        //spellButtons.Add(type, UIManager.Instance.CreateUIElement(prefabPath, Vector2.zero, anchorCenter).GetComponent<SpellButton>());
+        //spellButtons.Get(type).Initialize();
+        //spellButtons.Get(type).gameObject.SetActive(false);
     }
 
     protected override void Restart()
@@ -211,14 +214,15 @@ public class InGameUIManager : SubUIManager {
         wizard.gameObject.SetActive(false);
 
         // hide spell buttons 
-        HideSpellButtons();
+        //HideSpellButtons();
 
-        teleportButtonsOn = false;
-        teleportButtons.HandleAction(b => b.Destory());
-        teleportButtons.Clear();
-        teleportButtons = null;
+        //TODO: implement new spellsystem
+        //teleportButtonsOn = false;
+        //teleportButtons.HandleAction(b => b.Destory());
+        //teleportButtons.Clear();
+        //teleportButtons = null;
 
-        if(UberManager.Instance.Tutorial) DeactivateNoClickPanel();
+        if (UberManager.Instance.Tutorial) DeactivateNoClickPanel();
 
         base.Clear();
     }
@@ -255,7 +259,8 @@ public class InGameUIManager : SubUIManager {
 
     public void InitializeTeleportButtons()
     {
-        teleportButtons = new List<SurroundingPushButton>();
+        //TODO: implement new spellsystem
+        /*teleportButtons = new List<SurroundingPushButton>();
 
         for (int x = 0; x < GameManager.Instance.TileManager.Rows; x++)
         {
@@ -267,7 +272,7 @@ public class InGameUIManager : SubUIManager {
                 teleportButtons.Last().Deactivate();
                 teleportButtons.Last().Initialize(gridPos);
             }
-        }
+        }*/
     }
 
     public override void Update()
@@ -286,6 +291,8 @@ public class InGameUIManager : SubUIManager {
 
     public void ActivateTeleportButtons(bool on, MovableObject target = null)
     {
+        //TODO: implement new spellsystem
+        /*
         //fill all possible surrounding TELEPORT buttons beforehand (each possible tile)
         List<SurroundingPushButton> tempButtons = new List<SurroundingPushButton>();
         for (int i = 0; i < teleportButtons.Count; i++)
@@ -311,12 +318,13 @@ public class InGameUIManager : SubUIManager {
         else teleportButtons.HandleAction(b => b.Deactivate());
 
         this.target = target;
-        teleportButtonsOn = on;
+        teleportButtonsOn = on;*/
     }
 
     private void SetPushButtonPositions()
     {
-        teleportButtons.HandleAction(b => b.SetPosition());
+        //TODO: implement new spellsystem
+        //teleportButtons.HandleAction(b => b.SetPosition());
     }
 
     public void BeginPlayerTurn()
@@ -359,7 +367,8 @@ public class InGameUIManager : SubUIManager {
 
     public void ShowSpellButtons(WorldObject target)
     {
-        HideSpellButtons();
+        //TODO: implement new spellsystem
+        /*HideSpellButtons();
 
         this.target = target;
         spellButtonsOn = true;
@@ -370,7 +379,7 @@ public class InGameUIManager : SubUIManager {
             spellButtons.Get(this.target.PossibleSpellTypes[i]).Activate(target);
         }
 
-        SetSpellButtonPositions();
+        SetSpellButtonPositions();*/
     }
 
     private void SetSpellButtonPositions()

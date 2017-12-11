@@ -364,7 +364,8 @@ public class TutorialManager
 
         UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), teleportButtonSize);
 
-        UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.TeleportButton.Click);
+        //TODO: implement new spellsystem
+        //UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.TeleportButton.Click);
 
         UIManager.Instance.InGameUI.SetArrow(teleportButtonPos, 70.0f, 100.0f, "To flee, select the teleport spell.");
     }
@@ -438,7 +439,8 @@ public class TutorialManager
 
         UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), attackButtonSize);
 
-        UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.AttackButton.Click);
+        //TODO: implement new spellsystem
+        //UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.AttackButton.Click);
 
         UIManager.Instance.InGameUI.SetArrow(attackButtonPos, 70.0f, 100.0f, "To attack, select the attack spell.");
     }
