@@ -212,11 +212,6 @@ public class Human : MovableObject {
         GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
-    public void ActivateTeleportButtons()
-    {
-        UberManager.Instance.UiManager.InGameUI.ActivateTeleportButtons(true, this);
-    }
-
     public override bool Hit()
     {
         canBeTargeted = false;

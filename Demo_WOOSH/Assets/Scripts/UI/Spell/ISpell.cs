@@ -3,8 +3,8 @@
 public interface ISpell
 {
     SpellComposite AddComponent(SpellComponent component);
-    bool ApplyEffects(WorldObject target);
-    void Execute(WorldObject target);
+    bool ApplyEffects(WorldObject target, float rnd);
+    void Execute(WorldObject target, float rnd);
     void CastSpell(WorldObject target);
 
 

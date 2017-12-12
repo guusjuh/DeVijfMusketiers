@@ -11,8 +11,6 @@ public class MovableObject : EnemyTarget {
         gridPosition = newPos;
         Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
 
-        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
-
         transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
     }
 }

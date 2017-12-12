@@ -271,8 +271,7 @@ public class LevelManager
     public void SkipPlayerTurn()
     {
         EndPlayerMove(1, true);
-        UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
+        UberManager.Instance.SpellManager.HideSpellButtons();
     }
 
     private IEnumerator HandleGapSpawning()

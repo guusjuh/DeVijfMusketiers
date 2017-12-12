@@ -32,7 +32,7 @@ public class SpellVisual : MonoBehaviour
         rect.sizeDelta = new Vector2(MAX_SIZE, MAX_SIZE);
 
         gameObject.SetActive(true);
-        image.color = UberManager.Instance.UiManager.InGameUI.SpellColors[type];
+        image.color = UberManager.Instance.SpellManager.SpellColors[type];
 
         yield return StartCoroutine(Adjust());
     }

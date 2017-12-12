@@ -358,16 +358,16 @@ public class TutorialManager
     {
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
 
-        RectTransform rect = UIManager.Instance.InGameUI.TeleportButton.GetComponent<RectTransform>();
-        Vector2 teleportButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
-        Vector2 teleportButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //RectTransform rect = UIManager.Instance.InGameUI.TeleportButton.GetComponent<RectTransform>();
+        //Vector2 teleportButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //Vector2 teleportButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), teleportButtonSize);
+        //UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), teleportButtonSize);
 
         //TODO: implement new spellsystem
         //UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.TeleportButton.Click);
 
-        UIManager.Instance.InGameUI.SetArrow(teleportButtonPos, 70.0f, 100.0f, "To flee, select the teleport spell.");
+        //UIManager.Instance.InGameUI.SetArrow(teleportButtonPos, 70.0f, 100.0f, "To flee, select the teleport spell.");
     }
 
     // wait for spell visual
@@ -432,17 +432,16 @@ public class TutorialManager
     private void Step16()
     {
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
+        //RectTransform rect = UIManager.Instance.InGameUI.AttackButton.GetComponent<RectTransform>();
+        //Vector2 attackButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //Vector2 attackButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
 
-        RectTransform rect = UIManager.Instance.InGameUI.AttackButton.GetComponent<RectTransform>();
-        Vector2 attackButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
-        Vector2 attackButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
-
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), attackButtonSize);
+        //UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), attackButtonSize);
 
         //TODO: implement new spellsystem
         //UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.AttackButton.Click);
 
-        UIManager.Instance.InGameUI.SetArrow(attackButtonPos, 70.0f, 100.0f, "To attack, select the attack spell.");
+        //UIManager.Instance.InGameUI.SetArrow(attackButtonPos, 70.0f, 100.0f, "To attack, select the attack spell.");
     }
 
     // wait for spell visual
@@ -519,9 +518,9 @@ public class TutorialManager
     {
         GameManager.Instance.LevelManager.Enemies[0].TryHit(10);
 
-        UIManager.Instance.InGameUI.CastingSpell = -1;
+        UberManager.Instance.SpellManager.CastingSpell = -1;
 
-        UIManager.Instance.InGameUI.HideSpellButtons();
+        UberManager.Instance.SpellManager.HideSpellButtons();
         UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
     }
 

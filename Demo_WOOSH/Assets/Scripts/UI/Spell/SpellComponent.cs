@@ -37,39 +37,39 @@ public class SpellComponent : ISpell
 
     public SpellComposite AddComponent(SpellComponent component)
     {
-        List<SpellComponent> components = new List<SpellComponent>();
+        List<ISpell> components = new List<ISpell>();
         components.Add(this);
         components.Add(component);
         SpellComposite composite = new SpellComposite(components);
         return composite;
     }
 
-    public virtual bool ApplyEffects(WorldObject target)
+    public virtual bool ApplyEffects(WorldObject target, float rnd)
     {
         if (hitChance < 1.0f)
         {
-            float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
             if (rnd <= hitChance)
             {
                 return true;
-            } else
-            {
-                return false;
             }
+
+            return false;
         }
-        else
-            return true;
+
+        return true;
     }
 
     public virtual void CastSpell(WorldObject target)
     {
-        //does nothing, as effects are handled in the effect specific child classes of this class
+        float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
+        if (damage > 0)
+            Execute(target, rnd);
     }
 
-    public virtual void Execute(WorldObject target)
+    public virtual void Execute(WorldObject target, float rnd)
     {
         //-damage enemy
-        if (ApplyEffects(target))
+        if (ApplyEffects(target, rnd))
             target.TryHit(Damage());
     }
 

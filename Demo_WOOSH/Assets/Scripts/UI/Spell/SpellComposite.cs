@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SpellComposite : ISpell
 {
-    private List<SpellComponent> components;
+    private List<ISpell> components;
 
-    public SpellComposite(List<SpellComponent> components)
+    public SpellComposite(List<ISpell> components)
     {
         this.components = components;
     }
@@ -20,13 +20,14 @@ public class SpellComposite : ISpell
     /// <summary>
     /// deals the total damage to the target
     /// </summary>
-    public void Execute(WorldObject target)
+    public void Execute(WorldObject target, float rnd)
     {
         //TODO: check for hitchance
         int damage = 0;
         for (int i = 0; i < components.Count; i++)
         {
-            damage += components[i].Damage();
+            if (rnd < components[i].HitChance())
+                damage += components[i].Damage();
         }
         target.TryHit(damage);
     }
@@ -36,20 +37,21 @@ public class SpellComposite : ISpell
     /// </summary>
     public void CastSpell(WorldObject target)
     {
-        for(int i = 0; i < components.Count; i++)
+        float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
+        for (int i = 0; i < components.Count; i++)
         {
-            components[i].ApplyEffects(target);
+            components[i].ApplyEffects(target, rnd);
         }
         if (IsDirect())
-            Execute(target);
+            Execute(target, rnd);
     }
 
-    public bool ApplyEffects(WorldObject target)
+    public bool ApplyEffects(WorldObject target, float rnd)
     {
         bool totalSucces = true;
         for(int i =0; i<components.Count; i++)
         {
-            if (!components[i].ApplyEffects(target))
+            if (!components[i].ApplyEffects(target, rnd))
             {
                 totalSucces = false;
             }

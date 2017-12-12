@@ -31,7 +31,8 @@ public class WorldObject : MonoBehaviour
 
         GameManager.Instance.CameraManager.LockTarget(this.transform);
 
-        UIManager.Instance.InGameUI.ShowSpellButtons(this);
+        UberManager.Instance.SpellManager.SelectTarget(this);
+        UberManager.Instance.SpellManager.ShowSpellButtons();
 
         UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }

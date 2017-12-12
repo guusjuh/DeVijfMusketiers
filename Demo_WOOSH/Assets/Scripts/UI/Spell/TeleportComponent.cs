@@ -9,7 +9,7 @@ public class TeleportComponent : SpellComponent {
         this.range = range;
     }
 
-    public override bool ApplyEffects(WorldObject target)
+    public override bool ApplyEffects(WorldObject target, float rnd)
     {
         //TODO: activate highlight buttons
         //-if range is 0, range is infinite

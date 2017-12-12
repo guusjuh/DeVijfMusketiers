@@ -64,6 +64,7 @@ public class UberManager : MonoBehaviour
     public SoundManager SoundManager { get { return soundManager; } }
 
     [SerializeField] private SpellManager spellManager = new SpellManager();
+    public SpellManager SpellManager { get { return spellManager; } }
 
    //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
@@ -129,7 +130,7 @@ public class UberManager : MonoBehaviour
 
     private void StartGameMode()
     {
-        tutorial = !SavedPlayerData.Instance.tutorialFinsihed;
+        tutorial = false;//!SavedPlayerData.Instance.tutorialFinsihed;
 
         if (tutorial)
         {
@@ -145,6 +146,7 @@ public class UberManager : MonoBehaviour
         state = GameStates.LevelSelection;
         stateManagers.Get(state).Start();
 
+        SavedPlayerData.Instance.UpdateSaved();
         SavedPlayerData.Instance.InitializeInGame();
     } 
 

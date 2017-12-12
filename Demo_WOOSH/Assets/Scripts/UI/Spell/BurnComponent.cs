@@ -15,11 +15,10 @@ public class BurnComponent : SpellComponent {
         range = 0;
     }
 
-    public override bool ApplyEffects(WorldObject target)
+    public override bool ApplyEffects(WorldObject target, float rnd)
     {
-        if (base.ApplyEffects(target))
+        if (base.ApplyEffects(target, rnd))
         {
-            //TODO: burn enemy
             ((Enemy)target).Burn(FireTurns(), FireDamage());
             return true;
         }

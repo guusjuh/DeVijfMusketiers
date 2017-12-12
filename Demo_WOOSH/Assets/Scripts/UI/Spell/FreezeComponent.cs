@@ -6,20 +6,15 @@ public class FreezeComponent : SpellComponent {
     
     public FreezeComponent(int freezeTurns, float hitChance)
     {
-        damage = 0;
         this.hitChance = hitChance;
-        fireDamage = 0;
-        fireTurns = 0;
         this.freezeTurns = freezeTurns;
-        isDirect = true;
-        range = 0;
     }
 
-    public override bool ApplyEffects(WorldObject target)
+    public override bool ApplyEffects(WorldObject target, float rnd)
     {
-        if (base.ApplyEffects(target))
+        if (base.ApplyEffects(target, rnd))
         {
-            //TODO: freeze enemy
+            ((Enemy) target).Slow(freezeTurns);
             return true;
         } else
         {
