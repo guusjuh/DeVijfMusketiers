@@ -32,6 +32,9 @@ public class UberManager : MonoBehaviour {
 #if UNITY_EDITOR
     private LevelEditor levelEditor;
     public LevelEditor LevelEditor { get { return levelEditor;  } }
+
+    private BossParticleTest bpT;
+    public BossParticleTest bpt { get { return bpt; } }
 #endif
 
     private Dictionary<GameStates, StateManager> stateManagers = new Dictionary<GameStates, StateManager>();
