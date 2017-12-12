@@ -30,6 +30,7 @@ public class SpellComposite : ISpell
                 damage += components[i].Damage();
         }
         target.TryHit(damage);
+        UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
     }
 
     /// <summary>
@@ -57,6 +58,15 @@ public class SpellComposite : ISpell
             }
         }
         return totalSucces;
+    }
+
+    public int Cost()
+    {
+        int cost = 0;
+        for (int i = 0; i < components.Count; i++)
+            cost += components[i].Cost();
+
+        return cost;
     }
 
     public int Damage()

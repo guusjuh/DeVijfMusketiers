@@ -11,9 +11,16 @@ public class TeleportComponent : SpellComponent {
 
     public override bool ApplyEffects(WorldObject target, float rnd)
     {
-        //TODO: activate highlight buttons
-        //-if range is 0, range is infinite
+        if (base.ApplyEffects(target, rnd))
+        {
+            //TODO: activate teleport
+            //-highlight tiles
+            UberManager.Instance.GameManager.TileManager.ShowTeleportHighlights(target, Range());
+            //-listen for click on certain tile
+            //-activate execute method
+            return true;
+        }
 
-        return true;
+        return false;
     }
 }

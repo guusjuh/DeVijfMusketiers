@@ -11,7 +11,7 @@ public class SpellFactory {
         if (proxy.Damage() > 0)
         {
             n++;
-            SpellComponent component = new SpellComponent(proxy.Damage(), proxy.HitChance());
+            SpellComponent component = new SpellComponent(proxy.Cost(), proxy.Damage(), proxy.HitChance());
             ISpell temp = AddComponent(spell, component, n > 1);
             spell = temp;
         }

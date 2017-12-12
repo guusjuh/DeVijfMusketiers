@@ -40,6 +40,7 @@ public class SpellButton : MonoBehaviour {
         //setTarget?
         bool cooldownFinished = GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type) <= 0;
         bool enoughActionPoints = cost <= GameManager.Instance.LevelManager.Player.CurrentActionPoints;
+        SetButtonPosition(target);
         if (!cooldownFinished)
         {
             SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
@@ -59,9 +60,6 @@ public class SpellButton : MonoBehaviour {
 
     private void SetInteractable(bool isActive, WorldObject target)
     {
-        if (isActive)
-            SetButtonPosition(target);
-
         btn.interactable = isActive;
 
         if (isActive)
@@ -99,8 +97,12 @@ public class SpellButton : MonoBehaviour {
 
     public void OnClick()
     {
-        StartCoroutine(UberManager.Instance.SpellManager.CastSpell(spell, type));
-        UberManager.Instance.GameManager.LevelManager.EndPlayerMove(cost);
+        StartCoroutine(UberManager.Instance.SpellManager.ShowSpellVisual(type));
+    }
+
+    public void CastSpell(WorldObject target)
+    {
+        spell.CastSpell(target);
     }
 
     private void SpawnAP()

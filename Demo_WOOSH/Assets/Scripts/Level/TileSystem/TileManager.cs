@@ -479,6 +479,34 @@ public class TileManager
         return new Dictionary<TileNode, int>(possGapNodes); 
     }
 
+    public void ShowTeleportHighlights(WorldObject worldObject, int range)
+    {
+        highlightedNodes = new List<TileNode>();
+        // add yourself
+        TileNode hisNode = GetNodeReference(worldObject.GridPosition);
+
+        if (range == 0)
+        {
+            foreach (TileNode node in grid)
+            {
+                if (node.WalkAble() && !(node.ContainsFlyingMonster() || node.ContainsWalkingMonster()))
+                    highlightedNodes.Add(node);
+            }
+        } else
+        {
+            RecursiveTileFinder(worldObject, highlightedNodes, hisNode, range, worldObject.GridPosition, false);
+        }
+
+        // highlight all found buttons
+        highlightedNodes.HandleAction(n =>
+        {
+            if (n.WalkAble() && !(n.ContainsFlyingMonster() || n.ContainsWalkingMonster()))
+            {
+                n.HighlightTile(true, Color.green);
+            }
+        });
+    }
+
     public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
     {
         highlightedNodes = new List<TileNode>();

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SpellComponent : ISpell
 {
+    protected int cost;
     protected int damage;
     protected float hitChance;
     protected int fireDamage;
@@ -15,6 +16,7 @@ public class SpellComponent : ISpell
 
     public SpellComponent()
     {
+        cost = 0;
         damage = 0;
         hitChance = 1.0f;
         fireDamage = 0;
@@ -24,8 +26,9 @@ public class SpellComponent : ISpell
         range = 0;
     }
 
-    public SpellComponent(int damage = 0, float hitChance = 1.0f, int fireDamage = 0, int fireTurns = 0, int freezeTurns = 0, bool isDirect = true, int range = 0)
+    public SpellComponent(int cost = 0, int damage = 0, float hitChance = 1.0f, int fireDamage = 0, int fireTurns = 0, int freezeTurns = 0, bool isDirect = true, int range = 0)
     {
+        this.cost = cost;
         this.damage = damage;
         this.hitChance = hitChance;
         this.fireDamage = fireDamage;
@@ -62,17 +65,25 @@ public class SpellComponent : ISpell
     public virtual void CastSpell(WorldObject target)
     {
         float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
+        ApplyEffects(target, rnd);
         if (damage > 0)
             Execute(target, rnd);
+
     }
 
     public virtual void Execute(WorldObject target, float rnd)
     {
         //-damage enemy
         if (ApplyEffects(target, rnd))
+        {
             target.TryHit(Damage());
+        }
+        if (isDirect)
+            UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
+
     }
 
+    public int Cost() { return cost; }
     public int Damage() { return damage; }
     public float HitChance() { return hitChance;}
     public int FireDamage() { return fireDamage; }

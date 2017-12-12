@@ -93,7 +93,7 @@ public class SpellManager {
         spellButtonsActive = false;
     }
 
-    public IEnumerator CastSpell(ISpell spell, GameManager.SpellType type)
+    public IEnumerator ShowSpellVisual(GameManager.SpellType type)
     {
         if (selectedTarget != null)
         {
@@ -101,8 +101,8 @@ public class SpellManager {
 
             yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, UberManager.Instance.GameManager.TileManager.GetWorldPosition(SelectedTarget.GridPosition)));
 
-            spell.CastSpell(SelectedTarget);
-            spellVisual.gameObject.SetActive(false);
+            spellVisual.gameObject.SetActive(false);         
+            spellButtons[type].CastSpell(selectedTarget);
             HideSpellButtons();
         }
     }

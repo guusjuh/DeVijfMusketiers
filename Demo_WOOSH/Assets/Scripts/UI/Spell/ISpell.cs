@@ -7,7 +7,7 @@ public interface ISpell
     void Execute(WorldObject target, float rnd);
     void CastSpell(WorldObject target);
 
-
+    int Cost();
     int Damage();
     float HitChance();
     int FireDamage();
