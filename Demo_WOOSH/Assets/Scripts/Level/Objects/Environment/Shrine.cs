@@ -17,6 +17,8 @@ public class Shrine : EnemyTarget
         private set {
             if(value != active && value){
                 UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
+                NewFloatingDmgNumber();
+
                 if (!UberManager.Instance.Tutorial) MetricsDataClass.ActivatedShrines++;
             }
             active = value;

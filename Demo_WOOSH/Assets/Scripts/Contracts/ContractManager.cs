@@ -109,7 +109,7 @@ public class ContractManager
                     List<Contract> newContracts = new List<Contract>();
 
                     //generate x new contracts, for each destination
-                    for (int k = 0; k < CONTRACTS_PER_DESTINATION; k++)
+                    for (int k = 0; k < ((cities[i].Paths[0].Levels[0].LevelID == 0) ? 1 : CONTRACTS_PER_DESTINATION); k++)
                     {
                         newContracts.Add(GenerateRandomContract(cities[i].Paths[j]));
                     }

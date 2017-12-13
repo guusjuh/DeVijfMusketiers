@@ -60,11 +60,51 @@
       </position>
     </SpawnNode>
     <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>1</x>
+        <y>2</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>4</x>
+        <y>0</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Shrine</secType>
+      <position>
+        <x>0</x>
+        <y>0</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
       <type>Minion</type>
       <secType>Wolf</secType>
       <position>
-        <x>2</x>
-        <y>4</y>
+        <x>4</x>
+        <y>2</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>3</x>
+        <y>1</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>1</x>
+        <y>1</y>
       </position>
     </SpawnNode>
     <SpawnNode>
@@ -72,6 +112,14 @@
       <secType>Rock</secType>
       <position>
         <x>0</x>
+        <y>3</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Environment</type>
+      <secType>Rock</secType>
+      <position>
+        <x>2</x>
         <y>1</y>
       </position>
     </SpawnNode>

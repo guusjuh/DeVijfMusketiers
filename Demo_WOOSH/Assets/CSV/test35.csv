@@ -1,0 +1,2 @@
+TutorialPlayed, AcceptedContracts, Wins, Loses, StartedLevel1, StartedLevel2, StartedLevel3, HumansStarted, HumansContinued, HumansStayed, HumansDied, ChangeInReputation, AttackSpellUsed, TeleportSpellUsed, FireballSpellUsed, FrostbiteSpellUsed, AverageSelectedEnemiesPerTurn, AverageChangeInHappiness, HumansDiedByTiles, HumansDiedByEnemy, ActivatedShrines, SkipTurnUsed, AverageTimePerLevel, AverageTimeInBetweenActions
+False, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 3.75, 1, 0, 1, 0, 2, 5, 0, 0, 1, 0, 11, 1.666667

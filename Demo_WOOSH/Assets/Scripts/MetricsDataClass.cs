@@ -11,11 +11,11 @@ public static class MetricsDataClass
     public static int Wins { get; set; }
     public static int Loses { get; set; }
 
-    private static int[] timesStartedLevel = new int[]{0, 0, 0};
+    private static int[] timesStartedLevel = new int[]{0, 0, 0, 0};
     public static void StartedLevel(int id)
     {
-        if (id > timesStartedLevel.Length) return;
-        timesStartedLevel[id - 1]++;
+        if (id >= timesStartedLevel.Length) return;
+        timesStartedLevel[id]++;
     }
 
     public static int HumansStartedLevel { get; set; }

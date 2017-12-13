@@ -40,9 +40,9 @@ public class CameraManager : MonoBehaviour
         UnlockAxis();
 
         viewportRect = Camera.main.pixelRect;
-        Vector2 min = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(-3, -3));
-        Vector2 max = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(GameManager.Instance.TileManager.Rows + 2,
-                                                                                       GameManager.Instance.TileManager.Columns + 2));
+        Vector2 min = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(-5, -7));
+        Vector2 max = GameManager.Instance.TileManager.GetWorldPosition(new Coordinate(GameManager.Instance.TileManager.Rows + 4,
+                                                                                       GameManager.Instance.TileManager.Columns + 6));
         SetBorderRange(min, max);
 
         currentSize = camRef.orthographicSize;
