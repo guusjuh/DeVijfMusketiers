@@ -6,7 +6,12 @@ public class ParticleManager : MonoBehaviour {
 
     private Dictionary<Particles, GameObject> particles = new Dictionary<Particles, GameObject>();
 
-        public enum Particles
+    private Dictionary<GameManager.SpellType, ParticleBeam> beams = new Dictionary<GameManager.SpellType, ParticleBeam>();
+
+    //VECTOR KAN NIET CONSTANT ZIJN
+    public Vector2 STAFF_POSITION = new Vector2(5.5f, -1f);
+
+    public enum Particles
     {
         FireSpellParticle = 0,
         FreezeSpellParticle,
@@ -18,7 +23,11 @@ public class ParticleManager : MonoBehaviour {
         SkettaShieldParticle,
         BurnedParticle,
         FrozenParticle,
-        ReputationParticle
+        ReputationParticle,
+        FireBeam,
+        FrostBeam,
+        LightningBeam
+
     }
 
 	public void Initialize()
@@ -34,6 +43,9 @@ public class ParticleManager : MonoBehaviour {
         particles.Add(Particles.BurnedParticle, Resources.Load("Prefabs/Particles/BurnedParticle") as GameObject);
         particles.Add(Particles.FrozenParticle, Resources.Load("Prefabs/Particles/FrozenParticle") as GameObject);
         particles.Add(Particles.ReputationParticle, Resources.Load("Prefabs/Particles/ReputationParticle") as GameObject);
+        particles.Add(Particles.FireBeam, Resources.Load("Prefabs/Particles/FireBeam") as GameObject);
+        particles.Add(Particles.FrostBeam, Resources.Load("Prefabs/Particles/FrostBeam") as GameObject);
+        particles.Add(Particles.LightningBeam, Resources.Load("Prefabs/Particles/LightningBeam") as GameObject);
     }
 
     public void PlayParticle(GameManager.SpellType effect, Vector3 position, Quaternion rotation)
@@ -65,4 +77,29 @@ public class ParticleManager : MonoBehaviour {
     {
         return Instantiate(particles[effect], position, rotation);
     }
+
+    public ParticleBeam CreateBeam(GameManager.SpellType effect)
+    {
+        if(!beams.ContainsKey(effect))
+        {
+            beams[effect] = Instantiate(particles[SpellToBeams(effect)], STAFF_POSITION, Quaternion.identity).GetComponent<ParticleBeam>();
+        }
+        return beams[effect];
+    }
+
+    public Particles SpellToBeams(GameManager.SpellType type)
+    {
+        switch (type)
+        {
+            case GameManager.SpellType.Fireball:
+                return Particles.FireBeam;
+            case GameManager.SpellType.Attack:
+                return Particles.LightningBeam;
+            case GameManager.SpellType.FrostBite:
+                return Particles.FrostBeam;
+            default:
+                return Particles.FireBeam;
+        }
+    } 
 }
+
