@@ -249,6 +249,12 @@ public class TileManager
         return nextTile.EnterCost();
     }
 
+    public float Distance(Coordinate gridPos, Vector3 WorldPos)
+    {
+        Vector3 worldPos2 = GetWorldPosition(gridPos);
+        return (worldPos2 - WorldPos).magnitude;
+    }
+
     public float CostToEnterTile(TileNode nextTile, TileNode endTile, WorldObject worldObject)
     {
         if (new Vector2(endTile.GridPosition.x - nextTile.GridPosition.x, endTile.GridPosition.y - nextTile.GridPosition.y).magnitude > 0.1f)

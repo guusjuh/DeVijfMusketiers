@@ -9,16 +9,15 @@ public class SpellManager {
     private SpellFactory factory = new SpellFactory();
     private List<ISpell> spells = new List<ISpell>();
 
-    [SerializeField] private GameObject spellButtonPrefab;
     private Dictionary<GameManager.SpellType, SpellButton> spellButtons = new Dictionary<GameManager.SpellType, SpellButton>();
 
     private WorldObject selectedTarget = null;
     private bool spellButtonsActive = false;
     private SpellVisual spellVisual;
     public Dictionary<GameManager.SpellType, Color> SpellColors = new Dictionary<GameManager.SpellType, Color>();
-    private int castingSpell = -1;
+    private GameManager.SpellType castingSpell = GameManager.SpellType.NoSpell;
 
-    public int CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
+    public GameManager.SpellType CastingSpell { get { return castingSpell; } set { Debug.Log("Cassting spell: " + value); castingSpell = value; } }
     public bool SpellButtonsActive { get { return spellButtonsActive; } }
     public WorldObject SelectedTarget { get { return selectedTarget; } }
 

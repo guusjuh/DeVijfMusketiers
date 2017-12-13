@@ -518,7 +518,7 @@ public class TutorialManager
     {
         GameManager.Instance.LevelManager.Enemies[0].TryHit(10);
 
-        UberManager.Instance.SpellManager.CastingSpell = -1;
+        UberManager.Instance.SpellManager.CastingSpell = GameManager.SpellType.NoSpell;
 
         UberManager.Instance.SpellManager.HideSpellButtons();
         UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);

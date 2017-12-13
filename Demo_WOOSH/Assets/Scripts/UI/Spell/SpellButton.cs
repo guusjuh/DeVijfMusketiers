@@ -97,12 +97,15 @@ public class SpellButton : MonoBehaviour {
 
     public void OnClick()
     {
+        UberManager.Instance.SpellManager.CastingSpell = type;
         StartCoroutine(UberManager.Instance.SpellManager.ShowSpellVisual(type));
     }
 
     public void CastSpell(WorldObject target)
     {
         spell.CastSpell(target);
+        if (spell.IsDirect())
+            UberManager.Instance.SpellManager.CastingSpell = GameManager.SpellType.NoSpell;
     }
 
     private void SpawnAP()

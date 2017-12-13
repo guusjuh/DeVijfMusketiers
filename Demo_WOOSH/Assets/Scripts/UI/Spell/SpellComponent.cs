@@ -49,6 +49,7 @@ public class SpellComponent : ISpell
 
     public virtual bool ApplyEffects(WorldObject target, float rnd)
     {
+        Debug.Log("apply effects");
         if (hitChance < 1.0f)
         {
             if (rnd <= hitChance)
@@ -64,6 +65,7 @@ public class SpellComponent : ISpell
 
     public virtual void CastSpell(WorldObject target)
     {
+        Debug.Log("cast spell");
         float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
         ApplyEffects(target, rnd);
         if (damage > 0)
@@ -73,6 +75,7 @@ public class SpellComponent : ISpell
 
     public virtual void Execute(WorldObject target, float rnd)
     {
+        Debug.Log("execute");
         //-damage enemy
         if (ApplyEffects(target, rnd))
         {

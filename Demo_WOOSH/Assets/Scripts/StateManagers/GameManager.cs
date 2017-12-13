@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameManager : StateManager {
     public enum SpellType
     {
+        NoSpell = -1,
         Attack = 0,
         FrostBite,
         Fireball,

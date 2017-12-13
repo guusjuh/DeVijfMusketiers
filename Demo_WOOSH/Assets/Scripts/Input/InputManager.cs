@@ -18,7 +18,7 @@ public class InputManager
 
     public void CatchInput()
     {
-        if (UberManager.Instance.SpellManager.CastingSpell >= 0 && UberManager.Instance.SpellManager.CastingSpell != 3) return;
+        if (UberManager.Instance.SpellManager.CastingSpell >= GameManager.SpellType.Attack && UberManager.Instance.SpellManager.CastingSpell != GameManager.SpellType.Teleport) return;
 
         if (CatchZoomInput()) return;
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
@@ -30,6 +30,19 @@ public class InputManager
                 List<WorldObject> worldObjects = ObtainClickedObjects();
 
                 HandleActionOnClickedObjects(worldObjects);
+
+                if (UberManager.Instance.SpellManager.CastingSpell == GameManager.SpellType.Teleport)
+                {
+                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Coordinate gridPos = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldPos);
+                    if (UberManager.Instance.GameManager.TileManager.Distance(gridPos, worldPos) <= 10.015f)
+                    {
+                        Debug.LogWarning(gridPos.x + ":" + gridPos.y);
+                    } else
+                    {
+                        Debug.LogWarning(UberManager.Instance.GameManager.TileManager.Distance(gridPos, worldPos));
+                    }
+                }
 
                 if (worldObjects.Count <= 0)
                 {
