@@ -2,14 +2,15 @@
 <LevelData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>0</id>
   <rows>5</rows>
-  <columns>5</columns>
+  <columns>6</columns>
   <grid>
     <SecTileTypeRow>
       <row>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
       </row>
     </SecTileTypeRow>
@@ -19,32 +20,36 @@
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
-      </row>
-    </SecTileTypeRow>
-    <SecTileTypeRow>
-      <row>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Grass</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
-        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Grass</SecTileType>
       </row>
     </SecTileTypeRow>
     <SecTileTypeRow>
       <row>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+      </row>
+    </SecTileTypeRow>
+    <SecTileTypeRow>
+      <row>
         <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
+        <SecTileType>Dirt</SecTileType>
+        <SecTileType>Grass</SecTileType>
         <SecTileType>Dirt</SecTileType>
         <SecTileType>Grass</SecTileType>
       </row>
@@ -84,26 +89,10 @@
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Minion</type>
-      <secType>Wolf</secType>
-      <position>
-        <x>4</x>
-        <y>2</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
       <type>Environment</type>
       <secType>Rock</secType>
       <position>
         <x>3</x>
-        <y>1</y>
-      </position>
-    </SpawnNode>
-    <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
-      <position>
-        <x>1</x>
         <y>1</y>
       </position>
     </SpawnNode>
@@ -116,11 +105,19 @@
       </position>
     </SpawnNode>
     <SpawnNode>
-      <type>Environment</type>
-      <secType>Rock</secType>
+      <type>Minion</type>
+      <secType>Wolf</secType>
       <position>
-        <x>2</x>
-        <y>1</y>
+        <x>0</x>
+        <y>5</y>
+      </position>
+    </SpawnNode>
+    <SpawnNode>
+      <type>Minion</type>
+      <secType>Wolf</secType>
+      <position>
+        <x>4</x>
+        <y>3</y>
       </position>
     </SpawnNode>
   </spawnNodes>
