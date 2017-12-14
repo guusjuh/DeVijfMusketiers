@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: InGameUISprites
+  m_EditorData:
+    textureSettings:
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      colorSpace: 1
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+    platformSettings: []
+    packingParameters:
+      paddingPower: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    packedHash:
+      serializedVersion: 2
+      Hash: ac8c9044730001b47cadb6fc944e24b3
+    variantMultiplier: 1
+    bindAsDefault: 1
+    finalFormat: 4
+    hashString: ac8c9044730001b47cadb6fc944e24b3
+    totalSpriteSurfaceArea: 943800
+    packables:
+    - {fileID: 102900000, guid: 93c1a56b729595a4485e602050311339, type: 3}
+    - {fileID: 102900000, guid: 3f008d0897025144a9eec3ad5ec3ccb7, type: 3}
+    packedSpriteRenderDataKeys:
+    - 78b65e5abab18a544b4c235db87ddd94: 21300000
+    - 28716bd1b3c5c104aa9a535ba885de5a: 21300000
+    - 4fbbcd945eb3aac4fa55d7bccafa98d1: 21300000
+    - 8e30b93b47ecf3541ba0a2b3b6cb4130: 21300000
+    - 0da0f8fdd0cff6b46a0eadd91cc26bb9: 21300000
+    - c389031d31f05db46be0e5a7fe6b5b0e: 21300000
+    - d1260d3e58784e84cad49508f7e5fe2e: 21300000
+    - e9ede286a5f7eea468e455834d4382e3: 21300000
+    - 177f0e96cc7057a479fad6a3e20fbd59: 21300000
+    - 22a9fcb3f8bbea74c94418035e74f464: 21300000
+    - c72641ffba0e1f2459ac9a7df52ef068: 21300000
+    - 069851fc4a0369341848951dfde29a58: 21300000
+    - e4f676cfb8ff2b643a4384001e10be31: 21300000
+    - f9b5571b08aa7724fbe5b986140c9177: 21300000
+    - cf7be7369289ad949923c0ff1e327bb0: 21300000
+    - 5620e91ed31c2b44d82ba1bdcb6ac146: 21300000
+    - b06b1000b3834c54dbb2e445161572fd: 21300000
+    - 2fc9292224fc243468199c133265aa47: 21300000
+    - c446445f18c712240b30cb7f5ca8f83e: 21300000
+    - 7649b99989f6b014ea7ba7426407e74d: 21300000
+    - 3a90830658f43b649aaa256e19f3d8de: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 78b65e5abab18a544b4c235db87ddd94, type: 3}
+  - {fileID: 21300000, guid: 28716bd1b3c5c104aa9a535ba885de5a, type: 3}
+  - {fileID: 21300000, guid: 4fbbcd945eb3aac4fa55d7bccafa98d1, type: 3}
+  - {fileID: 21300000, guid: 8e30b93b47ecf3541ba0a2b3b6cb4130, type: 3}
+  - {fileID: 21300000, guid: 0da0f8fdd0cff6b46a0eadd91cc26bb9, type: 3}
+  - {fileID: 21300000, guid: c389031d31f05db46be0e5a7fe6b5b0e, type: 3}
+  - {fileID: 21300000, guid: d1260d3e58784e84cad49508f7e5fe2e, type: 3}
+  - {fileID: 21300000, guid: e9ede286a5f7eea468e455834d4382e3, type: 3}
+  - {fileID: 21300000, guid: 177f0e96cc7057a479fad6a3e20fbd59, type: 3}
+  - {fileID: 21300000, guid: 22a9fcb3f8bbea74c94418035e74f464, type: 3}
+  - {fileID: 21300000, guid: c72641ffba0e1f2459ac9a7df52ef068, type: 3}
+  - {fileID: 21300000, guid: 069851fc4a0369341848951dfde29a58, type: 3}
+  - {fileID: 21300000, guid: e4f676cfb8ff2b643a4384001e10be31, type: 3}
+  - {fileID: 21300000, guid: f9b5571b08aa7724fbe5b986140c9177, type: 3}
+  - {fileID: 21300000, guid: cf7be7369289ad949923c0ff1e327bb0, type: 3}
+  - {fileID: 21300000, guid: 5620e91ed31c2b44d82ba1bdcb6ac146, type: 3}
+  - {fileID: 21300000, guid: b06b1000b3834c54dbb2e445161572fd, type: 3}
+  - {fileID: 21300000, guid: 2fc9292224fc243468199c133265aa47, type: 3}
+  - {fileID: 21300000, guid: c446445f18c712240b30cb7f5ca8f83e, type: 3}
+  - {fileID: 21300000, guid: 7649b99989f6b014ea7ba7426407e74d, type: 3}
+  - {fileID: 21300000, guid: 3a90830658f43b649aaa256e19f3d8de, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - TurnBanner
+  - Head
+  - Light
+  - Frozen
+  - enemyHeal
+  - actionpointindicator
+  - Burned
+  - teleport
+  - Ice
+  - Fire
+  - enemyFire
+  - SpellVisual
+  - Face 01
+  - Face 02
+  - Face 03
+  - Body
+  - Weapon
+  - Left Hand
+  - Right Arm
+  - Left Arm
+  - Right Hand
+  m_Tag: InGameUISprites
+  m_IsVariant: 0

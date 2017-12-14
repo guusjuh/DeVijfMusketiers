@@ -15,7 +15,7 @@ public class PlayerData {
     private int reputationLevel = 1;
     public int ReputationLevel { get { return reputationLevel < 1 ? 1 : reputationLevel; } }    
 
-    private float minRep = 0.0f;
+    private float minRep = 100.0f;
     private float maxRep = 3000.0f;
 
     public void Initialize()
@@ -44,7 +44,7 @@ public class PlayerData {
         // adjust
         reputation += adjustment;
         reputation = Mathf.Clamp(reputation, minRep, maxRep);
-
+        
         // check up or down
         if (reputation > ReqRep(reputationLevel + 1) ||
             reputation < ReqRep(reputationLevel))
