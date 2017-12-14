@@ -73,8 +73,8 @@ public class InGameUIManager : SubUIManager {
         warningText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 500);
         warningText.gameObject.SetActive(false);
 
-        spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
-        spellVisual.Initialize();
+        //spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
+        //spellVisual.Initialize();
  
         teleportButtonsOn = false;
         teleportButtons = new List<SurroundingPushButton>();
@@ -396,11 +396,12 @@ public class InGameUIManager : SubUIManager {
 
     public IEnumerator CastSpell(GameManager.SpellType type, Vector2 worldPos)
     {
-        wizardAnimController.SetTrigger("CastSpell");
+       // wizardAnimController.SetTrigger("CastSpell");
 
-        yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, worldPos));
+         //yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, worldPos));
 
-        spellVisual.gameObject.SetActive(false);
+        //spellVisual.gameObject.SetActive(false);
+        yield return null;
     }
 
     public void HumanDied()

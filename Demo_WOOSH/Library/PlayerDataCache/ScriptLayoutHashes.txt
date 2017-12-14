@@ -15,7 +15,9 @@ c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.T
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SelectableContract
 a6b7f51860d9b5734679f074ac26ced2 Assembly-CSharp.dll:.UberManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GridOverlay
+4b5d4410cde45e3ea4a39d8e1973df62 Assembly-CSharp.dll:.ParticleManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ContractButton
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DestroyParticle
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ContractIndicator
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -83,7 +85,7 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.FireballButton
+387a558ff3891812da1bd09808a3ea6a Assembly-CSharp.dll:.FireballButton
 dab7e09307bd35d3a28c33a1873342fa Assembly-CSharp.dll:.LevelSelectParent
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SpellButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Shrine
@@ -171,6 +173,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SpellVisual
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.WorldObject
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ReputationUIManager
+b5e7a2d5211d95c9e8c8f77d8fd1c6d2 Assembly-CSharp.dll:.ParticleBeam
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AvailableContract
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackToLevelSelectButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LifeTime

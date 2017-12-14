@@ -7,9 +7,10 @@ public class ParticleManager : MonoBehaviour {
     private Dictionary<Particles, GameObject> particles = new Dictionary<Particles, GameObject>();
 
     private Dictionary<GameManager.SpellType, ParticleBeam> beams = new Dictionary<GameManager.SpellType, ParticleBeam>();
+    public GameObject staff;
 
     //VECTOR KAN NIET CONSTANT ZIJN
-    public Vector2 STAFF_POSITION = new Vector2(5.5f, -1f);
+    public Vector2 STAFF_POSITION = new Vector3(5.5f, -1f, 0f);
 
     public enum Particles
     {
@@ -100,6 +101,6 @@ public class ParticleManager : MonoBehaviour {
             default:
                 return Particles.FireBeam;
         }
-    } 
+    }
 }
 

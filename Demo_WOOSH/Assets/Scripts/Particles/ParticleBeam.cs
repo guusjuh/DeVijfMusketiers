@@ -1,20 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ParticleBeam : MonoBehaviour {
 
     private float speed = 20f;
     private Vector2 collectedPos;
     private bool isOn = false;
+    public GameObject canvasElement;
+    public GameObject staff;
+    private Vector2 staffWorldPos;
 
-    public void Initialize(Vector2 pos)
+    public void Initialize(Vector3 pos)
     {
         gameObject.SetActive(true);
-        transform.position = UberManager.Instance.ParticleManager.STAFF_POSITION;
+        FindStaffPosition();
+        transform.position = staffWorldPos;
         collectedPos = pos;
         isOn = true;
-        Debug.Log(isOn);
     }
 
     public void Reset()
@@ -32,9 +36,17 @@ public class ParticleBeam : MonoBehaviour {
 
         if((collectedPos - (Vector2)transform.position).magnitude < 0.1f && isOn)
         {
+            transform.position = Vector3.zero;
             isOn = false;
             Reset();
         }
-        Debug.Log(collectedPos);
 	}    
+
+    public void FindStaffPosition()
+    {
+        canvasElement = GameObject.Find("InGameCanvas/Anchor_BottomRight");
+        staff = canvasElement.transform.GetChild(0).GetChild(1).gameObject;
+        staffWorldPos = Camera.main.ScreenToWorldPoint(staff.transform.position);
+        Debug.Log(staffWorldPos);
+    }
 }

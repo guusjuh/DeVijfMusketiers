@@ -74,8 +74,8 @@ public class SpellButton : MonoBehaviour
 
         UIManager.Instance.InGameUI.HideSpellButtons();
 
-        UberManager.Instance.ParticleManager.PlayParticle(type, target.transform.position, target.transform.rotation);
         UberManager.Instance.ParticleManager.CreateBeam(type).Initialize(target.transform.position);
+        UberManager.Instance.ParticleManager.PlayParticle(type, target.transform.position, target.transform.rotation);
 
         yield return null;
     }

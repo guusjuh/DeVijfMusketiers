@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4788127338681722}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bone_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4867880249096928}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bone_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4570604847671808}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bone_000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 224167340264076824}
   - component: {fileID: 222304385395457044}
   - component: {fileID: 114224029083397654}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Right Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,8 +81,23 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4856927222815610}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bone_001
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1449986471141852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224179327861437804}
+  m_Layer: 5
+  m_Name: staff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +113,7 @@ GameObject:
   - component: {fileID: 224284744472180322}
   - component: {fileID: 222796210383290440}
   - component: {fileID: 114500640492871292}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Face 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +130,7 @@ GameObject:
   - component: {fileID: 224156339331218542}
   - component: {fileID: 222499773480695988}
   - component: {fileID: 114991223056515294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Right Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +147,7 @@ GameObject:
   - component: {fileID: 224941176374371856}
   - component: {fileID: 222038075046272560}
   - component: {fileID: 114594519355220138}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +162,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4394893093401114}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bone_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +179,7 @@ GameObject:
   - component: {fileID: 224176487958586034}
   - component: {fileID: 222679250571819350}
   - component: {fileID: 114251128712962756}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Left Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +196,7 @@ GameObject:
   - component: {fileID: 224164756754940144}
   - component: {fileID: 222185654948870854}
   - component: {fileID: 114259735338216842}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +211,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4006039208324950}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bone_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +228,7 @@ GameObject:
   - component: {fileID: 224219296126655998}
   - component: {fileID: 222125427406357406}
   - component: {fileID: 114317337586910304}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +245,7 @@ GameObject:
   - component: {fileID: 224611648233424864}
   - component: {fileID: 222456239658664972}
   - component: {fileID: 114634009762959574}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Left Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224565606855904346}
   - component: {fileID: 95529595405886560}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WizardUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,6 +712,24 @@ RectTransform:
   m_AnchoredPosition: {x: -0.1745066, y: -0.38341132}
   m_SizeDelta: {x: 0.64, y: 0.64}
   m_Pivot: {x: -0, y: 1}
+--- !u!224 &224179327861437804
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1449986471141852}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224565606855904346}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.08, y: 0.98}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224219296126655998
 RectTransform:
   m_ObjectHideFlags: 1
@@ -739,17 +772,18 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1979253028209228}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -100, y: 100, z: 50}
   m_Children:
   - {fileID: 4394893093401114}
+  - {fileID: 224179327861437804}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.8, y: -60.6}
+  m_AnchoredPosition: {x: -552.8, y: -1020.6}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224611648233424864
