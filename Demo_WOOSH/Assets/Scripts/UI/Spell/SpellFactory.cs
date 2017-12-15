@@ -11,17 +11,17 @@ public class SpellFactory {
         if (proxy.Damage() > 0)
         {
             n++;
-            SpellComponent component = new SpellComponent(proxy.Cost(), proxy.Damage(), proxy.HitChance());
-            ISpell temp = AddComponent(spell, component, n > 1);
-            spell = temp;
+            SpellComponent component = new SpellComponent(proxy.Cost(), proxy.IsDirect(), proxy.Damage(), proxy.HitChance());
+            spell = AddComponent(spell, component, n > 1);
         }
 
         //FireVariables
         if (proxy.FireDamage() > 0 && proxy.FireTurns() > 0)
         {
             n++;
-            BurnComponent component = new BurnComponent(proxy.FireDamage(), proxy.FireTurns(), proxy.FireChance());
-
+            int cost = proxy.Cost() - spell.Cost();
+            BurnComponent component = new BurnComponent(cost, proxy.IsDirect(), proxy.FireDamage(), proxy.FireTurns(), proxy.FireChance());
+            
             spell = AddComponent(spell, component, n > 1);
         }
 
@@ -29,7 +29,8 @@ public class SpellFactory {
         if (proxy.FreezeTurns() > 0)
         {
             n++;
-            FreezeComponent component = new FreezeComponent(proxy.FreezeTurns(), proxy.FreezeChance());
+            int cost = proxy.Cost() - spell.Cost();
+            FreezeComponent component = new FreezeComponent(cost, proxy.IsDirect(), proxy.FreezeTurns(), proxy.FreezeChance());
 
             spell = AddComponent(spell, component, n > 1);
         }
@@ -37,7 +38,8 @@ public class SpellFactory {
         if (!proxy.IsDirect())
         {
             n++;
-            TeleportComponent component = new TeleportComponent(proxy.Range());
+            int cost = proxy.Cost() - spell.Cost();
+            TeleportComponent component = new TeleportComponent(cost, proxy.Range());
 
             spell = AddComponent(spell, component, n > 1);
         }

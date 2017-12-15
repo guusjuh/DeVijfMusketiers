@@ -510,18 +510,18 @@ public class TutorialManager
         GameManager.Instance.LevelManager.Humans[0].Teleport(new Coordinate(0, 0));
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(3);
-        GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
-        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Teleport);
+        GameManager.Instance.LevelManager.Player.SetCooldown(SpellManager.SpellType.Teleport, 3);
+        UberManager.Instance.SoundManager.PlaySoundEffect(SpellManager.SpellType.Teleport);
     }
 
     public void TutorialAttack()
     {
         GameManager.Instance.LevelManager.Enemies[0].TryHit(10);
 
-        UberManager.Instance.SpellManager.CastingSpell = GameManager.SpellType.NoSpell;
+        UberManager.Instance.SpellManager.CastingSpell = SpellManager.SpellType.NoSpell;
 
         UberManager.Instance.SpellManager.HideSpellButtons();
-        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
+        UberManager.Instance.SoundManager.PlaySoundEffect(SpellManager.SpellType.Attack);
     }
 
     public Vector2 GetRootUIPosition(RectTransform rect, RectTransform canvasRect)

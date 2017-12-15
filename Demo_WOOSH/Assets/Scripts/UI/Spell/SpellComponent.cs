@@ -26,7 +26,7 @@ public class SpellComponent : ISpell
         range = 0;
     }
 
-    public SpellComponent(int cost = 0, int damage = 0, float hitChance = 1.0f, int fireDamage = 0, int fireTurns = 0, int freezeTurns = 0, bool isDirect = true, int range = 0)
+    public SpellComponent(int cost = 0, bool isDirect = true, int damage = 0, float hitChance = 1.0f, int fireDamage = 0, int fireTurns = 0, int freezeTurns = 0, int range = 0)
     {
         this.cost = cost;
         this.damage = damage;
@@ -49,7 +49,6 @@ public class SpellComponent : ISpell
 
     public virtual bool ApplyEffects(WorldObject target, float rnd)
     {
-        Debug.Log("apply effects");
         if (hitChance < 1.0f)
         {
             if (rnd <= hitChance)
@@ -65,25 +64,28 @@ public class SpellComponent : ISpell
 
     public virtual void CastSpell(WorldObject target)
     {
-        Debug.Log("cast spell");
         float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
         ApplyEffects(target, rnd);
-        if (damage > 0)
-            Execute(target, rnd);
+        if (damage > 0 && isDirect)
+            Execute(target, rnd, true);
 
     }
 
-    public virtual void Execute(WorldObject target, float rnd)
+    public virtual bool Execute(WorldObject target, float rnd, bool endTurn)
     {
-        Debug.Log("execute");
         //-damage enemy
         if (ApplyEffects(target, rnd))
         {
-            target.TryHit(Damage());
-        }
-        if (isDirect)
-            UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
+            if (Damage() > 0)
+                target.TryHit(Damage());
 
+            if (endTurn)
+                UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
+            return true;
+        }
+        if (endTurn)
+            UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
+        return false;
     }
 
     public int Cost() { return cost; }

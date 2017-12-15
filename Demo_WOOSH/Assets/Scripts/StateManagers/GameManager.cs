@@ -5,15 +5,6 @@ using UnityEngine;
 
 [Serializable]
 public class GameManager : StateManager {
-    public enum SpellType
-    {
-        NoSpell = -1,
-        Attack = 0,
-        FrostBite,
-        Fireball,
-        Teleport
-    }
-
     // singleton
     private static GameManager instance = null;
     public static GameManager Instance {
@@ -153,11 +144,15 @@ public class GameManager : StateManager {
             return;
         }
 
-        if (!gameOn) return;
+        if (!gameOn)
+            return;
 
         UberManager.Instance.InputManager.CatchInput();
-        cameraManager.UpdatePosition();
-        levelManager.Update();
+        if (gameOn)
+        {
+            cameraManager.UpdatePosition();
+            levelManager.Update();
+        }
     }
 
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)

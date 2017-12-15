@@ -47,7 +47,7 @@ public class Sketta : Enemy {
     protected IEnumerator ShieldVisual()
     {
         shield.SetActive(true);
-        shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.SpellManager.SpellColors[(GameManager.SpellType)UberManager.Instance.SpellManager.CastingSpell];
+        shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.SpellManager.SpellColors[(SpellManager.SpellType)UberManager.Instance.SpellManager.CastingSpell];
 
         yield return new WaitForSeconds(0.5f);
 

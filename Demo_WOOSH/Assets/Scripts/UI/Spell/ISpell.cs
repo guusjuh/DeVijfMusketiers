@@ -4,7 +4,7 @@ public interface ISpell
 {
     SpellComposite AddComponent(SpellComponent component);
     bool ApplyEffects(WorldObject target, float rnd);
-    void Execute(WorldObject target, float rnd);
+    bool Execute(WorldObject target, float rnd, bool endTurn);
     void CastSpell(WorldObject target);
 
     int Cost();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class SpellButton : MonoBehaviour {
     private Sprite SpellSprite { set { SpellImg.sprite = value; } }
     private string description;
     private ISpell spell;
-    private GameManager.SpellType type;
+    private SpellManager.SpellType type;
 
     private Button btn;
     private Text cooldownText;
@@ -15,9 +16,9 @@ public class SpellButton : MonoBehaviour {
     private List<GameObject> apIndicator;
 
     private const float RADIUS = 90f;
-    private int cost;
+    private int cooldown;
 
-    public void Initialize(ISpell spell, GameManager.SpellType type, string description, Sprite sprite, int cost)
+    public void Initialize(ISpell spell, SpellManager.SpellType type, string description, Sprite sprite, int cooldown)
     {
         btn = GetComponent<Button>();
         background = transform.Find("Background").GetComponent<Image>();
@@ -30,7 +31,7 @@ public class SpellButton : MonoBehaviour {
         this.type = type;
         this.description = description;
         SpellSprite = sprite;
-        this.cost = cost;
+        this.cooldown = cooldown;
 
         SpawnAP();
     }
@@ -39,7 +40,7 @@ public class SpellButton : MonoBehaviour {
     {
         //setTarget?
         bool cooldownFinished = GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type) <= 0;
-        bool enoughActionPoints = cost <= GameManager.Instance.LevelManager.Player.CurrentActionPoints;
+        bool enoughActionPoints = spell.Cost() <= GameManager.Instance.LevelManager.Player.CurrentActionPoints;
         SetButtonPosition(target);
         if (!cooldownFinished)
         {
@@ -48,17 +49,17 @@ public class SpellButton : MonoBehaviour {
 
         if (!enoughActionPoints || !cooldownFinished)
         {
-            SetInteractable(false, target);
+            SetInteractable(false);
         }
 
         if (enoughActionPoints && cooldownFinished)
         {
             SetCooldownText(0);
-            SetInteractable(true, target);
+            SetInteractable(true);
         }
     }
 
-    private void SetInteractable(bool isActive, WorldObject target)
+    private void SetInteractable(bool isActive)
     {
         btn.interactable = isActive;
 
@@ -98,6 +99,10 @@ public class SpellButton : MonoBehaviour {
     public void OnClick()
     {
         UberManager.Instance.SpellManager.CastingSpell = type;
+        GameManager.Instance.LevelManager.Player.SetCooldown(type, cooldown);
+        SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
+        SetInteractable(cooldown <= 0);
+
         StartCoroutine(UberManager.Instance.SpellManager.ShowSpellVisual(type));
     }
 
@@ -105,12 +110,14 @@ public class SpellButton : MonoBehaviour {
     {
         spell.CastSpell(target);
         if (spell.IsDirect())
-            UberManager.Instance.SpellManager.CastingSpell = GameManager.SpellType.NoSpell;
+            UberManager.Instance.SpellManager.CastingSpell = SpellManager.SpellType.NoSpell;
+        else
+            UberManager.Instance.SpellManager.SetActiveIndirect(spell);
     }
 
     private void SpawnAP()
     {
-        int amount = cost;
+        int amount = spell.Cost();
 
         float divider = amount > 1 ? (float)amount - 1.0f : (float)amount;
         float partialCircle = (amount - 1) / 4.0f * 0.4f;
@@ -129,6 +136,7 @@ public class SpellButton : MonoBehaviour {
 
     public void SetButtonPosition(WorldObject target)
     {
+
         Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(target.transform.position);
 
         float divider = target.PossibleSpellTypes.Count > 1 ? (float)target.PossibleSpellTypes.Count - 1.0f : (float)target.PossibleSpellTypes.Count;

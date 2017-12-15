@@ -4,27 +4,23 @@ using UnityEngine;
 
 public class BurnComponent : SpellComponent {
 
-    public BurnComponent(int fireDamage, int fireTurns, float hitChance)
+    public BurnComponent(int cost, bool isDirect, int fireDamage, int fireTurns, float hitChance)
     {
-        damage = 0;
+        this.cost = cost;
+        this.isDirect = isDirect;
         this.hitChance = hitChance;
         this.fireDamage = fireDamage;
         this.fireTurns = fireTurns;
-        freezeTurns = 0;
-        isDirect = true;
-        range = 0;
     }
 
-    public override bool ApplyEffects(WorldObject target, float rnd)
+    public override bool Execute(WorldObject target, float rnd, bool endTurn)
     {
-        if (base.ApplyEffects(target, rnd))
+        if (base.Execute(target, rnd, endTurn))
         {
-            ((Enemy)target).Burn(FireTurns(), FireDamage());
+            if (target is Enemy)
+                ((Enemy)target).Burn(FireTurns(), FireDamage());
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 }

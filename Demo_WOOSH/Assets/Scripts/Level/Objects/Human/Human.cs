@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Human : MovableObject {
+public class Human : EnemyTarget
+{
     protected const string MOVE_ANIM = "Moving";
     protected const string CHEER_ANIM = "Cheer";
     protected const string DIE_ANIM = "Dead";
@@ -53,6 +54,7 @@ public class Human : MovableObject {
 
     public override void Initialize(Coordinate startPos)
     {
+        spellTargetType = SpellManager.SpellTarget.Human;
         base.Initialize(startPos);
 
         type = SecContentType.Human;
@@ -61,7 +63,6 @@ public class Human : MovableObject {
         rb2D = GetComponent<Rigidbody2D>();
 
         currentFleePoints = totalFleePoints;
-        possibleSpellTypes.Add(GameManager.SpellType.Teleport);
     }
 
     public override void Reset()

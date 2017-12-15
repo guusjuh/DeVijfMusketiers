@@ -249,12 +249,6 @@ public class TileManager
         return nextTile.EnterCost();
     }
 
-    public float Distance(Coordinate gridPos, Vector3 WorldPos)
-    {
-        Vector3 worldPos2 = GetWorldPosition(gridPos);
-        return (worldPos2 - WorldPos).magnitude;
-    }
-
     public float CostToEnterTile(TileNode nextTile, TileNode endTile, WorldObject worldObject)
     {
         if (new Vector2(endTile.GridPosition.x - nextTile.GridPosition.x, endTile.GridPosition.y - nextTile.GridPosition.y).magnitude > 0.1f)
@@ -487,18 +481,19 @@ public class TileManager
 
     public void ShowTeleportHighlights(WorldObject worldObject, int range)
     {
+        HidePossibleRoads();
         highlightedNodes = new List<TileNode>();
         // add yourself
         TileNode hisNode = GetNodeReference(worldObject.GridPosition);
-
+        
         if (range == 0)
         {
             foreach (TileNode node in grid)
             {
-                if (node.WalkAble() && !(node.ContainsFlyingMonster() || node.ContainsWalkingMonster()))
-                    highlightedNodes.Add(node);
+                highlightedNodes.Add(node);    
             }
-        } else
+        }
+        else
         {
             RecursiveTileFinder(worldObject, highlightedNodes, hisNode, range, worldObject.GridPosition, false);
         }
@@ -506,9 +501,22 @@ public class TileManager
         // highlight all found buttons
         highlightedNodes.HandleAction(n =>
         {
-            if (n.WalkAble() && !(n.ContainsFlyingMonster() || n.ContainsWalkingMonster()))
+            if (!(n.ContainsFlyingMonster() || n.ContainsWalkingMonster()))
             {
-                n.HighlightTile(true, Color.green);
+                if (worldObject.IsFlying())
+                {
+                    if (n.ContainsBrokenBarrel() || n.CompletelyEmpty() || n.GetType() == TileType.Dangerous)
+                    {
+                        n.HighlightTile(true, Color.green);
+                    }
+                }
+                else //teleport humans and walking monsters
+                {
+                    if (n.ContainsBrokenBarrel() || n.CompletelyEmpty())
+                    {
+                        n.HighlightTile(true, Color.green);
+                    }
+                }
             }
         });
     }
@@ -533,6 +541,15 @@ public class TileManager
                 n.HighlightTile(true, TARGETCOLOR);
             }
         });
+    }
+
+    public void DisableHighlights()
+    {
+        UberManager.Instance.InputManager.highlightsActivated = false;
+        foreach (TileNode node in grid)
+        {
+            node.HighlightTile(false, new Color(0,0,0,0));
+        }
     }
 
     // assumed this is always called AFTER ShowPossibleRoads, no new list need to be set and the tiles can just be added to the highlighted

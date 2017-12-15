@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class FreezeComponent : SpellComponent {
     
-    public FreezeComponent(int freezeTurns, float hitChance)
+    public FreezeComponent(int cost, bool isDirect, int freezeTurns, float hitChance)
     {
+        this.cost = cost;
+        this.isDirect = isDirect;
         this.hitChance = hitChance;
         this.freezeTurns = freezeTurns;
     }
 
-    public override bool ApplyEffects(WorldObject target, float rnd)
+    public override bool Execute(WorldObject target, float rnd, bool endTurn)
     {
-        if (base.ApplyEffects(target, rnd))
+        if (base.Execute(target, rnd, endTurn))
         {
-            ((Enemy) target).Slow(freezeTurns);
+            if (target is Enemy)
+                ((Enemy)target).Slow(freezeTurns);
             return true;
-        } else
-        {
-            return false;
         }
+        return false;
     }
 }

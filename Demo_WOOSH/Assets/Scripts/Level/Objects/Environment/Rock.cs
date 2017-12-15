@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rock : MovableObject
+public class Rock : EnemyTarget
 {
     private Sprite destoryedSpr;
     private Sprite normalSpr;

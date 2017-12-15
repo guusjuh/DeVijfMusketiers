@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,9 +17,13 @@ public class InputManager
     private float zoomVelocity;
     public float ZoomVelocity { get { return zoomVelocity; } }
 
+    private Vector2 teleportClick;
+    private DateTime clickTime;
+    public bool highlightsActivated = false;
+
     public void CatchInput()
     {
-        if (UberManager.Instance.SpellManager.CastingSpell >= GameManager.SpellType.Attack && UberManager.Instance.SpellManager.CastingSpell != GameManager.SpellType.Teleport) return;
+        if (UberManager.Instance.SpellManager.CastingSpell >= SpellManager.SpellType.Attack && UberManager.Instance.SpellManager.CastingSpell != SpellManager.SpellType.Teleport) return;
 
         if (CatchZoomInput()) return;
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
@@ -30,19 +35,6 @@ public class InputManager
                 List<WorldObject> worldObjects = ObtainClickedObjects();
 
                 HandleActionOnClickedObjects(worldObjects);
-
-                if (UberManager.Instance.SpellManager.CastingSpell == GameManager.SpellType.Teleport)
-                {
-                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Coordinate gridPos = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldPos);
-                    if (UberManager.Instance.GameManager.TileManager.Distance(gridPos, worldPos) <= 10.015f)
-                    {
-                        Debug.LogWarning(gridPos.x + ":" + gridPos.y);
-                    } else
-                    {
-                        Debug.LogWarning(UberManager.Instance.GameManager.TileManager.Distance(gridPos, worldPos));
-                    }
-                }
 
                 if (worldObjects.Count <= 0)
                 {
@@ -68,17 +60,34 @@ public class InputManager
         else if (Input.GetMouseButton(LEFT_MOUSE_BUTTON))
         {
             Drag();
+            teleportClick = Input.mousePosition;
+            clickTime = DateTime.Now;
         }
         else if (Input.GetMouseButtonUp(LEFT_MOUSE_BUTTON))
         {
+            Vector2 worldMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Coordinate gridPosition = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldMouse);
+
+            if (UberManager.Instance.SpellManager.CastingSpell == SpellManager.SpellType.Teleport && highlightsActivated)
+            {
+                if ((teleportClick - (Vector2)Input.mousePosition).magnitude <= GameManager.Instance.TileManager.HexagonScale / 2.0f
+                    && clickTime.Subtract(DateTime.Now).TotalSeconds <= 0.2f)
+                {
+                    UberManager.Instance.SpellManager.SetSelectedTile();
+                    teleportClick = new Vector2(-100, -100);
+                }
+
+            } else if ((UberManager.Instance.GameManager.TileManager.GetWorldPosition(gridPosition) - worldMouse).magnitude > GameManager.Instance.TileManager.HexagonScale / 2.0f)
+            {
+                ClearOnClick();
+                highlightsActivated = false;
+            }
             EndDrag();
         }
     }
 
     private void StartDrag()
     {
-        ClearOnClick();
-
         GameManager.Instance.CameraManager.SetBouncyness();
 
         if (!stillTouching)

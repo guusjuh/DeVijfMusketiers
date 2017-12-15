@@ -25,7 +25,7 @@ public class SpellVisual : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public IEnumerator Activate(GameManager.SpellType type, Vector2 worldPos)
+    public IEnumerator Activate(SpellManager.SpellType type, Vector2 worldPos)
     {
         this.worldPos = worldPos;
 

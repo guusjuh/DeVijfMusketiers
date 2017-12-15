@@ -9,9 +9,10 @@ public class SpellProxy {
     [SerializeField] private string name;
     [SerializeField] private string description;
     [SerializeField] private Sprite spellImage;
-    [SerializeField] private GameManager.SpellType type;
+    [SerializeField] private SpellManager.SpellType type;
     [SerializeField] private Color spellColor;
     [SerializeField] private int cost;
+    [SerializeField] private int cooldown;
 
     //casting variables
     [SerializeField] private int damage;
@@ -27,13 +28,16 @@ public class SpellProxy {
     [SerializeField] private bool isDirect;
     [SerializeField] private int range;
 
+    [SerializeField] private List<SpellManager.SpellTarget> possibleTargets;
+
     //descriptional getters
     public string Name() { return name; }
     public string Description() { return description; }
     public Sprite SpellSprite() { return spellImage; }
-    public GameManager.SpellType Type() { return type; }
+    public SpellManager.SpellType Type() { return type; }
     public Color SpellColor() { return spellColor; }
     public int Cost() { return cost; }
+    public int Cooldown() { return cooldown; }
 
     //casting getters
     public int Damage() { return damage; }
@@ -49,4 +53,6 @@ public class SpellProxy {
 
     public bool IsDirect() { return isDirect; }
     public int Range() { return range; }
+
+    public List<SpellManager.SpellTarget> PossibleTargets() { return possibleTargets; }
 }

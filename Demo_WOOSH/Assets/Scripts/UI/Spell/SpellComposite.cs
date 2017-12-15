@@ -20,17 +20,22 @@ public class SpellComposite : ISpell
     /// <summary>
     /// deals the total damage to the target
     /// </summary>
-    public void Execute(WorldObject target, float rnd)
+    public bool Execute(WorldObject target, float rnd, bool endTurn)
     {
-        //TODO: check for hitchance
         int damage = 0;
         for (int i = 0; i < components.Count; i++)
         {
-            if (rnd < components[i].HitChance())
+            if (components[i].Damage() > 0 && rnd <= components[i].HitChance())
                 damage += components[i].Damage();
+            if (components[i].Damage() <= 0)
+                components[i].Execute(target, rnd, false);
         }
-        target.TryHit(damage);
-        UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
+        if (Damage() > 0)
+            target.TryHit(damage);
+
+        if (endTurn)
+            UberManager.Instance.GameManager.LevelManager.EndPlayerMove(Cost());
+        return true;
     }
 
     /// <summary>
@@ -44,7 +49,7 @@ public class SpellComposite : ISpell
             components[i].ApplyEffects(target, rnd);
         }
         if (IsDirect())
-            Execute(target, rnd);
+            Execute(target, rnd, true);
     }
 
     public bool ApplyEffects(WorldObject target, float rnd)

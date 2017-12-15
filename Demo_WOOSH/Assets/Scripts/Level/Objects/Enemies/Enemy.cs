@@ -67,11 +67,9 @@ public class Enemy : WorldObject
 
     public bool Dead { get; private set; }
 
-    private bool canFly = false;
-    public bool CanFly { get { return canFly; } }
-
     public override void Initialize(Coordinate startPos)
     {
+        spellTargetType = SpellManager.SpellTarget.Enemy;
         base.Initialize(startPos);
 
         anim = gameObject.GetComponentInChildren<Animator>();
@@ -100,16 +98,6 @@ public class Enemy : WorldObject
         calculatedTotalAP = totalActionPoints;
         currentActionPoints = calculatedTotalAP;
         health = startHealth;
-
-        if (UberManager.Instance.Tutorial)
-        {
-            possibleSpellTypes.Add(GameManager.SpellType.Attack);
-            return;
-        }
-
-        possibleSpellTypes.Add(GameManager.SpellType.Attack);
-        possibleSpellTypes.Add(GameManager.SpellType.FrostBite);
-        possibleSpellTypes.Add(GameManager.SpellType.Fireball);
     }
 
 

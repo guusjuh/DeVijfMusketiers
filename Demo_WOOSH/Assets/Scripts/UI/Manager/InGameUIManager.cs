@@ -141,7 +141,7 @@ public class InGameUIManager : SubUIManager {
 
     public override void Clear()
     {
-        UberManager.Instance.SpellManager.CastingSpell = GameManager.SpellType.NoSpell;
+        UberManager.Instance.SpellManager.CastingSpell = SpellManager.SpellType.NoSpell;
 
         // you knwo the banners are off
 

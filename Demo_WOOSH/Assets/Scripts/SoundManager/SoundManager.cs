@@ -88,20 +88,20 @@ public class SoundManager {
         backgroundSource.Play();
     }
 
-    public void PlaySoundEffect(GameManager.SpellType effect)
+    public void PlaySoundEffect(SpellManager.SpellType effect)
     {
         switch (effect)
         {
-            case GameManager.SpellType.Attack:
+            case SpellManager.SpellType.Attack:
                 PlaySoundEffect(SoundEffect.AttackPlayer);
                 break;
-            case GameManager.SpellType.Fireball:
+            case SpellManager.SpellType.Fireball:
                 PlaySoundEffect(SoundEffect.FirePlayer);
                 break;
-            case GameManager.SpellType.FrostBite:
+            case SpellManager.SpellType.FrostBite:
                 PlaySoundEffect(SoundEffect.FreezePlayer);
                 break;
-            case GameManager.SpellType.Teleport:
+            case SpellManager.SpellType.Teleport:
                 PlaySoundEffect(SoundEffect.TeleportPlayer);
                 break;
         }
