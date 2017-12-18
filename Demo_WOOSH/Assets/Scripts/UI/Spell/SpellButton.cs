@@ -42,6 +42,7 @@ public class SpellButton : MonoBehaviour {
         bool cooldownFinished = GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type) <= 0;
         bool enoughActionPoints = spell.Cost() <= GameManager.Instance.LevelManager.Player.CurrentActionPoints;
         SetButtonPosition(target);
+
         if (!cooldownFinished)
         {
             SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
@@ -136,7 +137,6 @@ public class SpellButton : MonoBehaviour {
 
     public void SetButtonPosition(WorldObject target)
     {
-
         Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(target.transform.position);
 
         float divider = target.PossibleSpellTypes.Count > 1 ? (float)target.PossibleSpellTypes.Count - 1.0f : (float)target.PossibleSpellTypes.Count;

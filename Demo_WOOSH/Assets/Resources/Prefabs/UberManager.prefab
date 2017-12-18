@@ -189,74 +189,91 @@ MonoBehaviour:
         negativeRepCompleted: -40
   spellManager:
     spellProxies:
-    - name: Fireball
-      description: firebal
-      spellImage: {fileID: 21300000, guid: 22a9fcb3f8bbea74c94418035e74f464, type: 3}
-      type: 2
-      spellColor: {r: 1, g: 0, b: 0, a: 1}
-      cost: 2
-      cooldown: 1
-      damage: 20
+    - name: test 1
+      description: '...'
+      spellImage: {fileID: 21300000, guid: 177f0e96cc7057a479fad6a3e20fbd59, type: 3}
+      type: 4
+      spellColor: {r: 0, g: 0.7931032, b: 1, a: 1}
+      cost: 1
+      cooldown: 0
+      damage: 36
       hitChance: 1
-      fireDamage: 5
-      fireTurns: 2
+      fireDamage: 0
+      fireTurns: 0
+      fireChance: 0
+      freezeTurns: 6
+      freezeChance: 1
+      isDirect: 1
+      range: 0
+      possibleTargets: 0100000002000000
+    - name: Test 2
+      description: '...'
+      spellImage: {fileID: 21300000, guid: c72641ffba0e1f2459ac9a7df52ef068, type: 3}
+      type: 5
+      spellColor: {r: 1, g: 0.9724138, b: 0, a: 1}
+      cost: 2
+      cooldown: 0
+      damage: 18
+      hitChance: 1
+      fireDamage: 33
+      fireTurns: 8
+      fireChance: 1
+      freezeTurns: 2
+      freezeChance: 1
+      isDirect: 1
+      range: 0
+      possibleTargets: 0100000002000000
+    - name: Test 3
+      description: '...'
+      spellImage: {fileID: 21300000, guid: 22a9fcb3f8bbea74c94418035e74f464, type: 3}
+      type: 6
+      spellColor: {r: 1, g: 0, b: 0, a: 1}
+      cost: 1
+      cooldown: 0
+      damage: 0
+      hitChance: 0
+      fireDamage: 16
+      fireTurns: 3
       fireChance: 1
       freezeTurns: 0
       freezeChance: 0
       isDirect: 1
       range: 0
-      possibleTargets: 01000000
-    - name: Frostbite
-      description: frostbite
-      spellImage: {fileID: 21300000, guid: 177f0e96cc7057a479fad6a3e20fbd59, type: 3}
-      type: 1
-      spellColor: {r: 0, g: 0.2965517, b: 1, a: 1}
-      cost: 1
-      cooldown: 2
-      damage: 5
-      hitChance: 0.33333334
-      fireDamage: 0
-      fireTurns: 0
-      fireChance: 0
-      freezeTurns: 2
-      freezeChance: 1
-      isDirect: 1
-      range: 0
-      possibleTargets: 01000000
-    - name: Attack
-      description: attack
-      spellImage: {fileID: 21300000, guid: 4fbbcd945eb3aac4fa55d7bccafa98d1, type: 3}
-      type: 0
-      spellColor: {r: 0.75, g: 1, b: 1, a: 1}
-      cost: 1
-      cooldown: 0
-      damage: 10
-      hitChance: 1
-      fireDamage: 0
-      fireTurns: 0
-      fireChance: 0
-      freezeTurns: 0
-      freezeChance: 0
-      isDirect: 1
-      range: 0
-      possibleTargets: 01000000
-    - name: Teleport
-      description: teleport
-      spellImage: {fileID: 21300000, guid: e9ede286a5f7eea468e455834d4382e3, type: 3}
+      possibleTargets: 0100000002000000
+    - name: Test 4
+      description: '...'
+      spellImage: {fileID: 21300000, guid: 0da0f8fdd0cff6b46a0eadd91cc26bb9, type: 3}
       type: 3
-      spellColor: {r: 0.44852942, g: 0, b: 0.828, a: 1}
-      cost: 3
+      spellColor: {r: 1, g: 0.6413793, b: 0, a: 1}
+      cost: 2
       cooldown: 0
       damage: 0
-      hitChance: 1
-      fireDamage: 0
-      fireTurns: 0
-      fireChance: 0
+      hitChance: 0
+      fireDamage: 17
+      fireTurns: 9
+      fireChance: 1
       freezeTurns: 0
       freezeChance: 0
       isDirect: 0
-      range: 0
-      possibleTargets: 0200000001000000
+      range: 2
+      possibleTargets: 0100000002000000
+    - name: Test 5
+      description: '...'
+      spellImage: {fileID: 21300000, guid: e9ede286a5f7eea468e455834d4382e3, type: 3}
+      type: 8
+      spellColor: {r: 0.6137929, g: 0, b: 1, a: 1}
+      cost: 2
+      cooldown: 0
+      damage: 9
+      hitChance: 1
+      fireDamage: 0
+      fireTurns: 0
+      fireChance: 0
+      freezeTurns: 3
+      freezeChance: 1
+      isDirect: 0
+      range: 5
+      possibleTargets: 0100000002000000
   myStyle:
     m_Name: 
     m_Normal:

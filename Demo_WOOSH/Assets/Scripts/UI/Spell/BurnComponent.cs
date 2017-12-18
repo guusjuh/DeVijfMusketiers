@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BurnComponent : SpellComponent {
-
-    public BurnComponent(int cost, bool isDirect, int fireDamage, int fireTurns, float hitChance)
+    //
+    public BurnComponent(int cost, SpellManager.SpellType type, bool isDirect, int burnDamage, int fireTurns, float burnChance)
     {
         this.cost = cost;
+        this.type = type;
         this.isDirect = isDirect;
-        this.hitChance = hitChance;
-        this.fireDamage = fireDamage;
+        this.hitChance = burnChance;
+        this.burnDamage = burnDamage;
         this.fireTurns = fireTurns;
     }
 

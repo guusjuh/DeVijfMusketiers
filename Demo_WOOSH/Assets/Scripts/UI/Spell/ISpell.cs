@@ -3,10 +3,12 @@
 public interface ISpell
 {
     SpellComposite AddComponent(SpellComponent component);
-    bool ApplyEffects(WorldObject target, float rnd);
+    bool DoesHit(WorldObject target, float rnd);
     bool Execute(WorldObject target, float rnd, bool endTurn);
+    void HighlightTiles(WorldObject target);
     void CastSpell(WorldObject target);
 
+    SpellManager.SpellType Type();
     int Cost();
     int Damage();
     float HitChance();

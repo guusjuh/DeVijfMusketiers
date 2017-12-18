@@ -23,8 +23,7 @@ public class InputManager
 
     public void CatchInput()
     {
-        if (UberManager.Instance.SpellManager.CastingSpell >= SpellManager.SpellType.Attack && UberManager.Instance.SpellManager.CastingSpell != SpellManager.SpellType.Teleport) return;
-
+        Debug.Log("Input");
         if (CatchZoomInput()) return;
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
         {
@@ -68,15 +67,15 @@ public class InputManager
             Vector2 worldMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Coordinate gridPosition = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldMouse);
 
-            if (UberManager.Instance.SpellManager.CastingSpell == SpellManager.SpellType.Teleport && highlightsActivated)
+            bool test = UberManager.Instance.SpellManager.CastingInDirect();
+            if (test && highlightsActivated)
             {
                 if ((teleportClick - (Vector2)Input.mousePosition).magnitude <= GameManager.Instance.TileManager.HexagonScale / 2.0f
                     && clickTime.Subtract(DateTime.Now).TotalSeconds <= 0.2f)
                 {
-                    UberManager.Instance.SpellManager.SetSelectedTile();
+                    UberManager.Instance.SpellManager.CastInDirect();
                     teleportClick = new Vector2(-100, -100);
                 }
-
             } else if ((UberManager.Instance.GameManager.TileManager.GetWorldPosition(gridPosition) - worldMouse).magnitude > GameManager.Instance.TileManager.HexagonScale / 2.0f)
             {
                 ClearOnClick();

@@ -20,6 +20,8 @@ public class Player
 
             UberManager.Instance.PlayerData.AdjustReputation(999);
         }
+        //TODO:remove
+        totalActionPoints = 100;
 
         currentCooldown = new Dictionary<SpellManager.SpellType, int>();
         currentCooldown.Add(SpellManager.SpellType.Attack, 0);

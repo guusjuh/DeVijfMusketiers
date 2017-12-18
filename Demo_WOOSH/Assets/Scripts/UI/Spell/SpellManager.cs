@@ -11,7 +11,12 @@ public class SpellManager {
         Attack = 0,
         FrostBite,
         Fireball,
-        Teleport
+        Teleport,
+        test1,
+        test2,
+        test3,
+        test4,
+        test5
     }
 
     public enum SpellTarget
@@ -73,7 +78,7 @@ public class SpellManager {
         spellVisual.Initialize();
     }
 
-    public void SetSelectedTile()
+    public void CastInDirect()
     {
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Coordinate gridPos = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldPos);
@@ -86,7 +91,8 @@ public class SpellManager {
             {
                 selectedTile = gridPos;
                 //random is set to 1.0f, because the chance of hitting has already been calculated
-                activeInDirectSpell.Execute(selectedTarget, 1.0f, true);
+                float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
+                activeInDirectSpell.Execute(selectedTarget, rnd, true);
                 UberManager.Instance.GameManager.LevelManager.CheckForExtraAP();
                 CastingSpell = SpellType.NoSpell;
             }
@@ -98,6 +104,16 @@ public class SpellManager {
             }
 
         }
+    }
+
+    public bool CastingInDirect()
+    {
+        if (spells != null && spells.Count > 0)
+        {
+            ISpell spell = spells.Find(s => (s.Type() == castingSpell && s.Type() != SpellType.NoSpell));
+            return (spell != null && !spell.IsDirect());
+        }
+        return false;
     }
 
     public void CreateSpellButton(ISpell spell, SpellProxy proxy)

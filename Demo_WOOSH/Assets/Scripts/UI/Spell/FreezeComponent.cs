@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class FreezeComponent : SpellComponent {
     
-    public FreezeComponent(int cost, bool isDirect, int freezeTurns, float hitChance)
+    public FreezeComponent(int cost, SpellManager.SpellType type, bool isDirect, int freezeTurns, float freezeChance)
     {
         this.cost = cost;
+        this.type = type;
         this.isDirect = isDirect;
-        this.hitChance = hitChance;
+        this.hitChance = freezeChance;
         this.freezeTurns = freezeTurns;
     }
 

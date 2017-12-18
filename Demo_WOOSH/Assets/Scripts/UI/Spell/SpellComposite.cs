@@ -44,25 +44,48 @@ public class SpellComposite : ISpell
     public void CastSpell(WorldObject target)
     {
         float rnd = UnityEngine.Random.Range(0.0f, 1.0f);
-        for (int i = 0; i < components.Count; i++)
-        {
-            components[i].ApplyEffects(target, rnd);
-        }
         if (IsDirect())
             Execute(target, rnd, true);
+        else
+            HighlightTiles(target);
     }
 
-    public bool ApplyEffects(WorldObject target, float rnd)
+    public bool DoesHit(WorldObject target, float rnd)
     {
         bool totalSucces = true;
         for(int i =0; i<components.Count; i++)
         {
-            if (!components[i].ApplyEffects(target, rnd))
+            if (!components[i].DoesHit(target, rnd))
             {
                 totalSucces = false;
             }
         }
         return totalSucces;
+    }
+
+    public void HighlightTiles(WorldObject target)
+    {
+        for (int i = 0; i < components.Count; i++)
+        {
+            components[i].HighlightTiles(target);
+        }
+    }
+
+    public SpellManager.SpellType Type()
+    {
+        if (components.Count > 0)
+        {
+            SpellManager.SpellType type = components[0].Type();
+            for (int i = 1; i < components.Count; i++)
+            {
+                if (type != components[i].Type())
+                {
+                    return SpellManager.SpellType.NoSpell;
+                }
+            }
+            return type;
+        }
+        return SpellManager.SpellType.NoSpell;
     }
 
     public int Cost()

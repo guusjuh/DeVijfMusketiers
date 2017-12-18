@@ -237,11 +237,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[0].possibleTargets.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4102446570494016, guid: 0297a9676d7bc36409d4e133d72722b5, type: 2}
       propertyPath: m_LocalPosition.x
       value: 2.7880318
@@ -276,38 +271,8 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
         type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[3].damage
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[2].damage
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[2].cost
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[1].cost
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[0].damage
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[0].possibleTargets.Array.data[1]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
-        type: 2}
-      propertyPath: spellManager.spellProxies.Array.data[3].range
-      value: 5
+      propertyPath: spellManager.spellProxies.Array.data[3].type
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0297a9676d7bc36409d4e133d72722b5, type: 2}
