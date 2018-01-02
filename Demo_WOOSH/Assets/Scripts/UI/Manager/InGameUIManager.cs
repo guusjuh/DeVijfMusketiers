@@ -21,6 +21,9 @@ public class InGameUIManager : SubUIManager {
     private PlayerAPSkipButton playerActionPoints;
     public PlayerAPSkipButton PlayerActionPoints { get { return playerActionPoints; } }
 
+    private GameSpeedButton gameSpeedButton;
+    public GameSpeedButton GameSpeedButton { get { return gameSpeedButton; } }
+
     private WorldObject target = null;
 
     private Dictionary<GameManager.SpellType, SpellButton> spellButtons;
@@ -60,6 +63,10 @@ public class InGameUIManager : SubUIManager {
 
         playerActionPoints = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft).GetComponent<PlayerAPSkipButton>();
         playerActionPoints.Initialize();
+
+        gameSpeedButton = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/GameSpeed", Vector2.zero, anchorBottomLeft).GetComponent<GameSpeedButton>();
+        gameSpeedButton.Initialize();
+
         wizard = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
         wizardAnimController = wizard.GetComponent<Animator>();
 

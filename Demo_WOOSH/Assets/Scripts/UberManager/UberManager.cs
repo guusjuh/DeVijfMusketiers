@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class UberManager : MonoBehaviour { 
+public class UberManager : MonoBehaviour {
 
     public enum GameStates {
         LevelSelection = 0,
@@ -31,7 +31,7 @@ public class UberManager : MonoBehaviour {
 
 #if UNITY_EDITOR
     private LevelEditor levelEditor;
-    public LevelEditor LevelEditor { get { return levelEditor;  } }
+    public LevelEditor LevelEditor { get { return levelEditor; } }
 #endif
 
     private Dictionary<GameStates, StateManager> stateManagers = new Dictionary<GameStates, StateManager>();
@@ -60,7 +60,7 @@ public class UberManager : MonoBehaviour {
     private SoundManager soundManager = new SoundManager();
     public SoundManager SoundManager { get { return soundManager; } }
 
-   //TODO: r/w from/to XML file
+    //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
     public PlayerData PlayerData { get { return playerData; } }
 
@@ -74,6 +74,17 @@ public class UberManager : MonoBehaviour {
     public TutorialManager TutorialManager { get { return tutorialManager; } }
 
     public GUIStyle myStyle;
+
+    private float[] possSpeeds = new float[] { 1.0f, 1.5f, 2.0f}; 
+    private int gameSpeed = 1;
+    public int GameSpeed { get { return gameSpeed; } set { gameSpeed = value; } }
+    public void AdjustGameSpeed()
+    {
+        gameSpeed++;
+        if (gameSpeed > 3) gameSpeed = 1;
+
+        Time.timeScale = possSpeeds[gameSpeed-1];
+    }
 
     public void Awake() {
         doingSetup = true;
@@ -130,6 +141,9 @@ public class UberManager : MonoBehaviour {
             tutorialManager = new TutorialManager();
             tutorialManager.Initialize();
         }
+
+        gameSpeed = SavedPlayerData.Instance.gameSpeed;
+        Time.timeScale = possSpeeds[gameSpeed-1];
 
         stateManagers.Add(GameStates.InGame, new GameManager());
         stateManagers.Add(GameStates.PostGame, new PostGameManager());

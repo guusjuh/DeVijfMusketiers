@@ -20,6 +20,8 @@ public class SavedPlayerData
     [SerializeField] public bool musicOn;
     [SerializeField] public bool fxOn;
 
+    [SerializeField] public int gameSpeed = 1; 
+
     public void Initialize()
     {
         Instance = this;
@@ -105,6 +107,9 @@ public class SavedPlayerData
         // music & sounds
         UberManager.Instance.SoundManager.MusicOn = musicOn;
         UberManager.Instance.SoundManager.FXOn = fxOn;
+
+        // in-game speed
+        UberManager.Instance.GameSpeed = gameSpeed;
     }
 
     public void UpdateSaved()
@@ -148,6 +153,9 @@ public class SavedPlayerData
         // music & sounds
         musicOn = UberManager.Instance.SoundManager.MusicOn;
         fxOn = UberManager.Instance.SoundManager.FXOn;
+
+        // game speed
+        gameSpeed = UberManager.Instance.GameSpeed;
     }
 
     public static SavedPlayerData InitialData()
@@ -163,6 +171,7 @@ public class SavedPlayerData
         spd.activeContractsPerLevel = new List<Contract>[9];
         spd.musicOn = true;
         spd.fxOn = true;
+        spd.gameSpeed = 1;
 
         return spd;
     }
