@@ -26,12 +26,12 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: e88122efb5c61ab18fa7650819ebf3cc
+      Hash: 6d55e63d73bc82ac28a3f9bc82e597e3
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: e88122efb5c61ab18fa7650819ebf3cc
-    totalSpriteSurfaceArea: 11974940
+    hashString: 6d55e63d73bc82ac28a3f9bc82e597e3
+    totalSpriteSurfaceArea: 12012940
     packables:
     - {fileID: 102900000, guid: 04fa940e28c0b78438ee6b1da4883985, type: 3}
     - {fileID: 102900000, guid: 8d86e549eac887343a2ca4cb359f4b87, type: 3}
@@ -112,6 +112,7 @@ SpriteAtlas:
     - 919bda49790501d40b23d6ff25ffb23f: 21300000
     - 135173bbb2fafa04c8f5da4a77329e94: 21300000
     - 9902cd1eedc400b468dcab74885709a3: 21300000
+    - 0d548f875ca97784e8ac76e7de8cbf31: 21300000
     - 774b1b514665feb4ea74ea5071df9a9d: 21300000
     - 2d851d678fd2359428777348c6d15789: 21300000
     - 0e89b28577200b24484b1639c2d7dbc5: 21300000
@@ -219,6 +220,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 919bda49790501d40b23d6ff25ffb23f, type: 3}
   - {fileID: 21300000, guid: 135173bbb2fafa04c8f5da4a77329e94, type: 3}
   - {fileID: 21300000, guid: 9902cd1eedc400b468dcab74885709a3, type: 3}
+  - {fileID: 21300000, guid: 0d548f875ca97784e8ac76e7de8cbf31, type: 3}
   - {fileID: 21300000, guid: 774b1b514665feb4ea74ea5071df9a9d, type: 3}
   - {fileID: 21300000, guid: 2d851d678fd2359428777348c6d15789, type: 3}
   - {fileID: 21300000, guid: 0e89b28577200b24484b1639c2d7dbc5, type: 3}
@@ -325,6 +327,7 @@ SpriteAtlas:
   - PriestBlue
   - Off
   - On
+  - BackgroundBar
   - TextBox
   - Sound
   - Music

@@ -26,12 +26,12 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: 9ba4ce8e1b48a6a2e6e32bc6271a4416
+      Hash: 3e82787cb5a0cb7c613ffab127a1f28d
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: 9ba4ce8e1b48a6a2e6e32bc6271a4416
-    totalSpriteSurfaceArea: 4854056
+    hashString: 3e82787cb5a0cb7c613ffab127a1f28d
+    totalSpriteSurfaceArea: 4892056
     packables:
     - {fileID: 102900000, guid: e5e5fe5d28c12a149aa0721f60d1159c, type: 3}
     - {fileID: 102900000, guid: 7661a95d84e8fd142a4d936d16297777, type: 3}
@@ -57,6 +57,7 @@ SpriteAtlas:
     - 1a9fcb01192e6e946bfeec05da40470e: 21300000
     - 135173bbb2fafa04c8f5da4a77329e94: 21300000
     - 9902cd1eedc400b468dcab74885709a3: 21300000
+    - 0d548f875ca97784e8ac76e7de8cbf31: 21300000
     - 2d851d678fd2359428777348c6d15789: 21300000
     - 0e89b28577200b24484b1639c2d7dbc5: 21300000
     - f71f01f88c96b194ea4ce488db59af4a: 21300000
@@ -85,6 +86,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 1a9fcb01192e6e946bfeec05da40470e, type: 3}
   - {fileID: 21300000, guid: 135173bbb2fafa04c8f5da4a77329e94, type: 3}
   - {fileID: 21300000, guid: 9902cd1eedc400b468dcab74885709a3, type: 3}
+  - {fileID: 21300000, guid: 0d548f875ca97784e8ac76e7de8cbf31, type: 3}
   - {fileID: 21300000, guid: 2d851d678fd2359428777348c6d15789, type: 3}
   - {fileID: 21300000, guid: 0e89b28577200b24484b1639c2d7dbc5, type: 3}
   - {fileID: 21300000, guid: f71f01f88c96b194ea4ce488db59af4a, type: 3}
@@ -112,6 +114,7 @@ SpriteAtlas:
   - tutorial
   - Off
   - On
+  - Casual Game GUI_Progress Bar - Empty
   - Sound
   - Music
   - Settings

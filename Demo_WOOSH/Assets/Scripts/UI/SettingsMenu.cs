@@ -5,34 +5,17 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
-    private Sprite onSprite;
-    private Sprite offSprite;
-
-    private Image musicStatusImg;
-    private Image fxStatusImg;
-
     private GameObject creditsPanel;
 
     public void Initialize()
     {
-        onSprite = Resources.Load<Sprite>("Sprites/UI/Settings/On");
-        offSprite = Resources.Load<Sprite>("Sprites/UI/Settings/Off");
+        Slider musicSlider =
+            transform.Find("SettingsMenu").Find("SettingsGrid").Find("Music").Find("Slider").GetComponent<Slider>();
+        musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
 
-        Button musicButton =
-            transform.Find("SettingsMenu").Find("SettingsGrid").Find("Music").Find("Button").GetComponent<Button>();
-        musicButton.onClick.AddListener(SwitchMusic);
-        musicStatusImg = musicButton.transform.Find("Image").GetComponent<Image>();
-        musicStatusImg.sprite = UberManager.Instance.SoundManager.MusicOn ? onSprite : offSprite;
-
-        Button fxButton =
-            transform.Find("SettingsMenu")
-                .Find("SettingsGrid")
-                .Find("Soundeffects")
-                .Find("Button")
-                .GetComponent<Button>();
-        fxButton.onClick.AddListener(SwitchSoundeffects);
-        fxStatusImg = fxButton.transform.Find("Image").GetComponent<Image>();
-        fxStatusImg.sprite = UberManager.Instance.SoundManager.FXOn ? onSprite : offSprite;
+        Slider fxSlider =
+            transform.Find("SettingsMenu").Find("SettingsGrid").Find("Soundeffects").Find("Slider").GetComponent<Slider>();
+        fxSlider.onValueChanged.AddListener(ChangeFxVolume);
 
         creditsPanel = transform.Find("CreditsPanel").gameObject;
 
@@ -53,16 +36,14 @@ public class SettingsMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SwitchMusic()
+    public void ChangeMusicVolume(float real)
     {
-        UberManager.Instance.SoundManager.MusicOn = !UberManager.Instance.SoundManager.MusicOn;
-        musicStatusImg.sprite = UberManager.Instance.SoundManager.MusicOn ? onSprite : offSprite;
+        UberManager.Instance.SoundManager.MusicVolume = real;
     }
 
-    public void SwitchSoundeffects()
+    public void ChangeFxVolume(float real)
     {
-        UberManager.Instance.SoundManager.FXOn = !UberManager.Instance.SoundManager.FXOn;
-        fxStatusImg.sprite = UberManager.Instance.SoundManager.FXOn ? onSprite : offSprite;
+        UberManager.Instance.SoundManager.FXVolume = real;
     }
 
     public void OpenCredits()
