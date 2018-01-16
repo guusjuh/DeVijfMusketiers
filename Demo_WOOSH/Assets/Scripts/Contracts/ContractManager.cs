@@ -65,7 +65,9 @@ public class ContractManager
 
     public void UpdateContractTimer()
     {
+        contractRefreshDate = contractRefreshDate.Subtract((new TimeSpan(0, 0, Mathf.RoundToInt(60 * Time.deltaTime))));
         UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SetTimer(contractRefreshDate.Subtract(System.DateTime.Now));
+        
         if (contractRefreshDate <= System.DateTime.Now)
         {
             RefreshContracts();

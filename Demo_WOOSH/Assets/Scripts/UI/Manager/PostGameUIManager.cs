@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class PostGameUIManager : SubUIManager
 {
-    private RectTransform anchorCenter;
-    private RectTransform anchorTopMid;
-    private RectTransform anchorBottomRight;
     public RectTransform AnchorCenter { get { return anchorCenter;} }
 
     private PostGameInfoPanel postGameInfoPanel;
@@ -22,10 +19,8 @@ public class PostGameUIManager : SubUIManager
 
     protected override void Initialize()
     {
-        canvas = GameObject.FindGameObjectWithTag("PostGameCanvas").GetComponent<Canvas>();
-        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
-        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
+        canvasName = "PostGameCanvas";
+        base.Initialize();
 
         postGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PostGame/PostGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PostGameInfoPanel>();
         postGameInfoPanel.Initialize();

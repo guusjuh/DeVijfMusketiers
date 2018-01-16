@@ -57,6 +57,12 @@ public class PlayerAPSkipButton : MonoBehaviour {
         rotateCoroutine = null;
     }
 
+    public void Clear()
+    {
+        gameObject.SetActive(false);
+        SetAPText();
+    }
+
     public void OnClick()
     {
         //only react in the player turn

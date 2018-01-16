@@ -5,8 +5,17 @@ using UnityEngine.UI;
 
 public class SubUIManager
 {
+    protected string canvasName = "Canvas";
     protected Canvas canvas;
+    protected RectTransform anchorCenter;
+    protected RectTransform anchorTopCenter;
+    protected RectTransform anchorTopRight;
+    protected RectTransform anchorBottomCenter;
+    protected RectTransform anchorBottomRight;
+    protected RectTransform anchorBottomLeft;
+
     public Canvas Canvas { get { return canvas; } }
+
     protected bool first = true;
 
     protected RectTransform noClickPanel;
@@ -35,7 +44,33 @@ public class SubUIManager
         canvas.gameObject.SetActive(true);
     }
 
-    protected virtual void Initialize() { }
+    protected virtual void Initialize()
+    {
+        SetUpAnchors();
+    }
+
+    private void SetUpAnchors()
+    {
+        canvas = GameObject.FindGameObjectWithTag(canvasName).GetComponent<Canvas>();
+        anchorCenter = GetAnchor("Anchor_Center");
+        anchorTopCenter = GetAnchor("Anchor_TopCenter");
+        anchorTopRight = GetAnchor("Anchor_TopRight");
+        anchorBottomCenter = GetAnchor("Anchor_BottomCenter");
+        anchorBottomRight = GetAnchor("Anchor_BottomRight");
+        anchorBottomLeft = GetAnchor("Anchor_BottomLeft");
+        int i = 0;
+    }
+
+    private RectTransform GetAnchor(string anchorName)
+    {
+        Transform gO = canvas.gameObject.transform.Find(anchorName);
+        if (gO != null)
+        {
+            return gO.GetComponent<RectTransform>();
+        }
+        return null;
+    }
+
     protected virtual void InitializeTutorial() { }
     protected virtual void InitializeInGame() { }
 

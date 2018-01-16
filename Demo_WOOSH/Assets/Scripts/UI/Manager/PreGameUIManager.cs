@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PreGameUIManager : SubUIManager {
-    private RectTransform anchorCenter;
-    private RectTransform anchorTopRight;
-    private RectTransform anchorBottomRight;
-
     private PreGameInfoPanel preGameInfoPanel;
     public PreGameInfoPanel PreGameInfoPanel { get { return preGameInfoPanel; } }
 
@@ -28,10 +24,8 @@ public class PreGameUIManager : SubUIManager {
 
     protected override void Initialize()
     {
-        canvas = GameObject.FindGameObjectWithTag("PreGameCanvas").GetComponent<Canvas>();
-        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorTopRight = canvas.gameObject.transform.Find("Anchor_TopRight").GetComponent<RectTransform>();
-        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
+        canvasName = "PreGameCanvas";
+        base.Initialize();
 
         preGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/PreGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PreGameInfoPanel>();
         preGameInfoPanel.Initialize();
