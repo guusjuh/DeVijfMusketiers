@@ -60,6 +60,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
     public void Clear()
     {
         gameObject.SetActive(false);
+        //set AP text to 0
         SetAPText();
     }
 

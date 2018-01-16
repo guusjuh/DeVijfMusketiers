@@ -58,7 +58,6 @@ public class SubUIManager
         anchorBottomCenter = GetAnchor("Anchor_BottomCenter");
         anchorBottomRight = GetAnchor("Anchor_BottomRight");
         anchorBottomLeft = GetAnchor("Anchor_BottomLeft");
-        int i = 0;
     }
 
     private RectTransform GetAnchor(string anchorName)

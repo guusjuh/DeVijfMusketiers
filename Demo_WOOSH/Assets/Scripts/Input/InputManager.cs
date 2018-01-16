@@ -171,7 +171,7 @@ public class InputManager
         bool onlyFloatingIndicatorsClicked = (results.Count > 0 &&
                                               results.FindAll(r => r.gameObject.transform.tag == "FloatingIndicator").Count == results.Count);
         bool closeSkipButton = (results.FindAll(r => r.gameObject.transform.tag == "APSkip-indicator")).Count == 0;
-        if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerActionPoints.CloseSkipButton();
+        if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerApIndicator.CloseSkipButton();
 
         return !(noUIClicked || onlyStatusIconClicked || onlyFloatingIndicatorsClicked);
     }
