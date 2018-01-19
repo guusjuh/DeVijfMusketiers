@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class ActiveContract : ContractButton
 {
+    private static Color nonActiveColor = new Color(1.0f, 1.0f, 1.0f, 0.25f);
+    private static Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
     private Image iconImage;
     private Sprite emptySprite;
-    private Color nonActiveColor = new Color(1.0f, 1.0f, 1.0f, 0.25f);
-    private Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
     private bool active = false;
 
     public bool Active
@@ -46,7 +48,7 @@ public class ActiveContract : ContractButton
 
     public override void OnClick()
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         // deselect on click
         if (active)
         {

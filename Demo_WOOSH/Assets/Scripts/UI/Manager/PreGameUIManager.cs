@@ -8,9 +8,6 @@ public class PreGameUIManager : SubUIManager {
     public PreGameInfoPanel PreGameInfoPanel { get { return preGameInfoPanel; } }
 
     private VersusPanel versusPanel;
-    private const float TOTAL_VS_TIMER = 3.0f;
-    private float versusPanelTimer = 0.0f;
-    public void SetVersusPanelTimer() { versusPanelTimer = TOTAL_VS_TIMER; }
 
     private GameObject startButton;
     public RectTransform StartButton { get { return startButton.GetComponent<RectTransform>(); } }
@@ -36,20 +33,13 @@ public class PreGameUIManager : SubUIManager {
         startButton.GetComponentInChildren<Text>().text = "Start level";
 
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/BackButton", new Vector2(75, -75), anchorTopRight);
+        backButton.GetComponent<Button>().onClick.AddListener(BackToLevelSelect);
 
         GameObject background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/PreGame/BackgroundPreGame"), Vector2.zero, canvas.transform);
 
         background.transform.SetAsFirstSibling();
 
-        if (!UberManager.Instance.Tutorial && !initializedInGame)
-        {
-            InitializeInGame();
-            initializedInGame = true;
-        }
-        else
-        {
-            InitializeTutorial();
-        }
+        FinishInitialize();
     }
 
     protected override void InitializeTutorial()
@@ -62,8 +52,9 @@ public class PreGameUIManager : SubUIManager {
 
         backButton.gameObject.SetActive(false);
 
-        startButton.GetComponent<Button>().onClick.AddListener(StartGame);
-        startButton.GetComponent<Button>().interactable = false;
+        Button startButtonComponent = startButton.GetComponent<Button>();
+        startButtonComponent.onClick.AddListener(StartGame);
+        startButtonComponent.interactable = false;
 
         guidanceArrow = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceArrow", Vector2.zero, canvas.transform);
         guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
@@ -74,9 +65,10 @@ public class PreGameUIManager : SubUIManager {
         versusPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/VersusPanel", Vector2.zero, canvas.transform).GetComponent<VersusPanel>();
         versusPanel.Initialize();
 
-        startButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        startButton.GetComponent<Button>().onClick.AddListener(versusPanel.Activate);
-        startButton.GetComponent<Button>().interactable = false;
+        Button startButtonComponent = startButton.GetComponent<Button>();
+        startButtonComponent.onClick.RemoveAllListeners();
+        startButtonComponent.onClick.AddListener(versusPanel.Activate);
+        startButtonComponent.interactable = false;
 
         backButton.gameObject.SetActive(true);
     }
@@ -118,7 +110,6 @@ public class PreGameUIManager : SubUIManager {
     public override void Clear()
     {
         preGameInfoPanel.Clear();
-        versusPanelTimer = -1.0f;
 
         CanStart(false);
 
@@ -139,7 +130,7 @@ public class PreGameUIManager : SubUIManager {
 
         preGameInfoPanel.GetSelectedContracts().HandleAction(c => c.SetActive(true));
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.InGame);
     }
 
@@ -147,14 +138,12 @@ public class PreGameUIManager : SubUIManager {
     {
         base.Update();
 
-        if (versusPanelTimer > 0.0f)
-        {
-            versusPanelTimer -= Time.deltaTime;
+        versusPanel.UpdateTimer();
+    }
 
-            if (versusPanelTimer <= 0.0f)
-            {
-                versusPanel.Deactivate();
-            }
-        }
+    public void BackToLevelSelect()
+    {
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
     }
 }

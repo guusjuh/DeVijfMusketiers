@@ -14,14 +14,9 @@ public class LevelSelectParent : MonoBehaviour
 
     [SerializeField]private int levelID;
     public int LevelID { get { return levelID; } }
-    private Path path;
-    private int levelInPathId;
 
     public void Initialize(Path path, int levelInPathId)
     {
-        this.path = path;
-        this.levelInPathId = levelInPathId;
-
         levelSelectButton = transform.Find("Button").GetComponent<LevelSelectButton>();
         levelSelectButton.Initialize(levelID);
 
@@ -29,38 +24,11 @@ public class LevelSelectParent : MonoBehaviour
         gridParent = transform.Find("GridParent").GetComponent<GridLayoutGroup>();
 
         BuildGrid();
-        CheckActiveForButton();
     }
 
     public void Restart()
     {
         BuildGrid();
-        CheckActiveForButton();
-    }
-
-    public void CheckActiveForButton()
-    {
-        // check for being able to play this level:
-        // if the next level has too many humans, they cant travel to it
-
-        // if there is a next level
-        // check for the amount of humans in the next level plus the humans traveling from this level
-        // being smaller than 7
-        /* nextLevelExists = path.hasNextLevel(levelInPathId);
-        bool spaceInNextLevel = ContentManager.Instance.LevelData(levelID).amountOfHumans +
-                                UberManager.Instance.ContractManager.AmountOfContracts(path.GetNextLevelID(levelInPathId)) 
-                                <= GameManager.AMOUNT_HUMANS_PER_LEVEL;
-        bool hasEnoughHumans = UberManager.Instance.ContractManager.AmountOfContracts(levelID) >=
-                               ContentManager.Instance.LevelData(levelID).amountOfHumans;
-
-        if ((nextLevelExists && !spaceInNextLevel) || !hasEnoughHumans)
-        {
-            levelSelectButton.GetComponent<Button>().interactable = false;
-        }
-        else
-        {
-            levelSelectButton.GetComponent<Button>().interactable = true;
-        }*/
     }
 
     public void Clear()

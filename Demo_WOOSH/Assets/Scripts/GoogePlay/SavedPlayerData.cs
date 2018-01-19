@@ -34,8 +34,8 @@ public class SavedPlayerData
     {
         if (tutorialFinsihed)
         {
-            if (UberManager.Instance.SoundManager.MusicOn != musicOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchMusic();
-            if (UberManager.Instance.SoundManager.FXOn != fxOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchSoundeffects();
+            if (SoundManager.MusicOn != musicOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchMusic();
+            if (SoundManager.FXOn != fxOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchSoundeffects();
         }
 
         UpdateIngame();
@@ -103,8 +103,8 @@ public class SavedPlayerData
         }
 
         // music & sounds
-        UberManager.Instance.SoundManager.MusicOn = musicOn;
-        UberManager.Instance.SoundManager.FXOn = fxOn;
+        SoundManager.MusicOn = musicOn;
+        SoundManager.FXOn = fxOn;
     }
 
     public void UpdateSaved()
@@ -146,8 +146,8 @@ public class SavedPlayerData
         activeContractsPerLevel = tempActiveContractsPerLevel;
 
         // music & sounds
-        musicOn = UberManager.Instance.SoundManager.MusicOn;
-        fxOn = UberManager.Instance.SoundManager.FXOn;
+        musicOn = SoundManager.MusicOn;
+        fxOn = SoundManager.FXOn;
     }
 
     public static SavedPlayerData InitialData()

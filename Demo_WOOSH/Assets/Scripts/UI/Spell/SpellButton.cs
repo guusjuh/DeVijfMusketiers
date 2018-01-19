@@ -54,7 +54,7 @@ public class SpellButton : MonoBehaviour
 
     public virtual IEnumerator CastSpell()
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(type);
+        SoundManager.PlaySoundEffect(type);
 
         yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
                 GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));

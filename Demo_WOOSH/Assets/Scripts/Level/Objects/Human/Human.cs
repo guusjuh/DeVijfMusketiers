@@ -227,7 +227,7 @@ public class Human : MovableObject {
 
         contractRef.Die();
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
 
         GameManager.Instance.LevelManager.RemoveObject(this);
 
@@ -236,7 +236,7 @@ public class Human : MovableObject {
 
     public override void DeadByGap()
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
         contractRef.Die();
         base.DeadByGap();
     }

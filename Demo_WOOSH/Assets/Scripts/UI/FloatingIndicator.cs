@@ -14,7 +14,6 @@ public class FloatingIndicator
 
     private RectTransform parentGO;
 
-    // The text element. 
     private Text floatingText;
 
     // The time the number will be shown. 

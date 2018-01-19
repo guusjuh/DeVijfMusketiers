@@ -54,7 +54,7 @@ public class City : MonoBehaviour {
             bttn.interactable = true;
             bttn.onClick.AddListener(delegate
             {
-                UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(true, this, destination);
+                UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Activate(this, destination);
             });
         }
         else

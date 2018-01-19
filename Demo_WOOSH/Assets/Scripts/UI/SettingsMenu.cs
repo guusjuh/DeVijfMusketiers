@@ -18,21 +18,17 @@ public class SettingsMenu : MonoBehaviour
         onSprite = Resources.Load<Sprite>("Sprites/UI/Settings/On");
         offSprite = Resources.Load<Sprite>("Sprites/UI/Settings/Off");
 
-        Button musicButton =
-            transform.Find("SettingsMenu").Find("SettingsGrid").Find("Music").Find("Button").GetComponent<Button>();
+        Transform settingsGrid = transform.Find("SettingsMenu").Find("SettingsGrid");
+
+        Button musicButton = settingsGrid.Find("Music").Find("Button").GetComponent<Button>();
         musicButton.onClick.AddListener(SwitchMusic);
         musicStatusImg = musicButton.transform.Find("Image").GetComponent<Image>();
-        musicStatusImg.sprite = UberManager.Instance.SoundManager.MusicOn ? onSprite : offSprite;
+        musicStatusImg.sprite = SoundManager.MusicOn ? onSprite : offSprite;
 
-        Button fxButton =
-            transform.Find("SettingsMenu")
-                .Find("SettingsGrid")
-                .Find("Soundeffects")
-                .Find("Button")
-                .GetComponent<Button>();
+        Button fxButton = settingsGrid.Find("Soundeffects").Find("Button").GetComponent<Button>();
         fxButton.onClick.AddListener(SwitchSoundeffects);
         fxStatusImg = fxButton.transform.Find("Image").GetComponent<Image>();
-        fxStatusImg.sprite = UberManager.Instance.SoundManager.FXOn ? onSprite : offSprite;
+        fxStatusImg.sprite = SoundManager.FXOn ? onSprite : offSprite;
 
         creditsPanel = transform.Find("CreditsPanel").gameObject;
 
@@ -42,27 +38,27 @@ public class SettingsMenu : MonoBehaviour
     public void Activate()
     {
         gameObject.SetActive(true);
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     public void Deactivate()
     {
         GooglePlayScript.Instance.SaveData();
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         gameObject.SetActive(false);
     }
 
     public void SwitchMusic()
     {
-        UberManager.Instance.SoundManager.MusicOn = !UberManager.Instance.SoundManager.MusicOn;
-        musicStatusImg.sprite = UberManager.Instance.SoundManager.MusicOn ? onSprite : offSprite;
+        SoundManager.MusicOn = !SoundManager.MusicOn;
+        musicStatusImg.sprite = SoundManager.MusicOn ? onSprite : offSprite;
     }
 
     public void SwitchSoundeffects()
     {
-        UberManager.Instance.SoundManager.FXOn = !UberManager.Instance.SoundManager.FXOn;
-        fxStatusImg.sprite = UberManager.Instance.SoundManager.FXOn ? onSprite : offSprite;
+        SoundManager.FXOn = !SoundManager.FXOn;
+        fxStatusImg.sprite = SoundManager.FXOn ? onSprite : offSprite;
     }
 
     public void OpenCredits()

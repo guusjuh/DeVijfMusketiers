@@ -70,23 +70,18 @@ public class SelectContractWindow
         return (this.city == city);
     }
 
-    public void Activate(bool value, City city, Destination destination)
+    public void Activate(City city, Destination destination)
     {
-        active = value;
-        if (value)
-        {
-            this.city = city;
-            this.destination = destination;
-            ShowContracts();
-            if (city.MyContractState != City.ContractState.Nothing) city.MyContractState = City.ContractState.Seen;
-            SetInteractable();
-        }
-        else
-        {
-            this.city = null;
-        }
-        selectionWindow.transform.parent.gameObject.SetActive(value);
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        active = true;
+
+        this.city = city;
+        this.destination = destination;
+        ShowContracts();
+        if (city.MyContractState != City.ContractState.Nothing) city.MyContractState = City.ContractState.Seen;
+        SetInteractable();
+
+        selectionWindow.transform.parent.gameObject.SetActive(true);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     private void Initialize()
@@ -139,11 +134,13 @@ public class SelectContractWindow
 
     public void Deactivate()
     {
-        ClearContracts();
         active = false;
+
         city = null;
+        ClearContracts();
+
         selectionWindow.transform.parent.gameObject.SetActive(false);
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     public void SetTimer(TimeSpan remainingTime)

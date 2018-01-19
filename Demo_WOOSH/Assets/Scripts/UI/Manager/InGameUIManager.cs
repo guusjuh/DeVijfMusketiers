@@ -60,15 +60,7 @@ public class InGameUIManager : SubUIManager {
         spellColors.Add(GameManager.SpellType.FrostBite, Color.blue);
         spellColors.Add(GameManager.SpellType.Teleport, Color.magenta);
 
-        if (!UberManager.Instance.Tutorial && !initializedInGame)
-        {
-            InitializeInGame();
-            initializedInGame = true;
-        }
-        else
-        {
-            InitializeTutorial();
-        }
+        FinishInitialize();
 
         if (UberManager.Instance.DevelopersMode) Pause(true);
     }
