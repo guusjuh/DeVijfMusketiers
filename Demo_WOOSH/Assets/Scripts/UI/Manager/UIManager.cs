@@ -63,6 +63,20 @@ public class UIManager
         return go;
     }
 
+    public T CreateAndInitUIElement<T>(String prefabPath, Vector2 position, Transform parent) where T : IUIElement
+    {
+        GameObject go = GameObject.Instantiate(Resources.Load<GameObject>(prefabPath), Vector3.zero, Quaternion.identity, parent);
+
+        if (CheckForRTError(go)) return null;
+
+        go.GetComponent<RectTransform>().anchoredPosition = position;
+
+        T component = go.GetComponent<T>();
+        component.Initialize();
+
+        return component;
+    }
+
     public GameObject CreateUIElement(GameObject prefab, Vector2 position, Transform parent)
     {
         GameObject go = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
@@ -72,6 +86,20 @@ public class UIManager
         go.GetComponent<RectTransform>().anchoredPosition = position;
 
         return go;
+    }
+
+    public T CreateAndInitUIElement<T>(GameObject prefab, Vector2 position, Transform parent) where T : IUIElement
+    {
+        GameObject go = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
+
+        if (CheckForRTError(go)) return null;
+
+        go.GetComponent<RectTransform>().anchoredPosition = position;
+
+        T component = go.GetComponent<T>();
+        component.Initialize();
+
+        return component;
     }
 
     public GameObject CreateUIElement(Vector2 position, Vector2 sizeDelta, Transform parent)
@@ -84,6 +112,21 @@ public class UIManager
         go.GetComponent<RectTransform>().sizeDelta = sizeDelta;
 
         return go;
+    }
+
+    public T CreateUIElement<T>(Vector2 position, Vector2 sizeDelta, Transform parent) where T : IUIElement
+    {
+        GameObject go = GameObject.Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, parent);
+
+        go.AddComponent<RectTransform>();
+
+        go.GetComponent<RectTransform>().anchoredPosition = position;
+        go.GetComponent<RectTransform>().sizeDelta = sizeDelta;
+
+        T component = go.GetComponent<T>();
+        component.Initialize();
+
+        return component;
     }
 
     private bool CheckForRTError(GameObject go)

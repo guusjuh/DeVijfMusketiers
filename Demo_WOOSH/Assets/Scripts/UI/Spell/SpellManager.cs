@@ -11,12 +11,7 @@ public class SpellManager {
         Attack = 0,
         FrostBite,
         Fireball,
-        Teleport,
-        test1,
-        test2,
-        test3,
-        test4,
-        test5
+        Teleport
     }
 
     public enum SpellTarget
@@ -42,18 +37,22 @@ public class SpellManager {
     private ISpell activeInDirectSpell = null;
 
     public Coordinate SelectedTile { get {return selectedTile;} }
-    public SpellType CastingSpell { get { return castingSpell; } set { Debug.Log("Cassting spell: " + value); castingSpell = value; } }
+    public SpellType CastingSpell { get { return castingSpell; }
+        set {
+            Debug.Log("Cassting spell: " + value); castingSpell = value; } }
     public bool SpellButtonsActive { get { return spellButtonsActive; } }
     public WorldObject SelectedTarget { get { return selectedTarget; } }
 
     public void Initialize()
     {
+        // No spells will be hard to play!
         if (spellProxies.Count <= 0)
         {
             Debug.LogWarning("No spells have been found!");
             return;
         }
 
+        // Create spell for each spell proxy.
         for (int i = 0; i < spellProxies.Count; i++)
         {
             spells.Add(factory.CreateSpell(spellProxies[i]));
@@ -75,6 +74,13 @@ public class SpellManager {
         //--
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
+
+
+        // Create spell visual
+        /*spellVisual = UIManager.Instance
+            .CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, UberManager.Instance.UiManager.InGameUI.AnchorCenter)
+            .GetComponent<SpellVisual>();*/
+
         spellVisual.Initialize();
     }
 
@@ -126,6 +132,18 @@ public class SpellManager {
         spellButtons.Add(proxy.Type(), UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellButton/SpellButton", Vector2.zero, anchorCenter).GetComponent<SpellButton>());
         spellButtons.Get(proxy.Type()).Initialize(spell, proxy.Type(), proxy.Description(), proxy.SpellSprite(), proxy.Cooldown());
         spellButtons.Get(proxy.Type()).gameObject.SetActive(false);
+
+
+      /*  spellButtons.Add(
+            proxy.Type(), 
+            UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellButton/SpellButton", Vector2.zero, UberManager.Instance.UiManager.InGameUI.AnchorCenter).GetComponent<SpellButton>()
+        );
+
+        spellButtons.Get(proxy.Type())
+            .Initialize(spell, proxy.Type(), proxy.Description(), proxy.SpellSprite(), proxy.Cooldown());
+
+        spellButtons.Get(proxy.Type())
+            .gameObject.SetActive(false);*/
     }
 
     public void SetActiveIndirect(ISpell spell)

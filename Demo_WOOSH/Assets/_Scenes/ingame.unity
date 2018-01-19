@@ -237,6 +237,36 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].possibleTargets.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].possibleTargets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].possibleTargets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].possibleTargets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].possibleTargets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4102446570494016, guid: 0297a9676d7bc36409d4e133d72722b5, type: 2}
       propertyPath: m_LocalPosition.x
       value: 2.7880318
@@ -272,8 +302,332 @@ Prefab:
     - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
         type: 2}
       propertyPath: spellManager.spellProxies.Array.data[3].type
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].name
+      value: Test 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].description
+      value: '...'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].spellImage
+      value: 
+      objectReference: {fileID: 21300000, guid: e9ede286a5f7eea468e455834d4382e3,
+        type: 3}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].type
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].spellColor.r
+      value: 0.6137929
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].spellColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].spellColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].cost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].damage
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].hitChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].freezeTurns
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].freezeChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].range
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].possibleTargets.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[4].possibleTargets.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].name
+      value: Basic attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].spellImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 4fbbcd945eb3aac4fa55d7bccafa98d1,
+        type: 3}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].spellColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].spellColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].spellColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].damage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].freezeTurns
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].freezeChance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[0].possibleTargets.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].name
+      value: Frost bite
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].spellImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 177f0e96cc7057a479fad6a3e20fbd59,
+        type: 3}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].spellColor.r
+      value: 0.4638841
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].spellColor.g
+      value: 0.89480674
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].spellColor.b
+      value: 0.9558824
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].cost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].cooldown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].hitChance
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].fireDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].fireTurns
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].possibleTargets.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[1].possibleTargets.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].name
+      value: Fireball
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].spellColor.r
+      value: 0.8014706
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].spellColor.g
+      value: 0.17090183
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].spellColor.b
+      value: 0.17090183
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].cost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].cooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].damage
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].hitChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].fireDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].fireTurns
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[2].possibleTargets.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].name
+      value: Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].cooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].cost
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].fireDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].fireTurns
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].fireChance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].range
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].possibleTargets.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].possibleTargets.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].spellColor.r
+      value: 0.6137929
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].spellColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].spellColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216868348499290, guid: 0297a9676d7bc36409d4e133d72722b5,
+        type: 2}
+      propertyPath: spellManager.spellProxies.Array.data[3].spellImage
+      value: 
+      objectReference: {fileID: 21300000, guid: e9ede286a5f7eea468e455834d4382e3,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0297a9676d7bc36409d4e133d72722b5, type: 2}
   m_IsPrefabParent: 0

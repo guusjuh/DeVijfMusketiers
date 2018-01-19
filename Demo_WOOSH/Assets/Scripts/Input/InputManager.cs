@@ -23,7 +23,7 @@ public class InputManager
 
     public void CatchInput()
     {
-        Debug.Log("Input");
+        //Debug.Log("Input");
         if (CatchZoomInput()) return;
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
         {

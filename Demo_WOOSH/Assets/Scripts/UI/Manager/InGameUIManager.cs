@@ -39,12 +39,11 @@ public class InGameUIManager : SubUIManager {
         anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
         anchorBottomLeft = canvas.gameObject.transform.Find("Anchor_BottomLeft").GetComponent<RectTransform>();
 
-        enemyInfoUI = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/EnemyInfo", new Vector2(0.0f, -50.0f), anchorTopMid).GetComponent<EnemyInfoUI>();
-        enemyInfoUI.Initialize();
+        enemyInfoUI = UIManager.Instance.CreateAndInitUIElement<EnemyInfoUI>("Prefabs/UI/InGame/EnemyInfo", new Vector2(0.0f, -50.0f), anchorTopMid);
         enemyInfoUI.Clear();
 
-        playerActionPoints = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft).GetComponent<PlayerAPSkipButton>();
-        playerActionPoints.Initialize();
+        playerActionPoints = UIManager.Instance.CreateAndInitUIElement<PlayerAPSkipButton>("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft);
+
         wizard = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
         wizardAnimController = wizard.GetComponent<Animator>();
 
@@ -251,6 +250,4 @@ public class InGameUIManager : SubUIManager {
         if (wizard == null) return;
         wizardAnimController.SetTrigger("EnemyDied");
     }
-
-    
 }
