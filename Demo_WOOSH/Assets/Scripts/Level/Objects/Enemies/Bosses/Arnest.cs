@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Arnest : Enemy
 {
-    private GameObject heal;
-
     public override void Initialize(Coordinate startPos)
     {
         //set boss specific health
@@ -13,15 +11,12 @@ public class Arnest : Enemy
         hasSpecial = false;
         viewDistance = 3;
 
-        this.totalSpecialCooldown = 2;
+        totalSpecialCooldown = 2;
         type = SecContentType.Arnest;
-        this.specialCost = 1;
-        this.hasSpecial = true;
+        specialCost = 1;
+        hasSpecial = true;
 
-        this.SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyHeal");
-
-        //heal = transform.Find("Heal").gameObject;
-        //heal.SetActive(false);
+        SpellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyHeal");
 
         base.Initialize(startPos);
     }
@@ -50,7 +45,7 @@ public class Arnest : Enemy
             Heal(20);//heal a certain amount
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
 
-            StartCoroutine(HealVisual());
+            UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.ArnestSuperHealParticle, transform.position, transform.rotation);
 
             return true;
         }
@@ -60,16 +55,5 @@ public class Arnest : Enemy
     public override bool IsWalking()
     {
         return true;
-    }
-
-    protected IEnumerator HealVisual()
-    {
-        //heal.SetActive(true);
-        heal = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.ArnestSuperHealParticle, transform.position, transform.rotation);
-        yield return new WaitForSeconds(0.5f);
-
-        //heal.SetActive(false);
-
-        yield break;
     }
 }

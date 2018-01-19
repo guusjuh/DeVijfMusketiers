@@ -5,19 +5,19 @@ using UnityEngine.UI;
 
 public class ParticleBeam : MonoBehaviour {
 
-    private float speed = 20f;
-    private Vector2 collectedPos;
+    private const float speed = 20f;
+    private Vector2 targetPos;
     private bool isOn = false;
-    public GameObject canvasElement;
-    public GameObject staff;
-    private Vector2 staffWorldPos;
 
     public void Initialize(Vector3 pos)
     {
         gameObject.SetActive(true);
-        FindStaffPosition();
-        transform.position = staffWorldPos;
-        collectedPos = pos;
+
+        Vector2 staffPos = Camera.main.ScreenToWorldPoint(UberManager.Instance.UiManager.InGameUI.AnchorBottomRight.transform.GetChild(0).GetChild(1).transform.position);
+        transform.position = staffPos;
+
+        targetPos = pos;
+
         isOn = true;
     }
 
@@ -31,22 +31,14 @@ public class ParticleBeam : MonoBehaviour {
         if (isOn)
         {
             float step = speed * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, collectedPos, step);
+            transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
         }
 
-        if((collectedPos - (Vector2)transform.position).magnitude < 0.1f && isOn)
+        if((targetPos - (Vector2)transform.position).magnitude < 0.1f && isOn)
         {
             transform.position = Vector3.zero;
             isOn = false;
             Reset();
         }
 	}    
-
-    public void FindStaffPosition()
-    {
-        canvasElement = GameObject.Find("InGameCanvas/Anchor_BottomRight");
-        staff = canvasElement.transform.GetChild(0).GetChild(1).gameObject;
-        staffWorldPos = Camera.main.ScreenToWorldPoint(staff.transform.position);
-        Debug.Log(staffWorldPos);
-    }
 }

@@ -221,7 +221,7 @@ public class Human : MovableObject {
     {
         canBeTargeted = false;
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/Particles/BloodParticle"), transform.position, Quaternion.identity);
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.BloodParticle, transform.position, transform.rotation);
 
         anim.SetBool(DIE_ANIM, true);
 

@@ -56,8 +56,7 @@ public class SpellButton : MonoBehaviour
     {
         UberManager.Instance.SoundManager.PlaySoundEffect(type);
 
-        yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
-                GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
+        yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type, GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
 
         if (UberManager.Instance.Tutorial)
         {
@@ -74,8 +73,7 @@ public class SpellButton : MonoBehaviour
 
         UIManager.Instance.InGameUI.HideSpellButtons();
 
-        UberManager.Instance.ParticleManager.CreateBeam(type).Initialize(target.transform.position);
-        UberManager.Instance.ParticleManager.PlayParticle(type, target.transform.position, target.transform.rotation);
+        UberManager.Instance.ParticleManager.PlaySpellParticle(type, target.transform.position, target.transform.rotation);
 
         yield return null;
     }

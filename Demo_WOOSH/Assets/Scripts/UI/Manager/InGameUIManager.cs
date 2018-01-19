@@ -8,6 +8,8 @@ public class InGameUIManager : SubUIManager {
     public RectTransform AnchorCenter { get { return anchorCenter; } }
     private RectTransform anchorTopMid;
     private RectTransform anchorBottomRight;
+    public RectTransform AnchorBottomRight { get { return anchorBottomRight; } }
+
     private RectTransform anchorBottomLeft;
 
     private GameObject playerTurnBanner;

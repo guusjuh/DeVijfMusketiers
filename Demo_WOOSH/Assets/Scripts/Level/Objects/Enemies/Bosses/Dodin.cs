@@ -20,9 +20,6 @@ public class Dodin : Enemy
         //set boss specific health
         startHealth = 100;
 
-        //disables the fireball
-        //fireBall = transform.Find("FireBall").gameObject;
-        //fireBall.SetActive(false);
         viewDistance = 4;
 
         hasSpecial = true;
@@ -46,8 +43,6 @@ public class Dodin : Enemy
             currentActionPoints -= specialCost;
             specialCooldown = totalSpecialCooldown;
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(this);
-
-            //fireBall.transform.localPosition = Vector3.zero;
             
             StartCoroutine(ShootFireBall(GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
             return true;
@@ -83,8 +78,7 @@ public class Dodin : Enemy
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator ShootFireBall(Vector3 end)
     {
-        fireBall = UberManager.Instance.ParticleManager.PlayParticleWithReturn(ParticleManager.Particles.DodinFireballParticle, transform.position, transform.rotation);
-        //Rigidbody2D ball = fireBall.GetComponent<Rigidbody2D>();
+        fireBall = UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.DodinFireballParticle, transform.position, transform.rotation);
 
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4787808965339952}
   - component: {fileID: 198863338052232712}
   - component: {fileID: 199253262916396876}
-  - component: {fileID: 114547215379572806}
+  - component: {fileID: 114426069441313034}
   m_Layer: 8
   m_Name: BloodParticle
   m_TagString: Untagged
@@ -42,7 +42,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114547215379572806
+--- !u!114 &114426069441313034
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1566420226977148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c465c19d492a23e459ff1d7ba65e138e, type: 3}
+  m_Script: {fileID: 11500000, guid: 07a9a4b127340d548b23b9914aad06eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!198 &198863338052232712
@@ -62,7 +62,7 @@ ParticleSystem:
   serializedVersion: 5
   lengthInSec: 1
   simulationSpeed: 1.5
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -112,7 +112,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1737268138
+  randomSeed: 1641775726
   InitialModule:
     serializedVersion: 3
     enabled: 1

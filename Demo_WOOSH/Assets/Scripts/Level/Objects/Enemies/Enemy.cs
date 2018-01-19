@@ -204,7 +204,7 @@ public class Enemy : WorldObject
 
         sprRenders.HandleAction(s => s.color = new Color(0.8f, 0, 0, 1));
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/Particles/BloodParticle"), transform.position, Quaternion.identity);
+        //UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.BloodParticle, transform.position, transform.rotation);
 
         yield return new WaitForSeconds(0.35f);
 
@@ -255,6 +255,8 @@ public class Enemy : WorldObject
 
     public void Slow(int turns)
     {
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.FrozenParticle, this.transform.position, this.transform.rotation);
+
         if (!slowed)
         {
             slowCount = turns;
@@ -274,6 +276,8 @@ public class Enemy : WorldObject
 
     public void Burn(int turns, int burnDamage)
     {
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.BurnedParticle, this.transform.position, this.transform.rotation);
+
         this.burnDamage = burnDamage + burnModifier;
         if (burnCount > 0)
         {

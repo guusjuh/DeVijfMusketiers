@@ -17,7 +17,7 @@ public class TeleportButton : SpellButton
     public override IEnumerator CastSpell()
     {
         UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
-        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.TeleportSpellParticle, target.transform.position, target.transform.rotation);
+        UberManager.Instance.ParticleManager.PlaySpellParticle(type, target.transform.position, target.transform.rotation);
 
         yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
                 GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));

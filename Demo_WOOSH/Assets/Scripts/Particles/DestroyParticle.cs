@@ -4,25 +4,18 @@ using UnityEngine;
 
 public class DestroyParticle : MonoBehaviour {
 
-    ParticleSystem parts;
+    ParticleSystem particleSystem;
 
 	// Use this for initialization
 	void Start ()
     {
-        parts = GetComponent<ParticleSystem>();
+        particleSystem = GetComponent<ParticleSystem>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (!parts.IsAlive())
-        {
-            Destroy(transform.parent.gameObject);
-        }
-
-        if (UberManager.Instance.GameState != UberManager.GameStates.InGame)
-        {
-            Destroy(transform.parent.gameObject);
-        }
+        if (!particleSystem.IsAlive()) Destroy(transform.parent.gameObject);
+        if (UberManager.Instance.GameState != UberManager.GameStates.InGame) Destroy(transform.parent.gameObject);
 	}
 }
