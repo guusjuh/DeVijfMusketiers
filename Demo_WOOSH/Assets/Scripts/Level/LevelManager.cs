@@ -258,7 +258,7 @@ public class LevelManager
             if (GameManager.Instance.GameOn)
             {
                 playersTurn = false;
-                GameManager.Instance.TileManager.HidePossibleRoads();
+                GameManager.Instance.TileManager.HideHighlightedNodes();
 
                 enemies.HandleAction(e => e.UpdateTarget());
                 shrines.HandleAction(s => s.EndPlayerTurn());

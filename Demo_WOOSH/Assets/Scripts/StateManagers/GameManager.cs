@@ -125,7 +125,7 @@ public class GameManager : StateManager {
         if (!UberManager.Instance.DevelopersMode) return;
         LevelManager.ResetTurns();
         UIManager.Instance.InGameUI.Pause(pause);
-        tileManager.HidePossibleRoads();
+        tileManager.HideHighlightedNodes();
         TileManager.FindNeighboursDEVMODE();
         gameOn = true;
     }
@@ -181,7 +181,7 @@ public class GameManager : StateManager {
             levelManager.ResetAllDEVMODE();
 
             // hide highlighted rules
-            tileManager.HidePossibleRoads();
+            tileManager.HideHighlightedNodes();
         }
 
         TileManager.FindNeighboursDEVMODE();

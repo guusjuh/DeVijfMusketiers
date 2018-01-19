@@ -166,7 +166,7 @@ public class Enemy : WorldObject
 
             Dead = true;
             anim.SetBool(DIE_ANIM, true);
-            GameManager.Instance.TileManager.HidePossibleRoads();
+            GameManager.Instance.TileManager.HideHighlightedNodes();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
             if (!UberManager.Instance.DevelopersMode)
@@ -237,7 +237,7 @@ public class Enemy : WorldObject
 
     public virtual void ShowPossibleRoads()
     {
-        GameManager.Instance.TileManager.HidePossibleRoads();
+        GameManager.Instance.TileManager.HideHighlightedNodes();
         GameManager.Instance.TileManager.ShowPossibleRoads(this, gridPosition, calculatedTotalAP);
     }
 

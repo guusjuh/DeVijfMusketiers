@@ -17,6 +17,7 @@ public class SpellButton : MonoBehaviour {
 
     private const float RADIUS = 90f;
     private int cooldown;
+    public int Cooldown { get { return cooldown; } }
 
     public void Initialize(ISpell spell, SpellManager.SpellType type, string description, Sprite sprite, int cooldown)
     {
@@ -60,7 +61,7 @@ public class SpellButton : MonoBehaviour {
         }
     }
 
-    private void SetInteractable(bool isActive)
+    public void SetInteractable(bool isActive)
     {
         btn.interactable = isActive;
 
@@ -100,9 +101,6 @@ public class SpellButton : MonoBehaviour {
     public void OnClick()
     {
         UberManager.Instance.SpellManager.CastingSpell = type;
-        GameManager.Instance.LevelManager.Player.SetCooldown(type, cooldown);
-        SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
-        SetInteractable(cooldown <= 0);
 
         StartCoroutine(UberManager.Instance.SpellManager.ShowSpellVisual(type));
     }
@@ -111,7 +109,13 @@ public class SpellButton : MonoBehaviour {
     {
         spell.CastSpell(target);
         if (spell.IsDirect())
+        {
             UberManager.Instance.SpellManager.CastingSpell = SpellManager.SpellType.NoSpell;
+
+            GameManager.Instance.LevelManager.Player.SetCooldown(type, cooldown);
+            SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
+            SetInteractable(cooldown <= 0);
+        }
         else
             UberManager.Instance.SpellManager.SetActiveIndirect(spell);
     }

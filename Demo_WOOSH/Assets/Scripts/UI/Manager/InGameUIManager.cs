@@ -152,15 +152,6 @@ public class InGameUIManager : SubUIManager {
         playerActionPoints.SetAPText();
         wizard.gameObject.SetActive(false);
 
-        // hide spell buttons 
-        //HideSpellButtons();
-
-        //TODO: implement new spellsystem
-        //teleportButtonsOn = false;
-        //teleportButtons.HandleAction(b => b.Destory());
-        //teleportButtons.Clear();
-        //teleportButtons = null;
-
         if (UberManager.Instance.Tutorial) DeactivateNoClickPanel();
 
         base.Clear();

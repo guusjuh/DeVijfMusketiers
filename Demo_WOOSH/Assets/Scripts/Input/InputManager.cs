@@ -17,16 +17,19 @@ public class InputManager
     private float zoomVelocity;
     public float ZoomVelocity { get { return zoomVelocity; } }
 
-    private Vector2 teleportClick;
-    private DateTime clickTime;
+    private Vector2 lastClickPosition;
+    private DateTime lastClickTime;
     public bool highlightsActivated = false;
 
     public void CatchInput()
     {
-        //Debug.Log("Input");
         if (CatchZoomInput()) return;
+
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
         {
+            lastClickPosition = Input.mousePosition;
+            lastClickTime = DateTime.Now;
+
             if (!CatchUIClicks())
             {
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
@@ -37,6 +40,9 @@ public class InputManager
 
                 if (worldObjects.Count <= 0)
                 {
+                    // dont clear on click if we are teleporting!
+                    if (!UberManager.Instance.SpellManager.CastingInDirect() || !highlightsActivated)
+                        ClearOnClick();
                     StartDrag();
                 }
             }
@@ -58,29 +64,25 @@ public class InputManager
         }
         else if (Input.GetMouseButton(LEFT_MOUSE_BUTTON))
         {
-            Drag();
-            teleportClick = Input.mousePosition;
-            clickTime = DateTime.Now;
+            Drag();            
         }
+        // end click
         else if (Input.GetMouseButtonUp(LEFT_MOUSE_BUTTON))
         {
             Vector2 worldMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Coordinate gridPosition = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldMouse);
 
-            bool test = UberManager.Instance.SpellManager.CastingInDirect();
-            if (test && highlightsActivated)
+            // casting teleport spell
+            if (UberManager.Instance.SpellManager.CastingInDirect() && highlightsActivated)
             {
-                if ((teleportClick - (Vector2)Input.mousePosition).magnitude <= GameManager.Instance.TileManager.HexagonScale / 2.0f
-                    && clickTime.Subtract(DateTime.Now).TotalSeconds <= 0.2f)
+                // clicked at same point as started with click for teleport
+                if ((lastClickPosition - (Vector2)Input.mousePosition).magnitude <= GameManager.Instance.TileManager.HexagonScale / 2.0f
+                    && lastClickTime.Subtract(DateTime.Now).TotalSeconds <= 0.2f)
                 {
                     UberManager.Instance.SpellManager.CastInDirect();
-                    teleportClick = new Vector2(-100, -100);
+                    lastClickPosition = new Vector2(-100, -100);
                 }
-            } else if ((UberManager.Instance.GameManager.TileManager.GetWorldPosition(gridPosition) - worldMouse).magnitude > GameManager.Instance.TileManager.HexagonScale / 2.0f)
-            {
-                ClearOnClick();
-                highlightsActivated = false;
-            }
+            } 
             EndDrag();
         }
     }
@@ -133,17 +135,7 @@ public class InputManager
     {
         for (int i = 0; i < worldObjects.Count; i++)
         {
-            if (worldObjects.Count > 1)
-            {
-                if (!(worldObjects[i].IsBarrel() &&
-                    worldObjects[i].GetComponent<Rock>().Destroyed))
-                {
-                    HandleActionOnClickedObject(worldObjects[i]);
-                    break;
-                }
-            }
-            else
-            {
+            if (!(worldObjects[i].IsBarrel() && worldObjects[i].GetComponent<Rock>().Destroyed)) { 
                 HandleActionOnClickedObject(worldObjects[i]);
                 break;
             }
@@ -169,7 +161,7 @@ public class InputManager
     {
         UberManager.Instance.SpellManager.HideSpellButtons();
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
-        GameManager.Instance.TileManager.HidePossibleRoads();
+        GameManager.Instance.TileManager.HideHighlightedNodes();
     }
 
     private bool CatchUIClicks()

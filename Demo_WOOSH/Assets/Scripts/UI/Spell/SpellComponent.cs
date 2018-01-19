@@ -80,6 +80,8 @@ public class SpellComponent : ISpell
 
     public virtual bool Execute(WorldObject target, float rnd, bool endTurn)
     {
+        UberManager.Instance.SpellManager.SetCooldown(type);
+
         //-damage enemy
         if (DoesHit(target, rnd))
         {

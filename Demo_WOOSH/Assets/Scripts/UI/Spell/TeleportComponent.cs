@@ -14,6 +14,7 @@ public class TeleportComponent : SpellComponent {
     public override bool Execute(WorldObject target, float rnd, bool endTurn)
     {
         base.Execute(target, rnd, endTurn);
+
         target.Teleport(UberManager.Instance.SpellManager.SelectedTile);
         UberManager.Instance.GameManager.TileManager.DisableHighlights();
         return true;

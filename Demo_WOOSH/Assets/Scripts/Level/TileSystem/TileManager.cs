@@ -127,7 +127,7 @@ public class TileManager
 
     public void ClearGrid()
     {
-        HidePossibleRoads();
+        HideHighlightedNodes();
 
         for (int i = 0; i < grid.GetLength(0); i++)
         {
@@ -481,7 +481,7 @@ public class TileManager
 
     public void ShowTeleportHighlights(WorldObject worldObject, int range)
     {
-        HidePossibleRoads();
+        HideHighlightedNodes();
         highlightedNodes = new List<TileNode>();
         // add yourself
         TileNode hisNode = GetNodeReference(worldObject.GridPosition);
@@ -597,7 +597,7 @@ public class TileManager
         }
     }
 
-    public void HidePossibleRoads()
+    public void HideHighlightedNodes()
     {
         if (highlightedNodes != null && highlightedNodes.Count != 0)
         {
@@ -750,7 +750,7 @@ public class TileManager
 
         if (gridToRemove == null) gridToRemove = grid;
 
-        HidePossibleRoads();
+        HideHighlightedNodes();
 
         for (int i = 0; i < gridToRemove.GetLength(0); i++)
         {

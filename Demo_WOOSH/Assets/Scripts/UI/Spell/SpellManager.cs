@@ -37,9 +37,7 @@ public class SpellManager {
     private ISpell activeInDirectSpell = null;
 
     public Coordinate SelectedTile { get {return selectedTile;} }
-    public SpellType CastingSpell { get { return castingSpell; }
-        set {
-            Debug.Log("Cassting spell: " + value); castingSpell = value; } }
+    public SpellType CastingSpell { get { return castingSpell; } set { Debug.Log("Cassting spell: " + value); castingSpell = value; } }
     public bool SpellButtonsActive { get { return spellButtonsActive; } }
     public WorldObject SelectedTarget { get { return selectedTarget; } }
 
@@ -205,5 +203,14 @@ public class SpellManager {
             spellButtons[type].CastSpell(selectedTarget);
             HideSpellButtons();
         }
+    }
+
+    public void SetCooldown(SpellType type)
+    {
+        SpellButton bttn = spellButtons[type];
+
+        GameManager.Instance.LevelManager.Player.SetCooldown(type, bttn.Cooldown);
+        bttn.SetCooldownText(bttn.Cooldown);
+        bttn.SetInteractable(bttn.Cooldown <= 0);
     }
 }
