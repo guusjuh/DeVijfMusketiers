@@ -26,11 +26,11 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: 3e82787cb5a0cb7c613ffab127a1f28d
+      Hash: 9fd6780cb509b49afef88c52fcfff6b7
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: 3e82787cb5a0cb7c613ffab127a1f28d
+    hashString: 9fd6780cb509b49afef88c52fcfff6b7
     totalSpriteSurfaceArea: 4892056
     packables:
     - {fileID: 102900000, guid: e5e5fe5d28c12a149aa0721f60d1159c, type: 3}
@@ -114,7 +114,7 @@ SpriteAtlas:
   - tutorial
   - Off
   - On
-  - Casual Game GUI_Progress Bar - Empty
+  - BackgroundBar
   - Sound
   - Music
   - Settings

@@ -6,15 +6,15 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
     private GameObject creditsPanel;
+    private Slider musicSlider;
+    private Slider fxSlider;
 
     public void Initialize()
     {
-        Slider musicSlider =
-            transform.Find("SettingsMenu").Find("SettingsGrid").Find("Music").Find("Slider").GetComponent<Slider>();
+        musicSlider = transform.Find("SettingsMenu").Find("SettingsGrid").Find("Music").Find("Slider").GetComponent<Slider>();
         musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
 
-        Slider fxSlider =
-            transform.Find("SettingsMenu").Find("SettingsGrid").Find("Soundeffects").Find("Slider").GetComponent<Slider>();
+        fxSlider = transform.Find("SettingsMenu").Find("SettingsGrid").Find("Soundeffects").Find("Slider").GetComponent<Slider>();
         fxSlider.onValueChanged.AddListener(ChangeFxVolume);
 
         creditsPanel = transform.Find("CreditsPanel").gameObject;
@@ -38,12 +38,15 @@ public class SettingsMenu : MonoBehaviour
 
     public void ChangeMusicVolume(float real)
     {
+        Debug.Log(real);
         UberManager.Instance.SoundManager.MusicVolume = real;
+        musicSlider.value = real >= 1.0f ? 0.999f : real;
     }
 
     public void ChangeFxVolume(float real)
     {
         UberManager.Instance.SoundManager.FXVolume = real;
+        fxSlider.value = real;
     }
 
     public void OpenCredits()

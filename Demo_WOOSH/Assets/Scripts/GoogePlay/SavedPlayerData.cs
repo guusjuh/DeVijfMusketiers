@@ -17,9 +17,6 @@ public class SavedPlayerData
 
     [SerializeField] public List<Contract>[] activeContractsPerLevel;
 
-    //[SerializeField] public bool musicOn;
-    //[SerializeField] public bool fxOn;
-
     [SerializeField] public float musicVolume;
     [SerializeField] public float fxVolume;
 
@@ -37,8 +34,8 @@ public class SavedPlayerData
     {
         if (tutorialFinsihed)
         {
-            if (UberManager.Instance.SoundManager.MusicVolume != musicVolume) UIManager.Instance.LevelSelectUI.SettingsMenu.ChangeMusicVolume(musicVolume);
-            if (UberManager.Instance.SoundManager.FXVolume != fxVolume) UIManager.Instance.LevelSelectUI.SettingsMenu.ChangeFxVolume(fxVolume);
+            UIManager.Instance.LevelSelectUI.SettingsMenu.ChangeMusicVolume(musicVolume);
+            UIManager.Instance.LevelSelectUI.SettingsMenu.ChangeFxVolume(fxVolume);
         }
 
         UpdateIngame();
