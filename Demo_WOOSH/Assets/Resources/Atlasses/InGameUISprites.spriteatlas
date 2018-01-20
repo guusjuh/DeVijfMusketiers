@@ -26,11 +26,11 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: ac8c9044730001b47cadb6fc944e24b3
+      Hash: b4290cbd0e90090966f12e45c080529d
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: ac8c9044730001b47cadb6fc944e24b3
+    hashString: b4290cbd0e90090966f12e45c080529d
     totalSpriteSurfaceArea: 943800
     packables:
     - {fileID: 102900000, guid: 93c1a56b729595a4485e602050311339, type: 3}
@@ -38,16 +38,16 @@ SpriteAtlas:
     packedSpriteRenderDataKeys:
     - 78b65e5abab18a544b4c235db87ddd94: 21300000
     - 28716bd1b3c5c104aa9a535ba885de5a: 21300000
-    - 4fbbcd945eb3aac4fa55d7bccafa98d1: 21300000
     - 8e30b93b47ecf3541ba0a2b3b6cb4130: 21300000
     - 0da0f8fdd0cff6b46a0eadd91cc26bb9: 21300000
     - c389031d31f05db46be0e5a7fe6b5b0e: 21300000
     - d1260d3e58784e84cad49508f7e5fe2e: 21300000
-    - e9ede286a5f7eea468e455834d4382e3: 21300000
-    - 177f0e96cc7057a479fad6a3e20fbd59: 21300000
-    - 22a9fcb3f8bbea74c94418035e74f464: 21300000
+    - 60d945a9a9700f5478f79814c19e5cac: 21300000
+    - 1a3516f15c889a74e8dcf140123b8307: 21300000
     - c72641ffba0e1f2459ac9a7df52ef068: 21300000
     - 069851fc4a0369341848951dfde29a58: 21300000
+    - e8ce6d51e68a593479db755ea6916199: 21300000
+    - ed124212446d331458198a69ead768b3: 21300000
     - e4f676cfb8ff2b643a4384001e10be31: 21300000
     - f9b5571b08aa7724fbe5b986140c9177: 21300000
     - cf7be7369289ad949923c0ff1e327bb0: 21300000
@@ -61,16 +61,16 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: 78b65e5abab18a544b4c235db87ddd94, type: 3}
   - {fileID: 21300000, guid: 28716bd1b3c5c104aa9a535ba885de5a, type: 3}
-  - {fileID: 21300000, guid: 4fbbcd945eb3aac4fa55d7bccafa98d1, type: 3}
   - {fileID: 21300000, guid: 8e30b93b47ecf3541ba0a2b3b6cb4130, type: 3}
   - {fileID: 21300000, guid: 0da0f8fdd0cff6b46a0eadd91cc26bb9, type: 3}
   - {fileID: 21300000, guid: c389031d31f05db46be0e5a7fe6b5b0e, type: 3}
   - {fileID: 21300000, guid: d1260d3e58784e84cad49508f7e5fe2e, type: 3}
-  - {fileID: 21300000, guid: e9ede286a5f7eea468e455834d4382e3, type: 3}
-  - {fileID: 21300000, guid: 177f0e96cc7057a479fad6a3e20fbd59, type: 3}
-  - {fileID: 21300000, guid: 22a9fcb3f8bbea74c94418035e74f464, type: 3}
+  - {fileID: 21300000, guid: 60d945a9a9700f5478f79814c19e5cac, type: 3}
+  - {fileID: 21300000, guid: 1a3516f15c889a74e8dcf140123b8307, type: 3}
   - {fileID: 21300000, guid: c72641ffba0e1f2459ac9a7df52ef068, type: 3}
   - {fileID: 21300000, guid: 069851fc4a0369341848951dfde29a58, type: 3}
+  - {fileID: 21300000, guid: e8ce6d51e68a593479db755ea6916199, type: 3}
+  - {fileID: 21300000, guid: ed124212446d331458198a69ead768b3, type: 3}
   - {fileID: 21300000, guid: e4f676cfb8ff2b643a4384001e10be31, type: 3}
   - {fileID: 21300000, guid: f9b5571b08aa7724fbe5b986140c9177, type: 3}
   - {fileID: 21300000, guid: cf7be7369289ad949923c0ff1e327bb0, type: 3}
@@ -83,16 +83,16 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - TurnBanner
   - Head
-  - Light
   - Frozen
   - enemyHeal
   - actionpointindicator
   - Burned
-  - teleport
-  - Ice
-  - Fire
+  - spells-fireball
+  - spells-teleport
   - enemyFire
   - SpellVisual
+  - spells-frostbite
+  - spells-attack
   - Face 01
   - Face 02
   - Face 03

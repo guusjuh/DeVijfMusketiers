@@ -27,10 +27,9 @@ public class PreGameUIManager : SubUIManager {
         preGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/PreGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PreGameInfoPanel>();
         preGameInfoPanel.Initialize();
 
-        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-300.0f, 0.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
+        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-275.0f, 10.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
 
-        startButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
-        startButton.GetComponentInChildren<Text>().text = "Start level";
+        startButton = UIManager.Instance.CreateUIElement("Prefabs/UI/StartLevelButton", new Vector2(175.0f, 0.0f), buttonParent.transform);
 
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/BackButton", new Vector2(75, -75), anchorTopRight);
         backButton.GetComponent<Button>().onClick.AddListener(BackToLevelSelect);

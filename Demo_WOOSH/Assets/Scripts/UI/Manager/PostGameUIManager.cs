@@ -25,9 +25,8 @@ public class PostGameUIManager : SubUIManager
         postGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PostGame/PostGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PostGameInfoPanel>();
         postGameInfoPanel.Initialize();
 
-        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-300.0f, 0.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
-        backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
-        backButton.GetComponentInChildren<Text>().text = "Back to level";
+        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-275.0f, 10.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
+        backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/BackToWorldButton", new Vector2(175.0f, 0.0f), buttonParent.transform);
         backButton.GetComponent<Button>().onClick.AddListener(BackToWorld);
 
         background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/PostGame/BackgroundPostGame"), Vector2.zero, canvas.transform);

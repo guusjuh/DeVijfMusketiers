@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ActiveContract : ContractButton
 {
-    private static Color nonActiveColor = new Color(1.0f, 1.0f, 1.0f, 0.25f);
+    private static Color nonActiveColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     private static Color activeColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
     private Image iconImage;

@@ -12,11 +12,14 @@ public class SpellButton : MonoBehaviour
     protected int duration = 0;//how long does the effect of the spell last
 
     protected Button button;
+    protected Image buttonImage;
+    protected Color ActiveColor { get { return Color.white; } }
+    protected Color DissabledColor { get { return new Color(0.5f, 0.5f, 0.5f, 1.0f); } }
+
     protected WorldObject target;
     protected int cost;
 
     protected List<GameObject> apIndicator;
-    protected GameObject disabledObject;
     protected Text cooldownText;
     protected GameManager.SpellType type;
 
@@ -31,7 +34,7 @@ public class SpellButton : MonoBehaviour
         {
             if (active == value) return;
             active = value;
-            disabledObject.SetActive(!value);
+            buttonImage.color = value ? ActiveColor : DissabledColor;
             button.interactable = active;
         }
     }
@@ -40,7 +43,7 @@ public class SpellButton : MonoBehaviour
     {
         button = GetComponent<Button>();
 
-        disabledObject = transform.Find("Disabled").gameObject;
+        buttonImage = transform.Find("Image").GetComponent<Image>();
         cooldownText = transform.Find("Text").GetComponent<Text>();
         apIndicator = new List<GameObject>();
     }
