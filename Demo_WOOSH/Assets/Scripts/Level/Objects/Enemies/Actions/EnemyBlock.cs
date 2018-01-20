@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyBlock : Action
 {
     private GameObject shield;
-
+    private ParticleSystem shieldParticle;
     private float blockChance;
     private bool canBlock;
 
@@ -17,6 +17,8 @@ public class EnemyBlock : Action
 
         shield = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/Shield"), parent.transform);
         shield.SetActive(false);
+
+        shieldParticle = shield.GetComponent<ParticleSystem>();
     }
 
     public override void Reset()
@@ -45,7 +47,7 @@ public class EnemyBlock : Action
     protected IEnumerator ShieldVisual()
     {
         shield.SetActive(true);
-        shield.GetComponent<ParticleSystem>().startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
+        shieldParticle.startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
 
         yield return new WaitForSeconds(0.5f);
 

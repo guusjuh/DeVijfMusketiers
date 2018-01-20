@@ -21,6 +21,11 @@ public struct Coordinate
         this.y = (int) vec.y;
     }
 
+    public Vector2 ToVector2() 
+    {
+        return new Vector2(this.x, this.y);
+    }
+
     public static Coordinate zero { get { return new Coordinate(0,0);} }
 
     public static Coordinate operator +(Coordinate c1, Coordinate c2)

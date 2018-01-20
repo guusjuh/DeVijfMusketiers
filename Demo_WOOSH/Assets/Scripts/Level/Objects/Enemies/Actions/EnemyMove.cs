@@ -21,35 +21,34 @@ public class EnemyMove : Action
         blockingLayer = LayerMask.GetMask("BlockingLayer");
         boxCollider = parent.GetComponent<BoxCollider2D>();
         rb2D = parent.GetComponent<Rigidbody2D>();
-
     }
 
     public override void StartTurn()
     {
-        findPath();
+        FindPath();
     }
 
-    private void findPath()
+    private void FindPath()
     {
-        if (parent.target == null)
+        if (parent.Target == null)
         {
             parent.SelectTarget();
         }
 
         //generate path to chosen target
-        currentPath = GameManager.Instance.TileManager.GeneratePathTo(parent.GridPosition, parent.target.GridPosition, parent);
+        currentPath = GameManager.Instance.TileManager.GeneratePathTo(parent.GridPosition, parent.Target.GridPosition, parent);
 
         // if no path was found
         if (currentPath == null)
         {
             // no other possible targets, skip turn
-            parent.target = null;
+            parent.NoPossibleTarget();
         }
     }
 
     public override bool DoAction()
     {
-        if(currentPath == null || parent.target == null || currentPath.Count == 0 )
+        if(currentPath == null || parent.Target == null || currentPath.Count == 0 )
         {
             return false;
         }
@@ -82,11 +81,11 @@ public class EnemyMove : Action
         // target reached
         if (currentPath.Count <= 2)
         {
-            if (other.gameObject.transform == parent.target.transform)
+            if (other.gameObject.transform == parent.Target.transform)
             {
                 parent.TargetReached();
 
-                findPath();
+                FindPath();
             }
         }
         // barrel in my way
@@ -109,7 +108,6 @@ public class EnemyMove : Action
         // remove current path[0], e.g. node i was standing on
         currentPath.RemoveAt(0);
     }
-
 
     // note: works for everything nonflying!
     protected virtual bool CanMove(Coordinate direction, out RaycastHit2D hit)
@@ -144,17 +142,19 @@ public class EnemyMove : Action
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
-        parent.anim.SetBool(Enemy.MOVE_ANIM, true);
+        parent.Anim.SetBool(Enemy.MOVE_ANIM, true);
 
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
         float sqrRemainingDistance = (parent.transform.position - end).sqrMagnitude;
 
+        Vector3 newPostion;
+
         //While that distance is greater than a very small amount (Epsilon, almost zero):
         while (sqrRemainingDistance > float.Epsilon)
         {
             //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, parent.InverseMoveTime * Time.deltaTime);
+            newPostion = Vector3.MoveTowards(rb2D.position, end, parent.InverseMoveTime * Time.deltaTime);
 
             //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
             rb2D.MovePosition(newPostion);
@@ -166,6 +166,6 @@ public class EnemyMove : Action
             yield return null;
         }
 
-        parent.anim.SetBool(Enemy.MOVE_ANIM, false);
+        parent.Anim.SetBool(Enemy.MOVE_ANIM, false);
     }
 }

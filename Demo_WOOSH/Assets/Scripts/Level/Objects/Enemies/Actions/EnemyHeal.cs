@@ -14,10 +14,10 @@ public class EnemyHeal : Action
 
         spellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyHeal");
 
-
         heal = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/Heal"), parent.transform);
         heal.transform.localPosition = new Vector3(0, 0.5f, 0);
         heal.SetActive(false);
+
         HasSpellIcon = true;
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBrokenGround : Action
 {
-    GameObject[] dusts;
+    private GameObject[] dusts;
 
     public override void Initialize(Enemy parent)
     {
@@ -23,22 +23,19 @@ public class EnemyBrokenGround : Action
 
     public override bool DoAction()
     {
-        float distance = (parent.GridPosition.EuclideanDistance(parent.target.GridPosition));
+        float distance = (parent.GridPosition.EuclideanDistance(parent.Target.GridPosition));
         float maxDistance = GameManager.Instance.TileManager.FromTileToTile;
         bool closeEnough = distance - maxDistance <= 0.01f;
         bool enoughAP = parent.CurrentActionPoints >= cost;
 
         if (closeEnough && enoughAP)
         {
-            Vector2 position = new Vector2(parent.transform.position.x, parent.transform.position.y);
-            Coordinate tempCoord = GameManager.Instance.TileManager.GetGridPosition(position);
-            TileNode tile = GameManager.Instance.TileManager.GetNodeReference(tempCoord);
-            List<TileNode> nodes = tile.NeightBours;
+            List<TileNode> nodes = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition).NeightBours;
             foreach (var node in nodes)
             {
                 node.Content.KillTileContent();
             }
-            UberManager.Instance.StartCoroutine(visual());
+            UberManager.Instance.StartCoroutine(Visual());
 
             parent.EndMove(cost);
 
@@ -47,17 +44,16 @@ public class EnemyBrokenGround : Action
         return false;
     }
 
-    private IEnumerator visual()
+    private IEnumerator Visual()
     {
-        Vector2 pos = new Vector2(parent.transform.position.x, parent.transform.position.y);
-        Coordinate coord = GameManager.Instance.TileManager.GetGridPosition(pos);
-        TileNode node = GameManager.Instance.TileManager.GetNodeReference(coord);
+        TileNode node = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition);
+        Vector2 worldPos;
+
         for (int i = 0; i < node.NeightBours.Count; i++)
         {
             dusts[i].SetActive(true);
-            Vector2 worldPos = GameManager.Instance.TileManager.GetWorldPosition(new Vector2(node.NeightBours[i].GridPosition.x, node.NeightBours[i].GridPosition.y));
+            worldPos = GameManager.Instance.TileManager.GetWorldPosition(node.NeightBours[i].GridPosition.ToVector2());
             dusts[i].transform.position = new Vector3(worldPos.x, worldPos.y, 0);
-
         }
 
         yield return new WaitForSeconds(0.5f);

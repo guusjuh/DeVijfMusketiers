@@ -29,7 +29,7 @@ public class EnemyFireBall : Action
 
     public override bool DoAction()
     {
-        float distance = (parent.GridPosition.EuclideanDistance(parent.target.GridPosition));
+        float distance = (parent.GridPosition.EuclideanDistance(parent.Target.GridPosition));
         float maxDistance = specialMaxDistance * GameManager.Instance.TileManager.FromTileToTile;
         bool closeEnough = distance - maxDistance <= 0.01f;
         bool enoughAP = parent.CurrentActionPoints >= cost;
@@ -43,7 +43,7 @@ public class EnemyFireBall : Action
 
             fireBall.transform.localPosition = Vector3.zero;
 
-            UberManager.Instance.StartCoroutine(ShootFireBall(GameManager.Instance.TileManager.GetWorldPosition(parent.target.GridPosition)));
+            UberManager.Instance.StartCoroutine(ShootFireBall(GameManager.Instance.TileManager.GetWorldPosition(parent.Target.GridPosition)));
             return true;
         }
         return false;
@@ -60,11 +60,13 @@ public class EnemyFireBall : Action
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
         float sqrRemainingDistance = (ball.transform.position - end).sqrMagnitude;
 
+        Vector3 newPostion;
+
         //While that distance is greater than a very small amount (Epsilon, almost zero):
         while (sqrRemainingDistance > 0.0001f)
         {
             //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPostion = Vector3.MoveTowards(ball.position, end, parent.InverseMoveTime * Time.deltaTime);
+            newPostion = Vector3.MoveTowards(ball.position, end, parent.InverseMoveTime * Time.deltaTime);
 
             //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
             ball.MovePosition(newPostion);
@@ -83,6 +85,7 @@ public class EnemyFireBall : Action
     {
         base.ShowPossibleRoads();
 
-        if (currentCooldown<= 0 && parent.CurrentActionPoints >= cost) GameManager.Instance.TileManager.ShowExtraTargetForSpecial(parent, parent.GridPosition, specialMaxDistance);
+        if (currentCooldown<= 0 && parent.CurrentActionPoints >= cost)
+            GameManager.Instance.TileManager.ShowExtraTargetForSpecial(parent, parent.GridPosition, specialMaxDistance);
     }
 }

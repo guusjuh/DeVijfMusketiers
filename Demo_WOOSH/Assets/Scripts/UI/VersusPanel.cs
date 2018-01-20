@@ -29,6 +29,7 @@ public class VersusPanel : MonoBehaviour
         enemyGridFront = new List<Image>(transform.Find("Enemies").Find("EnemyGridFront").GetComponentsInChildren<Image>());
         enemyGridBack = new List<Image>(transform.Find("Enemies").Find("EnemyGridBack").GetComponentsInChildren<Image>());
 
+        //TODO: make generic
         enemySprites.Add(SecContentType.Arnest, Resources.Load<Sprite>("Sprites/Enemies/InWorld/Arnest"));
         enemySprites.Add(SecContentType.Dodin, Resources.Load<Sprite>("Sprites/Enemies/InWorld/Dodin"));
         enemySprites.Add(SecContentType.Sketta, Resources.Load<Sprite>("Sprites/Enemies/InWorld/Sketta"));

@@ -27,7 +27,9 @@ public class Enemy : WorldObject
     private float inverseMoveTime;          //Used to make movement more efficient.
     public float InverseMoveTime { get { return inverseMoveTime; } }
 
-    public Animator anim;
+    protected Animator anim;
+    public Animator Anim { get { return anim; } }
+
     private List<SpriteRenderer> sprRenders;
     public List<SpriteRenderer> SprRenders { get { return sprRenders; } }
 
@@ -44,7 +46,10 @@ public class Enemy : WorldObject
     public float Health { get { return health; } }
     public float HealthPercentage { get { return (health / startHealth) * 100; } }
 
-    public EnemyTarget target;
+    protected EnemyTarget target;
+    public EnemyTarget Target { get { return target; } }
+    public void NoPossibleTarget() { target = null; } 
+
     private EnemyTarget prevTarget;
     
     private bool selectedInUI = true;
@@ -55,7 +60,8 @@ public class Enemy : WorldObject
     protected bool canFly = false;
     public bool CanFly { get { return canFly; } }
 
-    public List<Action> actions = new List<Action>();
+    protected List<Action> actions = new List<Action>();
+    public List<Action> Actions { get { return actions; } }
 
     public override void Initialize(Coordinate startPos)
     {
@@ -98,7 +104,6 @@ public class Enemy : WorldObject
         possibleSpellTypes.Add(GameManager.SpellType.FrostBite);
         possibleSpellTypes.Add(GameManager.SpellType.Fireball);
     }
-
 
     public override void Reset()
     {

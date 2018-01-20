@@ -83,11 +83,11 @@ public class EnemyInfoUI : MonoBehaviour
         SetAPText(selectedEnemy.CurrentActionPoints);
 
         specialAction = null;
-        for (int i = 0; i < selectedEnemy.actions.Count; i++)
+        for (int i = 0; i < selectedEnemy.Actions.Count; i++)
         {
-            if(selectedEnemy.actions[i].HasSpellIcon)
+            if(selectedEnemy.Actions[i].HasSpellIcon)
             {
-                specialAction = selectedEnemy.actions[i];
+                specialAction = selectedEnemy.Actions[i];
                 ActivateSpecialSpell(true);
                 SetCooldownText(specialAction.CurrentCooldown);
             }
