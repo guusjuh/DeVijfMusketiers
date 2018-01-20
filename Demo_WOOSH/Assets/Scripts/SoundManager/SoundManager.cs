@@ -9,25 +9,25 @@ public class SoundManager {
     private Dictionary<SoundEffect, AudioClip> soundEffects = new Dictionary<SoundEffect, AudioClip>();
     private Dictionary<Background, AudioClip> backgroundMusic = new Dictionary<Background, AudioClip>();
 
-    private bool musicOn = true;
-    public bool MusicOn
+    private float musicVolume = 1;
+    public float MusicVolume
     {
-        get { return musicOn; }
+        get { return musicVolume; }
         set
         {
-            musicOn = value;
-            backgroundSource.mute = !musicOn;
+            musicVolume = value;
+            backgroundSource.volume = musicVolume;
         }
     }
 
-    private bool fxOn = true;
-    public bool FXOn
+    private float fxVolume = 1;
+    public float FXVolume
     {
-        get { return fxOn; }
+        get { return fxVolume; }
         set
         {
-            fxOn = value;
-            soundEffectSource.mute = !fxOn;
+            fxVolume = value;
+            soundEffectSource.volume = fxVolume;
         }
     }
 

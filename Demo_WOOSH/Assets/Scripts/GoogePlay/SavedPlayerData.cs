@@ -17,8 +17,8 @@ public class SavedPlayerData
 
     [SerializeField] public List<Contract>[] activeContractsPerLevel;
 
-    [SerializeField] public bool musicOn;
-    [SerializeField] public bool fxOn;
+    [SerializeField] public float musicVolume;
+    [SerializeField] public float fxVolume;
 
     public void Initialize()
     {
@@ -34,8 +34,8 @@ public class SavedPlayerData
     {
         if (tutorialFinsihed)
         {
-            if (UberManager.Instance.SoundManager.MusicOn != musicOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchMusic();
-            if (UberManager.Instance.SoundManager.FXOn != fxOn) UIManager.Instance.LevelSelectUI.SettingsMenu.SwitchSoundeffects();
+            UIManager.Instance.LevelSelectUI.SettingsMenu.ChangeMusicVolume(musicVolume);
+            UIManager.Instance.LevelSelectUI.SettingsMenu.ChangeFxVolume(fxVolume);
         }
 
         UpdateIngame();
@@ -103,8 +103,8 @@ public class SavedPlayerData
         }
 
         // music & sounds
-        UberManager.Instance.SoundManager.MusicOn = musicOn;
-        UberManager.Instance.SoundManager.FXOn = fxOn;
+        UberManager.Instance.SoundManager.MusicVolume = musicVolume;
+        UberManager.Instance.SoundManager.FXVolume = fxVolume;
     }
 
     public void UpdateSaved()
@@ -146,8 +146,8 @@ public class SavedPlayerData
         activeContractsPerLevel = tempActiveContractsPerLevel;
 
         // music & sounds
-        musicOn = UberManager.Instance.SoundManager.MusicOn;
-        fxOn = UberManager.Instance.SoundManager.FXOn;
+        musicVolume = UberManager.Instance.SoundManager.MusicVolume;
+        fxVolume = UberManager.Instance.SoundManager.FXVolume;
     }
 
     public static SavedPlayerData InitialData()
@@ -161,8 +161,8 @@ public class SavedPlayerData
         spd.contractRefreshTime = System.DateTime.Now.AddSeconds(ContractManager.CONTRACT_REFRESH_RATE);
         spd.availableContractsPerCity = new List<Contract>[3];
         spd.activeContractsPerLevel = new List<Contract>[9];
-        spd.musicOn = true;
-        spd.fxOn = true;
+        spd.musicVolume = 1.0f;
+        spd.fxVolume = 1.0f;
 
         return spd;
     }
