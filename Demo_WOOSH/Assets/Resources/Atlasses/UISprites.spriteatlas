@@ -26,12 +26,12 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: 140e27264de421f199ccca09bf1e0d31
+      Hash: 7ed98c33ed0efb715d0aeafdb94d1dd7
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: 140e27264de421f199ccca09bf1e0d31
-    totalSpriteSurfaceArea: 12053564
+    hashString: 7ed98c33ed0efb715d0aeafdb94d1dd7
+    totalSpriteSurfaceArea: 11971644
     packables:
     - {fileID: 102900000, guid: 04fa940e28c0b78438ee6b1da4883985, type: 3}
     - {fileID: 102900000, guid: 8d86e549eac887343a2ca4cb359f4b87, type: 3}
@@ -70,8 +70,7 @@ SpriteAtlas:
     - 2f0febfec1802ce49a5cf8695ca8ab4a: 21300000
     - 9d90cf4bd4e237042920a9ba41ab6da2: 21300000
     - 78b65e5abab18a544b4c235db87ddd94: 21300000
-    - f40db89e55d56a84a9b9e14fc09d7e58: 21300000
-    - 18b87ce59fdb6f94fad6d99893b9a06b: 21300000
+    - 910d2e6612f4b364fbc50f472da23425: 21300000
     - 28716bd1b3c5c104aa9a535ba885de5a: 21300000
     - f8386c6040a1f9a4aab1fe8454e43461: 21300000
     - b23be28c1029d6b4caec23cc961df3e3: 21300000
@@ -177,8 +176,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2f0febfec1802ce49a5cf8695ca8ab4a, type: 3}
   - {fileID: 21300000, guid: 9d90cf4bd4e237042920a9ba41ab6da2, type: 3}
   - {fileID: 21300000, guid: 78b65e5abab18a544b4c235db87ddd94, type: 3}
-  - {fileID: 21300000, guid: f40db89e55d56a84a9b9e14fc09d7e58, type: 3}
-  - {fileID: 21300000, guid: 18b87ce59fdb6f94fad6d99893b9a06b, type: 3}
+  - {fileID: 21300000, guid: 910d2e6612f4b364fbc50f472da23425, type: 3}
   - {fileID: 21300000, guid: 28716bd1b3c5c104aa9a535ba885de5a, type: 3}
   - {fileID: 21300000, guid: f8386c6040a1f9a4aab1fe8454e43461, type: 3}
   - {fileID: 21300000, guid: b23be28c1029d6b4caec23cc961df3e3, type: 3}
@@ -283,8 +281,7 @@ SpriteAtlas:
   - UIBackground2
   - ChooseContractWindow
   - TurnBanner
-  - repbar-empty
-  - repbar-full
+  - repbar
   - Head
   - BarbarianBlonde
   - KnightGrey

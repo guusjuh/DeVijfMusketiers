@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class PostGameInfoReputation : MonoBehaviour
 {
-    private RectTransform maskPanel;
+    private RectTransform yellowBar;
 
-    private float maxWidth = 900;
+    private float maxWidth = 900.0f;
     float sizeOneStar = 100.0f;
 
     private float growSpeed = 0.2f;
 
 	// Use this for initialization
     public void Initialize(float start, float end)
-    {      
-        maskPanel = transform.Find("Panel").GetComponent<RectTransform>();
+    {
+        yellowBar = transform.Find("Background").Find("BackgroundYellow").GetComponent<RectTransform>();
 
         UberManager.Instance.StartCoroutine(gainReputation(start, end));
 
@@ -81,6 +81,6 @@ public class PostGameInfoReputation : MonoBehaviour
 
     private void SetElements(float value)
     {
-        maskPanel.sizeDelta = new Vector2((900 / 500.0f) * value, maskPanel.sizeDelta.y);
+        yellowBar.sizeDelta = new Vector2((900 / 500.0f) * value, yellowBar.sizeDelta.y);
     }
 }
