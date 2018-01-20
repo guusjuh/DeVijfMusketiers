@@ -261,6 +261,8 @@ public class Enemy : WorldObject
 
     public void Slow(int turns)
     {
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.FrozenParticle, this.transform.position, this.transform.rotation);
+
         if (!slowed)
         {
             slowCount = turns;
@@ -280,6 +282,8 @@ public class Enemy : WorldObject
 
     public void Burn(int turns, int burnDamage)
     {
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.BurnedParticle, this.transform.position, this.transform.rotation);
+
         this.burnDamage = burnDamage + burnModifier;
         if (burnCount > 0)
         {

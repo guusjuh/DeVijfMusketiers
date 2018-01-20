@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InGameUIManager : SubUIManager {
     public RectTransform AnchorCenter { get { return anchorCenter; } }
+    public RectTransform AnchorBottomRight { get { return anchorBottomRight; } }
 
     private GameObject playerTurnBanner;
     private GameObject enemyTurnBanner;
@@ -15,6 +16,9 @@ public class InGameUIManager : SubUIManager {
 
     private PlayerAPSkipButton playerAPIndicator;
     public PlayerAPSkipButton PlayerAPIndicator { get { return playerAPIndicator; } }
+
+    private GameSpeedButton gameSpeedButton;
+    public GameSpeedButton GameSpeedButton { get { return gameSpeedButton; } }
 
     private WorldObject selectedObject = null;
     //used for placing the spellbuttons
@@ -48,6 +52,9 @@ public class InGameUIManager : SubUIManager {
         enemyInfoUI.Clear();
 
         playerAPIndicator = UIManager.Instance.CreateAndInitUIElement<PlayerAPSkipButton>("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft);
+
+        gameSpeedButton = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/GameSpeed", Vector2.zero, anchorBottomLeft).GetComponent<GameSpeedButton>();
+        gameSpeedButton.Initialize();
 
         wizard = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
         wizardAnimController = wizard.GetComponent<Animator>();

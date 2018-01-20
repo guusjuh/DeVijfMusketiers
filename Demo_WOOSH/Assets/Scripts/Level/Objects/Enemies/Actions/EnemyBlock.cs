@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyBlock : Action
 {
-    private GameObject shield;
     private ParticleSystem shieldParticle;
     private float blockChance;
     private bool canBlock;
@@ -14,17 +13,6 @@ public class EnemyBlock : Action
 
         blockChance = 0.3f;
         canBlock = true;
-
-        shield = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/Shield"), parent.transform);
-        shield.SetActive(false);
-
-        shieldParticle = shield.GetComponent<ParticleSystem>();
-    }
-
-    public override void Reset()
-    {
-        base.Reset();
-        shield.SetActive(false);
     }
 
     public override bool TryHit()
@@ -32,7 +20,11 @@ public class EnemyBlock : Action
         float roll = Random.Range(0.0f, 1.0f);
         if (canBlock && roll < blockChance)
         {
-            UberManager.Instance.StartCoroutine(ShieldVisual());
+            UberManager.Instance.ParticleManager.PlayParticle(
+                ParticleManager.Particles.SkettaShieldParticle, 
+                parent.transform.position,
+                parent.transform.rotation);
+
             canBlock = false;
             return false;
         }
@@ -42,17 +34,5 @@ public class EnemyBlock : Action
         }
 
         return true;
-    }
-
-    protected IEnumerator ShieldVisual()
-    {
-        shield.SetActive(true);
-        shieldParticle.startColor = UberManager.Instance.SpellManager.SpellColors[UberManager.Instance.SpellManager.CastingSpell];
-
-        yield return new WaitForSeconds(0.5f);
-
-        shield.SetActive(false);
-
-        yield break;
     }
 }

@@ -217,7 +217,7 @@ public class Human : EnemyTarget
     {
         canBeTargeted = false;
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/HitParticle"), transform.position, Quaternion.identity);
+        UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.BloodParticle, transform.position, transform.rotation);
 
         anim.SetBool(DIE_ANIM, true);
 

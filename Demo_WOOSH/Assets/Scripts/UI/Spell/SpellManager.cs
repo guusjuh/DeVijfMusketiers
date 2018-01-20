@@ -30,7 +30,6 @@ public class SpellManager {
 
     private WorldObject selectedTarget = null;
     private bool spellButtonsActive = false;
-    private SpellVisual spellVisual;
     public Dictionary<SpellType, Color> SpellColors = new Dictionary<SpellType, Color>();
     private SpellType castingSpell = SpellType.NoSpell;
     private Coordinate selectedTile = new Coordinate(-1, -1);
@@ -65,21 +64,6 @@ public class SpellManager {
                 possibleSpells[spellProxies[i].PossibleTargets()[j]].Add(spellProxies[i].Type());
             }
         }
-
-        //TODO: improve
-        Canvas canvas = GameObject.FindGameObjectWithTag("InGameCanvas").GetComponent<Canvas>();
-        RectTransform anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        //--
-
-        spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
-
-
-        // Create spell visual
-        /*spellVisual = UIManager.Instance
-            .CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, UberManager.Instance.UiManager.InGameUI.AnchorCenter)
-            .GetComponent<SpellVisual>();*/
-
-        spellVisual.Initialize();
     }
 
     public void CastInDirect()
@@ -191,15 +175,14 @@ public class SpellManager {
         spellButtonsActive = false;
     }
 
-    public IEnumerator ShowSpellVisual(SpellType type)
+    public void ShowSpellVisual(SpellType type)
     {
         if (selectedTarget != null)
         {
             UIManager.Instance.InGameUI.SpellIsCast();
 
-            yield return UberManager.Instance.StartCoroutine(spellVisual.Activate(type, UberManager.Instance.GameManager.TileManager.GetWorldPosition(SelectedTarget.GridPosition)));
+            UberManager.Instance.ParticleManager.PlaySpellParticle(type, selectedTarget.transform.position, selectedTarget.transform.rotation);
 
-            spellVisual.gameObject.SetActive(false);
             spellButtons[type].CastSpell(selectedTarget);
             HideSpellButtons();
         }

@@ -60,6 +60,9 @@ public class UberManager : MonoBehaviour {
     [SerializeField] private SpellManager spellManager = new SpellManager();
     public SpellManager SpellManager { get { return spellManager; } }
 
+    private ParticleManager particleManager = new ParticleManager();
+    public ParticleManager ParticleManager { get { return particleManager; } }
+
     //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
     public PlayerData PlayerData { get { return playerData; } }
@@ -103,6 +106,7 @@ public class UberManager : MonoBehaviour {
         uiManager.Initialize();
         SoundManager.Initialize();
         spellManager.Initialize();
+        particleManager.Initialize();
 
         selectedDevMode = developersMode;
 

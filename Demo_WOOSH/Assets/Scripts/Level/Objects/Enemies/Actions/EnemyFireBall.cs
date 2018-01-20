@@ -13,10 +13,6 @@ public class EnemyFireBall : Action
         cost = 3;
         totalCooldown = 2;
 
-        //disables the fireball
-        fireBall = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Actions/FireBall"), parent.transform);
-        fireBall.SetActive(false);
-
         spellIconSprite = Resources.Load<Sprite>("Sprites/UI/InGame/Spells/enemyFire");
         HasSpellIcon = true;
     }
@@ -53,12 +49,14 @@ public class EnemyFireBall : Action
     // co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator ShootFireBall(Vector3 end)
     {
-        fireBall.SetActive(true);
-        Rigidbody2D ball = fireBall.GetComponent<Rigidbody2D>();
+        fireBall = UberManager.Instance.ParticleManager.PlayParticle(
+            ParticleManager.Particles.DodinFireballParticle, 
+            parent.transform.position, 
+            parent.transform.rotation);
 
         //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
-        float sqrRemainingDistance = (ball.transform.position - end).sqrMagnitude;
+        float sqrRemainingDistance = (fireBall.transform.position - end).sqrMagnitude;
 
         Vector3 newPostion;
 
@@ -66,13 +64,13 @@ public class EnemyFireBall : Action
         while (sqrRemainingDistance > 0.0001f)
         {
             //Find a new position proportionally closer to the end, based on the moveTime
-            newPostion = Vector3.MoveTowards(ball.position, end, parent.InverseMoveTime * Time.deltaTime);
+            newPostion = Vector3.MoveTowards(fireBall.transform.position, end, parent.InverseMoveTime * Time.deltaTime);
 
             //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
-            ball.MovePosition(newPostion);
+            fireBall.transform.position = newPostion;
 
             //Recalculate the remaining distance after moving.
-            sqrRemainingDistance = (ball.transform.position - end).sqrMagnitude;
+            sqrRemainingDistance = (fireBall.transform.position - end).sqrMagnitude;
 
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;

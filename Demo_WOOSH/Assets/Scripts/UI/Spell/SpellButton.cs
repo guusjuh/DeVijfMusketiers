@@ -102,7 +102,7 @@ public class SpellButton : MonoBehaviour {
     {
         UberManager.Instance.SpellManager.CastingSpell = type;
 
-        StartCoroutine(UberManager.Instance.SpellManager.ShowSpellVisual(type));
+        UberManager.Instance.SpellManager.ShowSpellVisual(type);
     }
 
     public void CastSpell(WorldObject target)
