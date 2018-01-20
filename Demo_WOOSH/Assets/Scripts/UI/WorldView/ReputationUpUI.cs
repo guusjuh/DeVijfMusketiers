@@ -10,11 +10,11 @@ public class ReputationUpUI : MonoBehaviour
     private List<RectTransform> filledStars;
     private List<Vector2> originalScales;
 
-    private float startSize = 3000.0f;
-    private float shrinkSpeed = 35.0f;
+    private const float START_SIZE = 3000.0f;
+    private const float SHRINK_SPEED = 35.0f;
+    private const float MOVE_SPEED = 15.0f;
+    private const float TRANS_SPEED = 0.01f;
 
-    private float moveSpeed = 15.0f;
-    private float transSpeed = 0.01f;
     private bool done = false;
 
     public void Initialze()
@@ -52,14 +52,14 @@ public class ReputationUpUI : MonoBehaviour
     {
         done = false;
 
-        float currentSize = startSize;
+        float currentSize = START_SIZE;
         float endSize = originalScales[indexStar].x;
 
-        filledStars[indexStar].sizeDelta = new Vector2(startSize, startSize);
+        filledStars[indexStar].sizeDelta = new Vector2(START_SIZE, START_SIZE);
 
         while (currentSize > endSize)
         {
-            currentSize -= shrinkSpeed;
+            currentSize -= SHRINK_SPEED;
             filledStars[indexStar].sizeDelta = new Vector2(currentSize, currentSize);
 
             yield return new WaitForEndOfFrame();
@@ -88,9 +88,9 @@ public class ReputationUpUI : MonoBehaviour
 
         while ((currentPos - endPos).magnitude > 1.0f && currentPos.x < endPos.x & currentPos.y < endPos.y)
         {
-            currentPos += direction * moveSpeed;
+            currentPos += direction * MOVE_SPEED;
             tempStar.anchoredPosition = currentPos;
-            tempStarImag.color -= new Color(0, 0, 0, transSpeed);
+            tempStarImag.color -= new Color(0, 0, 0, TRANS_SPEED);
             yield return new WaitForEndOfFrame();
         }
 

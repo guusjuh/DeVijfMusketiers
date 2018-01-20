@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager {
-    private AudioSource soundEffectSource;
-    private AudioSource backgroundSource;
+public static class SoundManager {
+    private static AudioSource soundEffectSource;
+    private static AudioSource backgroundSource;
 
-    private Dictionary<SoundEffect, AudioClip> soundEffects = new Dictionary<SoundEffect, AudioClip>();
-    private Dictionary<Background, AudioClip> backgroundMusic = new Dictionary<Background, AudioClip>();
+    private static Dictionary<SoundEffect, AudioClip> soundEffects = new Dictionary<SoundEffect, AudioClip>();
+    private static Dictionary<Background, AudioClip> backgroundMusic = new Dictionary<Background, AudioClip>();
 
-    private float musicVolume = 1;
-    public float MusicVolume
+    private static float musicVolume = 1;
+    public static float MusicVolume
     {
         get { return musicVolume; }
         set
@@ -20,8 +20,8 @@ public class SoundManager {
         }
     }
 
-    private float fxVolume = 1;
-    public float FXVolume
+    private static float fxVolume = 1;
+    public static float FXVolume
     {
         get { return fxVolume; }
         set
@@ -57,7 +57,7 @@ public class SoundManager {
      * firebal dodin
      */
 
-    public void Initialize()
+    public static void Initialize()
     {
         soundEffectSource = UberManager.Instance.gameObject.AddComponent<AudioSource>();
         backgroundSource = UberManager.Instance.gameObject.AddComponent<AudioSource>();
@@ -80,7 +80,7 @@ public class SoundManager {
         SetBackGroundMusic(Background.LevelSelection);
     }
 
-    public void SetBackGroundMusic(Background music)
+    public static void SetBackGroundMusic(Background music)
     {
         backgroundSource.Stop();
         backgroundSource.clip = backgroundMusic[music];
@@ -88,7 +88,7 @@ public class SoundManager {
         backgroundSource.Play();
     }
 
-    public void PlaySoundEffect(GameManager.SpellType effect)
+    public static void PlaySoundEffect(GameManager.SpellType effect)
     {
         switch (effect)
         {
@@ -107,12 +107,12 @@ public class SoundManager {
         }
     }
 
-    public void PlaySoundEffect(SoundEffect effect)
+    public static void PlaySoundEffect(SoundEffect effect)
     {
         soundEffectSource.PlayOneShot(soundEffects[effect]);
     }
 
-    public void PlaySoundEffect()
+    public static void PlaySoundEffect()
     {
         PlaySoundEffect(SoundEffect.ButtonClick);
     }

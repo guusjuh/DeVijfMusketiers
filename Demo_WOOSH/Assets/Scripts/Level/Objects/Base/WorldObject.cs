@@ -33,7 +33,7 @@ public class WorldObject : MonoBehaviour
 
         UIManager.Instance.InGameUI.ShowSpellButtons(this);
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     public virtual bool TryHit(int dmg)

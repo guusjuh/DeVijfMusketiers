@@ -47,7 +47,7 @@ public class EnemyBlock : Action
     protected IEnumerator ShieldVisual()
     {
         shield.SetActive(true);
-        shieldParticle.startColor = UberManager.Instance.UiManager.InGameUI.SpellColors[(GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell];
+        shieldParticle.startColor = UberManager.Instance.UiManager.InGameUI.SpellColor((GameManager.SpellType)UberManager.Instance.UiManager.InGameUI.CastingSpell);
 
         yield return new WaitForSeconds(0.5f);
 

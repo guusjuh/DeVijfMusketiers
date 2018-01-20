@@ -105,8 +105,8 @@ public class SavedPlayerData
         }
 
         // music & sounds
-        UberManager.Instance.SoundManager.MusicVolume = musicVolume;
-        UberManager.Instance.SoundManager.FXVolume = fxVolume;
+        SoundManager.MusicVolume = musicVolume;
+        SoundManager.FXVolume = fxVolume;
 
         // in-game speed
         UberManager.Instance.GameSpeed = gameSpeed;
@@ -151,8 +151,8 @@ public class SavedPlayerData
         activeContractsPerLevel = tempActiveContractsPerLevel;
 
         // music & sounds
-        musicVolume = UberManager.Instance.SoundManager.MusicVolume;
-        fxVolume = UberManager.Instance.SoundManager.FXVolume;
+        musicVolume = SoundManager.MusicVolume;
+        fxVolume = SoundManager.FXVolume;
 
         // game speed
         gameSpeed = UberManager.Instance.GameSpeed;

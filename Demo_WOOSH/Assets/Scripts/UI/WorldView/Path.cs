@@ -39,7 +39,6 @@ public class Path {
         {
             UberManager.Instance.ContractManager.AddContract(contract);
             levels[levelid].AddHuman();
-            levels.HandleAction(l => l.CheckActiveForButton());
 
             return true;
         }

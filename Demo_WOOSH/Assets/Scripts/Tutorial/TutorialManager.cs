@@ -168,8 +168,7 @@ public class TutorialManager
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(
             delegate
             {
-                UIManager.Instance.LevelSelectUI.SelectContractWindow.Activate(true,
-                    UIManager.Instance.LevelSelectUI.TutorialCity, Destination.Tutorial);
+                UIManager.Instance.LevelSelectUI.SelectContractWindow.Activate(UIManager.Instance.LevelSelectUI.TutorialCity, Destination.Tutorial);
             });
 
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(Next);
@@ -510,7 +509,7 @@ public class TutorialManager
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(3);
         GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
-        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Teleport);
+        SoundManager.PlaySoundEffect(GameManager.SpellType.Teleport);
     }
 
     public void TutorialAttack()
@@ -520,7 +519,7 @@ public class TutorialManager
         UIManager.Instance.InGameUI.CastingSpell = -1;
 
         UIManager.Instance.InGameUI.HideSpellButtons();
-        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
+        SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
     }
 
     public Vector2 GetRootUIPosition(RectTransform rect, RectTransform canvasRect)

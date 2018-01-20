@@ -57,12 +57,19 @@ public class PlayerAPSkipButton : MonoBehaviour {
         rotateCoroutine = null;
     }
 
+    public void Clear()
+    {
+        gameObject.SetActive(false);
+        //set AP text to 0
+        SetAPText();
+    }
+
     public void OnClick()
     {
         //only react in the player turn
         if (!GameManager.Instance.LevelManager.PlayersTurn) return;
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         
         if (skipOpen)
         {

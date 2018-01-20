@@ -57,9 +57,6 @@ public class UberManager : MonoBehaviour {
     private UIManager uiManager = new UIManager();
     public UIManager UiManager { get { return uiManager; } }
 
-    private SoundManager soundManager = new SoundManager();
-    public SoundManager SoundManager { get { return soundManager; } }
-
     //TODO: r/w from/to XML file
     private PlayerData playerData = new PlayerData();
     public PlayerData PlayerData { get { return playerData; } }
@@ -101,7 +98,7 @@ public class UberManager : MonoBehaviour {
         contentManager.Initialize();
         contractManager.Initialize();
         uiManager.Initialize();
-        soundManager.Initialize();
+        SoundManager.Initialize();
 
         selectedDevMode = developersMode;
 

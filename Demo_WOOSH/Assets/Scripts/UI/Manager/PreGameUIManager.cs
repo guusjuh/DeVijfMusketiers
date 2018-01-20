@@ -4,17 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PreGameUIManager : SubUIManager {
-    private RectTransform anchorCenter;
-    private RectTransform anchorTopRight;
-    private RectTransform anchorBottomRight;
-
     private PreGameInfoPanel preGameInfoPanel;
     public PreGameInfoPanel PreGameInfoPanel { get { return preGameInfoPanel; } }
 
     private VersusPanel versusPanel;
-    private const float TOTAL_VS_TIMER = 3.0f;
-    private float versusPanelTimer = 0.0f;
-    public void SetVersusPanelTimer() { versusPanelTimer = TOTAL_VS_TIMER; }
 
     private GameObject startButton;
     public RectTransform StartButton { get { return startButton.GetComponent<RectTransform>(); } }
@@ -28,34 +21,24 @@ public class PreGameUIManager : SubUIManager {
 
     protected override void Initialize()
     {
-        canvas = GameObject.FindGameObjectWithTag("PreGameCanvas").GetComponent<Canvas>();
-        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorTopRight = canvas.gameObject.transform.Find("Anchor_TopRight").GetComponent<RectTransform>();
-        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
+        canvasName = "PreGameCanvas";
+        base.Initialize();
 
         preGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/PreGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PreGameInfoPanel>();
         preGameInfoPanel.Initialize();
 
-        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-300.0f, 0.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
+        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-275.0f, 10.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
 
-        startButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
-        startButton.GetComponentInChildren<Text>().text = "Start level";
+        startButton = UIManager.Instance.CreateUIElement("Prefabs/UI/StartLevelButton", new Vector2(175.0f, 0.0f), buttonParent.transform);
 
         backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/BackButton", new Vector2(75, -75), anchorTopRight);
+        backButton.GetComponent<Button>().onClick.AddListener(BackToLevelSelect);
 
         GameObject background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/PreGame/BackgroundPreGame"), Vector2.zero, canvas.transform);
 
         background.transform.SetAsFirstSibling();
 
-        if (!UberManager.Instance.Tutorial && !initializedInGame)
-        {
-            InitializeInGame();
-            initializedInGame = true;
-        }
-        else
-        {
-            InitializeTutorial();
-        }
+        FinishInitialize();
     }
 
     protected override void InitializeTutorial()
@@ -68,8 +51,9 @@ public class PreGameUIManager : SubUIManager {
 
         backButton.gameObject.SetActive(false);
 
-        startButton.GetComponent<Button>().onClick.AddListener(StartGame);
-        startButton.GetComponent<Button>().interactable = false;
+        Button startButtonComponent = startButton.GetComponent<Button>();
+        startButtonComponent.onClick.AddListener(StartGame);
+        startButtonComponent.interactable = false;
 
         guidanceArrow = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceArrow", Vector2.zero, canvas.transform);
         guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
@@ -80,9 +64,10 @@ public class PreGameUIManager : SubUIManager {
         versusPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PreGame/VersusPanel", Vector2.zero, canvas.transform).GetComponent<VersusPanel>();
         versusPanel.Initialize();
 
-        startButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        startButton.GetComponent<Button>().onClick.AddListener(versusPanel.Activate);
-        startButton.GetComponent<Button>().interactable = false;
+        Button startButtonComponent = startButton.GetComponent<Button>();
+        startButtonComponent.onClick.RemoveAllListeners();
+        startButtonComponent.onClick.AddListener(versusPanel.Activate);
+        startButtonComponent.interactable = false;
 
         backButton.gameObject.SetActive(true);
     }
@@ -124,7 +109,6 @@ public class PreGameUIManager : SubUIManager {
     public override void Clear()
     {
         preGameInfoPanel.Clear();
-        versusPanelTimer = -1.0f;
 
         CanStart(false);
 
@@ -145,7 +129,7 @@ public class PreGameUIManager : SubUIManager {
 
         preGameInfoPanel.GetSelectedContracts().HandleAction(c => c.SetActive(true));
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.InGame);
     }
 
@@ -153,14 +137,12 @@ public class PreGameUIManager : SubUIManager {
     {
         base.Update();
 
-        if (versusPanelTimer > 0.0f)
-        {
-            versusPanelTimer -= Time.deltaTime;
+        versusPanel.UpdateTimer();
+    }
 
-            if (versusPanelTimer <= 0.0f)
-            {
-                versusPanel.Deactivate();
-            }
-        }
+    public void BackToLevelSelect()
+    {
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
     }
 }

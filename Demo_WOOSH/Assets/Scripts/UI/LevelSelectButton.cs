@@ -16,7 +16,7 @@ public class LevelSelectButton : MonoBehaviour
     public void OnClick()
     {
         UberManager.Instance.PreGameManager.SelectedLevel = levelID;
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.PreGame);
     }
 }

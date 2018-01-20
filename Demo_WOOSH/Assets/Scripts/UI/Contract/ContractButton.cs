@@ -40,10 +40,13 @@ public class ContractButton : MonoBehaviour
         //what respective happiness would this hooman have if his total was 5
         float percentage = (float)happiness / (float)totalHappiness;
         int normalizedHealth = (happiness > 10) ? Mathf.RoundToInt(percentage * 5.0f) : 1;
+        GameObject happinessPrefab = UberManager.Instance.ContentManager.HappinessPrefabs[normalizedHealth - 1];
 
-        happinessIndicator =
-            UIManager.Instance.CreateUIElement(UberManager.Instance.ContentManager.HappinessPrefabs[normalizedHealth - 1],
-                                               new Vector2(45.0f, 45.0f), this.transform);
+        happinessIndicator = UIManager.Instance.CreateUIElement(
+            happinessPrefab, 
+            new Vector2(45.0f, 45.0f), 
+            this.transform
+            );
     }
 
     protected void ClearHappiness()

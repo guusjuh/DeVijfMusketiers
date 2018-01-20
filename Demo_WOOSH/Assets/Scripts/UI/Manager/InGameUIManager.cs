@@ -4,11 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class InGameUIManager : SubUIManager {
-    private RectTransform anchorCenter;
     public RectTransform AnchorCenter { get { return anchorCenter; } }
-    private RectTransform anchorTopMid;
-    private RectTransform anchorBottomRight;
-    private RectTransform anchorBottomLeft;
 
     private GameObject playerTurnBanner;
     private GameObject enemyTurnBanner;
@@ -17,18 +13,15 @@ public class InGameUIManager : SubUIManager {
     private EnemyInfoUI enemyInfoUI;
     public EnemyInfoUI EnemyInfoUI { get { return enemyInfoUI; } }
 
-    //private SkipTurnButton skipTurnButton;
-    private PlayerAPSkipButton playerActionPoints;
-    public PlayerAPSkipButton PlayerActionPoints { get { return playerActionPoints; } }
+    private PlayerAPSkipButton playerAPIndicator;
+    public PlayerAPSkipButton PlayerApIndicator { get { return playerAPIndicator; } }
 
-    private GameSpeedButton gameSpeedButton;
-    public GameSpeedButton GameSpeedButton { get { return gameSpeedButton; } }
-
-    private WorldObject target = null;
+    private WorldObject selectedObject = null;
 
     private Dictionary<GameManager.SpellType, SpellButton> spellButtons;
     private bool spellButtonsOn = false;
-    private const float RADIUS = 200f;
+    //used for placing the spellbuttons
+    private const float WORLDOBJECT_RADIUS = 200f;
 
     public SpellButton AttackButton { get { return spellButtons[GameManager.SpellType.Attack]; } }
     public SpellButton TeleportButton { get { return spellButtons[GameManager.SpellType.Teleport]; } }
@@ -39,9 +32,10 @@ public class InGameUIManager : SubUIManager {
 
     private int castingSpell = -1;
     public int CastingSpell { get { return castingSpell; } set { castingSpell = value; } }
-    public Dictionary<GameManager.SpellType, Color> SpellColors;
+    private Dictionary<GameManager.SpellType, Color> spellColors;
+    public Color SpellColor(GameManager.SpellType type) { return spellColors[type]; }
 
-    private List<SurroundingPushButton> teleportButtons = new List<SurroundingPushButton>();
+    private List<SurroundingTeleportButton> teleportButtons = new List<SurroundingTeleportButton>();
     private bool teleportButtonsOn = false;
 
     //------------------ TUTORIAL VARS ------------------------
@@ -51,21 +45,35 @@ public class InGameUIManager : SubUIManager {
 
     protected override void Initialize()
     {
-        canvas = GameObject.FindGameObjectWithTag("InGameCanvas").GetComponent<Canvas>();
-        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
-        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
-        anchorBottomLeft = canvas.gameObject.transform.Find("Anchor_BottomLeft").GetComponent<RectTransform>();
+        canvasName = "InGameCanvas";
+        base.Initialize();
 
-        enemyInfoUI = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/EnemyInfo", new Vector2(0.0f, -50.0f), anchorTopMid).GetComponent<EnemyInfoUI>();
+        CreateUIElements();
+
+        teleportButtonsOn = false;
+        teleportButtons = new List<SurroundingTeleportButton>();
+        InitializeTeleportButtons();
+
+        spellColors = new Dictionary<GameManager.SpellType, Color>();
+        spellColors.Add(GameManager.SpellType.Attack, Color.white);
+        spellColors.Add(GameManager.SpellType.Fireball, Color.red);
+        spellColors.Add(GameManager.SpellType.FrostBite, Color.blue);
+        spellColors.Add(GameManager.SpellType.Teleport, Color.magenta);
+
+        FinishInitialize();
+
+        if (UberManager.Instance.DevelopersMode) Pause(true);
+    }
+
+    private void CreateUIElements()
+    {
+        //Enemy HUD
+        enemyInfoUI = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/EnemyInfo", new Vector2(0.0f, -50.0f), anchorTopCenter).GetComponent<EnemyInfoUI>();
         enemyInfoUI.Initialize();
         enemyInfoUI.Clear();
 
-        playerActionPoints = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft).GetComponent<PlayerAPSkipButton>();
-        playerActionPoints.Initialize();
-
-        gameSpeedButton = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/GameSpeed", Vector2.zero, anchorBottomLeft).GetComponent<GameSpeedButton>();
-        gameSpeedButton.Initialize();
+        playerAPIndicator = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/AP-Skip-Indicator", Vector2.zero, anchorBottomLeft).GetComponent<PlayerAPSkipButton>();
+        playerAPIndicator.Initialize();
 
         wizard = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/WizardUI", new Vector2(-100.0f, 0.0f), anchorBottomRight).gameObject;
         wizardAnimController = wizard.GetComponent<Animator>();
@@ -76,34 +84,13 @@ public class InGameUIManager : SubUIManager {
         enemyTurnBanner = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/OthersTurn", new Vector2(0, 500), anchorCenter);
         enemyTurnBanner.SetActive(false);
 
+        //Gap warning
         warningText = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/InGame/WarningText"), Vector3.zero, Quaternion.identity, anchorCenter.transform).GetComponentInChildren<Text>();
         warningText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 500);
         warningText.gameObject.SetActive(false);
 
         spellVisual = UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellVisual/SpellInGame", Vector2.zero, anchorCenter).GetComponent<SpellVisual>();
         spellVisual.Initialize();
- 
-        teleportButtonsOn = false;
-        teleportButtons = new List<SurroundingPushButton>();
-        InitializeTeleportButtons();
-
-        SpellColors = new Dictionary<GameManager.SpellType, Color>();
-        SpellColors.Add(GameManager.SpellType.Attack, Color.white);
-        SpellColors.Add(GameManager.SpellType.Fireball, Color.red);
-        SpellColors.Add(GameManager.SpellType.FrostBite, Color.blue);
-        SpellColors.Add(GameManager.SpellType.Teleport, Color.magenta);
-
-        if (!UberManager.Instance.Tutorial && !initializedInGame)
-        {
-            InitializeInGame();
-            initializedInGame = true;
-        }
-        else
-        {
-            InitializeTutorial();
-        }
-
-        if (UberManager.Instance.DevelopersMode) Pause(true);
     }
 
     protected override void InitializeTutorial()
@@ -124,6 +111,7 @@ public class InGameUIManager : SubUIManager {
 
     protected override void InitializeInGame()
     {
+        //for tutorial spells
         if (spellButtons != null)
         {
             GameObject.Destroy(spellButtons[GameManager.SpellType.Attack].gameObject);
@@ -141,7 +129,7 @@ public class InGameUIManager : SubUIManager {
 
         enemyInfoUI.Restart();
 
-        playerActionPoints.gameObject.SetActive(true);
+        playerAPIndicator.gameObject.SetActive(true);
         wizard.gameObject.SetActive(true);
     }
 
@@ -163,7 +151,6 @@ public class InGameUIManager : SubUIManager {
     public override void DeactivateNoClickPanel()
     {
         base.DeactivateNoClickPanel();
-
         guidanceArrow.SetActive(false);
         guidanceArrow.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
         guidanceText.gameObject.SetActive(false);
@@ -189,12 +176,11 @@ public class InGameUIManager : SubUIManager {
             InitializeInGame();
             return;
         }
-
         InitializeTeleportButtons();
 
         enemyInfoUI.Restart();
 
-        playerActionPoints.Reset();
+        playerAPIndicator.Reset();
         wizard.gameObject.SetActive(true);
 
         if (UberManager.Instance.DevelopersMode) Pause(true);
@@ -204,21 +190,15 @@ public class InGameUIManager : SubUIManager {
     {
         CastingSpell = -1;
 
-        // you knwo the banners are off
-
         // let enemy info ui clear itself
         enemyInfoUI.Clear();
-
-        // clear player ap elements
-        playerActionPoints.gameObject.SetActive(false);
-        playerActionPoints.SetAPText();
+        playerAPIndicator.Clear();
         wizard.gameObject.SetActive(false);
 
         // hide spell buttons 
         HideSpellButtons();
-
         teleportButtonsOn = false;
-        teleportButtons.HandleAction(b => b.Destory());
+        teleportButtons.HandleAction(b => b.Destroy());
         teleportButtons.Clear();
         teleportButtons = null;
 
@@ -235,9 +215,8 @@ public class InGameUIManager : SubUIManager {
             {
                 pair.Value.gameObject.SetActive(false);
             }
-
             enemyInfoUI.OnChange();
-            playerActionPoints.gameObject.SetActive(false);
+            playerAPIndicator.gameObject.SetActive(false);
 
             wizard.gameObject.SetActive(false);
         }
@@ -250,23 +229,21 @@ public class InGameUIManager : SubUIManager {
                     pair.Value.gameObject.SetActive(true);
                 }
             }
-
-            playerActionPoints.gameObject.SetActive(true);
-
+            playerAPIndicator.gameObject.SetActive(true);
             wizard.gameObject.SetActive(true);
         }
     }
 
     public void InitializeTeleportButtons()
     {
-        teleportButtons = new List<SurroundingPushButton>();
+        teleportButtons = new List<SurroundingTeleportButton>();
 
         for (int x = 0; x < GameManager.Instance.TileManager.Rows; x++)
         {
             for (int y = 0; y < GameManager.Instance.TileManager.Columns; y++)
             {
                 Coordinate gridPos = new Coordinate(x,y);
-                teleportButtons.Add(UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellButton/SurroundingPushButton", Vector2.zero, AnchorCenter).GetComponent<SurroundingPushButton>());
+                teleportButtons.Add(UIManager.Instance.CreateUIElement("Prefabs/UI/InGame/SpellButton/SurroundingPushButton", Vector2.zero, AnchorCenter).GetComponent<SurroundingTeleportButton>());
 
                 teleportButtons.Last().Deactivate();
                 teleportButtons.Last().Initialize(gridPos);
@@ -283,14 +260,14 @@ public class InGameUIManager : SubUIManager {
         }
         else if (teleportButtonsOn)
         {
-            SetPushButtonPositions();
+            SetTeleportButtonPositions();
         }
     }
 
     public void ActivateTeleportButtons(bool on, MovableObject target = null)
     {
         //fill all possible surrounding TELEPORT buttons beforehand (each possible tile)
-        List<SurroundingPushButton> tempButtons = new List<SurroundingPushButton>();
+        List<SurroundingTeleportButton> tempButtons = new List<SurroundingTeleportButton>();
         for (int i = 0; i < teleportButtons.Count; i++)
         {
             if (!on)
@@ -313,27 +290,23 @@ public class InGameUIManager : SubUIManager {
         if (on) tempButtons.HandleAction(b => b.Activate(target));
         else teleportButtons.HandleAction(b => b.Deactivate());
 
-        this.target = target;
+        this.selectedObject = target;
         teleportButtonsOn = on;
     }
 
-    private void SetPushButtonPositions()
+    private void SetTeleportButtonPositions()
     {
         teleportButtons.HandleAction(b => b.SetPosition());
     }
 
     public void BeginPlayerTurn()
     {
-        playerActionPoints.SetAPText();
-
-        //TODO: skipTurnButton.Active = true;
+        playerAPIndicator.SetAPText();
     }
 
     public void EndPlayerTurn()
     {
-        playerActionPoints.SetAPText();
-
-        //TODO: skipTurnButton.Active = false;
+        playerAPIndicator.SetAPText();
     }
 
     public IEnumerator StartTurn(bool player)
@@ -364,13 +337,13 @@ public class InGameUIManager : SubUIManager {
     {
         HideSpellButtons();
 
-        this.target = target;
+        this.selectedObject = target;
         spellButtonsOn = true;
 
-        for (int i = 0; i < this.target.PossibleSpellTypes.Count; i++)
+        for (int i = 0; i < selectedObject.PossibleSpellTypes.Count; i++)
         {
-            spellButtons.Get(this.target.PossibleSpellTypes[i]).gameObject.SetActive(true);
-            spellButtons.Get(this.target.PossibleSpellTypes[i]).Activate(target);
+            spellButtons.Get(selectedObject.PossibleSpellTypes[i]).gameObject.SetActive(true);
+            spellButtons.Get(selectedObject.PossibleSpellTypes[i]).Activate(target);
         }
 
         SetSpellButtonPositions();
@@ -378,23 +351,23 @@ public class InGameUIManager : SubUIManager {
 
     private void SetSpellButtonPositions()
     {
-        Vector2 canvasPos = WorldToCanvas(target.transform.position);
+        Vector2 canvasPos = WorldToCanvas(selectedObject.transform.position);
 
-        float divider = target.PossibleSpellTypes.Count > 1 ? (float)target.PossibleSpellTypes.Count - 1.0f : (float)target.PossibleSpellTypes.Count;
-        float partialCircle = (target.PossibleSpellTypes.Count - 1) / 4.0f * 0.9f;
+        //divides spellbuttons over a circle, so they can be positioned correctly
+        float divider = selectedObject.PossibleSpellTypes.Count > 1 ? (float)selectedObject.PossibleSpellTypes.Count - 1.0f : (float)selectedObject.PossibleSpellTypes.Count;
+        float partialCircle = (selectedObject.PossibleSpellTypes.Count - 1) / 4.0f * 0.9f;
         float offSetCircle = (1.0f - partialCircle) / 2.0f;
 
-        for (int i = 0; i < target.PossibleSpellTypes.Count; i++)
+        for (int i = 0; i < selectedObject.PossibleSpellTypes.Count; i++)
         { 
-            spellButtons.Get(target.PossibleSpellTypes[i]).GetComponent<RectTransform>().anchoredPosition = 
-                canvasPos - CalculatePointOnCircle(RADIUS, partialCircle, divider, offSetCircle, i);
+            spellButtons.Get(selectedObject.PossibleSpellTypes[i]).GetComponent<RectTransform>().anchoredPosition = 
+                canvasPos - CalculatePointOnCircle(partialCircle, divider, offSetCircle, i);
         }
     }
 
     public void HideSpellButtons()
     {
         spellButtonsOn = false;
-
         foreach (var pair in spellButtons)
         {
             pair.Value.gameObject.SetActive(false);
@@ -422,9 +395,12 @@ public class InGameUIManager : SubUIManager {
         wizardAnimController.SetTrigger("EnemyDied");
     }
 
-    public static Vector2 CalculatePointOnCircle(float radius, float partialCircle, float divider, float offset, int index)
+    /// <summary>
+    /// calculates a point on a circle around the selected worldobject
+    /// </summary>
+    public static Vector2 CalculatePointOnCircle(float partialCircle, float divider, float offset, int index)
     {
-        return new Vector2(radius * Mathf.Cos(partialCircle * Mathf.PI * (float)index / divider + offset * Mathf.PI),
-                -radius * Mathf.Sin(partialCircle * Mathf.PI * (float)index / divider + offset * Mathf.PI));
+        return new Vector2(WORLDOBJECT_RADIUS * Mathf.Cos(partialCircle * Mathf.PI * (float)index / divider + offset * Mathf.PI),
+                -WORLDOBJECT_RADIUS * Mathf.Sin(partialCircle * Mathf.PI * (float)index / divider + offset * Mathf.PI));
     }
 }

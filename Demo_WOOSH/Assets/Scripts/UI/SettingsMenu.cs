@@ -25,27 +25,26 @@ public class SettingsMenu : MonoBehaviour
     public void Activate()
     {
         gameObject.SetActive(true);
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 
     public void Deactivate()
     {
         GooglePlayScript.Instance.SaveData();
 
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         gameObject.SetActive(false);
     }
 
     public void ChangeMusicVolume(float real)
     {
-        Debug.Log(real);
-        UberManager.Instance.SoundManager.MusicVolume = real;
+        SoundManager.MusicVolume = real;
         musicSlider.value = real >= 1.0f ? 0.999f : real;
     }
 
     public void ChangeFxVolume(float real)
     {
-        UberManager.Instance.SoundManager.FXVolume = real;
+        SoundManager.FXVolume = real;
         fxSlider.value = real;
     }
 

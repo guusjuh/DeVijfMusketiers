@@ -313,7 +313,7 @@ public class LevelManager
 
     private IEnumerator BreakTile(TileNode chosenGap)
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Gap);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Gap);
         while (chosenGap.Hexagon.transform.localScale.magnitude > 0.1f)
         {
             chosenGap.Hexagon.transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f);

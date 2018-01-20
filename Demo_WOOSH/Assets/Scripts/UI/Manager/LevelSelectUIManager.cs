@@ -6,11 +6,7 @@ using UnityEngine.UI;
 
 public class LevelSelectUIManager : SubUIManager
 {
-    private RectTransform anchorCenter;
     public RectTransform AnchorCenter {get { return anchorCenter; } }
-    private RectTransform anchorBottomRight;
-    private RectTransform anchorTopMid;
-    private RectTransform anchorBottomCenter;
 
     private GameObject levelSelectPanel;
 
@@ -65,32 +61,22 @@ public class LevelSelectUIManager : SubUIManager
     
     protected override void Initialize()
     {
-        canvas = GameObject.FindGameObjectWithTag("LevelSelectCanvas").GetComponent<Canvas>();
-        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
-        anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
-        anchorBottomCenter = canvas.gameObject.transform.Find("Anchor_BottomCenter").GetComponent<RectTransform>();
+        canvasName = "LevelSelectCanvas";
+        base.Initialize();
 
         background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/LevelSelect/BackgroundLevelSelect"), Vector2.zero, canvas.transform);
 
         background.transform.SetAsFirstSibling();
 
-        if (!UberManager.Instance.Tutorial && !initializedInGame)
-        {
-            InitializeInGame();
-            initializedInGame = true;
-        }
-        else
-        {
-            InitializeTutorial();
-        }
+        FinishInitialize();
     }
 
     protected override void InitializeTutorial()
     {
         tutorialPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/TutorialPanel", Vector2.zero, anchorCenter);
 
-        tutorialSelectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform).transform.GetChild(0).gameObject);
+        GameObject selectContractWindowGO = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform);
+        tutorialSelectContractWindow = new SelectContractWindow(selectContractWindowGO.transform.GetChild(0).gameObject);
 
         tutorialCity = tutorialPanel.GetComponentInChildren<City>();
         tutorialCity.Initiliaze();
@@ -131,16 +117,17 @@ public class LevelSelectUIManager : SubUIManager
 
         cities[0].Reached();
 
-        reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopMid).GetComponent<ReputationUIManager>();
+        reputationParent = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/ReputationParent", new Vector2(-20, -20), anchorTopCenter).GetComponent<ReputationUIManager>();
         reputationParent.Initialize();
 
         settingsMenu = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsMenuPanel", Vector2.zero, canvas.transform).GetComponent<SettingsMenu>();
         settingsMenu.Initialize();
 
-        settingsButton = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsButton", new Vector2(20, -20), anchorTopMid).gameObject;
+        settingsButton = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SettingsButton", new Vector2(20, -20), anchorTopCenter).gameObject;
         settingsButton.GetComponentInChildren<Button>().onClick.AddListener(settingsMenu.Activate);
 
-        selectContractWindow = new SelectContractWindow(UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform).transform.GetChild(0).gameObject);
+        GameObject selectContractWindowGO = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/SelectContractMenuPanel", Vector2.zero, canvas.transform);
+        selectContractWindow = new SelectContractWindow(selectContractWindowGO.transform.GetChild(0).gameObject);
 
         repUpUI = UIManager.Instance.CreateUIElement("Prefabs/UI/LevelSelect/RepUpPanel", Vector2.zero, canvas.transform).GetComponent<ReputationUpUI>();
         repUpUI.Initialze();

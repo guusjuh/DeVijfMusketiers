@@ -21,7 +21,7 @@ public class PostGameManager : StateManager {
 
     private void SetSounds()
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(GameManager.Instance.Won ? SoundManager.SoundEffect.Victory : SoundManager.SoundEffect.Defeat);
-        UberManager.Instance.SoundManager.SetBackGroundMusic(SoundManager.Background.LevelSelection);
+        SoundManager.PlaySoundEffect(GameManager.Instance.Won ? SoundManager.SoundEffect.Victory : SoundManager.SoundEffect.Defeat);
+        SoundManager.SetBackGroundMusic(SoundManager.Background.LevelSelection);
     }
 }

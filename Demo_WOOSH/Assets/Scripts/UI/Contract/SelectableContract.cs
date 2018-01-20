@@ -41,7 +41,7 @@ public class SelectableContract : ContractButton
 
     public override void OnClick()
     {
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         // select if not selected
         if (!selected)
         {

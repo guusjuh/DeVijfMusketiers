@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class PostGameUIManager : SubUIManager
 {
-    private RectTransform anchorCenter;
-    private RectTransform anchorTopMid;
-    private RectTransform anchorBottomRight;
     public RectTransform AnchorCenter { get { return anchorCenter;} }
 
     private PostGameInfoPanel postGameInfoPanel;
@@ -22,32 +19,20 @@ public class PostGameUIManager : SubUIManager
 
     protected override void Initialize()
     {
-        canvas = GameObject.FindGameObjectWithTag("PostGameCanvas").GetComponent<Canvas>();
-        anchorCenter = canvas.gameObject.transform.Find("Anchor_Center").GetComponent<RectTransform>();
-        anchorTopMid = canvas.gameObject.transform.Find("Anchor_TopMid").GetComponent<RectTransform>();
-        anchorBottomRight = canvas.gameObject.transform.Find("Anchor_BottomRight").GetComponent<RectTransform>();
+        canvasName = "PostGameCanvas";
+        base.Initialize();
 
         postGameInfoPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/PostGame/PostGameInfoPanel", Vector2.zero, anchorCenter).GetComponent<PostGameInfoPanel>();
         postGameInfoPanel.Initialize();
 
-        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-300.0f, 0.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
-
-        backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/Button", new Vector2(175.0f, 0.0f), buttonParent.transform);
-        backButton.GetComponentInChildren<Text>().text = "Back to level";
+        GameObject buttonParent = UIManager.Instance.CreateUIElement(new Vector2(-275.0f, 10.0f), new Vector2(600.0f, 100.0f), anchorBottomRight);
+        backButton = UIManager.Instance.CreateUIElement("Prefabs/UI/BackToWorldButton", new Vector2(175.0f, 0.0f), buttonParent.transform);
         backButton.GetComponent<Button>().onClick.AddListener(BackToWorld);
 
         background = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/PostGame/BackgroundPostGame"), Vector2.zero, canvas.transform);
         background.transform.SetAsFirstSibling();
 
-        if (!UberManager.Instance.Tutorial && !initializedInGame)
-        {
-            InitializeInGame();
-            initializedInGame = true;
-        }
-        else
-        {
-            InitializeTutorial();
-        }
+        FinishInitialize();
     }
 
     protected override void InitializeTutorial()
@@ -107,6 +92,7 @@ public class PostGameUIManager : SubUIManager
 
     public void BackToWorld()
     {
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
     }
 }

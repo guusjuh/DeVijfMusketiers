@@ -43,6 +43,6 @@ public class AcceptButton
     public void DisableWindow()
     {
         acceptWindow.SetActive(false);
-        UberManager.Instance.SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
     }
 }

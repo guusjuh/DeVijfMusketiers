@@ -352,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835165020}
   m_Layer: 5
-  m_Name: Anchor_TopMid
+  m_Name: Anchor_TopCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -547,7 +547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1080764521}
   m_Layer: 5
-  m_Name: Anchor_TopMid
+  m_Name: Anchor_TopCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -775,7 +775,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1572947709}
   m_Layer: 5
-  m_Name: Anchor_TopMid
+  m_Name: Anchor_TopCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

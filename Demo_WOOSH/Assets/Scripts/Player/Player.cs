@@ -50,7 +50,7 @@ public class Player
     public bool EndPlayerMove(int cost = 1, bool endTurn = false)
     {
         currentActionPoints = endTurn ? 0 : currentActionPoints - cost;
-        UIManager.Instance.InGameUI.PlayerActionPoints.SetAPText();
+        UIManager.Instance.InGameUI.PlayerApIndicator.SetAPText();
 
         if (currentActionPoints <= 0)
         {
