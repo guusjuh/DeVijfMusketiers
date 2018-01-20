@@ -14,13 +14,16 @@ public class WorldObject : MonoBehaviour
     protected Coordinate gridPosition;
     public Coordinate GridPosition { get { return gridPosition; } }
 
-    protected List<GameManager.SpellType> possibleSpellTypes;
-    public List<GameManager.SpellType> PossibleSpellTypes { get { return possibleSpellTypes; } }
+    protected SpellManager.SpellTarget spellTargetType = SpellManager.SpellTarget.None;
+    protected List<SpellManager.SpellType> possibleSpellTypes;
+    public List<SpellManager.SpellType> PossibleSpellTypes { get { return possibleSpellTypes; } }
 
     public virtual void Initialize(Coordinate startPos)
     {
         gridPosition = startPos;
-        possibleSpellTypes = new List<GameManager.SpellType>();
+        possibleSpellTypes = new List<SpellManager.SpellType>();
+        if (spellTargetType != SpellManager.SpellTarget.None)
+            possibleSpellTypes = UberManager.Instance.SpellManager.GetPossibleSpellTypes(spellTargetType);
     }
 
     public virtual void Click()
@@ -31,9 +34,20 @@ public class WorldObject : MonoBehaviour
 
         GameManager.Instance.CameraManager.LockTarget(this.transform);
 
-        UIManager.Instance.InGameUI.ShowSpellButtons(this);
+        UberManager.Instance.SpellManager.SelectTarget(this);
+        UberManager.Instance.SpellManager.ShowSpellButtons();
 
         SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
+    }
+
+    public void Teleport(Coordinate newPos)
+    {
+        GameManager.Instance.TileManager.MoveObject(gridPosition, newPos, this);
+
+        gridPosition = newPos;
+        Vector3 worldPos = GameManager.Instance.TileManager.GetWorldPosition(gridPosition);
+
+        transform.position = new Vector3(worldPos.x, worldPos.y, transform.position.z);
     }
 
     public virtual bool TryHit(int dmg)

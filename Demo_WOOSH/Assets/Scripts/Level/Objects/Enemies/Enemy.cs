@@ -65,6 +65,7 @@ public class Enemy : WorldObject
 
     public override void Initialize(Coordinate startPos)
     {
+        spellTargetType = SpellManager.SpellTarget.Enemy;
         base.Initialize(startPos);
 
         anim = gameObject.GetComponentInChildren<Animator>();
@@ -88,21 +89,11 @@ public class Enemy : WorldObject
         calculatedTotalAP = totalActionPoints;
         currentActionPoints = calculatedTotalAP;
         health = startHealth;
-
         for (int i = 0; i < actions.Count; i++)
         {
             actions[i].Initialize(this);
         }
 
-        if (UberManager.Instance.Tutorial)
-        {
-            possibleSpellTypes.Add(GameManager.SpellType.Attack);
-            return;
-        }
-
-        possibleSpellTypes.Add(GameManager.SpellType.Attack);
-        possibleSpellTypes.Add(GameManager.SpellType.FrostBite);
-        possibleSpellTypes.Add(GameManager.SpellType.Fireball);
     }
 
     public override void Reset()
@@ -193,7 +184,7 @@ public class Enemy : WorldObject
 
             Dead = true;
             anim.SetBool(DIE_ANIM, true);
-            GameManager.Instance.TileManager.HidePossibleRoads();
+            GameManager.Instance.TileManager.HideHighlightedNodes();
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
 
             if (!UberManager.Instance.DevelopersMode)
@@ -259,7 +250,7 @@ public class Enemy : WorldObject
 
     public void ShowPossibleRoads()
     {
-        GameManager.Instance.TileManager.HidePossibleRoads();
+        GameManager.Instance.TileManager.HideHighlightedNodes();
         GameManager.Instance.TileManager.ShowPossibleRoads(this, gridPosition, calculatedTotalAP);
 
         for (int i = 0; i < actions.Count; i++)

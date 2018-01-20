@@ -214,7 +214,7 @@ public class TutorialManager
     {
         UIManager.Instance.LevelSelectUI.DeactivateNoClickPanel();
 
-        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(315.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/CloseWindow"), false);
+        UIManager.Instance.LevelSelectUI.ActivateNoClickPanel(new Vector2(315.0f, 355.0f), Resources.Load<Sprite>("Sprites/UI/WorldView/CloseWindow"), false);
         UIManager.Instance.LevelSelectUI.SetArrow(new Vector2(315.0f, 355.0f), 260.0f, 100.0f, "Close the window.");
 
         UIManager.Instance.LevelSelectUI.OnlyButton.onClick.AddListener(UIManager.Instance.LevelSelectUI.SelectContractWindow.Deactivate);
@@ -357,15 +357,16 @@ public class TutorialManager
     {
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
 
-        RectTransform rect = UIManager.Instance.InGameUI.TeleportButton.GetComponent<RectTransform>();
-        Vector2 teleportButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
-        Vector2 teleportButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //RectTransform rect = UIManager.Instance.InGameUI.TeleportButton.GetComponent<RectTransform>();
+        //Vector2 teleportButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //Vector2 teleportButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), teleportButtonSize);
+        //UIManager.Instance.InGameUI.ActivateNoClickPanel(teleportButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/TeleportButton"), teleportButtonSize);
 
-        UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.TeleportButton.Click);
+        //TODO: implement new spellsystem
+        //UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.TeleportButton.Click);
 
-        UIManager.Instance.InGameUI.SetArrow(teleportButtonPos, 70.0f, 100.0f, "To flee, select the teleport spell.");
+        //UIManager.Instance.InGameUI.SetArrow(teleportButtonPos, 70.0f, 100.0f, "To flee, select the teleport spell.");
     }
 
     // wait for spell visual
@@ -430,16 +431,16 @@ public class TutorialManager
     private void Step16()
     {
         UIManager.Instance.InGameUI.DeactivateNoClickPanel();
+        //RectTransform rect = UIManager.Instance.InGameUI.AttackButton.GetComponent<RectTransform>();
+        //Vector2 attackButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //Vector2 attackButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
 
-        RectTransform rect = UIManager.Instance.InGameUI.AttackButton.GetComponent<RectTransform>();
-        Vector2 attackButtonPos = GetRootUIPosition(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
-        Vector2 attackButtonSize = GetRootUISize(rect, UIManager.Instance.InGameUI.Canvas.GetComponent<RectTransform>());
+        //UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), attackButtonSize);
 
-        UIManager.Instance.InGameUI.ActivateNoClickPanel(attackButtonPos, Resources.Load<Sprite>("Sprites/UI/Tutorial/AttackButton"), attackButtonSize);
+        //TODO: implement new spellsystem
+        //UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.AttackButton.Click);
 
-        UIManager.Instance.InGameUI.OnlyButton.onClick.AddListener(UIManager.Instance.InGameUI.AttackButton.Click);
-
-        UIManager.Instance.InGameUI.SetArrow(attackButtonPos, 70.0f, 100.0f, "To attack, select the attack spell.");
+        //UIManager.Instance.InGameUI.SetArrow(attackButtonPos, 70.0f, 100.0f, "To attack, select the attack spell.");
     }
 
     // wait for spell visual
@@ -508,18 +509,18 @@ public class TutorialManager
         GameManager.Instance.LevelManager.Humans[0].Teleport(new Coordinate(0, 0));
         GameManager.Instance.LevelManager.CheckForExtraAP();
         GameManager.Instance.LevelManager.EndPlayerMove(3);
-        GameManager.Instance.LevelManager.Player.SetCooldown(GameManager.SpellType.Teleport);
-        SoundManager.PlaySoundEffect(GameManager.SpellType.Teleport);
+        GameManager.Instance.LevelManager.Player.SetCooldown(SpellManager.SpellType.Teleport, 3);
+        SoundManager.PlaySoundEffect(SpellManager.SpellType.Teleport);
     }
 
     public void TutorialAttack()
     {
         GameManager.Instance.LevelManager.Enemies[0].TryHit(10);
 
-        UIManager.Instance.InGameUI.CastingSpell = -1;
+        UberManager.Instance.SpellManager.CastingSpell = SpellManager.SpellType.NoSpell;
 
-        UIManager.Instance.InGameUI.HideSpellButtons();
-        SoundManager.PlaySoundEffect(GameManager.SpellType.Attack);
+        UberManager.Instance.SpellManager.HideSpellButtons();
+        SoundManager.PlaySoundEffect(SpellManager.SpellType.Attack);
     }
 
     public Vector2 GetRootUIPosition(RectTransform rect, RectTransform canvasRect)

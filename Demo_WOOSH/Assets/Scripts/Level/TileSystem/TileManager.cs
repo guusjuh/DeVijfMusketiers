@@ -127,7 +127,7 @@ public class TileManager
 
     public void ClearGrid()
     {
-        HidePossibleRoads();
+        HideHighlightedNodes();
 
         for (int i = 0; i < grid.GetLength(0); i++)
         {
@@ -479,6 +479,48 @@ public class TileManager
         return new Dictionary<TileNode, int>(possGapNodes); 
     }
 
+    public void ShowTeleportHighlights(WorldObject worldObject, int range)
+    {
+        HideHighlightedNodes();
+        highlightedNodes = new List<TileNode>();
+        // add yourself
+        TileNode hisNode = GetNodeReference(worldObject.GridPosition);
+        
+        if (range == 0)
+        {
+            foreach (TileNode node in grid)
+            {
+                highlightedNodes.Add(node);    
+            }
+        }
+        else
+        {
+            RecursiveTileFinder(worldObject, highlightedNodes, hisNode, range, worldObject.GridPosition, false);
+        }
+
+        // highlight all found buttons
+        highlightedNodes.HandleAction(n =>
+        {
+            if (!(n.ContainsFlyingMonster() || n.ContainsWalkingMonster()))
+            {
+                if (worldObject.IsFlying())
+                {
+                    if (n.ContainsBrokenBarrel() || n.CompletelyEmpty() || n.GetType() == TileType.Dangerous)
+                    {
+                        n.HighlightTile(true, Color.green);
+                    }
+                }
+                else //teleport humans and walking monsters
+                {
+                    if (n.ContainsBrokenBarrel() || n.CompletelyEmpty())
+                    {
+                        n.HighlightTile(true, Color.green);
+                    }
+                }
+            }
+        });
+    }
+
     public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
     {
         highlightedNodes = new List<TileNode>();
@@ -499,6 +541,15 @@ public class TileManager
                 n.HighlightTile(true, TARGETCOLOR);
             }
         });
+    }
+
+    public void DisableHighlights()
+    {
+        UberManager.Instance.InputManager.highlightsActivated = false;
+        foreach (TileNode node in grid)
+        {
+            node.HighlightTile(false, new Color(0,0,0,0));
+        }
     }
 
     // assumed this is always called AFTER ShowPossibleRoads, no new list need to be set and the tiles can just be added to the highlighted
@@ -546,7 +597,7 @@ public class TileManager
         }
     }
 
-    public void HidePossibleRoads()
+    public void HideHighlightedNodes()
     {
         if (highlightedNodes != null && highlightedNodes.Count != 0)
         {
@@ -699,7 +750,7 @@ public class TileManager
 
         if (gridToRemove == null) gridToRemove = grid;
 
-        HidePossibleRoads();
+        HideHighlightedNodes();
 
         for (int i = 0; i < gridToRemove.GetLength(0); i++)
         {

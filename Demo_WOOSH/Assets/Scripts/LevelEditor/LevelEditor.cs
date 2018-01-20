@@ -323,7 +323,6 @@ public class LevelEditor : MonoBehaviour
 
         GameManager.Instance.TileManager.AdjustGridSizeDEVMODE();
         GameManager.Instance.CameraManager.ResetDEVMODE();
-        UIManager.Instance.InGameUI.InitializeTeleportButtons();
         BuildNewLevelDataGrid();
 
         for (int i = 0; i < levelData.spawnNodes.Count; i++)

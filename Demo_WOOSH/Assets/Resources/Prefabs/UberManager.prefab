@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1049979295386796}
+  m_RootGameObject: {fileID: 1236871117026862}
   m_IsPrefabParent: 1
---- !u!1 &1049979295386796
+--- !u!1 &1236871117026862
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4102446570494016}
-  - component: {fileID: 114216868348499290}
-  - component: {fileID: 114012938466274930}
+  - component: {fileID: 4100818112720094}
+  - component: {fileID: 114006654758009696}
+  - component: {fileID: 114606031327447574}
   m_Layer: 0
   m_Name: UberManager
   m_TagString: Untagged
@@ -28,12 +28,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4102446570494016
+--- !u!4 &4100818112720094
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1049979295386796}
+  m_GameObject: {fileID: 1236871117026862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.7880318, y: 3.2557075, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -41,23 +41,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114012938466274930
+--- !u!114 &114006654758009696
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1049979295386796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dbb7f1e8cb01b346924eb7bdf1847da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114216868348499290
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1049979295386796}
+  m_GameObject: {fileID: 1236871117026862}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa479ee0615e2a54d9b7a96e696622e1, type: 3}
@@ -186,6 +175,76 @@ MonoBehaviour:
         negativeRepPerLevel: -20
         positiveRepCompleted: 30
         negativeRepCompleted: -40
+  spellManager:
+    spellProxies:
+    - name: Attack
+      description: ..
+      spellImage: {fileID: 21300000, guid: ed124212446d331458198a69ead768b3, type: 3}
+      type: 0
+      spellColor: {r: 1, g: 1, b: 1, a: 1}
+      cost: 1
+      cooldown: 0
+      damage: 10
+      hitChance: 1
+      fireDamage: 0
+      fireTurns: 0
+      fireChance: 0
+      freezeTurns: 0
+      freezeChance: 0
+      isDirect: 1
+      range: 0
+      possibleTargets: 01000000
+    - name: Frostbite
+      description: ..
+      spellImage: {fileID: 21300000, guid: e8ce6d51e68a593479db755ea6916199, type: 3}
+      type: 1
+      spellColor: {r: 0, g: 0.91724133, b: 1, a: 1}
+      cost: 1
+      cooldown: 3
+      damage: 5
+      hitChance: 0.3
+      fireDamage: 0
+      fireTurns: 0
+      fireChance: 0
+      freezeTurns: 2
+      freezeChance: 1
+      isDirect: 1
+      range: 0
+      possibleTargets: 01000000
+    - name: Fireball
+      description: ..
+      spellImage: {fileID: 21300000, guid: 60d945a9a9700f5478f79814c19e5cac, type: 3}
+      type: 2
+      spellColor: {r: 1, g: 0, b: 0, a: 1}
+      cost: 2
+      cooldown: 1
+      damage: 20
+      hitChance: 1
+      fireDamage: 5
+      fireTurns: 2
+      fireChance: 1
+      freezeTurns: 0
+      freezeChance: 0
+      isDirect: 1
+      range: 0
+      possibleTargets: 01000000
+    - name: Teleport
+      description: ..
+      spellImage: {fileID: 21300000, guid: 1a3516f15c889a74e8dcf140123b8307, type: 3}
+      type: 3
+      spellColor: {r: 0.67100805, g: 0.17165874, b: 0.9338235, a: 1}
+      cost: 3
+      cooldown: 2
+      damage: 0
+      hitChance: 0
+      fireDamage: 0
+      fireTurns: 0
+      fireChance: 0
+      freezeTurns: 0
+      freezeChance: 0
+      isDirect: 0
+      range: 0
+      possibleTargets: 02000000
   myStyle:
     m_Name: 
     m_Normal:
@@ -253,3 +312,14 @@ MonoBehaviour:
     m_FixedHeight: 75
     m_StretchWidth: 1
     m_StretchHeight: 0
+--- !u!114 &114606031327447574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1236871117026862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dbb7f1e8cb01b346924eb7bdf1847da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

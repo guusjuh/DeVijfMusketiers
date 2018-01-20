@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,13 +17,19 @@ public class InputManager
     private float zoomVelocity;
     public float ZoomVelocity { get { return zoomVelocity; } }
 
+    private Vector2 lastClickPosition;
+    private DateTime lastClickTime;
+    public bool highlightsActivated = false;
+
     public void CatchInput()
     {
-        if (UIManager.Instance.InGameUI.CastingSpell >= 0 && UIManager.Instance.InGameUI.CastingSpell != 3) return;
-
         if (CatchZoomInput()) return;
+
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
         {
+            lastClickPosition = Input.mousePosition;
+            lastClickTime = DateTime.Now;
+
             if (!CatchUIClicks())
             {
                 if (!GameManager.Instance.LevelManager.PlayersTurn) return;
@@ -33,6 +40,9 @@ public class InputManager
 
                 if (worldObjects.Count <= 0)
                 {
+                    // dont clear on click if we are teleporting!
+                    if (!UberManager.Instance.SpellManager.CastingInDirect() || !highlightsActivated)
+                        ClearOnClick();
                     StartDrag();
                 }
             }
@@ -54,18 +64,31 @@ public class InputManager
         }
         else if (Input.GetMouseButton(LEFT_MOUSE_BUTTON))
         {
-            Drag();
+            Drag();            
         }
+        // end click
         else if (Input.GetMouseButtonUp(LEFT_MOUSE_BUTTON))
         {
+            Vector2 worldMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Coordinate gridPosition = UberManager.Instance.GameManager.TileManager.GetGridPosition(worldMouse);
+
+            // casting teleport spell
+            if (UberManager.Instance.SpellManager.CastingInDirect() && highlightsActivated)
+            {
+                // clicked at same point as started with click for teleport
+                if ((lastClickPosition - (Vector2)Input.mousePosition).magnitude <= GameManager.Instance.TileManager.HexagonScale / 2.0f
+                    && lastClickTime.Subtract(DateTime.Now).TotalSeconds <= 0.2f)
+                {
+                    UberManager.Instance.SpellManager.CastInDirect();
+                    lastClickPosition = new Vector2(-100, -100);
+                }
+            } 
             EndDrag();
         }
     }
 
     private void StartDrag()
     {
-        ClearOnClick();
-
         GameManager.Instance.CameraManager.SetBouncyness();
 
         if (!stillTouching)
@@ -105,8 +128,6 @@ public class InputManager
     {
         ClearOnClick();
 
-        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
-
         worldObject.Click();
     }
 
@@ -114,17 +135,7 @@ public class InputManager
     {
         for (int i = 0; i < worldObjects.Count; i++)
         {
-            if (worldObjects.Count > 1)
-            {
-                if (!(worldObjects[i].IsBarrel() &&
-                    worldObjects[i].GetComponent<Rock>().Destroyed))
-                {
-                    HandleActionOnClickedObject(worldObjects[i]);
-                    break;
-                }
-            }
-            else
-            {
+            if (!(worldObjects[i].IsBarrel() && worldObjects[i].GetComponent<Rock>().Destroyed)) { 
                 HandleActionOnClickedObject(worldObjects[i]);
                 break;
             }
@@ -148,9 +159,9 @@ public class InputManager
 
     private void ClearOnClick()
     {
-        UIManager.Instance.InGameUI.HideSpellButtons();
+        UberManager.Instance.SpellManager.HideSpellButtons();
         UIManager.Instance.InGameUI.EnemyInfoUI.OnChange();
-        GameManager.Instance.TileManager.HidePossibleRoads();
+        GameManager.Instance.TileManager.HideHighlightedNodes();
     }
 
     private bool CatchUIClicks()
@@ -171,7 +182,7 @@ public class InputManager
         bool onlyFloatingIndicatorsClicked = (results.Count > 0 &&
                                               results.FindAll(r => r.gameObject.transform.tag == "FloatingIndicator").Count == results.Count);
         bool closeSkipButton = (results.FindAll(r => r.gameObject.transform.tag == "APSkip-indicator")).Count == 0;
-        if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerApIndicator.CloseSkipButton();
+        if (closeSkipButton) UberManager.Instance.UiManager.InGameUI.PlayerAPIndicator.CloseSkipButton();
 
         return !(noUIClicked || onlyStatusIconClicked || onlyFloatingIndicatorsClicked);
     }

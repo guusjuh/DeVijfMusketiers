@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyInfoUI : MonoBehaviour
+public class EnemyInfoUI : IUIElement
 {
     private HealthBar healthBar;
     private Text apText;
@@ -17,7 +17,7 @@ public class EnemyInfoUI : MonoBehaviour
     private Enemy selectedEnemy;
     private Action specialAction;
 
-    public void Initialize()
+    public override void Initialize()
     {
         healthBar = transform.Find("HealthBar").GetComponent<HealthBar>();
         healthBar.Initialize();

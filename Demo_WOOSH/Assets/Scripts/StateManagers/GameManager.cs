@@ -5,14 +5,6 @@ using UnityEngine;
 
 [Serializable]
 public class GameManager : StateManager {
-    public enum SpellType
-    {
-        Attack = 0,
-        FrostBite,
-        Fireball,
-        Teleport
-    }
-
     // singleton
     private static GameManager instance = null;
     public static GameManager Instance {
@@ -133,7 +125,7 @@ public class GameManager : StateManager {
         if (!UberManager.Instance.DevelopersMode) return;
         LevelManager.ResetTurns();
         UIManager.Instance.InGameUI.Pause(pause);
-        tileManager.HidePossibleRoads();
+        tileManager.HideHighlightedNodes();
         TileManager.FindNeighboursDEVMODE();
         gameOn = true;
     }
@@ -152,11 +144,15 @@ public class GameManager : StateManager {
             return;
         }
 
-        if (!gameOn) return;
+        if (!gameOn)
+            return;
 
         UberManager.Instance.InputManager.CatchInput();
-        cameraManager.UpdatePosition();
-        levelManager.Update();
+        if (gameOn)
+        {
+            cameraManager.UpdatePosition();
+            levelManager.Update();
+        }
     }
 
     public void SetLevelInfo(int levelID, List<Contract> selectedContracts)
@@ -185,7 +181,7 @@ public class GameManager : StateManager {
             levelManager.ResetAllDEVMODE();
 
             // hide highlighted rules
-            tileManager.HidePossibleRoads();
+            tileManager.HideHighlightedNodes();
         }
 
         TileManager.FindNeighboursDEVMODE();

@@ -258,7 +258,7 @@ public class LevelManager
             if (GameManager.Instance.GameOn)
             {
                 playersTurn = false;
-                GameManager.Instance.TileManager.HidePossibleRoads();
+                GameManager.Instance.TileManager.HideHighlightedNodes();
 
                 enemies.HandleAction(e => e.UpdateTarget());
                 shrines.HandleAction(s => s.EndPlayerTurn());
@@ -271,8 +271,7 @@ public class LevelManager
     public void SkipPlayerTurn()
     {
         EndPlayerMove(1, true);
-        UIManager.Instance.InGameUI.HideSpellButtons();
-        UIManager.Instance.InGameUI.ActivateTeleportButtons(false);
+        UberManager.Instance.SpellManager.HideSpellButtons();
     }
 
     private IEnumerator HandleGapSpawning()

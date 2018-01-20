@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerAPSkipButton : MonoBehaviour {
+public class PlayerAPSkipButton : IUIElement {
     private Text playerAPText;
     private Text playerSkipText;
 
@@ -21,7 +21,7 @@ public class PlayerAPSkipButton : MonoBehaviour {
 
     private Coroutine rotateCoroutine;
 
-    public void Initialize()
+    public override void Initialize()
     {
         rtAP = transform.Find("AP").GetComponent<RectTransform>();
         rtSkip = transform.Find("Skip").GetComponent<RectTransform>();

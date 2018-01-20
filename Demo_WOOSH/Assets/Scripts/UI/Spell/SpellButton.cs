@@ -1,110 +1,80 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpellButton : MonoBehaviour
-{
-    //TODO: move that shit to spell class
-    protected float hitchance = 1.0f; //normalized value, 1.0f = 100%
-    protected int spellDamage = 0;
-    protected int fireDamage = 0;
-    protected int duration = 0;//how long does the effect of the spell last
+public class SpellButton : MonoBehaviour {
+    private Sprite SpellSprite { set { spellImg.sprite = value; } }
+    private string description;
+    private ISpell spell;
+    private SpellManager.SpellType type;
 
-    protected Button button;
-    protected Image buttonImage;
-    protected Color ActiveColor { get { return Color.white; } }
-    protected Color DissabledColor { get { return new Color(0.5f, 0.5f, 0.5f, 1.0f); } }
+    private Button btn;
+    private Text cooldownText;
+    private Image spellImg;
+    private List<GameObject> apIndicator;
 
-    protected WorldObject target;
-    protected int cost;
+    private Color activeColor { get { return Color.white; } }
+    private Color dissabledColor { get { return new Color(0.5f, 0.5f, 0.5f, 1.0f); } }
 
-    protected List<GameObject> apIndicator;
-    protected Text cooldownText;
-    protected GameManager.SpellType type;
+    private const float RADIUS = 90f;
+    private int cooldown;
+    public int Cooldown { get { return cooldown; } }
 
-    protected bool active = true;
-
-    protected const float RADIUS = 90f;
-
-    public bool Active
+    public void Initialize(ISpell spell, SpellManager.SpellType type, string description, Sprite sprite, int cooldown)
     {
-        get { return active; }
-        set
-        {
-            if (active == value) return;
-            active = value;
-            buttonImage.color = value ? ActiveColor : DissabledColor;
-            button.interactable = active;
-        }
-    }
+        btn = GetComponent<Button>();
+        cooldownText = GetComponentInChildren<Text>();
+        cooldownText.gameObject.SetActive(false);
 
-    public virtual void Initialize()
-    {
-        button = GetComponent<Button>();
-
-        buttonImage = transform.Find("Image").GetComponent<Image>();
-        cooldownText = transform.Find("Text").GetComponent<Text>();
         apIndicator = new List<GameObject>();
+        spellImg = transform.Find("Image").GetComponent<Image>();
+
+        this.spell = spell;
+        this.type = type;
+        this.description = description;
+        SpellSprite = sprite;
+        this.cooldown = cooldown;
+
+        SpawnAP();
     }
 
-    public void Click()
+    public void Activate(WorldObject target)
     {
-        StartCoroutine(CastSpell());
+        //setTarget?
+        bool cooldownFinished = GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type) <= 0;
+        bool enoughActionPoints = spell.Cost() <= GameManager.Instance.LevelManager.Player.CurrentActionPoints;
+        SetButtonPosition(target);
 
-        UIManager.Instance.InGameUI.CastingSpell = (int)type;
-    }
-
-    public virtual IEnumerator CastSpell()
-    {
-        SoundManager.PlaySoundEffect(type);
-
-        yield return StartCoroutine(UIManager.Instance.InGameUI.CastSpell(type,
-                GameManager.Instance.TileManager.GetWorldPosition(target.GridPosition)));
-
-        if (UberManager.Instance.Tutorial)
+        if (!cooldownFinished)
         {
-            UberManager.Instance.TutorialManager.Next();
-            yield break;
-        }
-
-        GameManager.Instance.LevelManager.Player.SetCooldown(type);
-        GameManager.Instance.LevelManager.EndPlayerMove(cost);
-
-        ApplyEffect();
-
-        UIManager.Instance.InGameUI.CastingSpell = -1;
-
-        UIManager.Instance.InGameUI.HideSpellButtons();
-
-        yield return null;
-    }
-
-    public virtual void ApplyEffect()
-    {
-        
-    }
-
-    public virtual void Activate(WorldObject target)
-    {
-        this.target = target;
-        // cant do spell due to cooldown
-        if (GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type) > 0)
-        {
-            Active = false;
             SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
         }
-        // cant do spell due to action points
-        else if (cost > GameManager.Instance.LevelManager.Player.CurrentActionPoints)
+
+        if (!enoughActionPoints || !cooldownFinished)
         {
-            Active = false;
+            SetInteractable(false);
         }
-        // can do spell
+
+        if (enoughActionPoints && cooldownFinished)
+        {
+            SetCooldownText(0);
+            SetInteractable(true);
+        }
+    }
+
+    public void SetInteractable(bool isActive)
+    {
+        btn.interactable = isActive;
+
+        if (isActive)
+        {
+            spellImg.color = activeColor;
+        }
         else
         {
-            Active = true;
-            SetCooldownText(0);
-        }
+            spellImg.color = dissabledColor;
+        }   
     }
 
     public void SetCooldownText(int value)
@@ -128,9 +98,31 @@ public class SpellButton : MonoBehaviour
         }
     }
 
-    protected virtual void SpawnAP()
+    public void OnClick()
     {
-        int amount = cost;
+        UberManager.Instance.SpellManager.CastingSpell = type;
+
+        StartCoroutine(UberManager.Instance.SpellManager.ShowSpellVisual(type));
+    }
+
+    public void CastSpell(WorldObject target)
+    {
+        spell.CastSpell(target);
+        if (spell.IsDirect())
+        {
+            UberManager.Instance.SpellManager.CastingSpell = SpellManager.SpellType.NoSpell;
+
+            GameManager.Instance.LevelManager.Player.SetCooldown(type, cooldown);
+            SetCooldownText(GameManager.Instance.LevelManager.Player.GetCurrentCooldown(type));
+            SetInteractable(cooldown <= 0);
+        }
+        else
+            UberManager.Instance.SpellManager.SetActiveIndirect(spell);
+    }
+
+    private void SpawnAP()
+    {
+        int amount = spell.Cost();
 
         float divider = amount > 1 ? (float)amount - 1.0f : (float)amount;
         float partialCircle = (amount - 1) / 4.0f * 0.4f;
@@ -146,5 +138,28 @@ public class SpellButton : MonoBehaviour
             apIndicator[i].GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition - new Vector2(pos.x, pos.y);
         }
     }
+
+    public void SetButtonPosition(WorldObject target)
+    {
+        Vector2 canvasPos = UIManager.Instance.InGameUI.WorldToCanvas(target.transform.position);
+
+        float divider = target.PossibleSpellTypes.Count > 1 ? (float)target.PossibleSpellTypes.Count - 1.0f : (float)target.PossibleSpellTypes.Count;
+        float partialCircle = (target.PossibleSpellTypes.Count - 1) / 4.0f * 0.9f;
+        float offSetCircle = (1.0f - partialCircle) / 2.0f;
+
+        for (int i = 0; i < target.PossibleSpellTypes.Count; i++)
+        {
+            if (target.PossibleSpellTypes[i] == type)
+            {
+                //200.0f is worldObject radius, used for spawning spellbuttons
+                GetComponent<RectTransform>().anchoredPosition = canvasPos - CalculatePointOnCircle(200.0f, partialCircle, divider, offSetCircle, i);
+            }
+        }
+    }
+
+    public static Vector2 CalculatePointOnCircle(float radius, float partialCircle, float divider, float offset, int index)
+    {
+        return new Vector2(radius * Mathf.Cos(partialCircle * Mathf.PI * (float)index / divider + offset * Mathf.PI),
+                -radius * Mathf.Sin(partialCircle * Mathf.PI * (float)index / divider + offset * Mathf.PI));
+    }
 }
- 

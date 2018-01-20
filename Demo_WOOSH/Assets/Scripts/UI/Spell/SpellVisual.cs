@@ -25,14 +25,14 @@ public class SpellVisual : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public IEnumerator Activate(GameManager.SpellType type, Vector2 worldPos)
+    public IEnumerator Activate(SpellManager.SpellType type, Vector2 worldPos)
     {
         this.worldPos = worldPos;
 
         rect.sizeDelta = new Vector2(MAX_SIZE, MAX_SIZE);
 
         gameObject.SetActive(true);
-        image.color = UberManager.Instance.UiManager.InGameUI.SpellColor(type);
+        image.color = UberManager.Instance.SpellManager.SpellColors[type];
 
         yield return StartCoroutine(Adjust());
     }

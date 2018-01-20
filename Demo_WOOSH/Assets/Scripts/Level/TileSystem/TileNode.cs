@@ -177,6 +177,11 @@ public class TileNode {
         return CompletelyEmpty() || containsBrokenBarrel;
     }
 
+    public bool OpenForTeleport()
+    {
+        return highlight.gameObject.activeSelf;
+    }
+
     public int EnterCost()
     {
         return content.EnterCost();
