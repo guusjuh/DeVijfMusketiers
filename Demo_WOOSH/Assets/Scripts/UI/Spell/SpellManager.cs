@@ -175,7 +175,7 @@ public class SpellManager {
         spellButtonsActive = false;
     }
 
-    public void ShowSpellVisual(SpellType type)
+    public IEnumerator ShowSpellVisual(SpellType type)
     {
         if (selectedTarget != null)
         {
@@ -183,9 +183,13 @@ public class SpellManager {
 
             UberManager.Instance.ParticleManager.PlaySpellParticle(type, selectedTarget.transform.position, selectedTarget.transform.rotation);
 
+            yield return new WaitForSeconds(0.8f);
+
             spellButtons[type].CastSpell(selectedTarget);
             HideSpellButtons();
         }
+
+        yield break;
     }
 
     public void SetCooldown(SpellType type)
