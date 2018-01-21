@@ -15,7 +15,9 @@ public class DestroyParticle : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (!particleSystem.IsAlive()) Destroy(transform.parent.gameObject);
-        if (UberManager.Instance.GameState != UberManager.GameStates.InGame) Destroy(transform.parent.gameObject);
+        if (!transform.parent.gameObject.activeInHierarchy || 
+            !particleSystem.IsAlive()     ||
+            UberManager.Instance.GameState != UberManager.GameStates.InGame)
+                Destroy(transform.parent.gameObject);
 	}
 }

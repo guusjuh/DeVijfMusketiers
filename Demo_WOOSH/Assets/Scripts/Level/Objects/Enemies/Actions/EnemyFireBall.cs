@@ -20,7 +20,7 @@ public class EnemyFireBall : Action
     public override void Reset()
     {
         base.Reset();
-        fireBall.SetActive(false);
+        //fireBall.SetActive(false);
     }
 
     public override bool DoAction()
@@ -37,7 +37,7 @@ public class EnemyFireBall : Action
             currentCooldown = totalCooldown;
             UIManager.Instance.InGameUI.EnemyInfoUI.OnChange(parent);
 
-            fireBall.transform.localPosition = Vector3.zero;
+            //fireBall.transform.localPosition = Vector3.zero;
 
             UberManager.Instance.StartCoroutine(ShootFireBall(GameManager.Instance.TileManager.GetWorldPosition(parent.Target.GridPosition)));
             return true;

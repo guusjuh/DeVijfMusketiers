@@ -182,16 +182,7 @@ public class TileManager
         dist[source] = 0;
         prev[source] = null;
 
-        //initialize everything to have infinity distance 
-        foreach (TileNode v in grid)
-        {
-            if (v != source)
-            {
-                dist[v] = Mathf.Infinity;
-                prev[v] = null;
-            }
-            unvisited.Add(v);
-        }
+        unvisited.Add(source);
 
         while (unvisited.Count > 0)
         {
@@ -207,10 +198,21 @@ public class TileManager
 
             foreach (TileNode v in u.NeightBours)
             {
-                //float alt = dist[u] + u.DistTo(v);
                 float alt = dist[u] + CostToEnterTile(v, target, worldObject);
 
-                if (alt < dist[v])
+                if (!dist.ContainsKey(v))
+                {
+                    dist[v] = alt;
+                    prev[v] = u;
+                    unvisited.Add(v); 
+                    //check if node is the target node
+                    if (v == target)
+                    {
+                        unvisited.Clear();
+                        break;
+                    }
+                }
+                else if (alt < dist[v])
                 {
                     dist[v] = alt;
                     prev[v] = u;
@@ -238,6 +240,7 @@ public class TileManager
 
         return currentPath;
     }
+
 
     public float CostToEnterTile(TileNode nextTile, WorldObject worldObject)
     {
