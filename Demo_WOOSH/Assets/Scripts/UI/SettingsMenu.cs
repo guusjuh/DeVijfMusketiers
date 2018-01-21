@@ -30,7 +30,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void Deactivate()
     {
-        GooglePlayScript.Instance.SaveData();
+        UberManager.Instance.Save();
 
         SoundManager.PlaySoundEffect(SoundManager.SoundEffect.ButtonClick);
         gameObject.SetActive(false);
@@ -39,7 +39,7 @@ public class SettingsMenu : MonoBehaviour
     public void ChangeMusicVolume(float real)
     {
         SoundManager.MusicVolume = real;
-        musicSlider.value = real >= 1.0f ? 0.999f : real;
+        musicSlider.value = real;
     }
 
     public void ChangeFxVolume(float real)
@@ -61,11 +61,6 @@ public class SettingsMenu : MonoBehaviour
     public void OpenAchievements()
     {
         Debug.Log("achievements");
-        GooglePlayScript.ShowAchievmentUI();
-    }
-
-    public void DeleteProgress()
-    {
-        GooglePlayScript.Instance.DeleteProgress();
+        GooglePlayServices.ShowAchievmentUI();
     }
 }

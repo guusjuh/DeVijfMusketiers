@@ -180,7 +180,7 @@ public class Enemy : WorldObject
 
         if (health <= 0)
         {
-            GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_first_blood);
+            GooglePlayServices.UnlockAchievement(GooglePlayIds.achievement_first_blood);
 
             Dead = true;
             anim.SetBool(DIE_ANIM, true);

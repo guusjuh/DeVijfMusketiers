@@ -72,7 +72,7 @@ public class ContractManager
             RefreshContracts();
             SetContractTimer();
 
-            GooglePlayScript.Instance.SaveData();
+            UberManager.Instance.Save();
         }
     }
 

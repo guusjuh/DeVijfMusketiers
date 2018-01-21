@@ -497,11 +497,11 @@ public class TutorialManager
         // tutorial = false
         UberManager.Instance.EndTutorial();
 
-        GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_knowing_exactly_what_to_do);
+        GooglePlayServices.UnlockAchievement(GooglePlayIds.achievement_knowing_exactly_what_to_do);
         
         UberManager.Instance.GotoState(UberManager.GameStates.LevelSelection);
 
-        GooglePlayScript.Instance.SaveData();
+        UberManager.Instance.Save();
     }
 
     public void TutorialTeleport()

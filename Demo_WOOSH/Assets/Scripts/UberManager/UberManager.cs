@@ -8,6 +8,9 @@ using UnityEditor;
 
 public class UberManager : MonoBehaviour {
 
+    public const int AMOUNT_OF_CITIES = 3;
+    public const int AMOUNT_OF_LEVELS = 9;
+
     public enum GameStates {
         LevelSelection = 0,
         Hub,
@@ -76,6 +79,9 @@ public class UberManager : MonoBehaviour {
     private TutorialManager tutorialManager;
     public TutorialManager TutorialManager { get { return tutorialManager; } }
 
+    private GooglePlayServices googlePlayServices;
+    public GooglePlayServices GooglePlayServices { get { return googlePlayServices; } }
+
     public GUIStyle myStyle;
 
     private float[] possSpeeds = new float[] { 1.0f, 1.5f, 2.0f}; 
@@ -94,10 +100,8 @@ public class UberManager : MonoBehaviour {
 
         Application.targetFrameRate = 60;
 
-        SavedPlayerData savedPlayerData = new SavedPlayerData();
-        savedPlayerData.Initialize();
-
-        GetComponent<GooglePlayScript>().Initialize();
+        googlePlayServices = new GooglePlayServices();
+        googlePlayServices.Initialize();
 
         playerData.Initialize();
 
@@ -139,7 +143,7 @@ public class UberManager : MonoBehaviour {
 
     private void StartGameMode()
     {
-        tutorial = !SavedPlayerData.Instance.tutorialFinsihed;
+        tutorial = !googlePlayServices.GetTutorialFinished;
 
         if (tutorial)
         {
@@ -147,7 +151,7 @@ public class UberManager : MonoBehaviour {
             tutorialManager.Initialize();
         }
 
-        gameSpeed = SavedPlayerData.Instance.gameSpeed;
+        gameSpeed = googlePlayServices.GetGamespeed;
         Time.timeScale = possSpeeds[gameSpeed-1];
 
         stateManagers.Add(GameStates.InGame, new GameManager());
@@ -158,12 +162,12 @@ public class UberManager : MonoBehaviour {
         state = GameStates.LevelSelection;
         stateManagers.Get(state).Start();
 
-        SavedPlayerData.Instance.InitializeInGame();
+        doingSetup = false;
+
+        googlePlayServices.UpdateInGame();
     } 
 
     public void Update() {
-        doingSetup = false;
-
         stateManagers.Get(state).Update();
         uiManager.UpdateUI();
     }
@@ -203,4 +207,6 @@ public class UberManager : MonoBehaviour {
         Debug.LogError("Random roll has failed.");
         return default(T);
     }
+
+    public void Save() { googlePlayServices.Save(); }
 }

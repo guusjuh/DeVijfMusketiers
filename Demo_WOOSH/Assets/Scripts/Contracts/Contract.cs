@@ -3,14 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
 public class Contract
 {
-    [SerializeField] public int id_att;
-    [SerializeField] public int happiness_att;
-    [SerializeField] public HumanTypes type_att;
-    [SerializeField] public int human_index_att;
-
     private int id;
     public int ID { get { return id; } }
 
@@ -24,6 +18,7 @@ public class Contract
 
     private ContractType type;
     private int humanIndex = 0;
+    public int HumanIndex { get { return humanIndex; } }
 
     public HumanTypes HumanType { get { return type.HumanType; } }
     public int Reputation { get { return type.Reputation; } }
@@ -44,43 +39,27 @@ public class Contract
 
     public Contract() { }
 
-    public Contract(int id, int happiness, HumanTypes humanType, int humanIndex, int currentLevel)
+    public Contract(UniqueContractData reference, int currentLevel)
     {
-        this.id = id;
-        this.id_att = this.id;
-
-        this.happiness = happiness;
-        this.happiness_att = happiness;
-
-        type = UberManager.Instance.ContractManager.ContractTypes.Find(c => c.HumanType == humanType);
-        this.type_att = HumanType;
-
-        this.humanIndex = humanIndex;
-        this.human_index_att = humanIndex;
+        id = reference.id;
+        happiness = reference.happiness;
+        type = UberManager.Instance.ContractManager.ContractTypes.Find(c => c.HumanType == reference.type);
+        humanIndex = reference.index;
 
         this.currentLevel = currentLevel + 1;
-
         levelInPath = currentLevel % 3;
-        this.path = UIManager.Instance.LevelSelectUI.Cities[Mathf.FloorToInt(currentLevel / 3.0f)].Paths[0];
+        path = UIManager.Instance.LevelSelectUI.Cities[Mathf.FloorToInt(currentLevel / 3.0f)].Paths[0];
     }
 
     public Contract(int id, ContractType type, Path path, int index = -1)
     {
         this.id = id;
-        this.id_att = this.id;
-
         this.type = type;
-        this.type_att = HumanType;
-
         levelInPath = 0;
         if(path != null) currentLevel = path.Levels[0].LevelID;
         this.path = path;
-
         humanIndex = index == -1 ? UnityEngine.Random.Range(0, type.HumanAssets.Count) : index;
-        this.human_index_att = humanIndex;
-
         happiness = Mathf.CeilToInt((type.TotalHappiness / 50.0f) * 40.0f);
-        this.happiness_att = happiness;
     }
 
     public void MakeHappy()
@@ -89,15 +68,12 @@ public class Contract
         {
             happiness += 5;
             if (happiness > TotalHappiness) happiness = TotalHappiness;
-
-            this.happiness_att = happiness;
         }
     }
 
     public void Initialize()
     {
         happiness = type.TotalHappiness;
-        this.happiness_att = happiness;
     }
 
     public void SetActive(bool on)
@@ -109,7 +85,6 @@ public class Contract
     {
         diedLastLevel = true;
         happiness -= 10;
-        this.happiness_att = happiness;
     }
 
     public bool EndLevel()
@@ -141,11 +116,11 @@ public class Contract
                     City city = UIManager.Instance.LevelSelectUI.Cities.Find(c => path.Destination == c.ThisCity);
                     city.Reached();
 
-                    GooglePlayScript.UnlockAchievement(GooglePlayIds.achievement_reached_city);
+                    GooglePlayServices.UnlockAchievement(GooglePlayIds.achievement_reached_city);
 
                     UberManager.Instance.ContractManager.RefreshCityContracts(city);
 
-                    GooglePlayScript.Instance.SaveData();
+                    UberManager.Instance.Save();
                 }
 
                 BreakContract();

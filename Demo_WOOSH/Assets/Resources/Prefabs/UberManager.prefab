@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4100818112720094}
   - component: {fileID: 114006654758009696}
-  - component: {fileID: 114606031327447574}
   m_Layer: 0
   m_Name: UberManager
   m_TagString: Untagged
@@ -312,14 +311,3 @@ MonoBehaviour:
     m_FixedHeight: 75
     m_StretchWidth: 1
     m_StretchHeight: 0
---- !u!114 &114606031327447574
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1236871117026862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dbb7f1e8cb01b346924eb7bdf1847da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

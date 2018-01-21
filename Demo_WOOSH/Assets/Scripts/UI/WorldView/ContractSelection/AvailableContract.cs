@@ -36,7 +36,7 @@ public class AvailableContract : ContractButton {
             UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.Remove(this);
             UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SetInteractable();
 
-            GooglePlayScript.Instance.SaveData();
+            UberManager.Instance.Save();
         }
     }
 }
