@@ -52,7 +52,7 @@ public class FillCommand : EditorCommand
 
     private bool FillTile(Coordinate newCoord)
     {
-        TileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
+        LevelTileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
 
         bool alreadyThisTileType = nextTileNode != null && nextTileNode.GetSecType() == currTileType;
         bool sameTypeAsInitial = true;
@@ -85,7 +85,7 @@ public class FillCommand : EditorCommand
 
     private void PlaceTile(Coordinate coord)
     {
-        TileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(coord);
+        LevelTileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
         bool notThisType = nextTileNode == null || nextTileNode.GetSecType() != currTileType;
         bool noContentWillBeDeleted = nextTileNode == null ||
@@ -109,7 +109,7 @@ public class FillCommand : EditorCommand
         // remember that the tilenode can be deleted, so we might lose our reference
         tileNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
-        TileNode currentTileNode = tileNode;
+        LevelTileNode currentTileNode = tileNode;
 
         for (int i = -1; i < neighbours.Count; i++)
         {
@@ -149,7 +149,7 @@ public class FillCommand : EditorCommand
 
     private bool FillContent(Coordinate newCoord)
     {
-        TileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
+        LevelTileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
 
         bool alreadyContent = nextTileNode != null && nextTileNode.GetAmountOfContent() > 0;
         bool cannotPlaceContent = (nextTileNode != null && nextTileNode.GetType() == TileType.Dangerous) || nextTileNode == null;
@@ -174,7 +174,7 @@ public class FillCommand : EditorCommand
 
     private void PlaceContent(Coordinate newCoord)
     {
-        TileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
+        LevelTileNode nextTileNode = GameManager.Instance.TileManager.GetNodeReference(newCoord);
 
         // if the node is null, there cannot be placed anything
         if (nextTileNode != null && nextTileNode.GetType() != TileType.Dangerous)
@@ -205,7 +205,7 @@ public class FillCommand : EditorCommand
         // remember that the tilenode can be deleted, so we might lose our reference
         tileNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
-        TileNode currentTileNode = tileNode;
+        LevelTileNode currentTileNode = tileNode;
 
         for (int i = -1; i < neighbours.Count; i++)
         {
@@ -229,7 +229,7 @@ public class FillCommand : EditorCommand
         // remember that the tilenode can be deleted, so we might lose our reference
         tileNode = GameManager.Instance.TileManager.GetNodeReference(coord);
 
-        TileNode currentTileNode = tileNode;
+        LevelTileNode currentTileNode = tileNode;
 
         for (int i = -1; i < neighbours.Count; i++)
         {

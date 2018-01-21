@@ -71,7 +71,7 @@ public class Shrine : EnemyTarget
         // each neighbouring node
         for (int i = 0; i < neighbourCoordinates.Count; i++)
         {
-            TileNode nodeRef = GameManager.Instance.TileManager.GetNodeReference(GridPosition + neighbourCoordinates[i]);
+            LevelTileNode nodeRef = GameManager.Instance.TileManager.GetNodeReference(GridPosition + neighbourCoordinates[i]);
             if (nodeRef != null && nodeRef.ContainsHuman())
             {
                 Active = true;

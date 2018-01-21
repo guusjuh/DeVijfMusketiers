@@ -30,7 +30,7 @@ public class EnemyBrokenGround : Action
 
         if (closeEnough && enoughAP)
         {
-            List<TileNode> nodes = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition).NeightBours;
+            List<LevelTileNode> nodes = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition).NeightBours;
             foreach (var node in nodes)
             {
                 node.Content.KillTileContent();
@@ -46,7 +46,7 @@ public class EnemyBrokenGround : Action
 
     private IEnumerator Visual()
     {
-        TileNode node = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition);
+        LevelTileNode node = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition);
         Vector2 worldPos;
 
         for (int i = 0; i < node.NeightBours.Count; i++)

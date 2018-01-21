@@ -115,8 +115,8 @@ public class Human : EnemyTarget
     {
         currentFleePoints--;
 
-        List<TileNode> neighbours = GameManager.Instance.TileManager.GetNodeReference(gridPosition).NeightBours;
-        List<TileNode> fleeNodes = new List<TileNode>();
+        List<LevelTileNode> neighbours = GameManager.Instance.TileManager.GetNodeReference(gridPosition).NeightBours;
+        List<LevelTileNode> fleeNodes = new List<LevelTileNode>();
 
         for (int i = 0; i < neighbours.Count; i++)
         {
@@ -173,7 +173,7 @@ public class Human : EnemyTarget
         if(fleeNodes.Count <= 0) yield break;
 
         //pick a random flee node 
-        TileNode chosenNode = fleeNodes[UnityEngine.Random.Range(0, fleeNodes.Count)];
+        LevelTileNode chosenNode = fleeNodes[UnityEngine.Random.Range(0, fleeNodes.Count)];
 
         //move to the chosen node
         GameManager.Instance.TileManager.MoveObject(gridPosition, chosenNode.GridPosition, this);

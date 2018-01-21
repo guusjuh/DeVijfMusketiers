@@ -8,6 +8,7 @@ public class LevelData
     [SerializeField] public int id;
     [SerializeField] public int rows;
     [SerializeField] public int columns;
+    [SerializeField] public EnvironmentType environmentType;
     [SerializeField] public SecTileTypeRow[] grid;
     [SerializeField] public List<SpawnNode> spawnNodes;
     [SerializeField] public int dangerStartGrow;

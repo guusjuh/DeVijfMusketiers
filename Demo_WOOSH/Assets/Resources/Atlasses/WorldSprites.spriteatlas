@@ -26,12 +26,12 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: e0474d99e964d83c37c0225e3081c1a2
+      Hash: 0e7d7d76076c824dc0169a28e5513463
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: e0474d99e964d83c37c0225e3081c1a2
-    totalSpriteSurfaceArea: 5666312
+    hashString: 0e7d7d76076c824dc0169a28e5513463
+    totalSpriteSurfaceArea: 5685760
     packables:
     - {fileID: 102900000, guid: e66a7be0f78c90641ba729a913e54608, type: 3}
     - {fileID: 102900000, guid: 79ea675b4e47de04ca57d5aa8c212907, type: 3}
@@ -221,11 +221,14 @@ SpriteAtlas:
     - 3813a6b98f045464d855c1365c36ddea: 21300000
     - b1cd6608ca1ba484bbd3d790ec126af8: 21300000
     - 30c6f9e562548b04d9250135ff515084: 21300000
+    - 6ea4798819256704595360b27f1fc8ab: 21300000
     - 2c9516364f6392440839316e71c1328e: 21300000
     - f7150a1e91f6ea64dbc80100c216f835: 21300000
     - b7696260d45bff44a9e4716054cb0eaf: 21300000
     - 5507cd802e5ffe14a941b2ab3e1fa5a6: 21300000
     - 776a4a046b588d84898fbfca7e1107f1: 21300000
+    - 72376a3075d83574baf0b9c6a529ba23: 21300000
+    - f32db905312f25742bb43bb0c5d251d4: 21300000
     - 41881ae0b8ed3ef41a949578d16fadcb: 21300000
     - dff295d2eb553694ea576b454f4121b9: 21300000
     - fd216ff4abe2f3d4f9532fe7b57f47d9: 21300000
@@ -490,11 +493,14 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3813a6b98f045464d855c1365c36ddea, type: 3}
   - {fileID: 21300000, guid: b1cd6608ca1ba484bbd3d790ec126af8, type: 3}
   - {fileID: 21300000, guid: 30c6f9e562548b04d9250135ff515084, type: 3}
+  - {fileID: 21300000, guid: 6ea4798819256704595360b27f1fc8ab, type: 3}
   - {fileID: 21300000, guid: 2c9516364f6392440839316e71c1328e, type: 3}
   - {fileID: 21300000, guid: f7150a1e91f6ea64dbc80100c216f835, type: 3}
   - {fileID: 21300000, guid: b7696260d45bff44a9e4716054cb0eaf, type: 3}
   - {fileID: 21300000, guid: 5507cd802e5ffe14a941b2ab3e1fa5a6, type: 3}
   - {fileID: 21300000, guid: 776a4a046b588d84898fbfca7e1107f1, type: 3}
+  - {fileID: 21300000, guid: 72376a3075d83574baf0b9c6a529ba23, type: 3}
+  - {fileID: 21300000, guid: f32db905312f25742bb43bb0c5d251d4, type: 3}
   - {fileID: 21300000, guid: 41881ae0b8ed3ef41a949578d16fadcb, type: 3}
   - {fileID: 21300000, guid: dff295d2eb553694ea576b454f4121b9, type: 3}
   - {fileID: 21300000, guid: fd216ff4abe2f3d4f9532fe7b57f47d9, type: 3}
@@ -758,11 +764,14 @@ SpriteAtlas:
   - Bow
   - Left Upper Arm
   - Right Upper Arm
+  - Pillar2
   - Arrow
   - Right Back Leg
   - Left Front Leg
   - Right Front Leg
   - Left Back Leg
+  - Pillar1
+  - Pillar3
   - Left Hand
   - Left Hand
   - Left Hand

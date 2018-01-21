@@ -3,6 +3,7 @@
   <id>10</id>
   <rows>7</rows>
   <columns>9</columns>
+  <environmentType>Desert</environmentType>
   <grid>
     <SecTileTypeRow>
       <row>

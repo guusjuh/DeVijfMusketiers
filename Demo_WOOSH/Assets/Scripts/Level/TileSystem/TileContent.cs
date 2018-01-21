@@ -16,9 +16,9 @@ public class TileContent
     private List<WorldObject> contentTypes = new List<WorldObject>();
     public List<WorldObject> ContentTypes { get { return contentTypes; } }
 
-    private TileNode refNode;
+    private LevelTileNode refNode;
 
-    public TileContent(TileNode refNode, SecTileType tileType)
+    public TileContent(LevelTileNode refNode, SecTileType tileType)
     {
         this.refNode = refNode;
         this.tileType = tileType;

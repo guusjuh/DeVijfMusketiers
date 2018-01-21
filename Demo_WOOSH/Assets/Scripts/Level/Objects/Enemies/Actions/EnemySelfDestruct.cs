@@ -32,7 +32,7 @@ public class EnemySelfDestruct : Action
 
         if(parent.HealthPercentage <= 10)
         {
-            List<TileNode> nodes = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition).NeightBours;
+            List<LevelTileNode> nodes = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition).NeightBours;
             foreach (var node in nodes)
             {
                 node.Content.KillTileContent();
@@ -44,7 +44,7 @@ public class EnemySelfDestruct : Action
 
     private IEnumerator Visual()
     {
-        TileNode node = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition);
+        LevelTileNode node = GameManager.Instance.TileManager.GetNodeReference(parent.GridPosition);
         Vector2 worldPos;
         for (int i = 0; i < node.NeightBours.Count; i++)
         {

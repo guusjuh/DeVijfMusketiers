@@ -8,7 +8,7 @@ public class EnemyMove : Action
     private BoxCollider2D boxCollider;      //The BoxCollider2D component attached to this object.
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
 
-    public List<TileNode> currentPath = null;
+    public List<LevelTileNode> currentPath = null;
 
     public override void Initialize(Enemy parent)
     {

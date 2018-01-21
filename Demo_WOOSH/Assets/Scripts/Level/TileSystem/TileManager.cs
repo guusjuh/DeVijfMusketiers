@@ -45,10 +45,10 @@ public class TileManager
     public int Rows { get { return rows; } }
     public int Columns { get { return columns; } }
 
-    private TileNode[,] grid;
+    private LevelTileNode[,] grid;
     private GameObject gridParent;
     public GameObject GridParent { get { return gridParent; } }
-    private List<TileNode> highlightedNodes;
+    private List<LevelTileNode> highlightedNodes;
 
     private Coordinate[] corners;
     public Coordinate[] Corners { get { return corners; } }
@@ -73,6 +73,12 @@ public class TileManager
         }
     }
 
+    private LowerTileManager lowerTileManager;
+    public LowerTileManager LowerTileManager { get { return lowerTileManager; } }
+
+    private bool creatingGrid;
+    public bool CreatingGrid { get { return creatingGrid; } }
+
     /// <summary>
     /// Initialize the gridsystem
     /// </summary>
@@ -82,7 +88,13 @@ public class TileManager
 #if UNITY_EDITOR
         if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
 #endif
-        if (!UberManager.Instance.DevelopersMode) SetUpGrid();
+        if (!UberManager.Instance.DevelopersMode)
+        {
+            SetUpGrid();
+
+            lowerTileManager = new LowerTileManager();
+            lowerTileManager.Initialize();
+        }
 
         corners = new Coordinate[4]
         {
@@ -91,6 +103,8 @@ public class TileManager
             new Coordinate(rows-1,         0),
             new Coordinate(     0, columns-1)
         };
+
+        
     }
 
     public void Restart()
@@ -98,17 +112,24 @@ public class TileManager
 #if UNITY_EDITOR
         if (UberManager.Instance.DevelopersMode) SetUpEmptyGridDEVMODE();
 #endif
-        if (!UberManager.Instance.DevelopersMode) SetUpGrid();
+        if (!UberManager.Instance.DevelopersMode)
+        {
+            SetUpGrid();
+
+            lowerTileManager.Restart();
+        }
     }
 
     private void SetUpGrid()
     {
+        creatingGrid = true;
+
         // Get the amount of rows and colomns from the level
         this.rows = ContentManager.Instance.LevelData(GameManager.Instance.CurrentLevel).rows;
         this.columns = ContentManager.Instance.LevelData(GameManager.Instance.CurrentLevel).columns;
 
         // Initialize the grid 2D array.
-        grid = new TileNode[rows, columns];
+        grid = new LevelTileNode[rows, columns];
 
         // Initialize and set the parent. 
 
@@ -123,11 +144,14 @@ public class TileManager
                 grid[i, j].SearchNeighbours();
             }
         }
+
+        creatingGrid = false;
     }
 
     public void ClearGrid()
     {
         HideHighlightedNodes();
+        lowerTileManager.ClearGrid();
 
         for (int i = 0; i < grid.GetLength(0); i++)
         {
@@ -152,14 +176,14 @@ public class TileManager
 
         for (int i = 0; i < tempGrid.Length; i++)
         {
-            for (int j = 0; j < tempGrid[0].row.Length; j++)
+            for (int j = tempGrid[0].row.Length - 1; j >= 0; j--)
             {
                 // Determine grid- and worldposition. 
                 Coordinate gridPosition = new Coordinate(i, j);
                 Vector3 worldPosition = GetWorldPosition(gridPosition);
 
                 // Create the grid node. 
-                TileNode tileNode = new TileNode(gridPosition, worldPosition, tempGrid[i].row[j]);
+                LevelTileNode tileNode = new LevelTileNode(gridPosition, worldPosition, tempGrid[i].row[j]);
                 tileNode.Hexagon.transform.parent = gridParent.transform;
 
                 // Add the grid node to the grid array. 
@@ -168,16 +192,16 @@ public class TileManager
         }
     }
 
-    public List<TileNode> GeneratePathTo(Coordinate from, Coordinate to, WorldObject worldObject)
+    public List<LevelTileNode> GeneratePathTo(Coordinate from, Coordinate to, WorldObject worldObject)
     {
-        Dictionary<TileNode, float> dist = new Dictionary<TileNode, float>();
-        Dictionary<TileNode, TileNode> prev = new Dictionary<TileNode, TileNode>();
+        Dictionary<LevelTileNode, float> dist = new Dictionary<LevelTileNode, float>();
+        Dictionary<LevelTileNode, LevelTileNode> prev = new Dictionary<LevelTileNode, LevelTileNode>();
 
         //setup 'Q', list of nodes that are not checked yet
-        List<TileNode> unvisited = new List<TileNode>();
+        List<LevelTileNode> unvisited = new List<LevelTileNode>();
 
-        TileNode source = grid[from.x, from.y];
-        TileNode target = grid[to.x, to.y];
+        LevelTileNode source = grid[from.x, from.y];
+        LevelTileNode target = grid[to.x, to.y];
 
         dist[source] = 0;
         prev[source] = null;
@@ -187,8 +211,8 @@ public class TileManager
         while (unvisited.Count > 0)
         {
             //u is unvisited node with smallest distance
-            TileNode u = null;
-            foreach (TileNode possible in unvisited)
+            LevelTileNode u = null;
+            foreach (LevelTileNode possible in unvisited)
             {
                 if (u == null || dist[possible] < dist[u])
                     u = possible;
@@ -196,7 +220,7 @@ public class TileManager
 
             unvisited.Remove(u);
 
-            foreach (TileNode v in u.NeightBours)
+            foreach (LevelTileNode v in u.NeightBours)
             {
                 float alt = dist[u] + CostToEnterTile(v, target, worldObject);
 
@@ -224,9 +248,9 @@ public class TileManager
         if (prev[target] == null)
             return null; //no possible route 
 
-        List<TileNode> currentPath = new List<TileNode>();
+        List<LevelTileNode> currentPath = new List<LevelTileNode>();
 
-        TileNode curr = target;
+        LevelTileNode curr = target;
 
         //loop through prev chain and add it to path
         while (curr != null)
@@ -241,8 +265,7 @@ public class TileManager
         return currentPath;
     }
 
-
-    public float CostToEnterTile(TileNode nextTile, WorldObject worldObject)
+    public float CostToEnterTile(LevelTileNode nextTile, WorldObject worldObject)
     {
         bool isWalkingMonster = worldObject.IsMonster() && worldObject.IsWalking();
 
@@ -252,7 +275,7 @@ public class TileManager
         return nextTile.EnterCost();
     }
 
-    public float CostToEnterTile(TileNode nextTile, TileNode endTile, WorldObject worldObject)
+    public float CostToEnterTile(LevelTileNode nextTile, LevelTileNode endTile, WorldObject worldObject)
     {
         if (new Vector2(endTile.GridPosition.x - nextTile.GridPosition.x, endTile.GridPosition.y - nextTile.GridPosition.y).magnitude > 0.1f)
         {
@@ -388,7 +411,7 @@ public class TileManager
     /// </summary>
     /// <param name="position">The world position of the node.</param>
     /// <returns></returns>
-    public TileNode GetTileNodeFromWorldPosition(Vector2 position)
+    public LevelTileNode GetTileNodeFromWorldPosition(Vector2 position)
     {
         // Return if the grid is empty.
         if (grid.Length < 1) return null;
@@ -397,7 +420,7 @@ public class TileManager
         float distance = grid[0, 0].DistanceFromPosition(position);
 
         // Set the node closest to the given worldposition.
-        TileNode closeNode = grid[0, 0];
+        LevelTileNode closeNode = grid[0, 0];
 
         // Check for every node.
         for (int i = 1; i < grid.Length; i++)
@@ -423,10 +446,10 @@ public class TileManager
     /// </summary>
     /// <param name="gridPos">The position of the grid node.</param>
     /// <returns></returns>
-    public TileNode GetNodeReference(Coordinate gridPos)
+    public LevelTileNode GetNodeReference(Coordinate gridPos)
     {
         // Check for every grid node.
-        foreach (TileNode t in grid)
+        foreach (LevelTileNode t in grid)
         {
             // If the grid node is located at the given grid position, return it.
             if (t != null && t.GridPosition == gridPos)
@@ -437,11 +460,11 @@ public class TileManager
         return null;
     }
 
-    public List<TileNode> GetNodeWithGapReferences()
+    public List<LevelTileNode> GetNodeWithGapReferences()
     {
-        List<TileNode> gapNodes = new List<TileNode>();
+        List<LevelTileNode> gapNodes = new List<LevelTileNode>();
 
-        foreach (TileNode t in grid)
+        foreach (LevelTileNode t in grid)
         {
             if (t != null && t.GetSecType() == SecTileType.Gap)
                 gapNodes.Add(t);
@@ -450,10 +473,10 @@ public class TileManager
         return gapNodes;
     }
 
-    public Dictionary<TileNode, int> GetPossibleGapNodeReferences()
+    public Dictionary<LevelTileNode, int> GetPossibleGapNodeReferences()
     {
-        List<TileNode> gapNodes = GetNodeWithGapReferences();
-        Dictionary<TileNode, int> possGapNodes = new Dictionary<TileNode, int>();
+        List<LevelTileNode> gapNodes = GetNodeWithGapReferences();
+        Dictionary<LevelTileNode, int> possGapNodes = new Dictionary<LevelTileNode, int>();
 
         // find and add all possible gap nodes
         for (int i = 0; i < gapNodes.Count; i++)
@@ -479,19 +502,19 @@ public class TileManager
             }
         }
 
-        return new Dictionary<TileNode, int>(possGapNodes); 
+        return new Dictionary<LevelTileNode, int>(possGapNodes); 
     }
 
     public void ShowTeleportHighlights(WorldObject worldObject, int range)
     {
         HideHighlightedNodes();
-        highlightedNodes = new List<TileNode>();
+        highlightedNodes = new List<LevelTileNode>();
         // add yourself
-        TileNode hisNode = GetNodeReference(worldObject.GridPosition);
+        LevelTileNode hisNode = GetNodeReference(worldObject.GridPosition);
         
         if (range == 0)
         {
-            foreach (TileNode node in grid)
+            foreach (LevelTileNode node in grid)
             {
                 highlightedNodes.Add(node);    
             }
@@ -526,9 +549,9 @@ public class TileManager
 
     public void ShowPossibleRoads(WorldObject worldObject, Coordinate gridPos, int actionPoints)
     {
-        highlightedNodes = new List<TileNode>();
+        highlightedNodes = new List<LevelTileNode>();
         // add yourself
-        TileNode hisNode = GetNodeReference(gridPos);
+        LevelTileNode hisNode = GetNodeReference(gridPos);
 
         RecursiveTileFinder(worldObject, highlightedNodes, hisNode, actionPoints, gridPos);
 
@@ -549,7 +572,7 @@ public class TileManager
     public void DisableHighlights()
     {
         UberManager.Instance.InputManager.highlightsActivated = false;
-        foreach (TileNode node in grid)
+        foreach (LevelTileNode node in grid)
         {
             node.HighlightTile(false, new Color(0,0,0,0));
         }
@@ -558,8 +581,8 @@ public class TileManager
     // assumed this is always called AFTER ShowPossibleRoads, no new list need to be set and the tiles can just be added to the highlighted
     public void ShowExtraTargetForSpecial(WorldObject worldObject, Coordinate gridPos, int maxDistance)
     {
-        List<TileNode> nodes = new List<TileNode>();
-        TileNode hisNode = GetNodeReference(gridPos);
+        List<LevelTileNode> nodes = new List<LevelTileNode>();
+        LevelTileNode hisNode = GetNodeReference(gridPos);
         RecursiveTileFinder(worldObject, nodes, hisNode, maxDistance, gridPos, false);
 
         // highlight all found humans
@@ -573,7 +596,7 @@ public class TileManager
         });
     }
 
-    private void RecursiveTileFinder(WorldObject worldObject, List<TileNode> nodes, TileNode thisNode, int distance, Coordinate startPos, bool usingCost = true)
+    private void RecursiveTileFinder(WorldObject worldObject, List<LevelTileNode> nodes, LevelTileNode thisNode, int distance, Coordinate startPos, bool usingCost = true)
     {
         if (distance >= -1)
         {
@@ -643,7 +666,7 @@ public class TileManager
                 Vector3 worldPosition = GetWorldPosition(gridPosition);
 
                 // Create the grid node. 
-                TileNode tileNode = new TileNode(gridPosition, worldPosition, newGrid[i].row[j]);
+                LevelTileNode tileNode = new LevelTileNode(gridPosition, worldPosition, newGrid[i].row[j]);
                 tileNode.Hexagon.transform.parent = gridParent.transform;
 
                 // Add the grid node to the grid array. 
@@ -660,7 +683,7 @@ public class TileManager
         rows = UberManager.Instance.LevelEditor.Rows;
         columns = UberManager.Instance.LevelEditor.Columns;
 
-        grid = new TileNode[rows, columns];
+        grid = new LevelTileNode[rows, columns];
     }
 
     public void AdjustGridSizeDEVMODE()
@@ -670,9 +693,9 @@ public class TileManager
         rows = UberManager.Instance.LevelEditor.Rows;
         columns = UberManager.Instance.LevelEditor.Columns;
 
-        TileNode[,] tempGrid = grid;
+        LevelTileNode[,] tempGrid = grid;
 
-        grid = new TileNode[rows, columns];
+        grid = new LevelTileNode[rows, columns];
 
         PasteGridDEVMODE(tempGrid, grid);
 
@@ -681,7 +704,7 @@ public class TileManager
         tempGrid = null;
     }
 
-    private void PasteGridDEVMODE(TileNode[,] oldGrid, TileNode[,] newGrid)
+    private void PasteGridDEVMODE(LevelTileNode[,] oldGrid, LevelTileNode[,] newGrid)
     {
         if (!UberManager.Instance.DevelopersMode) return;
 
@@ -709,7 +732,7 @@ public class TileManager
 
         if (GetNodeReference(pos) == null)
         {
-            grid[pos.x, pos.y] = new TileNode(pos, GetWorldPosition(pos), type);
+            grid[pos.x, pos.y] = new LevelTileNode(pos, GetWorldPosition(pos), type);
         }
         else
         {
@@ -730,7 +753,7 @@ public class TileManager
         }
     }
 
-    public SecContentType RemoveContentDEVMODE(TileNode node)
+    public SecContentType RemoveContentDEVMODE(LevelTileNode node)
     {
         if (!UberManager.Instance.DevelopersMode) return SecContentType.Unknown;
 
@@ -747,7 +770,7 @@ public class TileManager
         return returnType;
     }
 
-    public void ClearGridDEVMODE(TileNode[,] gridToRemove = null)
+    public void ClearGridDEVMODE(LevelTileNode[,] gridToRemove = null)
     {
         if (!UberManager.Instance.DevelopersMode) return;
 

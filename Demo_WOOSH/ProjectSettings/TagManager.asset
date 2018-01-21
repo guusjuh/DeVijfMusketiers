@@ -52,6 +52,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LowerFloor
+    uniqueID: 1942719813
+    locked: 0
+  - name: Pillar
+    uniqueID: 2342032757
+    locked: 0
+  - name: LowerObjects
+    uniqueID: 4233618711
+    locked: 0
   - name: Floor
     uniqueID: 3230127399
     locked: 0

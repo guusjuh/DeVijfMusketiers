@@ -38,7 +38,7 @@ public class LevelManager
 
     private float delay = 0.5f;
     private int startGapTurn = 2;
-    private Dictionary<TileNode, int> possibleGapReferences;
+    private Dictionary<LevelTileNode, int> possibleGapReferences;
 
     public int StartGapTurn {
         set {
@@ -293,12 +293,15 @@ public class LevelManager
         {
             if (possibleGapReferences.Count <= 0) break;
 
-            TileNode chosenGap = UberManager.PerformRandomRoll<TileNode>(possibleGapReferences);
+            LevelTileNode chosenGap = UberManager.PerformRandomRoll<LevelTileNode>(possibleGapReferences);
             possibleGapReferences.Remove(chosenGap);
 
             GameManager.Instance.CameraManager.LockTarget(chosenGap.Hexagon.transform);
 
-            yield return UberManager.Instance.StartCoroutine(BreakTile(chosenGap));
+            SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Gap);
+
+            //TODO: create new animation with pillar sliding down or something
+            yield return new WaitForSeconds(0.8f);// BreakTile(chosenGap));
 
             chosenGap.CreateHexagon(SecTileType.Gap);
 
@@ -310,9 +313,8 @@ public class LevelManager
         yield return null;
     }
 
-    private IEnumerator BreakTile(TileNode chosenGap)
+    private IEnumerator BreakTile(LevelTileNode chosenGap)
     {
-        SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Gap);
         while (chosenGap.Hexagon.transform.localScale.magnitude > 0.1f)
         {
             chosenGap.Hexagon.transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f);

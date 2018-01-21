@@ -475,7 +475,7 @@ public class Enemy : WorldObject
             }
 
             //generate path to chosen target
-            List<TileNode> currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, this);
+            List<LevelTileNode> currentPath = GameManager.Instance.TileManager.GeneratePathTo(gridPosition, target.GridPosition, this);
 
             // if no path was found
             if (currentPath == null)

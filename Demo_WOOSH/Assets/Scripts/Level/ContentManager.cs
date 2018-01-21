@@ -61,6 +61,13 @@ public enum HumanTypes
     Fabulous
 }
 
+public enum EnvironmentType
+{
+    Forest,
+    Desert,
+    Mountains,
+}
+
 [Serializable]
 public class ContentManager {
     private static ContentManager instance = null;
@@ -93,6 +100,20 @@ public class ContentManager {
     private Dictionary<TileType, Texture[]> tileTextures = new Dictionary<TileType, Texture[]>();
     public Dictionary<TileType, Texture[]> TileTextures { get { return tileTextures; } }
 
+    private static Dictionary<EnvironmentType, List<Sprite>> environmentTiles;
+    public static Dictionary<EnvironmentType, List<Sprite>> EnvironmentTiles { get { return environmentTiles; } }
+    public static Sprite GetRandomEnvironmentTile(EnvironmentType type)
+    {
+        return environmentTiles[type][UnityEngine.Random.Range(0, environmentTiles[type].Count)];
+    }
+
+    private static Dictionary<EnvironmentType, List<Sprite>> environmentObjects;
+    public static Dictionary<EnvironmentType, List<Sprite>> EnvironmentObjects { get { return environmentObjects; } }
+    public static Sprite GetRandomenvironmentObject(EnvironmentType type)
+    {
+        return environmentObjects[type][UnityEngine.Random.Range(0, environmentObjects[type].Count)];
+    }
+
     private LevelDataContainer levelDataContainer = new LevelDataContainer();
 
     public LevelData LevelData(int id)
@@ -122,6 +143,9 @@ public class ContentManager {
 
         LoadTexturesForTileType("Textures/Tiles/Normal", TileType.Normal);
         LoadTexturesForTileType("Textures/Tiles/Dangerous", TileType.Dangerous);
+
+        SetEnvironmentTiles();
+        LoadEnvironmentObjects();
 
         ReadLevelData();
     }
@@ -221,6 +245,41 @@ public class ContentManager {
         }
 
         tileTextures[type] = validTextures;
+    }
+
+    private void SetEnvironmentTiles()
+    {
+        environmentTiles = new Dictionary<EnvironmentType, List<Sprite>>();
+
+        List<Sprite> tempEnvTilesForest = new List<Sprite>();
+        tempEnvTilesForest.Add(tilePrefabs[new KeyValuePair<TileType, SecTileType>(TileType.Normal, SecTileType.Grass)].GetComponent<SpriteRenderer>().sprite);
+        environmentTiles.Add(EnvironmentType.Forest, tempEnvTilesForest);
+
+        List<Sprite> tempEnvTilesDesert = new List<Sprite>();
+        tempEnvTilesDesert.Add(tilePrefabs[new KeyValuePair<TileType, SecTileType>(TileType.Normal, SecTileType.Dirt)].GetComponent<SpriteRenderer>().sprite);
+        environmentTiles.Add(EnvironmentType.Desert, tempEnvTilesDesert);
+
+        List<Sprite> tempEnvTilesMountains = new List<Sprite>();
+        tempEnvTilesMountains.Add(tilePrefabs[new KeyValuePair<TileType, SecTileType>(TileType.Normal, SecTileType.Rocky)].GetComponent<SpriteRenderer>().sprite);
+        tempEnvTilesMountains.Add(tilePrefabs[new KeyValuePair<TileType, SecTileType>(TileType.Normal, SecTileType.RockyRoad)].GetComponent<SpriteRenderer>().sprite);
+        environmentTiles.Add(EnvironmentType.Mountains, tempEnvTilesMountains);
+    }
+
+    private void LoadEnvironmentObjects()
+    {
+        environmentObjects = new Dictionary<EnvironmentType, List<Sprite>>();
+
+        List<Sprite> tempEnvObjForest = new List<Sprite>();
+        tempEnvObjForest.AddMultiple(Resources.LoadAll<Sprite>("Sprites/EnvironmentObjects/Forest"));
+        environmentObjects.Add(EnvironmentType.Forest, tempEnvObjForest);
+
+        List<Sprite> tempEnvObjDessert = new List<Sprite>();
+        tempEnvObjDessert.AddMultiple(Resources.LoadAll<Sprite>("Sprites/EnvironmentObjects/Dessert"));
+        environmentObjects.Add(EnvironmentType.Desert, tempEnvObjDessert);
+
+        List<Sprite> tempEnvObjMountain = new List<Sprite>();
+        tempEnvObjMountain.AddMultiple(Resources.LoadAll<Sprite>("Sprites/EnvironmentObjects/Mountain"));
+        environmentObjects.Add(EnvironmentType.Mountains, tempEnvObjMountain);
     }
 
     private void SetValidTypes()
