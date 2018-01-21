@@ -66,7 +66,8 @@ public class ContractManager
     public void UpdateContractTimer()
     {
         UberManager.Instance.UiManager.LevelSelectUI.SelectContractWindow.SetTimer(contractRefreshDate.Subtract(System.DateTime.Now));
-        
+        //CLEANUP: remove minute per second line
+        contractRefreshDate = contractRefreshDate.Subtract(new TimeSpan(0,0,0,10));
         if (contractRefreshDate <= System.DateTime.Now)
         {
             RefreshContracts();

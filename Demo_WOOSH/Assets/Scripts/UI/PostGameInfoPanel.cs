@@ -29,6 +29,15 @@ public class PostGameInfoPanel : MonoBehaviour
         statusText = transform.Find("StatusText").GetComponent<Text>();
         reputation = transform.Find("Reputation").GetComponent<PostGameInfoReputation>();
 
+        List<Contract> deadContracts = new List<Contract>();
+        deadContracts = GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0);
+        if (deadContracts.Count > 0)
+        {
+            //dialog
+
+            UIManager.Instance.LevelSelectUI.ActivateDeadContractDialog();
+        }
+
         SetText();
 
         postGameInfo = new Dictionary<HumanPostGameStatus, PostGameInfo>();
@@ -41,7 +50,8 @@ public class PostGameInfoPanel : MonoBehaviour
         else postGameInfo.Get(HumanPostGameStatus.MoveOn).Initialize(WIN, GameManager.Instance.SelectedContracts.FindAll(c => !c.Died));
 
         postGameInfo.Get(HumanPostGameStatus.Stay).Initialize(STAY, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness > 0));
-        postGameInfo.Get(HumanPostGameStatus.Dead).Initialize(DEAD, GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0));
+        
+        postGameInfo.Get(HumanPostGameStatus.Dead).Initialize(DEAD, deadContracts);
 
         float startRep = UberManager.Instance.PlayerData.Reputation;
         calculateRep();
@@ -53,6 +63,15 @@ public class PostGameInfoPanel : MonoBehaviour
 
     public void Restart()
     {
+        List<Contract> deadContracts = new List<Contract>();
+        deadContracts = GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0);
+        if (deadContracts.Count > 0)
+        {
+            //dialog
+
+            UIManager.Instance.LevelSelectUI.ActivateDeadContractDialog();
+        }
+
         SetText();
 
         //TODO: this is ONLY for WIN in level 3!!! THIS IS VERY SPECIAL CASE and it should be replaced as soon as we know how finsihing a contract works!!!

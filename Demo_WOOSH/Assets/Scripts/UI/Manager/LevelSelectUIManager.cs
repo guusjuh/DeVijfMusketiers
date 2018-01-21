@@ -44,6 +44,10 @@ public class LevelSelectUIManager : SubUIManager
     private GameObject guidanceArrow;
     private Text guidanceText;
 
+    private bool deadContract = false;
+    private bool inDialog = false;
+    private string[] deadContractDialog = new string[4];
+
     private SelectContractWindow tutorialSelectContractWindow;
 
     private City tutorialCity;
@@ -68,7 +72,31 @@ public class LevelSelectUIManager : SubUIManager
 
         background.transform.SetAsFirstSibling();
 
+        dialog = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/DialogPopup", Vector2.zero, anchorBottomCenter).GetComponent<DialogScript>();
+        dialog.Initialize();
+
         FinishInitialize();
+    }
+
+    private void InitializeDeadContractDialog()
+    {
+        deadContractDialog = new string[4];
+        deadContractDialog[0] = "Human: THIS IS ENOUGH!";
+        deadContractDialog[1] = "Human: You've let me get caught by monsters again and again!";
+        deadContractDialog[2] = "Human: I'll find a wizard who can get me across safely!";
+        deadContractDialog[3] = "Human: goodbye sir!";
+    }
+
+    public void ActivateDeadContractDialog()
+    {
+        deadContract = true;
+        InitializeDeadContractDialog();
+    }
+
+    public void DeactivateDialog()
+    {
+        GameObject.Find("LevelSelectScrollView(Clone)").GetComponent<ScrollRect>().vertical = true;
+        inDialog = false;
     }
 
     protected override void InitializeTutorial()
@@ -87,9 +115,6 @@ public class LevelSelectUIManager : SubUIManager
 
         wizardsHat = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/Hat", new Vector2(0, -50.0f), tutorialPanel.transform).gameObject;
         wizardsHat.transform.SetSiblingIndex(1);
-
-        dialog = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/DialogPopup", Vector2.zero, anchorBottomCenter).GetComponent<DialogScript>();
-        dialog.Initialize();
 
         noClickPanel = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/NoClickPanel", Vector2.zero, canvas.transform).GetComponent<RectTransform>();
         onlyButton = noClickPanel.Find("OnlyButton").GetComponent<Button>();
@@ -134,6 +159,21 @@ public class LevelSelectUIManager : SubUIManager
         lastRep = UberManager.Instance.PlayerData.ReputationLevel;
 
         initializedInGame = true;
+    }
+    
+    public override void Update()
+    {
+        if (deadContract)
+        {
+            deadContract = false;
+            dialog.Activate(deadContractDialog);
+            UberManager.Instance.InputManager.ListenForDialog();
+            GameObject.Find("LevelSelectScrollView(Clone)").GetComponent<ScrollRect>().vertical = false;
+            inDialog = true;
+        }
+
+        if (inDialog)
+            UberManager.Instance.InputManager.CatchInput();
     }
 
     public override void ActivateNoClickPanel(Vector2 onlyButtonPos, Sprite buttonSprite, float width = 100, float height = 100)

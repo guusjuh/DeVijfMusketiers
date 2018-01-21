@@ -34,9 +34,11 @@ public class EnemyMove : Action
         {
             parent.SelectTarget();
         }
-
-        //generate path to chosen target
-        currentPath = GameManager.Instance.TileManager.GeneratePathTo(parent.GridPosition, parent.Target.GridPosition, parent);
+        if (parent.Target != null)
+        {
+            //generate path to chosen target
+            currentPath = GameManager.Instance.TileManager.GeneratePathTo(parent.GridPosition, parent.Target.GridPosition, parent);
+        }
 
         // if no path was found
         if (currentPath == null)

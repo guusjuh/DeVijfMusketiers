@@ -422,8 +422,10 @@ public class Enemy : WorldObject
         Dictionary<EnemyTarget, int> possibleTargets = new Dictionary<EnemyTarget, int>();
         List<EnemyTarget> damagables = new List<EnemyTarget>();
 
-        damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
-        damagables.AddRange(GameManager.Instance.LevelManager.Shrines.Cast<EnemyTarget>());
+        if (GameManager.Instance.LevelManager.Humans != null && GameManager.Instance.LevelManager.Humans.Count > 0)
+            damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
+        if (GameManager.Instance.LevelManager.Shrines != null && GameManager.Instance.LevelManager.Shrines.Count > 0)
+            damagables.AddRange(GameManager.Instance.LevelManager.Shrines.Cast<EnemyTarget>());
 
         //add all possible targets to possible target list
         for (int i = 0; i < damagables.Count; i++)

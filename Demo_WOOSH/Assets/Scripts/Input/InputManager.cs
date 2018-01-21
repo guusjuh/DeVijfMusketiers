@@ -21,8 +21,25 @@ public class InputManager
     private DateTime lastClickTime;
     public bool highlightsActivated = false;
 
+    private bool inDialog = false;
+
     public void CatchInput()
     {
+        if (inDialog)
+        {
+            if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
+            {
+                UIManager.Instance.LevelSelectUI.Dialog.Next();
+                if (!UIManager.Instance.LevelSelectUI.Dialog.On)
+                {
+                    inDialog = false;
+                    UIManager.Instance.LevelSelectUI.DeactivateDialog();
+                }
+            }
+            return;
+        }
+
+
         if (CatchZoomInput()) return;
 
         if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
@@ -110,6 +127,11 @@ public class InputManager
             }
             previousPosition = Input.mousePosition;
         }
+    }
+
+    public void ListenForDialog()
+    {
+        inDialog = true;
     }
 
     private void EndDrag()
