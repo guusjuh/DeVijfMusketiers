@@ -239,17 +239,18 @@ public class Human : EnemyTarget
 
         return true;
     }
-
+    
+    //CLEANUP: remove smileys
     public void ShowHappySmiley()
     {
-        FloatingIndicator indicator = new FloatingIndicator();
-        indicator.Initialize(happySprite, 4.0f, 0.5f, transform.position);
+        //FloatingIndicator indicator = new FloatingIndicator();
+        //indicator.Initialize(happySprite, 4.0f, 0.5f, transform.position);
     }
 
     public void ShowUnhappySmiley()
     {
-        FloatingIndicator indicator = new FloatingIndicator();
-        indicator.Initialize(unhappySprite, 4.0f, 0.5f, transform.position);
+        //FloatingIndicator indicator = new FloatingIndicator();
+        //indicator.Initialize(unhappySprite, 4.0f, 0.5f, transform.position);
     }
 
     public override void DeadByGap()

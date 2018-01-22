@@ -80,11 +80,18 @@ public class LevelSelectUIManager : SubUIManager
 
     private void InitializeDeadContractDialog()
     {
-        deadContractDialog = new string[4];
-        deadContractDialog[0] = "Human: THIS IS ENOUGH!";
-        deadContractDialog[1] = "Human: You've let me get caught by monsters again and again!";
-        deadContractDialog[2] = "Human: I'll find a wizard who can get me across safely!";
-        deadContractDialog[3] = "Human: goodbye sir!";
+        deadContractDialog = new string[11];
+        deadContractDialog[0] = "Wizards Hat: \nOh no!!";
+        deadContractDialog[1] = "Wizards Hat: \nYou let the monsters grab a human...";
+        deadContractDialog[2] = "Wizards Hat: \nThey really don't like that...";
+        deadContractDialog[3] = "Wizards Hat: \nEach time you lose a human,";
+        deadContractDialog[4] = "Wizards Hat: \nhe'll become less happy.";
+        deadContractDialog[5] = "Wizards Hat: \nIf you let them become too unhappy,";
+        deadContractDialog[6] = "Wizards Hat: \nthey might even find another wizard!";
+        deadContractDialog[7] = "Wizards Hat: \nEverytime you protect humans,";
+        deadContractDialog[8] = "Wizards Hat: \nthey'll become more happy.";
+        deadContractDialog[9] = "Wizards Hat: \nSo just make sure they don't die...";
+        deadContractDialog[10] = "Wizards Hat: \ntoo much... Okay?";
     }
 
     public void ActivateDeadContractDialog()

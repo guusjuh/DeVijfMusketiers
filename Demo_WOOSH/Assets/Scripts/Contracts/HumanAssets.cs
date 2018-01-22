@@ -9,20 +9,20 @@ public class HumanAssets {
     [SerializeField] private GameObject inWorldAngry;
     public GameObject InWorld(int hapiness)
     {
-        return (hapiness > 10) ? inWorld : inWorldAngry;
+        return inWorld;
     }
 
     [SerializeField] private Sprite inWorldSprite;
     [SerializeField] private Sprite inWorldSpriteAngry;
     public Sprite InWorldSprite(int hapiness)
     {
-        return (hapiness > 10) ? inWorldSprite : inWorldSpriteAngry;
+        return inWorldSprite;
     }
 
     [SerializeField] private Sprite portrait;
     [SerializeField] private Sprite portraitAngry;
     public Sprite Portrait(int hapiness)
     {
-        return (hapiness > 10) ? portrait : portraitAngry;
+        return portrait;
     }
 }

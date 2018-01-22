@@ -564,8 +564,9 @@ public class LevelManager
 
                 Remove(toRemove);
                 //GameManager.Instance.GameOver();
-                List<Human> survivingHumans = Humans.FindAll(h => h.ContractRef.Happiness > 0);
-                GameManager.Instance.ShowVictoryIndicators(survivingHumans);
+                //List<Human> survivingHumans = Humans.FindAll(h => h.ContractRef.Happiness > 0);
+                //GameManager.Instance.ShowVictoryIndicators(survivingHumans);
+                GameManager.Instance.GameOver();
                 return;
             }
             UIManager.Instance.InGameUI.EnemyDied();
