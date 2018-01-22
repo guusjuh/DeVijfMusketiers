@@ -12,7 +12,22 @@ public class CameraManager : MonoBehaviour
     private Vector2 bordersMax;
     private float maxBouncynessFactor = 2.0f;
     private float bouncynessFactor = -1.0f;
-    private float bouncynessSpeedScalar = 1.0f;
+    private float bouncynessSpeedScalar = 0.6f;
+    private Vector2 midPoint
+    {
+        get
+        {
+            return new Vector2(((bordersMax.x - bordersMin.x) / 2.0f) + bordersMin.x,
+                               ((bordersMax.y - bordersMin.y) / 2.0f) + bordersMin.y);
+        }
+    }
+    private float BouncynessSpeedScalarNormalized
+    {
+        get { return (bouncynessSpeedScalar * ((Vector2)camRef.transform.position - midPoint).magnitude); }
+    }
+    private bool bouncing = false;
+    private bool bouncingLeft = true;
+    private bool bouncingUp = true;
     public void SetBouncyness()
     {
         bouncynessFactor = maxBouncynessFactor;
@@ -120,7 +135,7 @@ public class CameraManager : MonoBehaviour
 
         if (withBounds && !dragging)
         {
-            bouncynessFactor -= bouncynessSpeedScalar * Time.deltaTime;
+            bouncynessFactor -= BouncynessSpeedScalarNormalized * Time.deltaTime;
         }
 
         CalculateVelocity(desiredVelocity, withBounds);
