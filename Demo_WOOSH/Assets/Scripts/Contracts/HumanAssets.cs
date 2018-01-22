@@ -6,11 +6,23 @@ using UnityEngine;
 [Serializable]
 public class HumanAssets {
     [SerializeField] private GameObject inWorld;
-    public GameObject InWorld { get { return inWorld; } }
+    [SerializeField] private GameObject inWorldAngry;
+    public GameObject InWorld(int hapiness)
+    {
+        return (hapiness > 10) ? inWorld : inWorldAngry;
+    }
 
     [SerializeField] private Sprite inWorldSprite;
-    public Sprite InWorldSprite { get { return inWorldSprite; } }
+    [SerializeField] private Sprite inWorldSpriteAngry;
+    public Sprite InWorldSprite(int hapiness)
+    {
+        return (hapiness > 10) ? inWorldSprite : inWorldSpriteAngry;
+    }
 
     [SerializeField] private Sprite portrait;
-    public Sprite Portrait { get { return portrait; } }
+    [SerializeField] private Sprite portraitAngry;
+    public Sprite Portrait(int hapiness)
+    {
+        return (hapiness > 10) ? portrait : portraitAngry;
+    }
 }

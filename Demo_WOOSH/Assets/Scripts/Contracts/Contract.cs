@@ -28,9 +28,9 @@ public class Contract
     public HumanTypes HumanType { get { return type.HumanType; } }
     public int Reputation { get { return type.Reputation; } }
     public int TotalHappiness { get { return type.TotalHappiness; } }
-    public GameObject InWorld { get { return type.HumanAssets[humanIndex].InWorld; } }
-    public Sprite InWorldSprite { get { return type.HumanAssets[humanIndex].InWorldSprite; } }
-    public Sprite Portrait { get { return type.HumanAssets[humanIndex].Portrait; } }
+    public GameObject InWorld { get { return type.HumanAssets[humanIndex].InWorld(Happiness); } }
+    public Sprite InWorldSprite { get { return type.HumanAssets[humanIndex].InWorldSprite(Happiness); } }
+    public Sprite Portrait { get { return type.HumanAssets[humanIndex].Portrait(Happiness); } }
     public Rewards Rewards { get { return type.Rewards; } }
 
     private int currentLevel;
