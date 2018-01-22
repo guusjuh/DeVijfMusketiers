@@ -145,6 +145,15 @@ public class ContractManager
         return UberManager.PerformRandomRoll<HumanTypes>(possibleTypes);
     }
 
+    public List<ContractType> GetTypeForRep(int rep)
+    {
+        HumanTypes type = (HumanTypes)rep + 1;
+
+        List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
+
+        return matchingContractTypes;
+    }
+
     public Contract GenerateRandomContract(Path path)
     {
         contentCounter++;

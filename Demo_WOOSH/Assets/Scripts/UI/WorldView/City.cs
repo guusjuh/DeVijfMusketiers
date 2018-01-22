@@ -44,9 +44,9 @@ public class City : MonoBehaviour {
     // true when the player has reached the city for the first time
     private bool cityReached = false;
     public bool CityReached { get { return cityReached; } }
-    public void Reached()
+    public bool Reached()
     {
-        if (cityReached) return;
+        if (cityReached) return true;
         if (bttn == null) bttn = gameObject.GetComponentInChildren<Button>();
 
         if (destination != Destination.NoDestination)
@@ -64,6 +64,8 @@ public class City : MonoBehaviour {
         }
 
         cityReached = true;
+
+        return false;
     } 
 
     public void Initiliaze()

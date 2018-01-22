@@ -114,13 +114,14 @@ public class Contract
                 if (!UberManager.Instance.Tutorial)
                 {
                     City city = UIManager.Instance.LevelSelectUI.Cities.Find(c => path.Destination == c.ThisCity);
-                    city.Reached();
+                    if(!city.Reached())
+                    {
+                        GooglePlayServices.UnlockAchievement(GooglePlayIds.achievement_reached_city);
 
-                    GooglePlayServices.UnlockAchievement(GooglePlayIds.achievement_reached_city);
+                        UberManager.Instance.ContractManager.RefreshCityContracts(city);
 
-                    UberManager.Instance.ContractManager.RefreshCityContracts(city);
-
-                    UberManager.Instance.Save();
+                        UberManager.Instance.Save();
+                    }
                 }
 
                 BreakContract();

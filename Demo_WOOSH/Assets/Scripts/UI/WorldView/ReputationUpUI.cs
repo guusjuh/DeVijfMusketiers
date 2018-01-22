@@ -10,6 +10,11 @@ public class ReputationUpUI : MonoBehaviour
     private List<RectTransform> filledStars;
     private List<Vector2> originalScales;
 
+    private GameObject newContractsGO;
+    private GridLayoutGroup gridParent;
+    private GameObject contractIndicatorPrefab;
+    private List<ContractIndicator> contractIndicators;
+
     private const float START_SIZE = 3000.0f;
     private const float SHRINK_SPEED = 35.0f;
     private const float MOVE_SPEED = 15.0f;
@@ -30,6 +35,10 @@ public class ReputationUpUI : MonoBehaviour
             if (i != 0) filledStars[i].gameObject.SetActive(false);
         }
 
+        contractIndicatorPrefab = Resources.Load<GameObject>("Prefabs/UI/LevelSelect/ContractIndicator");
+        newContractsGO = transform.Find("NewContracts").gameObject;
+        gridParent = newContractsGO.transform.Find("GridParent").GetComponent<GridLayoutGroup>();
+
         gameObject.SetActive(false);
     }
 
@@ -46,6 +55,46 @@ public class ReputationUpUI : MonoBehaviour
 
             filledStars[i].gameObject.SetActive(true);
         }
+
+        BuildGrid(level);
+    }
+
+    private void BuildGrid(int level)
+    {
+        contractIndicators = new List<ContractIndicator>();
+
+        // find new types 
+        List<ContractType> newTypes = UberManager.Instance.ContractManager.GetTypeForRep(UberManager.Instance.PlayerData.ReputationLevel);
+
+        // find all human assets for these types
+        List<Sprite> newAssets = new List<Sprite>();
+        for (int i = 0; i < newTypes.Count; i++)
+        {
+            for (int j = 0; j < newTypes[i].HumanAssets.Count; j++)
+            {
+                newAssets.Add(newTypes[i].HumanAssets[j].Portrait);
+            }
+        }
+
+        if(newAssets.Count <= 0)
+        {
+            newContractsGO.SetActive(false);
+        }
+        else
+        {
+            newContractsGO.SetActive(true);
+            for (int i = 0; i < newAssets.Count; i++)
+            {
+                contractIndicators.Add(UIManager.Instance.CreateUIElement(contractIndicatorPrefab, Vector2.zero, gridParent.transform).GetComponent<ContractIndicator>());
+                contractIndicators.Last().Initialize(newAssets[i]);
+            }
+        }
+    }
+
+    private void ClearGrid()
+    {
+        contractIndicators.HandleAction(c => c.Clear());
+        contractIndicators.Clear();
     }
 
     private IEnumerator ScaleDown(int indexStar)
@@ -104,6 +153,7 @@ public class ReputationUpUI : MonoBehaviour
     {
         if (!done) return;
         filledStars.HandleAction(s => s.gameObject.SetActive(false));
+        ClearGrid();
         gameObject.SetActive(false);
     }
 }
