@@ -11,13 +11,14 @@ public class Shrine : EnemyTarget
     private static Color normalColor = new Color(0.55f, 0.55f, 0.55f, 1.0f);
 
     private SpriteRenderer sprRender;
+    private GameObject particle;
 
     public bool Active {
         get { return active; }
         private set {
             if(value != active && value){
                 SoundManager.PlaySoundEffect(SoundManager.SoundEffect.Shrine);
-                UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.ShrineIsOnParticle, transform.position, transform.rotation);
+                particle = UberManager.Instance.ParticleManager.PlayParticle(ParticleManager.Particles.ShrineIsOnParticle, transform.position, transform.rotation);
             }
             active = value;
             sprRender.color = value ? activeColor : normalColor;
@@ -40,13 +41,22 @@ public class Shrine : EnemyTarget
         gaveAP = false;
     }
 
+    public override void DeadByGap()
+    {
+        if (particle != null) Destroy(particle);
+        base.DeadByGap();
+    }
+
     public override void Clear()
     {
+        if (particle != null) Destroy(particle);
         GameManager.Instance.LevelManager.RemoveObject(this);
     }
 
     public override bool Hit()
     {
+        if (particle != null) Destroy(particle);
+
         canBeTargeted = false;
         active = false;
 

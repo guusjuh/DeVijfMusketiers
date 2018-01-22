@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LowerTileNode : TileNode
 {
-    private const float OBJECT_CHANCE = 0.4f;
+    private const float OBJECT_CHANCE = 0.5f;
 
     private bool higherOccupied = true;
     public bool HigherOccupied { get { return higherOccupied; } }

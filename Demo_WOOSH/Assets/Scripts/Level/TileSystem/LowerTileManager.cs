@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LowerTileManager {
     private const int EXTRA_ROWS = 5;
-    private const int EXTRA_COLS = 5;
+    private const int EXTRA_COLS = 7;
 
     private const float Y_OFFSET = -2.55f;
 

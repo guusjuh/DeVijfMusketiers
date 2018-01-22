@@ -16,7 +16,7 @@ public class DestroyParticle : MonoBehaviour {
 	void Update ()
     {
         if (!transform.parent.gameObject.activeInHierarchy || 
-            !particleSystem.IsAlive()     ||
+            !particleSystem.IsAlive()                      ||
             UberManager.Instance.GameState != UberManager.GameStates.InGame)
                 Destroy(transform.parent.gameObject);
 	}
