@@ -15,6 +15,7 @@ public class FloatingIndicator
     private RectTransform parentGO;
 
     private Text floatingText;
+    private Image floatingSpriteRenderer;
 
     // The time the number will be shown. 
     private float lifeTime;
@@ -52,6 +53,40 @@ public class FloatingIndicator
             Activate(text, color);
         else
             ActivateUI(text, color);
+    }
+
+    public void Initialize(Sprite sprite, float moveSpeed, float lifeTime, Vector3 startPos, bool inGame = true, Transform parent = null)
+    {
+        this.moveSpeed = moveSpeed;
+        this.lifeTime = lifeTime;
+        this.startPos = startPos;
+
+        // Load the floating text and instantiate it. 
+        parentGO = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/FloatingSpriteIndicator")).GetComponent<RectTransform>();
+
+        floatingSpriteRenderer = parentGO.transform.Find("Child").GetComponent<Image>();
+        floatingSpriteRenderer.sprite = sprite;
+
+        if (parent == null) parent = UIManager.Instance.InGameUI.AnchorCenter;
+        parentGO.transform.SetParent(parent);
+
+        parentGO.anchoredPosition = Vector3.zero;
+
+        // Set the object to non-active. 
+        parentGO.gameObject.SetActive(false);
+
+        // Start at only a tiny bit offset, increase over time. 
+        offsetYaxis = 0.05f;
+
+        if (inGame)
+        {
+            floatingSpriteRenderer.color = Color.white;
+            Activate();
+        }
+            
+        else
+            Debug.Log("You need more code to show floating sprites in UI!");
+        //ActivateUI(text, color);
     }
 
     /// <summary>
@@ -113,6 +148,29 @@ public class FloatingIndicator
         Destroy();
 
         yield break;
+    }
+
+    /// <summary>
+    /// Activates the floating sprite.
+    /// </summary>
+    /// <param name="text">The taken damage.</param>
+    /// <param name="startPos">The position the number starts floating up. </param>
+    public void Activate()
+    {
+        // Calculate the position based on the camera. 
+        Vector3 uiPosition = UIManager.Instance.InGameUI.WorldToCanvas(startPos);
+        uiPosition.y += offsetYaxis;
+        uiPosition.z = 0;
+
+        // Set it's transform. 
+        parentGO.anchoredPosition = uiPosition;
+        parentGO.localScale = new Vector3(1, 1, 1);
+
+        // Set the gameobject to active. 
+        parentGO.gameObject.SetActive(true);
+
+        // Start the coroutine to make the number float up. 
+        floatUp = UberManager.Instance.StartCoroutine(FloatUp());
     }
 
     /// <summary>

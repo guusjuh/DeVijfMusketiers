@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 [Serializable]
@@ -85,6 +86,19 @@ public class GameManager : StateManager {
 
         // Unload all unused assets to clear memory.
         Resources.UnloadUnusedAssets();
+    }
+
+    public void ShowVictoryIndicators(List<Human> survivingHumans)
+    {
+        gameOn = false;
+        survivingHumans.HandleAction(h => h.ShowHappySmiley());
+        UberManager.Instance.StartCoroutine(WaitForHappyHumans());
+    }
+
+    public IEnumerator WaitForHappyHumans()
+    {
+        yield return new WaitForSeconds(1.0f);
+        GameOver();
     }
 
     public void GameOver()

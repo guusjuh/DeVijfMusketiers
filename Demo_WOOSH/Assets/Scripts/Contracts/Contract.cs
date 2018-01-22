@@ -76,7 +76,9 @@ public class Contract
         if(path != null) currentLevel = path.Levels[0].LevelID;
         this.path = path;
 
-        humanIndex = index == -1 ? UnityEngine.Random.Range(0, type.HumanAssets.Count) : index;
+        //CLEANUP: choose any index
+        //humanIndex = index == -1 ? UnityEngine.Random.Range(0, type.HumanAssets.Count) : index;
+        humanIndex = 0;
         this.human_index_att = humanIndex;
 
         happiness = Mathf.CeilToInt((type.TotalHappiness / 50.0f) * 40.0f);

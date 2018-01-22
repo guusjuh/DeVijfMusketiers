@@ -130,6 +130,9 @@ public class ContractManager
     /// <returns></returns>
     public HumanTypes GetRandomHumanType()
     {
+        //CLEANUP: return correct types
+        return HumanTypes.Normal;
+
         Dictionary<HumanTypes, int> possibleTypes = new Dictionary<HumanTypes, int>();
         int maxReputation = UberManager.Instance.PlayerData.ReputationLevel + 1;
 
@@ -152,11 +155,14 @@ public class ContractManager
         int id = contentCounter;
 
         // get random type   
+        //CLEANUP: returns type 3 star
         HumanTypes type = GetRandomHumanType();
-        List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
+        ContractType matchingContract = ContractTypes.FindAll(c => c.HumanType == type)[0];
+        //List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
 
-        Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
-        
+        Contract newContract = new Contract(id, matchingContract, path);
+        //Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
+
         return newContract;
     }
 
@@ -165,12 +171,22 @@ public class ContractManager
         contentCounter++;
         int id = contentCounter;
 
+        HumanTypes type = GetRandomHumanType();
+        ContractType matchingContract = ContractTypes.FindAll(c => c.HumanType == type)[0];
+        //List<ContractType> matchingContractTypes = ContractTypes.FindAll(c => c.HumanType == type);
+
+        Contract newContract = new Contract(id, matchingContract, path);
+        //Contract newContract = new Contract(id, matchingContractTypes[UnityEngine.Random.Range(0, matchingContractTypes.Count)], path);
+
+        return newContract;
+
+        /*CLEANUP: uncomment and remove code above
         // get random type   
         HumanTypes type = (HumanTypes)(rep-1);
         ContractType matchingContractType = ContractTypes.Find(c => c.HumanType == type);
 
         Contract newContract = new Contract(id, matchingContractType, path, index);
 
-        return newContract;
+        return newContract;*/
     }
 }

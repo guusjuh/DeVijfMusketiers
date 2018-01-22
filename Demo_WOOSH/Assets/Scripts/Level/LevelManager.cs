@@ -135,7 +135,7 @@ public class LevelManager
         amountOfTurns++;
 
         yield return UberManager.Instance.StartCoroutine(UIManager.Instance.InGameUI.StartTurn(false));
-
+        if (enemies == null || enemies.Count <= 0) yield return null;
         // handle each enemy
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -563,7 +563,9 @@ public class LevelManager
                 IncreaseHappinessOfSurvivors();
 
                 Remove(toRemove);
-                GameManager.Instance.GameOver();
+                //GameManager.Instance.GameOver();
+                List<Human> survivingHumans = Humans.FindAll(h => h.ContractRef.Happiness > 0);
+                GameManager.Instance.ShowVictoryIndicators(survivingHumans);
                 return;
             }
             UIManager.Instance.InGameUI.EnemyDied();

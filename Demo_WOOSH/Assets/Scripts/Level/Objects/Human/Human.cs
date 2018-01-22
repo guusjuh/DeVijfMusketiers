@@ -10,6 +10,10 @@ public class Human : EnemyTarget
     protected const string DIE_ANIM = "Dead";
     protected const string PANIC_ANIM = "Panic";
 
+    //CLEANUP: better variables for this
+    private Sprite unhappySprite;
+    private Sprite happySprite;
+
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
     private float inverseMoveTime;          //Used to make movement more efficient.
@@ -63,6 +67,10 @@ public class Human : EnemyTarget
         rb2D = GetComponent<Rigidbody2D>();
 
         currentFleePoints = totalFleePoints;
+
+        //CLEANUP: better variables for this
+        unhappySprite = Resources.Load<Sprite>("Sprites/UI/Hapiness/waah");
+        happySprite = Resources.Load<Sprite>("Sprites/UI/Hapiness/awesome");
     }
 
     public override void Reset()
@@ -223,6 +231,8 @@ public class Human : EnemyTarget
 
         contractRef.Die();
 
+        ShowUnhappySmiley();
+
         SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
 
         GameManager.Instance.LevelManager.RemoveObject(this);
@@ -230,9 +240,24 @@ public class Human : EnemyTarget
         return true;
     }
 
+    public void ShowHappySmiley()
+    {
+        FloatingIndicator indicator = new FloatingIndicator();
+        indicator.Initialize(happySprite, 4.0f, 0.5f, transform.position);
+    }
+
+    public void ShowUnhappySmiley()
+    {
+        FloatingIndicator indicator = new FloatingIndicator();
+        indicator.Initialize(unhappySprite, 4.0f, 0.5f, transform.position);
+    }
+
     public override void DeadByGap()
     {
         SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
+
+        ShowUnhappySmiley();
+
         contractRef.Die();
         base.DeadByGap();
     }
