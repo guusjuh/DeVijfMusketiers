@@ -10,9 +10,8 @@ public class Human : EnemyTarget
     protected const string DIE_ANIM = "Dead";
     protected const string PANIC_ANIM = "Panic";
 
-    //CLEANUP: better variables for this
-    private Sprite unhappySprite;
-    private Sprite happySprite;
+    private SpriteRenderer happinessIndicator;
+
 
     private Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private const float moveTime = 0.1f;           //Time it will take object to move, in seconds.
@@ -28,6 +27,9 @@ public class Human : EnemyTarget
     public int CurrentFleePoints { get {return currentFleePoints; } }
 
     private int viewDistance = 4;
+
+    public bool Dead { get { return dead; } }
+    private bool dead = false;
 
     private bool inPanic;
     public bool InPanic
@@ -53,6 +55,10 @@ public class Human : EnemyTarget
 
             anim = gameObject.GetComponentInChildren<Animator>();
             sprRenders = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>());
+
+            happinessIndicator = transform.Find("HappinessIndcator").GetComponent<SpriteRenderer>();
+            sprRenders.Remove(happinessIndicator);
+            SetHappinessIndicator();
         }
     }
 
@@ -67,10 +73,6 @@ public class Human : EnemyTarget
         rb2D = GetComponent<Rigidbody2D>();
 
         currentFleePoints = totalFleePoints;
-
-        //CLEANUP: better variables for this
-        unhappySprite = Resources.Load<Sprite>("Sprites/UI/Hapiness/waah");
-        happySprite = Resources.Load<Sprite>("Sprites/UI/Hapiness/awesome");
     }
 
     public override void Reset()
@@ -79,6 +81,14 @@ public class Human : EnemyTarget
         currentFleePoints = totalFleePoints;
         inPanic = false;
         anim.SetBool(PANIC_ANIM, false);
+    }
+    
+    private void SetHappinessIndicator()
+    {
+        float percentage = (float)contractRef.Happiness / (float)contractRef.TotalHappiness;
+        int normalizedHealth = (contractRef.Happiness > 10) ? Mathf.RoundToInt(percentage * 5.0f) : 1;
+
+        happinessIndicator.sprite = UberManager.Instance.ContentManager.HappinessIndicators[normalizedHealth - 1];
     }
 
     public override void ResetToInitDEVMODE(Coordinate startPos)
@@ -219,6 +229,7 @@ public class Human : EnemyTarget
     public override void Clear()
     {
         GameManager.Instance.LevelManager.RemoveObject(this);
+        Destroy(gameObject);
     }
 
     public override bool Hit()
@@ -231,25 +242,41 @@ public class Human : EnemyTarget
 
         contractRef.Die();
 
+        SetHappinessIndicator();
         ShowUnhappySmiley();
 
         SoundManager.PlaySoundEffect(SoundManager.SoundEffect.DyingHuman);
 
         GameManager.Instance.LevelManager.RemoveObject(this);
+        StartCoroutine(WaitForDestroy());
 
         return true;
+    }
+
+    private IEnumerator WaitForDestroy()
+    {
+        if (!GameManager.Instance.GameOn)
+            Destroy(gameObject);
+
+        dead = true;
+        yield return new WaitForSeconds(2.0f);
+        Destroy(gameObject);
     }
 
     public void ShowHappySmiley()
     {
         FloatingIndicator indicator = new FloatingIndicator();
-        indicator.Initialize(happySprite, 4.0f, 0.5f, transform.position);
+        Sprite happinessIndicator = UberManager.Instance.ContentManager.HappinessIndicators[UberManager.Instance.ContentManager.HappinessIndicators.Count() - 1];
+
+        indicator.Initialize(true, happinessIndicator, 4.0f, 1.0f, transform.position);
     }
 
     public void ShowUnhappySmiley()
     {
         FloatingIndicator indicator = new FloatingIndicator();
-        indicator.Initialize(unhappySprite, 4.0f, 0.5f, transform.position);
+        Sprite happinessIndicator = UberManager.Instance.ContentManager.HappinessIndicators[0];
+
+        indicator.Initialize(false, happinessIndicator, 4.0f, 1.0f, transform.position);
     }
 
     public override void DeadByGap()

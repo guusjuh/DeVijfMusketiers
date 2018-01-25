@@ -78,7 +78,7 @@ public class LevelSelectUIManager : SubUIManager
         FinishInitialize();
     }
 
-    private void InitializeDeadContractDialog()
+    private void InitializeContractLeftDialog()
     {
         deadContractDialog = new string[4];
         deadContractDialog[0] = "Human: THIS IS ENOUGH!";
@@ -87,15 +87,36 @@ public class LevelSelectUIManager : SubUIManager
         deadContractDialog[3] = "Human: goodbye sir!";
     }
 
-    public void ActivateDeadContractDialog()
+    private void InitializeContractAngryDialog()
+    {
+        deadContractDialog = new string[10];
+        deadContractDialog[0] = "Wizard's hat: Oh watch out!";
+        deadContractDialog[1] = "Wizard's hat: One of your humans is sad.";
+        deadContractDialog[2] = "Wizard's hat: If he dies once more...";
+        deadContractDialog[3] = "Wizard's hat: He’ll leave you for another wizard!";
+        deadContractDialog[4] = "Wizard's hat: You can make him happier though...";
+        deadContractDialog[5] = "Wizard's hat: Just make sure he survives the level!";
+        deadContractDialog[6] = "Wizard's hat: You can recognize the saddest humans";
+        deadContractDialog[7] = "Wizard's hat: just look at their face!";
+        deadContractDialog[8] = "Wizard's hat: You have to watch out if...";
+        deadContractDialog[9] = "Wizard's hat: he looks red and is crying...";
+    }
+
+    public void SetUpDeadContractDialog(bool contractLeft)
     {
         deadContract = true;
-        InitializeDeadContractDialog();
+
+        if (contractLeft)
+            InitializeContractLeftDialog();
+        else
+            InitializeContractAngryDialog();
+
     }
 
     public void DeactivateDialog()
     {
         GameObject.Find("LevelSelectScrollView(Clone)").GetComponent<ScrollRect>().vertical = true;
+        UnblockLevelButtons(true);
         inDialog = false;
     }
 
@@ -128,10 +149,6 @@ public class LevelSelectUIManager : SubUIManager
         guidanceText = UIManager.Instance.CreateUIElement("Prefabs/UI/Tutorial/GuidanceText", Vector2.zero, canvas.transform).GetComponent<Text>();
         DeactivateNoClickPanel();
         ActivateNoClickPanel(wizardsHat.GetComponent<RectTransform>().anchoredPosition, wizardsHat.GetComponentInChildren<Image>().sprite);
-
-        //tutorialBackground = UIManager.Instance.CreateUIElement(Resources.Load<GameObject>("Prefabs/UI/Tutorial/BackgroundTutorial"), Vector2.zero, canvas.transform);
-        //tutorialBackground.transform.SetAsFirstSibling();
-        //background.transform.SetAsFirstSibling();
     }
 
     protected override void InitializeInGame()
@@ -160,18 +177,19 @@ public class LevelSelectUIManager : SubUIManager
 
         initializedInGame = true;
     }
-    
-    public override void Update()
+
+    public override void Start()
     {
+        base.Start();
         if (deadContract)
         {
             deadContract = false;
-            dialog.Activate(deadContractDialog);
-            UberManager.Instance.InputManager.ListenForDialog();
-            GameObject.Find("LevelSelectScrollView(Clone)").GetComponent<ScrollRect>().vertical = false;
-            inDialog = true;
+            StartDialog(deadContractDialog);
         }
+    }
 
+    public override void Update()
+    {
         if (inDialog)
             UberManager.Instance.InputManager.CatchInput();
     }
@@ -226,6 +244,25 @@ public class LevelSelectUIManager : SubUIManager
 
         guidanceArrow.GetComponent<RectTransform>().anchoredPosition = centerPos + (Vector2)(q * Vector2.right * radius);
         guidanceText.GetComponent<RectTransform>().anchoredPosition = centerPos + (Vector2)(q * Vector2.right * (radius + 75.0f));
+    }
+
+    protected void StartDialog(string[] conversation)
+    {
+        dialog.Activate(conversation);
+        UberManager.Instance.InputManager.ListenForDialog();
+        GameObject.Find("LevelSelectScrollView(Clone)").GetComponent<ScrollRect>().vertical = false;
+
+        inDialog = true;
+
+        UnblockLevelButtons(false);
+    }
+
+    public void UnblockLevelButtons(bool value)
+    {
+        for (int i = 0; i < cities.Count; i++)
+        {
+            cities[i].ChangeLevelInteractability(value, true);
+        }
     }
 
     protected override void Restart()

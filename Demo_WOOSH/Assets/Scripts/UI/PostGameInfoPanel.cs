@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PostGameInfoPanel : MonoBehaviour
 {
+    private static bool nearDeadWarningGiven = false;
     private enum HumanPostGameStatus {
         MoveOn = 0,
         Stay,
@@ -31,11 +32,17 @@ public class PostGameInfoPanel : MonoBehaviour
 
         List<Contract> deadContracts = new List<Contract>();
         deadContracts = GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0);
+        bool nearDead = GameManager.Instance.SelectedContracts.FindAll(c => c.Happiness <= 10 && c.Happiness > 0).Count > 0;
+
         if (deadContracts.Count > 0)
         {
             //dialog
 
-            UIManager.Instance.LevelSelectUI.ActivateDeadContractDialog();
+            UIManager.Instance.LevelSelectUI.SetUpDeadContractDialog(true);
+        } else if (nearDead && !nearDeadWarningGiven)
+        {
+            UIManager.Instance.LevelSelectUI.SetUpDeadContractDialog(false);
+            nearDeadWarningGiven = true;
         }
 
         SetText();
@@ -65,11 +72,18 @@ public class PostGameInfoPanel : MonoBehaviour
     {
         List<Contract> deadContracts = new List<Contract>();
         deadContracts = GameManager.Instance.SelectedContracts.FindAll(c => c.Died && c.Happiness <= 0);
+        bool nearDead = GameManager.Instance.SelectedContracts.FindAll(c => c.Happiness <= 10 && c.Happiness > 0).Count > 0;
+
         if (deadContracts.Count > 0)
         {
             //dialog
 
-            UIManager.Instance.LevelSelectUI.ActivateDeadContractDialog();
+            UIManager.Instance.LevelSelectUI.SetUpDeadContractDialog(true);
+        }
+        else if (nearDead && !nearDeadWarningGiven)
+        {
+            UIManager.Instance.LevelSelectUI.SetUpDeadContractDialog(false);
+            nearDeadWarningGiven = true;
         }
 
         SetText();

@@ -543,13 +543,15 @@ public class LevelManager
             humans.Remove((Human)toRemove);
             if (!fromEditor && GameManager.Instance.GameOn && humans.Count <= 0)
             {
-                Remove(toRemove);
+                //Remove(toRemove);
+                GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
                 GameManager.Instance.GameOver();
                 return;
             }
             else
             {
-                Remove(toRemove);
+                //Remove(toRemove);
+                GameManager.Instance.TileManager.RemoveObject(toRemove.GridPosition, toRemove);
                 UIManager.Instance.InGameUI.HumanDied();
                 shrines.HandleAction(s => s.CheckForActive(false));
                 return;

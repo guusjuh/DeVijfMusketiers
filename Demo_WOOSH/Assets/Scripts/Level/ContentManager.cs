@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using UnityEngine.UI;
 
 [Serializable]
 public struct SpawnNode
@@ -73,6 +74,8 @@ public class ContentManager {
 
     private GameObject[] happinessPrefabs;
     public GameObject[] HappinessPrefabs {get { return happinessPrefabs; } }
+    public Sprite[] happinessIndicators;
+    public Sprite[] HappinessIndicators { get { return happinessIndicators; } }
 
     private static Dictionary<ContentType, List<SecContentType>> validContentTypes;
     public static Dictionary<ContentType, List<SecContentType>> ValidContentTypes { get {return validContentTypes; } }
@@ -130,9 +133,12 @@ public class ContentManager {
     {
         string[] happinessOrder = { "Waah", "Smeh", "Ok", "Good", "Awesome"};
         happinessPrefabs = new GameObject[happinessOrder.Length];
+        happinessIndicators = new Sprite[happinessOrder.Length];
+
         for (int i = 0; i < happinessOrder.Length; i++)
         {
             happinessPrefabs[i] = Resources.Load<GameObject>("Prefabs/UI/PreGame/ContractInfo/Happiness/" + happinessOrder[i] + "Img");
+            happinessIndicators[i] = happinessPrefabs[i].GetComponent<Image>().sprite;
         }
     }
 

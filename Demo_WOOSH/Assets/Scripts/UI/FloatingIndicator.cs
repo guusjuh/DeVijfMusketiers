@@ -55,7 +55,7 @@ public class FloatingIndicator
             ActivateUI(text, color);
     }
 
-    public void Initialize(Sprite sprite, float moveSpeed, float lifeTime, Vector3 startPos, bool inGame = true, Transform parent = null)
+    public void Initialize(bool isPositiveChange, Sprite sprite, float moveSpeed, float lifeTime, Vector3 startPos, bool inGame = true, Transform parent = null)
     {
         this.moveSpeed = moveSpeed;
         this.lifeTime = lifeTime;
@@ -66,6 +66,10 @@ public class FloatingIndicator
 
         floatingSpriteRenderer = parentGO.transform.Find("Child").GetComponent<Image>();
         floatingSpriteRenderer.sprite = sprite;
+
+        floatingText = parentGO.GetComponent<Text>();
+        floatingText.color = (isPositiveChange)? Color.green: Color.red;
+        floatingText.text = (isPositiveChange) ? "+" : "-";
 
         if (parent == null) parent = UIManager.Instance.InGameUI.AnchorCenter;
         parentGO.transform.SetParent(parent);
@@ -153,8 +157,6 @@ public class FloatingIndicator
     /// <summary>
     /// Activates the floating sprite.
     /// </summary>
-    /// <param name="text">The taken damage.</param>
-    /// <param name="startPos">The position the number starts floating up. </param>
     public void Activate()
     {
         // Calculate the position based on the camera. 

@@ -29,7 +29,7 @@ public class SubUIManager
 
     protected bool initializedInGame = false;
 
-    public void Start()
+    public virtual void Start()
     {
         if (first)
         {

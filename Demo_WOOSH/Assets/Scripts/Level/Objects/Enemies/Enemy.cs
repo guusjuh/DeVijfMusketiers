@@ -337,6 +337,10 @@ public class Enemy : WorldObject
 
     public void StartTurn()
     {
+        if ((Human) target != null && ((Human) target).Dead)
+        {
+            SelectTarget();
+        }
         for (int i = 0; i < actions.Count; i++)
         {
             actions[i].StartTurn();
@@ -423,7 +427,7 @@ public class Enemy : WorldObject
         List<EnemyTarget> damagables = new List<EnemyTarget>();
 
         if (GameManager.Instance.LevelManager.Humans != null && GameManager.Instance.LevelManager.Humans.Count > 0)
-            damagables.AddRange(GameManager.Instance.LevelManager.Humans.Cast<EnemyTarget>());
+            damagables.AddRange(GameManager.Instance.LevelManager.Humans.FindAll(h => h.Dead == false).Cast<EnemyTarget>());
         if (GameManager.Instance.LevelManager.Shrines != null && GameManager.Instance.LevelManager.Shrines.Count > 0)
             damagables.AddRange(GameManager.Instance.LevelManager.Shrines.Cast<EnemyTarget>());
 

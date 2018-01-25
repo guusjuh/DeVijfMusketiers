@@ -96,6 +96,20 @@ public class City : MonoBehaviour {
         //TODO: find right path, by checking the contract destination
     }
 
+    public void ChangeLevelInteractability(bool value, bool setCityBtn)
+    {
+        if (setCityBtn)
+            bttn.interactable = value;
+
+        if (paths == null || paths.Count <= 0)
+            return;
+
+        for (int i = 0; i < paths.Count; i++)
+        {
+            paths[i].ChangeLevelInteractability(value);
+        }
+    }
+
     public void RefreshAvailableContracts(List<Contract> newContracts, Destination destination)
     {
         ClearAvailableContracts(destination);

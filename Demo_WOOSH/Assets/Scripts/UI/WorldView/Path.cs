@@ -30,6 +30,17 @@ public class Path {
         });
     }
 
+    public void ChangeLevelInteractability(bool value)
+    {
+        if (levels == null || levels.Count <= 0)
+            return;
+
+        for (int i = 0; i < levels.Count; i++)
+        {
+            levels[i].SetInteractable(value);
+        }
+    }
+
     public bool SpawnContract(Contract contract, int levelid = 0)
     {
         //spawning a contract, so always level 0

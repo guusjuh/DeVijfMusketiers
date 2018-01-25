@@ -26,6 +26,11 @@ public class LevelSelectParent : MonoBehaviour
         BuildGrid();
     }
 
+    public void SetInteractable(bool value)
+    {
+        levelSelectButton.Interactable = value;
+    }
+
     public void Restart()
     {
         BuildGrid();
